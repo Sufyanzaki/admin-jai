@@ -37,11 +37,35 @@ export function DoctorStats() {
     { month: "Dec", score: 4.8 },
   ]
 
+  const earningsData = [
+    {
+      id: 1,
+      title: "Total Earnings",
+      amount: "Є216",
+      description: "All-time platform earnings",
+      change: "",
+    },
+    {
+      id: 2,
+      title: "Last 12 Months Earnings",
+      amount: "Є216",
+      description: "Earnings from past year",
+      change: "",
+    },
+    {
+      id: 3,
+      title: "Last 6 Months Earnings",
+      amount: "Є0",
+      description: "Earnings from past 6 months",
+      change: "",
+    }
+  ];
+
   return (
     <Tabs defaultValue="visits">
       <TabsList>
-        <TabsTrigger value="visits">Patient Visits</TabsTrigger>
-        <TabsTrigger value="satisfaction">Patient Satisfaction</TabsTrigger>
+        <TabsTrigger value="visits">Users Visits</TabsTrigger>
+        <TabsTrigger value="satisfaction">Matching Satisfaction</TabsTrigger>
       </TabsList>
       <TabsContent value="visits" className="space-y-4">
         <div className="w-full h-[300px] min-w-0">
@@ -97,33 +121,20 @@ export function DoctorStats() {
           </ResponsiveContainer>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Current Rating</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">4.8/5</div>
-              <p className="text-xs text-muted-foreground">+0.1 from last month</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Reviews</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1,248</div>
-              <p className="text-xs text-muted-foreground">+156 from last month</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Recommendation</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">92%</div>
-              <p className="text-xs text-muted-foreground">Would recommend to others</p>
-            </CardContent>
-          </Card>
+          {earningsData.map((item) => (
+              <Card key={item.id}>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{item.amount}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {item.description}
+                    {item.change && ` (${item.change})`}
+                  </p>
+                </CardContent>
+              </Card>
+          ))}
         </div>
       </TabsContent>
     </Tabs>
