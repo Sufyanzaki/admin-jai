@@ -625,7 +625,7 @@ export default function IssuedPage() {
           {/* Same card structure as "all" tab */}
           <Card>
             <CardContent className="p-0">
-              {/* Table content similar to "all" tab but filtered for patients */}
+              {/* Table content similar to "all" tab but filtered for payments */}
               <div className="overflow-x-auto">
                 <table className="w-full whitespace-nowrap">
                   {/* Table header and body similar to "all" tab */}

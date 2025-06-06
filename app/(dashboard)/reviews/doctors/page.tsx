@@ -60,7 +60,7 @@ const doctorReviews = [
     date: "2023-04-08",
     title: "Amazing with children",
     content:
-      "Dr. Garcia is absolutely amazing with children. My son is usually terrified of doctors, but she made him feel comfortable and even laugh during the examination. Highly recommend!",
+      "Dr. Garcia is absolutely amazing with children. My son is usually terrified of members, but she made him feel comfortable and even laugh during the examination. Highly recommend!",
     helpful: 31,
     responded: true,
     response:
@@ -95,7 +95,7 @@ const doctorReviews = [
     date: "2023-04-02",
     title: "Life-saving care",
     content:
-      "Dr. Johnson literally saved my life. She identified a serious heart condition that other doctors had missed. Her attention to detail and expertise are unmatched.",
+      "Dr. Johnson literally saved my life. She identified a serious heart condition that other members had missed. Her attention to detail and expertise are unmatched.",
     helpful: 45,
     responded: true,
     response:
@@ -399,7 +399,7 @@ export default function DoctorReviewsPage() {
                     <div>
                       <div className="text-sm text-muted-foreground mb-1">
                         Review for{" "}
-                        <Link href={`/doctors/${review.doctorId}`} className="font-medium text-primary hover:underline">
+                        <Link href={`/members/${review.doctorId}`} className="font-medium text-primary hover:underline">
                           {review.doctorName}
                         </Link>{" "}
                         ({review.doctorSpecialty}) by {review.patientName}
@@ -479,7 +479,7 @@ export default function DoctorReviewsPage() {
                       <div>
                         <div className="text-sm text-muted-foreground mb-1">
                           Review for{" "}
-                          <Link href={`/doctors/${review.doctorId}`} className="font-medium text-primary hover:underline">
+                          <Link href={`/members/${review.doctorId}`} className="font-medium text-primary hover:underline">
                             {review.doctorName}
                           </Link>{" "}
                           ({review.doctorSpecialty}) by {review.patientName}
@@ -550,7 +550,7 @@ export default function DoctorReviewsPage() {
                       <div>
                         <div className="text-sm text-muted-foreground mb-1">
                           Review for{" "}
-                          <Link href={`/doctors/${review.doctorId}`} className="font-medium text-primary hover:underline">
+                          <Link href={`/members/${review.doctorId}`} className="font-medium text-primary hover:underline">
                             {review.doctorName}
                           </Link>{" "}
                           ({review.doctorSpecialty}) by {review.patientName}

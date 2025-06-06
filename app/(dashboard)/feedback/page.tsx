@@ -32,7 +32,7 @@ const surveys = [
   {
     id: "1",
     title: "Patient Satisfaction Survey",
-    description: "General satisfaction survey for all patients",
+    description: "General satisfaction survey for all payments",
     status: "active",
     responses: 128,
     createdAt: "2023-03-15",
@@ -76,7 +76,7 @@ const surveys = [
   {
     id: "5",
     title: "Post-Surgery Follow-up",
-    description: "Feedback from patients after surgical procedures",
+    description: "Feedback from payments after surgical procedures",
     status: "inactive",
     responses: 96,
     createdAt: "2023-01-15",

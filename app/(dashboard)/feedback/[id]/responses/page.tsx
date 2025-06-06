@@ -28,7 +28,7 @@ import { Separator } from "@/components/ui/separator"
 const survey = {
   id: "1",
   title: "Patient Satisfaction Survey",
-  description: "General satisfaction survey for all patients after their visit",
+  description: "General satisfaction survey for all payments after their visit",
   status: "active",
   responses: 128,
   createdAt: "2023-03-15",

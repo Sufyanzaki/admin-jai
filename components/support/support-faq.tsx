@@ -29,7 +29,7 @@ const faqs = [
     id: "faq-4",
     question: "Can I export patient data?",
     answer:
-      "Yes, you can export patient data. Navigate to the Patients section, select the patients you want to export, then click the 'Export' button. You can choose between CSV, Excel, or PDF formats depending on your needs.",
+      "Yes, you can export patient data. Navigate to the Patients section, select the payments you want to export, then click the 'Export' button. You can choose between CSV, Excel, or PDF formats depending on your needs.",
   },
   {
     id: "faq-5",

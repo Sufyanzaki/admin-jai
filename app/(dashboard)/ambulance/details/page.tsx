@@ -537,7 +537,7 @@ export default function AmbulanceDetailsPage() {
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem>
-                                <Link href={`/patients/1`}>
+                                <Link href={`/payments/1`}>
                                   View Patient
                                 </Link>
                               </DropdownMenuItem>

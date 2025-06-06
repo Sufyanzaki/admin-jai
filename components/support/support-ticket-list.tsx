@@ -107,7 +107,7 @@ const tickets = [
     created: "2023-04-15T08:45:00",
     updated: "2023-04-17T13:10:00",
     description:
-      "The system has been extremely slow for the past few days, especially during peak hours (9-11 AM). This is affecting our ability to check in patients efficiently.",
+      "The system has been extremely slow for the past few days, especially during peak hours (9-11 AM). This is affecting our ability to check in payments efficiently.",
     responses: [
       {
         id: "R-5",

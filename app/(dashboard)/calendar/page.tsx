@@ -31,7 +31,7 @@ const initialEvents = [
     start: new Date(new Date().setHours(10, 0, 0, 0)),
     end: new Date(new Date().setHours(11, 30, 0, 0)),
     categoryId: "meeting",
-    description: "Monthly staff meeting with all doctors",
+    description: "Monthly staff meeting with all members",
     location: "Conference Room A",
   },
   {

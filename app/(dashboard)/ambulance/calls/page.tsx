@@ -255,7 +255,7 @@ export default function AmbulanceCallListPage() {
                                   </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                  <Link href={`/patients/1`} className="flex items-center">
+                                  <Link href={`/payments/1`} className="flex items-center">
                                     <UserRound className="mr-2 h-4 w-4" />
                                     View Patient
                                   </Link>
@@ -337,7 +337,7 @@ export default function AmbulanceCallListPage() {
                                     </Link>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem>
-                                    <Link href={`/patients/1`} className="flex items-center">
+                                    <Link href={`/payments/1`} className="flex items-center">
                                       <UserRound className="mr-2 h-4 w-4" />
                                       View Patient
                                     </Link>
@@ -419,7 +419,7 @@ export default function AmbulanceCallListPage() {
                                     </Link>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem>
-                                    <Link href={`/patients/1`} className="flex items-center">
+                                    <Link href={`/payments/1`} className="flex items-center">
                                       <UserRound className="mr-2 h-4 w-4" />
                                       View Patient
                                     </Link>
@@ -501,7 +501,7 @@ export default function AmbulanceCallListPage() {
                                     </Link>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem>
-                                    <Link href={`/patients/1`} className="flex items-center">
+                                    <Link href={`/payments/1`} className="flex items-center">
                                       <UserRound className="mr-2 h-4 w-4" />
                                       View Patient
                                     </Link>

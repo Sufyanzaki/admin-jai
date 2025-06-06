@@ -83,7 +83,7 @@ export default function RolesAndPermissionsPage() {
       id: 2,
       name: "Doctor",
       category: "Medical",
-      description: "Access to patient records, appointments, and prescriptions",
+      description: "Access to patient records, appointments, and complains",
       users: 12,
       isDefault: true,
       lastUpdated: "2023-10-22",

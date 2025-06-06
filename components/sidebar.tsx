@@ -3,7 +3,35 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { Ambulance, BarChart3, Bed, Building2, Calendar, Calendar1, CheckCircle2, Droplet, FileText, Grid, HelpCircle, LayoutDashboard, LucideHeart, Mail, MessageCircle, MessageSquare, Package, Pill, Receipt, Settings, ShieldCheck, Star, UserCog, UserRound, Users, X } from "lucide-react";
+import {
+  Ambulance,
+  BarChart3,
+  Bed,
+  Building2,
+  Calendar,
+  Calendar1,
+  CheckCircle2,
+  Droplet,
+  FileText,
+  Grid,
+  HelpCircle,
+  LayoutDashboard,
+  LucideHeart,
+  Mail,
+  Megaphone,
+  MessageCircle,
+  MessageSquare,
+  Package,
+  Pill,
+  Receipt,
+  Settings,
+  ShieldCheck,
+  Star,
+  UserCog,
+  UserRound,
+  Users,
+  X
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
@@ -31,28 +59,26 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       title: "Dashboard",
       href: "/",
       icon: LayoutDashboard,
-      submenu: [
-        { title: "Admin Dashboard", href: "/" },
-        { title: "Doctor Dashboard", href: "/doctor-dashboard" },
-        { title: "Patient Dashboard", href: "/patient-dashboard" },
-      ],
     },
     {
-      title: "Doctors",
-      href: "/doctors",
-      icon: Users,
-      submenu: [
-        { title: "Doctors List", href: "/doctors" },
-        { title: "Add Doctor", href: "/doctors/add" },
-        { title: "Doctor Schedule", href: "/doctors/schedule" },
-        { title: "Specializations", href: "/doctors/specializations" },
-      ],
+      title: "Members",
+      href: "/members",
+      icon: Users
     },
     {
-      title: "Patients",
-      href: "/patients",
+      title: "Payments",
+      href: "/payments",
       icon: UserRound,
-     
+    },
+    {
+      title: "Complaints",
+      href: "/complains",
+      icon: Megaphone,
+    },
+    {
+      title: "App Settings",
+      href: "/settings",
+      icon: Settings,
     },
     {
       title: "Appointments",
@@ -63,16 +89,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         { title: "Add Appointment", href: "/appointments/add" },
         { title: "Calendar View", href: "/appointments/calendar" },
         { title: "Appointment Requests", href: "/appointments/requests" },
-      ],
-    },
-    {
-      title: "Prescriptions",
-      href: "/prescriptions",
-      icon: Pill,
-      submenu: [
-        { title: "All Prescriptions", href: "/prescriptions" },
-        { title: "Create Prescription", href: "/prescriptions/create" },
-        { title: "Medicine Templates", href: "/prescriptions/templates" },
       ],
     },
     {
@@ -170,8 +186,8 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       href: "/reviews",
       icon: Star,
       submenu: [
-        { title: "Doctor Reviews", href: "/reviews/doctors" },
-        { title: "Patient Reviews", href: "/reviews/patients" },
+        { title: "Doctor Reviews", href: "/reviews/members" },
+        { title: "Patient Reviews", href: "/reviews/payments" },
       ],
     },
     {
@@ -188,18 +204,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         { title: "Appointment Reports", href: "/reports/appointments" },
         { title: "Financial Reports", href: "/reports/financial" },
         { title: "Inventory Reports", href: "/reports/inventory" },
-        { title: "Patient Visit Reports", href: "/reports/patients" },
-      ],
-    },
-    {
-      title: "Settings",
-      href: "/settings",
-      icon: Settings,
-      submenu: [
-        { title: "General Settings", href: "/settings" },
-        { title: "Notifications", href: "/settings/notifications" },
-        { title: "Working Hours", href: "/settings/hours" },
-        { title: "Integrations", href: "/settings/integrations" },
+        { title: "Patient Visit Reports", href: "/reports/payments" },
       ],
     },
     {

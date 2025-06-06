@@ -70,7 +70,7 @@ const getAppointment = (id: string) => {
   return appointment;
 };
 
-// Get doctors list
+// Get members list
 const getDoctors = () => {
   return [
     { id: "d1", name: "Dr. Sarah Johnson", department: "General Medicine" },

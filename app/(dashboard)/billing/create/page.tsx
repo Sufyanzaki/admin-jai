@@ -18,7 +18,7 @@ import { ArrowLeft, Calculator, FileText, Plus, Search, Trash } from "lucide-rea
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-// Sample patients data
+// Sample payments data
 const patients = [
   {
     id: "P12345",

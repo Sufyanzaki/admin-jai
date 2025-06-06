@@ -294,7 +294,7 @@ export default function AppointmentDetailsPage({ params }: { params: Promise<{ i
               </div>
               <div className="pt-2">
                 <Button variant="outline" className="w-full" asChild>
-                  <Link href={`/patients/${appointment.patient.id}`}>View Patient Record</Link>
+                  <Link href={`/payments/${appointment.patient.id}`}>View Patient Record</Link>
                 </Button>
               </div>
             </CardContent>
@@ -337,7 +337,7 @@ export default function AppointmentDetailsPage({ params }: { params: Promise<{ i
               </div>
               <div className="pt-2">
                 <Button variant="outline" className="w-full" asChild>
-                  <Link href={`/doctors/${appointment.doctor.id}`}>View Doctor Profile</Link>
+                  <Link href={`/members/${appointment.doctor.id}`}>View Doctor Profile</Link>
                 </Button>
               </div>
             </CardContent>

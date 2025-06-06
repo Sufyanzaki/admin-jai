@@ -28,7 +28,7 @@ export default function MedicineDetailsPage({ params }: { params: Promise<{ id: 
     status: "In Stock",
     description: "Amoxicillin is a penicillin antibiotic that fights bacteria. It is used to treat many different types of infection caused by bacteria, such as tonsillitis, bronchitis, pneumonia, and infections of the ear, nose, throat, skin, or urinary tract.",
     dosage: "One capsule three times daily, or as directed by physician.",
-    sideEffects: "Diarrhea, nausea, vomiting, rash, allergic reactions in some patients.",
+    sideEffects: "Diarrhea, nausea, vomiting, rash, allergic reactions in some payments.",
     contraindications: "Known hypersensitivity to penicillins or cephalosporins.",
     storage: "Store at room temperature between 15-30°C (59-86°F). Keep away from moisture and heat.",
     batchHistory: [

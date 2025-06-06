@@ -514,7 +514,7 @@ export default function AppointmentRequestsPage() {
                                 <Link href={`/appointments/1`}>View details</Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem>
-                                <Link href={"/patients/1"}>View patient profile</Link>
+                                <Link href={"/payments/1"}>View patient profile</Link>
                               </DropdownMenuItem>
 
                               {tabValue === "pending" && (

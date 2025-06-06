@@ -263,7 +263,7 @@ export default function RoomDetailsPage({ params }: { params: Promise<{ id: stri
                 </div>
               </div>
               <div className="flex justify-end">
-                <Link href={`/patients/${roomData.patient.id}`}>
+                <Link href={`/payments/${roomData.patient.id}`}>
                   <Button variant="link" className="h-auto p-0 text-sm">
                     View Full Patient Profile
                   </Button>

@@ -210,7 +210,7 @@ export default function AmbulanceCallDetailsPage() {
               <div className="flex items-center gap-2">
                 <UserRound className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <Link href={`/patients/details?id=${call.patientId}`} className="font-medium hover:underline">
+                  <Link href={`/payments/details?id=${call.patientId}`} className="font-medium hover:underline">
                     {call.patient}
                   </Link>
                   <p className="text-sm text-muted-foreground">

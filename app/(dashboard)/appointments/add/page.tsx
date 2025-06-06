@@ -15,7 +15,7 @@ import { ArrowLeft, Clock, Search } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-// Sample doctors data
+// Sample members data
 const doctors = [
   {
     id: "1",
@@ -54,7 +54,7 @@ const doctors = [
   },
 ];
 
-// Sample patients data
+// Sample payments data
 const patients = [
   {
     id: "1",
@@ -297,7 +297,7 @@ export default function AddAppointmentPage() {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className={`w-full justify-between ${formErrors.patient ? "border-red-500" : ""}`}>
-                    <span>{selectedPatient ? selectedPatient.name : "Search patients..."}</span>
+                    <span>{selectedPatient ? selectedPatient.name : "Search payments..."}</span>
                     <Search className="h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -351,7 +351,7 @@ export default function AddAppointmentPage() {
               )}
 
               <Button variant="outline" className="w-full" asChild>
-                <Link href="/patients/add">Register New Patient</Link>
+                <Link href="/(dashboard)/payments/add">Register New Patient</Link>
               </Button>
             </CardContent>
           </Card>
@@ -411,7 +411,7 @@ export default function AddAppointmentPage() {
                     </div>
                   </div>
                   <Button variant="link" className="p-0 h-auto mt-2 text-sm" asChild>
-                    <Link href={`/doctors/${selectedDoctor.id}/schedule`}>View doctor schedule</Link>
+                    <Link href={`/members/${selectedDoctor.id}/schedule`}>View doctor schedule</Link>
                   </Button>
                 </div>
               )}
