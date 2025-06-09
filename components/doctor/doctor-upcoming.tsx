@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 
 export function DoctorCalendar() {
-  // Sample data for upcoming appointments
+  // Sample data for upcoming profile-attributes
   const upcomingAppointments = [
     {
       id: 1,

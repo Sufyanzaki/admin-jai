@@ -1,34 +1,49 @@
 "use client";
 
 import type React from "react";
+import {useState} from "react";
 
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
-  Building2,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {Input} from "@/components/ui/input";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {
   Calendar,
   CalendarCheck,
   CalendarDays,
   CalendarRange,
   Clock,
   DollarSign,
-  Download,
   List,
   MoreHorizontal,
   Package,
   PackageCheck,
+  PencilIcon, Plus,
   RotateCcw,
-  Search, Users,
+  Search,
   XCircle
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
@@ -227,6 +242,13 @@ export default function PaymentsPage() {
               <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Payments</h1>
               <p className="text-muted-foreground">Manage your payments and their records.</p>
             </div>
+
+            <Button asChild>
+              <Link href="/payments/add">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Order
+              </Link>
+            </Button>
           </div>
         </div>
 
@@ -382,27 +404,11 @@ export default function PaymentsPage() {
                           </TableCell>
                           <TableCell>{order.date}</TableCell>
                           <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                  <span className="sr-only">Actions</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem asChild>
-                                  <Link href={`/orders/${order.id}`}>View Order</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem asChild>
-                                  <Link href={`/orders/${order.id}/edit`}>Edit Order</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)} className="text-red-600">
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <Button variant="ghost" size="icon">
+                              <Link href="/payments/1">
+                                <PencilIcon className="h-4 w-4 text-muted-foreground" />
+                              </Link>
+                            </Button>
                           </TableCell>
                         </TableRow>
                     ))}

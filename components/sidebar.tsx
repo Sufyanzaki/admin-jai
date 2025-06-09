@@ -81,15 +81,19 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: Settings,
     },
     {
-      title: "Appointments",
-      href: "/appointments",
-      icon: Calendar,
-      submenu: [
-        { title: "All Appointments", href: "/appointments" },
-        { title: "Add Appointment", href: "/appointments/add" },
-        { title: "Calendar View", href: "/appointments/calendar" },
-        { title: "Appointment Requests", href: "/appointments/requests" },
-      ],
+      title: "Profile Attributes",
+      href: "/profile-attributes",
+      icon: Calendar
+    },
+    {
+      title: "Chat & Video Setting",
+      href: "/chat-and-video-setting",
+      icon: Calendar
+    },
+    {
+      title: "Packages",
+      href: "/packages",
+      icon: Calendar
     },
     {
       title: "Ambulance",
@@ -201,7 +205,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: BarChart3,
       submenu: [
         { title: "Overview", href: "/reports" },
-        { title: "Appointment Reports", href: "/reports/appointments" },
+        { title: "Appointment Reports", href: "/reports/profile-attributes" },
         { title: "Financial Reports", href: "/reports/financial" },
         { title: "Inventory Reports", href: "/reports/inventory" },
         { title: "Patient Visit Reports", href: "/reports/payments" },

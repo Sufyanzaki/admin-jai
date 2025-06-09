@@ -95,10 +95,10 @@ export function RecentAppointments() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem>
-                    <Link href={`/appointments/1`}>View details</Link>
+                    <Link href={`/profile-attributes/1`}>View details</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href={`/appointments/1/edit`}>Edit appointment</Link>
+                    <Link href={`/profile-attributes/1/edit`}>Edit appointment</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => setCancelDialogOpen(true)}>Cancel appointment</DropdownMenuItem>

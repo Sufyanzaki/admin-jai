@@ -12,9 +12,10 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Filter, MoreHorizontal, Plus, Search, X } from "lucide-react";
+import {Download, Filter, MoreHorizontal, Pencil, Plus, Search, Trash2, User, X} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 const members = [
   {
@@ -93,7 +94,7 @@ const members = [
     plan: "-",
     joinDate: "06-05-2025",
     membership: "Free Member",
-    status: "Inactive",
+    status: "Blocked",
   },
   {
     id: "M32",
@@ -147,22 +148,21 @@ const members = [
     membership: "VIP Member",
     status: "Active",
   },
-
 ];
 
 
 // Extract unique memberships and statuses for filters
-const memberships = [...new Set(members.map((member) => member.membership))];
 const statuses = [...new Set(members.map((member) => member.status))];
-const ageRanges = ["18-25", "26-35", "36-45", "46+"];
+const membershipOptions = [...new Set(members.map((member) => member.membership))];
+const genderOptions = [...new Set(members.map((member) => member.gender))];
 
 export default function MembersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-  const [selectedAgeRanges, setSelectedAgeRanges] = useState<string[]>([]);
+  const [selectedGender, setSelectedGender] = useState<string[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const activeFilters = selectedMemberships.length + selectedStatuses.length + selectedAgeRanges.length;
+  const activeFilters = selectedMemberships.length + selectedStatuses.length + selectedGender.length;
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   // Filter members based on search query and selected filters
@@ -174,25 +174,15 @@ export default function MembersPage() {
         member.city.toLowerCase().includes(searchQuery.toLowerCase());
 
     // Membership filter
-    const matchesMembership = selectedMemberships.length === 0 ||
-        selectedMemberships.includes(member.membership);
+    const matchesMembership = selectedMemberships.length === 0 || selectedMemberships.includes(member.membership);
 
     // Status filter
-    const matchesStatus = selectedStatuses.length === 0 ||
-        selectedStatuses.includes(member.status);
+    const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(member.status);
 
-    // Age filter
-    const matchesAge =
-        selectedAgeRanges.length === 0 ||
-        (member.age !== null && (
-            (selectedAgeRanges.includes("18-25") && member.age >= 18 && member.age <= 25) ||
-            (selectedAgeRanges.includes("26-35") && member.age >= 26 && member.age <= 35) ||
-            (selectedAgeRanges.includes("36-45") && member.age >= 36 && member.age <= 45) ||
-            (selectedAgeRanges.includes("46+") && member.age >= 46)
-        ));
-
-    return matchesSearch && matchesMembership && matchesStatus && matchesAge;
-  });
+    //gender Filter
+    const matchesGender = selectedGender.length === 0 || selectedGender.includes(member.gender);
+    return matchesSearch && matchesMembership && matchesStatus && matchesGender;
+  })
 
   // Toggle membership filter
   const toggleMembership = (membership: string) => {
@@ -208,10 +198,9 @@ export default function MembersPage() {
     );
   };
 
-  // Toggle age filter
-  const toggleAgeRange = (range: string) => {
-    setSelectedAgeRanges((prev) =>
-        prev.includes(range) ? prev.filter((r) => r !== range) : [...prev, range]
+  const toggleGender = (gender: string) => {
+    setSelectedGender((prev) =>
+        prev.includes(gender) ? prev.filter((s) => s !== gender) : [...prev, gender]
     );
   };
 
@@ -219,7 +208,7 @@ export default function MembersPage() {
   const clearFilters = () => {
     setSelectedMemberships([]);
     setSelectedStatuses([]);
-    setSelectedAgeRanges([]);
+    setSelectedGender([]);
   };
 
   // Apply filters
@@ -235,6 +224,13 @@ export default function MembersPage() {
               <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members View</h2>
               <p className="text-muted-foreground">Manage your users and their information.</p>
             </div>
+
+            <Button asChild>
+              <Link href="/members/add">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Member
+              </Link>
+            </Button>
           </div>
 
           <Card>
@@ -244,6 +240,19 @@ export default function MembersPage() {
                 <CardDescription>A list of all members in your app with their details.</CardDescription>
               </div>
               <div className="flex flex-wrap gap-2">
+                <Select>
+                  <SelectTrigger className=" w-full md:w-[250px]">
+                    <SelectValue placeholder="Department" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Bulk Select</SelectItem>
+                    <SelectItem value="medical">Active</SelectItem>
+                    <SelectItem value="nursing">Inactive</SelectItem>
+                    <SelectItem value="admin">Blocked</SelectItem>
+                    <SelectItem value="lab">Unblocked</SelectItem>
+                    <SelectItem value="pharmacy">Delete</SelectItem>
+                  </SelectContent>
+                </Select>
                 <div className="relative">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -277,17 +286,41 @@ export default function MembersPage() {
                     </div>
                     <div className="p-4 space-y-4">
                       <div className="space-y-2">
+                        <h5 className="text-sm font-medium">Specialty</h5>
+                        <div className="grid grid-cols-1 gap-2">
+                          {membershipOptions.map((memberShip) => (
+                              <div key={memberShip} className="flex items-center space-x-2">
+                                <Checkbox id={`specialty-${memberShip}`} checked={selectedMemberships.includes(memberShip)} onCheckedChange={() => toggleMembership(memberShip)} />
+                                <Label htmlFor={`specialty-${memberShip}`} className="text-sm font-normal">
+                                  {memberShip}
+                                </Label>
+                              </div>
+                          ))}
+                        </div>
+                      </div>
+                      <Separator />
+                      <div className="space-y-2">
                         <h5 className="text-sm font-medium">Status</h5>
                         <div className="grid grid-cols-1 gap-2">
                           {statuses.map((status) => (
                               <div key={status} className="flex items-center space-x-2">
-                                <Checkbox
-                                    id={`status-${status}`}
-                                    checked={selectedStatuses.includes(status)}
-                                    onCheckedChange={() => toggleStatus(status)}
-                                />
+                                <Checkbox id={`status-${status}`} checked={selectedStatuses.includes(status)} onCheckedChange={() => toggleStatus(status)} />
                                 <Label htmlFor={`status-${status}`} className="text-sm font-normal">
                                   {status}
+                                </Label>
+                              </div>
+                          ))}
+                        </div>
+                      </div>
+                      <Separator />
+                      <div className="space-y-2">
+                        <h5 className="text-sm font-medium">Experience</h5>
+                        <div className="grid grid-cols-1 gap-2">
+                          {genderOptions.map((gender) => (
+                              <div key={gender} className="flex items-center space-x-2">
+                                <Checkbox id={`experience-${gender}`} checked={selectedGender.includes(gender)} onCheckedChange={() => toggleGender(gender)} />
+                                <Label htmlFor={`experience-${gender}`} className="text-sm font-normal">
+                                  {gender}
                                 </Label>
                               </div>
                           ))}
@@ -327,12 +360,12 @@ export default function MembersPage() {
                           />
                         </Badge>
                     ))}
-                    {selectedAgeRanges.map((range) => (
-                        <Badge key={`badge-age-${range}`} variant="outline" className="flex items-center gap-1">
-                          {range}
+                    {selectedGender.map((gender) => (
+                        <Badge key={`badge-age-${gender}`} variant="outline" className="flex items-center gap-1">
+                          {gender}
                           <X
                               className="h-3 w-3 cursor-pointer"
-                              onClick={() => toggleAgeRange(range)}
+                              onClick={() => toggleGender(gender)}
                           />
                         </Badge>
                     ))}
@@ -346,6 +379,7 @@ export default function MembersPage() {
               <Table className="whitespace-nowrap">
                 <TableHeader>
                   <TableRow>
+                    <TableHead>Bulk Select</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Gender</TableHead>
                     <TableHead>Age</TableHead>
@@ -366,6 +400,9 @@ export default function MembersPage() {
                   ) : (
                       filteredMembers.map((member) => (
                           <TableRow key={member.id}>
+                            <TableCell>
+                              <Checkbox id={`member-${member.id}`} onCheckedChange={() => {}} />
+                            </TableCell>
                             <TableCell>
                               <div className="flex items-center gap-3">
                                 <Avatar>
@@ -413,10 +450,22 @@ export default function MembersPage() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
                                   <DropdownMenuItem asChild>
-                                    <Link href={`/members/${member.id}`}>View profile</Link>
+                                    <Link href={`/members/${member.id}`} className="flex items-center gap-2">
+                                      <User className="h-4 w-4" />
+                                      View profile
+                                    </Link>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem asChild>
-                                    <Link href={`/members/${member.id}`}>Edit details</Link>
+                                    <Link href={`/members/${member.id}/edit`} className="flex items-center gap-2">
+                                      <Pencil className="h-4 w-4" />
+                                      Edit details
+                                    </Link>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem asChild>
+                                    <button className="flex items-center gap-2 text-red-600">
+                                      <Trash2 className="h-4 w-4" />
+                                      Delete
+                                    </button>
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
@@ -453,5 +502,5 @@ export default function MembersPage() {
           </AlertDialogContent>
         </AlertDialog>
       </>
-  );
+  )
 }

@@ -71,7 +71,7 @@ const initialTasks: Task[] = [
   {
     id: "task-5",
     title: "Follow up with payments",
-    description: "Call payments who had appointments last week for follow-up",
+    description: "Call payments who had profile-attributes last week for follow-up",
     status: "in-progress",
     priority: "medium",
     dueDate: new Date(Date.now() + 86400000), // tomorrow

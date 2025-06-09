@@ -33,7 +33,7 @@ export default function StaffSchedulePage({ params }: { params: Promise<{ id: st
     },
   };
 
-  // Mock appointments for the schedule view
+  // Mock profile-attributes for the schedule view
   const appointments = [
     {
       id: "APT001",
