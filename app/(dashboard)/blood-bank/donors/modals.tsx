@@ -1,22 +1,31 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {format} from "date-fns";
+import {CalendarIcon} from "lucide-react";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
 import * as z from "zod";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Calendar} from "@/components/ui/calendar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Textarea} from "@/components/ui/textarea";
+import {cn} from "@/lib/utils";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
 
 // Schedule Donation Form Schema
 const scheduleDonationSchema = z.object({
@@ -256,4 +265,88 @@ export function DonationHistoryModal({ isOpen, onClose, donorId, donorName, dona
       </DialogContent>
     </Dialog>
   );
+}
+
+export function FAQModal({ isOpen, onClose }: any) {
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader className="px-1">
+          <DialogTitle>Add FAQ</DialogTitle>
+          <DialogDescription>Frequently Asked Questions</DialogDescription>
+        </DialogHeader>
+        <div className="max-h-[400px] overflow-y-auto px-1">
+          <form className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="subject">Subject</Label>
+              <Input
+                  id="subject"
+                  name="subject"
+                  placeholder="Brief description of the issue"
+                  required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="category">Category</Label>
+              <Select required>
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="technical">Technical Issue</SelectItem>
+                  <SelectItem value="billing">Billing Question</SelectItem>
+                  <SelectItem value="account">Account Management</SelectItem>
+                  <SelectItem value="feature">Feature Request</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Please provide detailed information about your issue"
+                  rows={5}
+                  required
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" type="button" onClick={()=>onClose(false)}>Cancel</Button>
+              <Button>Submit</Button>
+            </div>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export function CategoryModal({ isOpen, onClose }: any) {
+  return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader className="px-1">
+            <DialogTitle>Add Category</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-[400px] overflow-y-auto px-1">
+            <form className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="categoryName">Category Name</Label>
+                <Input
+                    id="categoryName"
+                    name="categoryName"
+                    placeholder="Category Name"
+                    required
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" type="button" onClick={()=>onClose(false)}>Cancel</Button>
+                <Button>Submit</Button>
+              </div>
+            </form>
+          </div>
+        </DialogContent>
+      </Dialog>
+  )
 }

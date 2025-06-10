@@ -55,6 +55,6 @@ function DateRangePickerComponent({ className }: React.HTMLAttributes<HTMLDivEle
   )
 }
 
-// Export with both names to support all imports
+// Export with both names to faq all imports
 export const DateRangePicker = DateRangePickerComponent
 export const CalendarDateRangePicker = DateRangePickerComponent

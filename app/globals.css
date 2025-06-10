@@ -92,3 +92,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/*tiptap editor*/
+
+/* Add this to your global CSS or a CSS module */
+.ProseMirror {
+  padding: 12px;
+  outline: none;
+  font-size: 14px;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}

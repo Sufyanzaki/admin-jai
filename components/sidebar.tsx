@@ -96,6 +96,16 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: Calendar
     },
     {
+      title: "FAQ",
+      href: "/faq",
+      icon: HelpCircle,
+    },
+    {
+      title: "Frontend Settings",
+      href: "/frontend-settings",
+      icon: HelpCircle,
+    },
+    {
       title: "Ambulance",
       href: "/ambulance",
       icon: Ambulance,
@@ -247,11 +257,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       title: "Chat",
       href: "/chat",
       icon: MessageCircle,
-    },
-    {
-      title: "Support",
-      href: "/support",
-      icon: HelpCircle,
     },
     {
       title: "Widgets",
