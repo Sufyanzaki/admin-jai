@@ -71,13 +71,13 @@ export default function PackagesPage() {
                                                 {item.status}
                                               </span>
                                           </TableCell>
-                                          <TableCell className="text-right flex justify-end">
-                                              <Button variant="ghost" size="icon">
+                                          <TableCell className="text-right flex justify-end gap-2">
+                                              <Button variant="outline" size="icon">
                                                   <Link href="/packages/1">
                                                       <Pencil className="w-4 h-4" />
                                                   </Link>
                                               </Button>
-                                              <Button variant="ghost" size="icon">
+                                              <Button variant="outline" size="icon">
                                                   <Trash className="w-4 h-4 text-red-500" />
                                               </Button>
                                           </TableCell>

@@ -85,7 +85,6 @@ export default function PrescriptionsPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View</DropdownMenuItem>
                           <DropdownMenuItem>Block User</DropdownMenuItem>
                           <DropdownMenuItem>Dismiss Report</DropdownMenuItem>
                         </DropdownMenuContent>
