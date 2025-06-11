@@ -21,11 +21,20 @@ import {
   ShieldBan,
   Sliders,
   Trash,
+  Trash2,
   Upload,
-  Users
+  Users,
+  UserCog,
+  HelpCircle,
+  NotebookText,
+  Package,
+  AlertCircle,
+  BarChart2,
+  Megaphone,
+  Video
 } from "lucide-react";
 import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
@@ -37,6 +46,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import Link from "next/link";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import TipTapEditor from "@/components/editor/TipTapEditor";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const languages = [
   {
@@ -78,6 +88,22 @@ const paymentMethods = [
       title: "Stripe",
     }
 ]
+
+const staffMenuItems = [
+  { id: "dashboard", title: "Dashboard", icon: LayoutDashboard },
+  { id: "members", title: "Members", icon: Users },
+  { id: "profile_attributes", title: "Profile Attributes", icon: UserCog },
+  { id: "payments", title: "Payments", icon: CreditCard },
+  { id: "frontend_settings", title: "Frontend Settings", icon: Sliders },
+  { id: "faqs", title: "FAQs", icon: HelpCircle },
+  { id: "blogs", title: "BLOGS", icon: NotebookText },
+  { id: "packages", title: "Packages", icon: Package },
+  { id: "complaints", title: "Complaints", icon: AlertCircle },
+  { id: "report", title: "Report", icon: BarChart2 },
+  { id: "marketing", title: "Marketing", icon: Megaphone },
+  { id: "app_setting", title: "App Setting", icon: Settings },
+  { id: "chat_video_setting", title: "Chat & Video Setting", icon: Video },
+];
 
 const settingsOptions = [
   { id: "general_settings", title: "General Settings", icon: Settings },
@@ -166,6 +192,51 @@ const pushNotificationTabs = [
     { id: "setting", title: "Setting"},
     {id: "instructions", title: "Instructions"},
 ]
+
+const staffTabs = [
+  {id: "all_staff", title: "All Staff"},
+  {id: "add_new_staff", title: "Add New Staff"},
+  {id: "staff_roles", title: "Staff Roles"},
+  {id: "add_new_staff_role", title: "Add New Staff Role"},
+]
+
+const staffRoles = [
+  {id: "admin", title: "Admin"},
+  {id: "mod", title: "MOD"},
+  {id: "admin2", title: "Admin"},
+]
+
+const staffData = [
+  {
+    id: 1,
+    name: "Admin",
+    email: "info@rajmedia.nl",
+    password: "-",
+    role: "admin"
+  },
+  {
+    id: 2,
+    name: "sandjai p",
+    email: "sandjai@netblue.nl",
+    password: "-",
+    role: "Mod"
+  },
+  {
+    id: 3,
+    name: "kareemn sas",
+    email: "kareembakhs112244@gmail.com",
+    password: "1234341",
+    role: "admin"
+  },
+  {
+    id: 4,
+    name: "sufyan zaki",
+    email: "sufyan.zaki.789@gmail.com",
+    password: "122132342345",
+    role: "admin"
+  }
+];
+
 
 export default function SettingsPage() {
 
@@ -798,7 +869,7 @@ export default function SettingsPage() {
                 <CardDescription>Update your clinic's basic information and contact details</CardDescription>
               </CardHeader>
 
-              <Tabs defaultValue="setting" className="p-3 md:p-4 xxl:p-6 flex gap-4">
+              <Tabs defaultValue="visit_profile" className="p-3 md:p-4 xxl:p-6 flex gap-4">
                 <TabsList className="flex sm:flex-col h-fit w-full sm:w-fit">
                   {emailTemplates.map((method) => (
                       <TabsTrigger key={method.id} value={method.id} className="p-3 w-full justify-start flex items-center gap-2">
@@ -1038,7 +1109,6 @@ export default function SettingsPage() {
               </CardContent>
             </Card>
           </TabsContent>
-
           <TabsContent value="footer" className="space-y-4 mt-0">
             <Card>
               <CardHeader>
@@ -1090,6 +1160,233 @@ export default function SettingsPage() {
                   </div>
                 </form>
               </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="abuse_word_filtering" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Abusive Words Filtering
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-1 items-center">
+                      <Input placeholder="Enter value" />
+                      <Button variant="ghost" size="icon" className="ml-2" >
+                        <Trash2 className="h-6 w-6 text-red-400"/>
+                      </Button>
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      <Input placeholder="Enter value" />
+                      <Button variant="ghost" size="icon" className="ml-2" >
+                        <Trash2 className="h-6 w-6 text-red-400"/>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end gap-2">
+                <Button type="submit" variant="secondary">Add Field</Button>
+                <Button type="submit">Save Changes</Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+          <TabsContent value="staffs" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Staff Management
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+
+              <Tabs defaultValue="all_staff" className="px-3 md:px-4 xxl:px-6 space-y-6">
+                <TabsList className="w-full sm:w-fit flex">
+                  {staffTabs.map((method) => (
+                      <TabsTrigger key={method.id} value={method.id} className="px-6">
+                        {method.title}
+                      </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <TabsContent value="all_staff" className="mt-0">
+                  <div className="py-3 md:py-4 xxl:py-6">
+                    <Table className="whitespace-nowrap">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>#</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Phone</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead className="text-right">Action</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {staffData.map((user) => (
+                            <TableRow key={user.id}>
+                              <TableCell>{user.id}</TableCell>
+                              <TableCell>{user.name}</TableCell>
+                              <TableCell>{user.email}</TableCell>
+                              <TableCell>{user.role}</TableCell>
+                              <TableCell className="text-right flex justify-end gap-2">
+                                <Button variant="outline" size="icon">
+                                  <Link href="/packages/1">
+                                    <Pencil className="w-4 h-4" />
+                                  </Link>
+                                </Button>
+                                <Button variant="outline" size="icon">
+                                  <Trash className="w-4 h-4 text-red-500" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </TabsContent>
+                <TabsContent value="staff_roles" className="mt-0">
+                  <div className="py-3 md:py-4 xxl:py-6">
+                    <Table className="whitespace-nowrap">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>#</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead className="text-right">Action</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {staffRoles.map((user) => (
+                            <TableRow key={user.id}>
+                              <TableCell>{user.id}</TableCell>
+                              <TableCell>{user.title}</TableCell>
+                              <TableCell className="text-right flex justify-end gap-2">
+                                <Button variant="outline" size="icon">
+                                  <Link href="/packages/1">
+                                    <Pencil className="w-4 h-4" />
+                                  </Link>
+                                </Button>
+                                <Button variant="outline" size="icon">
+                                  <Trash className="w-4 h-4 text-red-500" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </TabsContent>
+                <TabsContent value="add_new_staff" className="mt-0">
+                  <div className="py-3 md:py-4 xxl:py-6">
+                    <form className="space-y-4">
+                      <div className="grid grid-cols-[200px_1fr] items-center gap-4">
+                        <Label htmlFor="firstName" className="text-sm font-medium">
+                          First Name
+                        </Label>
+                        <Input id="firstName" className="w-full" placeholder="Enter first name" />
+                      </div>
+
+                      <div className="grid grid-cols-[200px_1fr] items-center gap-4">
+                        <Label htmlFor="lastName" className="text-sm font-medium">
+                          Last Name
+                        </Label>
+                        <Input id="lastName" className="w-full" placeholder="Enter last name" />
+                      </div>
+
+                      <div className="grid grid-cols-[200px_1fr] items-center gap-4">
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email
+                        </Label>
+                        <Input id="email" type="email" className="w-full" placeholder="Enter email" />
+                      </div>
+
+                      <div className="grid grid-cols-[200px_1fr] items-center gap-4">
+                        <Label htmlFor="phone" className="text-sm font-medium">
+                          Phone
+                        </Label>
+                        <Input id="phone" type="tel" className="w-full" placeholder="Enter phone" />
+                      </div>
+
+                      <div className="grid grid-cols-[200px_1fr] items-center gap-4">
+                        <Label htmlFor="password" className="text-sm font-medium">
+                          Password
+                        </Label>
+                        <Input id="password" type="password" className="w-full " placeholder="Enter password" />
+                      </div>
+
+                      <div className="grid grid-cols-[200px_1fr] items-center gap-4">
+                        <Label htmlFor="role" className="text-sm font-medium">
+                          Role
+                        </Label>
+                        <Input id="role" placeholder="Role" className="w-full" />
+                      </div>
+
+                      <div className="flex justify-end pt-6">
+                        <Button className="px-8">Add New Staff</Button>
+                      </div>
+                    </form>
+                  </div>
+                </TabsContent>
+                <TabsContent value="add_new_staff_role" className="mt-0">
+                  <Tabs defaultValue="dashboard" className="flex gap-4 py-6">
+                    <TabsList className="flex sm:flex-col h-fit w-full sm:w-fit">
+                      {staffMenuItems.map((method) => (
+                          <TabsTrigger key={method.id} value={method.id} className="p-3 w-full justify-start flex items-center gap-2">
+                            <method.icon className="w-5 h-5" />
+                            {method.title}
+                          </TabsTrigger>
+                      ))}
+                    </TabsList>
+
+                    <div className="w-full">
+                      {staffMenuItems.map((template) => (
+                          <TabsContent key={template.id} value={template.id} className="mt-0">
+                            <Table className="whitespace-nowrap">
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>#</TableHead>
+                                  <TableHead>Modules</TableHead>
+                                  <TableHead>Permissions</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>1</TableCell>
+                                  <TableCell>Home</TableCell>
+                                  <TableCell>
+                                    <div className="flex items-center gap-8">
+                                      <div className="flex items-center gap-2">
+                                        <Checkbox defaultChecked />
+                                        <Label className="text-sm">Show</Label>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <Checkbox defaultChecked />
+                                        <Label className="text-sm">Edit</Label>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <Checkbox defaultChecked />
+                                        <Label className="text-sm">Delete</Label>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <Checkbox defaultChecked />
+                                        <Label className="text-sm">Create</Label>
+                                      </div>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </TabsContent>
+                      ))}
+                    </div>
+                  </Tabs>
+                </TabsContent>
+              </Tabs>
             </Card>
           </TabsContent>
         </div>
