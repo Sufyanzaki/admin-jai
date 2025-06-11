@@ -36,6 +36,7 @@ import {Switch} from "@/components/ui/switch";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import Link from "next/link";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import TipTapEditor from "@/components/editor/TipTapEditor";
 
 const languages = [
   {
@@ -118,6 +119,53 @@ const smtpTabs = [
   { id: "instructions", title: "Instructions"},
 ]
 
+const firebaseInstructions = [
+  "Log in to Google Firebase and Create a new app if you don’t have any.",
+  "Go to Project Settings and select General tab.",
+  "Select Config and you will find Firebase Config Credentials.",
+  "Copy your App’s Credentials and paste the Credentials into appropriate fields.",
+  "Now, select Cloud Messaging tab and Enable Cloud Messaging API.",
+  "After enabling Cloud Messaging API, you will find Server Key. Copy the key value and paste into FIREBASE SERVER KEY field.",
+  'Configure the "firebase-messaging-sw.js" file and keep the file in the root directory of your cPanel.'
+]
+
+const emailTemplates = [
+  { id: "visit_profile", title: "When a member visited your profile" },
+  { id: "interest_accepted", title: "Email On Accepting Interest" },
+  { id: "new_chat_message", title: "New Chat Message" },
+  { id: "ask_for_photo", title: "Ask for a Photo" },
+  { id: "buy_package", title: "Buy a Package" },
+  { id: "vip_package_end", title: "VIP Package End" },
+  { id: "otp_activation", title: "OTP Activation Mail" },
+  { id: "forgot_password", title: "Forgot Password" },
+  { id: "delete_member_account", title: "Delete Member Account" },
+  { id: "welcome_after_activation", title: "Welcome Mail After Activation" },
+  { id: "admin_new_registration", title: "New Member Register from Admin" },
+  { id: "admin_package_purchase", title: "Member Buy Package from Admin" },
+  { id: "admin_account_deletion", title: "Member Delete Account from Admin" },
+  { id: "admin_verification", title: "Admin Verification Email" },
+  { id: "financial_report", title: "Financial Report" },
+  { id: "income_report", title: "Income Report" },
+  { id: "detail_report", title: "Detail Report" },
+  { id: "members_report", title: "Members Report" },
+  { id: "report_profile", title: "Report Profile" },
+  { id: "user_inquiry", title: "User Inquiry" },
+  { id: "new_user_registration", title: "New User Registration" },
+  { id: "user_package_purchase", title: "User Purchased a Package" },
+  { id: "new_matches", title: "New Matches Notification" },
+  { id: "admin_forgot_password", title: "Admin Forget Password" },
+  { id: "user_forgot_password", title: "User Forget Password" },
+];
+
+const socialLoginTabs = [
+    { id: "facebook", title: "Facebook"},
+    { id: "google", title: "Google"},
+]
+
+const pushNotificationTabs = [
+    { id: "setting", title: "Setting"},
+    {id: "instructions", title: "Instructions"},
+]
 
 export default function SettingsPage() {
 
@@ -738,6 +786,310 @@ export default function SettingsPage() {
                   </div>
                 </TabsContent>
               </Tabs>
+            </Card>
+          </TabsContent>
+          <TabsContent value="email_templates" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Email Templates
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+
+              <Tabs defaultValue="setting" className="p-3 md:p-4 xxl:p-6 flex gap-4">
+                <TabsList className="flex sm:flex-col h-fit w-full sm:w-fit">
+                  {emailTemplates.map((method) => (
+                      <TabsTrigger key={method.id} value={method.id} className="p-3 w-full justify-start flex items-center gap-2">
+                        {method.title}
+                      </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <div className="w-full">
+                  {emailTemplates.map((template) => (
+                      <TabsContent key={template.id} value={template.id}>
+                        <form className="space-y-6">
+                          <div className="flex items-center justify-between">
+                            <Label htmlFor="use-insurance">Activation</Label>
+                            <Switch id="use-insurance" defaultChecked />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="first-name">Subject</Label>
+                            <Input id="first-name" placeholder="Enter subject" />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="add-content">Add Content</Label>
+                            <TipTapEditor />
+                          </div>
+
+                          <div className="flex justify-end pt-6">
+                            <Button className="px-8">Save Template</Button>
+                          </div>
+                        </form>
+                      </TabsContent>
+                  ))}
+                </div>
+              </Tabs>
+            </Card>
+          </TabsContent>
+          <TabsContent value="third_party_settings" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Third Party Settings
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button variant="default">Google reCAPTCHA</Button>
+
+                <form className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="use-insurance">Activation</Label>
+                    <Switch id="use-insurance" defaultChecked />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">SITE KEY</Label>
+                    <Input id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">SECRET KEY</Label>
+                    <Input id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="flex justify-end pt-6">
+                    <Button className="px-8">Save Template</Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="cookie" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Cookies
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+
+                <form className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="use-insurance">Show cookie Agreement</Label>
+                    <Switch id="use-insurance" defaultChecked />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">SITE KEY</Label>
+                    <Input id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">Cookie Agreement Text</Label>
+                    <TipTapEditor />
+                  </div>
+
+                  <div className="flex justify-end pt-6">
+                    <Button className="px-8">Save Template</Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="social_media_login" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Social Media Login
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Tabs defaultValue="google" className="space-y-6">
+                  <TabsList className="w-full sm:w-fit flex">
+                    {socialLoginTabs.map((method) => (
+                        <TabsTrigger key={method.id} value={method.id} className="px-6">
+                          {method.title}
+                        </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  {socialLoginTabs.map((method) => (
+                      <TabsContent key={method.id} value={method.id}>
+                        <form className="space-y-6">
+                          <div className="flex items-center justify-between">
+                            <Label htmlFor="use-insurance">Activation</Label>
+                            <Switch id="use-insurance" defaultChecked />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="first-name">CLIENT ID</Label>
+                            <Input id="first-name" placeholder="Enter subject" />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="first-name">CLIENT SECRET</Label>
+                            <Input id="first-name" placeholder="Enter subject" />
+                          </div>
+
+                          <div className="flex justify-end pt-6">
+                            <Button className="px-8">Save Template</Button>
+                          </div>
+                        </form>
+                      </TabsContent>
+                  ))}
+
+                </Tabs>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="push_notification" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Push Notifications
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Tabs defaultValue="setting" className="space-y-6">
+                  <TabsList className="w-full sm:w-fit flex">
+                    {pushNotificationTabs.map((method) => (
+                        <TabsTrigger key={method.id} value={method.id} className="px-6">
+                          {method.title}
+                        </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  <TabsContent value="setting">
+                    <form className="grid sm:grid-cols-2 gap-6">
+                      <div className="flex items-center justify-between col-span-2">
+                        <Label htmlFor="use-insurance">Activation</Label>
+                        <Switch id="use-insurance" defaultChecked />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FCM API KEY</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FCM AUTH DOMAIN</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FCM PROJECT ID</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FCM STORAGE BUCKET</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FCM MESSAGING SENDER ID</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FCM APP ID</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="first-name">FIREBASE SERVER KEY</Label>
+                        <Input id="first-name" placeholder="Enter subject" />
+                      </div>
+
+                      <div className="flex justify-end pt-6 col-span-2">
+                        <Button className="px-8">Save</Button>
+                      </div>
+                    </form>
+                  </TabsContent>
+
+                  <TabsContent value="instructions">
+                   <div className="space-y-4">
+                     {firebaseInstructions.map((step, idx) => (
+                         <div
+                             key={idx}
+                             className="border rounded-md p-4 text-sm text-muted-foreground  shadow-sm"
+                         >
+                           <span className="font-semibold">{idx + 1}. </span>
+                           {step}
+                         </div>
+                     ))}
+                   </div>
+                  </TabsContent>
+
+                </Tabs>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="footer" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Footer
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+
+                <form className="space-y-6">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium">Footer Logo</h3>
+                    <div className="flex items-center gap-4">
+                      <div className="h-24 w-24 shrink-0 rounded-full bg-muted flex items-center justify-center">
+                        <Upload className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                      <div className="space-y-2">
+                        <input type="file" id="system-logo" className="hidden" />
+                        <Button variant="outline" onClick={() => document.getElementById("system-logo")?.click()}>Upload Photo</Button>
+                        <p className="text-sm text-muted-foreground">Upload a profile photo. JPG, PNG or GIF. Max 2MB.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">Footer Description</Label>
+                    <Textarea id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">Link Name</Label>
+                    <Input id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">Search Name</Label>
+                    <Input id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">Footer Content</Label>
+                    <Input id="first-name" placeholder="Enter subject" />
+                  </div>
+
+                  <div className="flex justify-end pt-6">
+                    <Button className="px-8">Save Template</Button>
+                  </div>
+                </form>
+              </CardContent>
             </Card>
           </TabsContent>
         </div>
