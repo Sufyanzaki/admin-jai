@@ -106,13 +106,12 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: HelpCircle,
     },
     {
-      title: "Ambulance",
-      href: "/ambulance",
+      title: "Blogs",
+      href: "/blogs",
       icon: Ambulance,
       submenu: [
-        { title: "Ambulance Call List", href: "/ambulance/calls" },
-        { title: "Ambulance List", href: "/ambulance/list" },
-        { title: "Ambulance Details", href: "/ambulance/details" },
+        { title: "List", href: "/blogs/list" },
+        { title: "Category", href: "/blogs/category" },
       ],
     },
     {

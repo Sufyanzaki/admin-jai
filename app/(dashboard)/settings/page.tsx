@@ -47,6 +47,7 @@ import Link from "next/link";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import TipTapEditor from "@/components/editor/TipTapEditor";
 import { Checkbox } from "@/components/ui/checkbox";
+import {MultiSelectCombobox} from "@/components/ui/combo-box";
 
 const languages = [
   {
@@ -62,6 +63,10 @@ const languages = [
     flag: "🇳🇱",
   },
 ];
+
+const pageOptions = [
+    'Home', 'About', 'Contact Us'
+]
 
 const currencies = [
   {
@@ -131,6 +136,29 @@ const langaugeTabs = [
   { id: "add_name", title: "Add New"},
   { id: "default", title: "Default"}
 ]
+
+const footerTabs = [
+  { id: "all", title: "All"},
+  { id: "add_name", title: "Add New"},
+]
+
+const pagesData = [
+  {
+    id: 1,
+    name: "Bedrijf",
+    pages: ["Home", "Contact", "How Work", "Registration", "Agenda"],
+  },
+  {
+    id: 2,
+    name: "Veilig daten",
+    pages: ["Agenda"],
+  },
+  {
+    id: 3,
+    name: "Legal",
+    pages: ["Algemene voorwaarden", "Privacy", "Disclaimer"],
+  },
+];
 
 const currencyTabs = [
   { id: "all", title: "All"},
@@ -246,6 +274,7 @@ export default function SettingsPage() {
   const [adminPageTitle, setAdminPageTitle] = useState("Amsterdam")
   const [adminPageParagraph, setAdminPageParagraph] = useState("")
   const [memberMinimumAge, setMemberMinimumAge] = useState("18")
+  const [selectedPage, setSelectedPage] = useState<string[]>([])
 
   const dateFormatOptions = ["DD/MM/YYYY", "MM/DD/YYYY", "YYYY/MM/DD", "DD-MM-YYYY", "MM-DD-YYYY", "YYYY-MM-DD"]
 
@@ -1176,14 +1205,14 @@ export default function SettingsPage() {
                   <div className="flex flex-col gap-4">
                     <div className="flex gap-1 items-center">
                       <Input placeholder="Enter value" />
-                      <Button variant="ghost" size="icon" className="ml-2" >
-                        <Trash2 className="h-6 w-6 text-red-400"/>
+                      <Button variant="outline" size="icon" className="ml-2" >
+                        <Trash2 className="h-6 w-6 text-red-500"/>
                       </Button>
                     </div>
                     <div className="flex gap-1 items-center">
                       <Input placeholder="Enter value" />
-                      <Button variant="ghost" size="icon" className="ml-2" >
-                        <Trash2 className="h-6 w-6 text-red-400"/>
+                      <Button variant="outline" size="icon" className="ml-2" >
+                        <Trash2 className="h-6 w-6 text-red-500"/>
                       </Button>
                     </div>
                   </div>
@@ -1222,7 +1251,6 @@ export default function SettingsPage() {
                           <TableHead>#</TableHead>
                           <TableHead>Name</TableHead>
                           <TableHead>Email</TableHead>
-                          <TableHead>Phone</TableHead>
                           <TableHead>Role</TableHead>
                           <TableHead className="text-right">Action</TableHead>
                         </TableRow>
@@ -1236,7 +1264,7 @@ export default function SettingsPage() {
                               <TableCell>{user.role}</TableCell>
                               <TableCell className="text-right flex justify-end gap-2">
                                 <Button variant="outline" size="icon">
-                                  <Link href="/packages/1">
+                                  <Link href="/staff/1/edit">
                                     <Pencil className="w-4 h-4" />
                                   </Link>
                                 </Button>
@@ -1387,6 +1415,156 @@ export default function SettingsPage() {
                   </Tabs>
                 </TabsContent>
               </Tabs>
+            </Card>
+          </TabsContent>
+          <TabsContent value="system" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  System Settings
+                </CardTitle>
+                <CardDescription>
+                  Overview of your server configuration and PHP settings.
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="space-y-6">
+                {/* Server Information */}
+                <div className="border rounded-xl p-4">
+                  <h3 className="text-sm font-medium text-muted-foreground mb-3">Server Information</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>- PHP Version</span>
+                      <span>8.3.21</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>- MySQL Version</span>
+                      <span>10.6.22-MariaDB</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PHP.ini Config */}
+                <div className="border rounded-xl p-4">
+                  <h3 className="text-sm font-medium text-muted-foreground mb-3">php.ini Config</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>- File Uploads</span>
+                      <span>Enabled</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>- Max File Uploads</span>
+                      <span>20</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="footer_section" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  Footer Section
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+
+              <Tabs defaultValue="all" className="px-3 md:px-4 xxl:px-6 space-y-6">
+                <TabsList className="w-full sm:w-fit flex">
+                  {footerTabs.map((item) => (
+                      <TabsTrigger key={item.id} value={item.id} className="px-6">
+                        {item.title}
+                      </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <TabsContent value="all" className="space-y-4 mt-0">
+                  <div className="py-3 md:py-4 xxl:py-6">
+                    <Table className="whitespace-nowrap">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>#</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Pages</TableHead>
+                          <TableHead className="text-right">Action</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {pagesData.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell>{item.id}</TableCell>
+                              <TableCell>{item.name}</TableCell>
+                              <TableCell>{item.pages.join(", ")}</TableCell>
+                              <TableCell className="text-right flex justify-end gap-2">
+                                <Button variant="outline" size="icon">
+                                  <Link href={`/pages/${item.id}`}>
+                                    <Pencil className="w-4 h-4" />
+                                  </Link>
+                                </Button>
+                                <Button variant="outline" size="icon">
+                                  <Trash className="w-4 h-4 text-red-500" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </TabsContent>
+                <TabsContent value="add_name" className="space-y-4 mt-0">
+                  <div className="space-y-4 py-3 md:py-4 xxl:py-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="first-name">Section Name</Label>
+                      <Input id="first-name" placeholder="Enter name" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="first-name">Section Page</Label>
+                      <Input id="first-name" placeholder="Enter code" />
+                    </div>
+
+                    <div className="flex justify-end pt-6">
+                      <Button className="px-8">Save Configuration</Button>
+                    </div>
+                  </div>
+                </TabsContent>
+                <TabsContent value="default" className="space-y-4 mt-0">
+                  <div className="py-3 md:py-4 xxl:py-6">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="use-insurance">Default Language</Label>
+                      <Switch id="use-insurance" defaultChecked />
+                    </div>
+                    <div className="flex justify-end pt-6">
+                      <Button className="px-8">Save Configuration</Button>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </Card>
+          </TabsContent>
+          <TabsContent value="user_dashboard_footer_section" className="space-y-4 mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Building className="mr-2 h-5 w-5" />
+                  User Dashboard Footer Section
+                </CardTitle>
+                <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <Label htmlFor="known-languages" className="text-base font-medium">
+                    Section Page
+                  </Label>
+                  <MultiSelectCombobox options={pageOptions} selected={selectedPage} onChange={setSelectedPage} />
+                </div>
+                <div className="flex justify-end pt-6">
+                  <Button className="px-8">Save Configuration</Button>
+                </div>
+              </CardContent>
             </Card>
           </TabsContent>
         </div>
