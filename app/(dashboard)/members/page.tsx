@@ -1,21 +1,24 @@
-"use client";
-
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import {Download, Filter, MoreHorizontal, Pencil, Plus, Search, Trash2, User, X} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Award, Building, Calendar, Clipboard, Clock, Download, Edit, Eye, FileText, Filter, Mail, MoreVertical, Phone, RefreshCw, Search, Shield, Trash, UserCheck, UserPlus, Users, UserX } from "lucide-react";
 import Link from "next/link";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator"
+import {Label} from "@/components/ui/label";
+
+
+// Mock data for staff members
 
 const members = [
   {
@@ -149,21 +152,130 @@ const members = [
     status: "Active",
   },
 ];
+const staffMembers = [
+  {
+    id: "1",
+    name: "Dr. Sarah Johnson",
+    initials: "SJ",
+    role: "Cardiologist",
+    department: "Medical",
+    email: "sarah.j@clinic.com",
+    phone: "555-0101",
+    status: "Active",
+    avatar: "/mystical-forest-spirit.png",
+    joinDate: "May 15, 2012",
+  },
+  {
+    id: "2",
+    name: "Dr. Michael Chen",
+    initials: "MC",
+    role: "Neurologist",
+    department: "Medical",
+    email: "michael.c@clinic.com",
+    phone: "555-0102",
+    status: "Active",
+    avatar: "",
+    joinDate: "Jun 22, 2015",
+  },
+  {
+    id: "3",
+    name: "Emma Rodriguez",
+    initials: "ER",
+    role: "Head Nurse",
+    department: "Nursing",
+    email: "emma.r@clinic.com",
+    phone: "555-0103",
+    status: "On Leave",
+    avatar: "",
+    joinDate: "Feb 10, 2018",
+  },
+  {
+    id: "4",
+    name: "Robert Davis",
+    initials: "RD",
+    role: "Lab Technician",
+    department: "Laboratory",
+    email: "robert.d@clinic.com",
+    phone: "555-0104",
+    status: "Active",
+    avatar: "",
+    joinDate: "Nov 5, 2019",
+  },
+  {
+    id: "5",
+    name: "Jennifer Kim",
+    initials: "JK",
+    role: "Pharmacist",
+    department: "Pharmacy",
+    email: "jennifer.k@clinic.com",
+    phone: "555-0105",
+    status: "Active",
+    avatar: "",
+    joinDate: "Mar 18, 2017",
+  },
+  {
+    id: "6",
+    name: "David Wilson",
+    initials: "DW",
+    role: "Radiologist",
+    department: "Radiology",
+    email: "david.w@clinic.com",
+    phone: "555-0106",
+    status: "Inactive",
+    avatar: "",
+    joinDate: "Sep 30, 2016",
+  },
+  {
+    id: "7",
+    name: "Maria Garcia",
+    initials: "MG",
+    role: "Receptionist",
+    department: "Administration",
+    email: "maria.g@clinic.com",
+    phone: "555-0107",
+    status: "Active",
+    avatar: "",
+    joinDate: "Jan 12, 2020",
+  },
+  {
+    id: "8",
+    name: "James Brown",
+    initials: "JB",
+    role: "Physical Therapist",
+    department: "Therapy",
+    email: "james.b@clinic.com",
+    phone: "555-0108",
+    status: "Active",
+    avatar: "",
+    joinDate: "Jul 7, 2018",
+  },
+];
 
+// Mock data for department stats
+const departmentStats = [
+  { name: "Medical", count: 12, color: "bg-blue-500" },
+  { name: "Nursing", count: 18, color: "bg-green-500" },
+  { name: "Administration", count: 8, color: "bg-purple-500" },
+  { name: "Laboratory", count: 5, color: "bg-amber-500" },
+  { name: "Pharmacy", count: 4, color: "bg-red-500" },
+  { name: "Radiology", count: 3, color: "bg-indigo-500" },
+  { name: "Therapy", count: 6, color: "bg-pink-500" },
+  { name: "Support", count: 7, color: "bg-cyan-500" },
+];
 
-// Extract unique memberships and statuses for filters
-const statuses = [...new Set(members.map((member) => member.status))];
-const membershipOptions = [...new Set(members.map((member) => member.membership))];
-const genderOptions = [...new Set(members.map((member) => member.gender))];
-
-export default function MembersPage() {
+export default function StaffPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const activeFilters = selectedMemberships.length + selectedStatuses.length + selectedGender.length;
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const statuses = [...new Set(members.map((member) => member.status))];
+  const membershipOptions = [...new Set(members.map((member) => member.membership))];
+  const genderOptions = [...new Set(members.map((member) => member.gender))];
+  const activeFilters = selectedMemberships.length + selectedStatuses.length + selectedGender.length
+
 
   // Filter members based on search query and selected filters
   const filteredMembers = members.filter((member) => {
@@ -215,292 +327,447 @@ export default function MembersPage() {
   const applyFilters = () => {
     setIsFilterOpen(false);
   };
-
   return (
       <>
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members View</h2>
-              <p className="text-muted-foreground">Manage your users and their information.</p>
+              <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members Management</h2>
+              <p className="text-muted-foreground">Manage clinic staff, roles, and permissions</p>
             </div>
-
-            <Button asChild>
-              <Link href="/members/add">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Member
-              </Link>
-            </Button>
+            <div className="flex items-center flex-wrap gap-2">
+              <Button asChild className="w-full sm:w-fit">
+                <Link href="/staff/add">
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Add New Member
+                </Link>
+              </Button>
+            </div>
           </div>
 
-          <Card>
-            <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div>
-                <CardTitle>Members List</CardTitle>
-                <CardDescription>A list of all members in your app with their details.</CardDescription>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Select>
-                  <SelectTrigger className=" w-full md:w-[250px]">
-                    <SelectValue placeholder="Department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Bulk Select</SelectItem>
-                    <SelectItem value="medical">Active</SelectItem>
-                    <SelectItem value="nursing">Inactive</SelectItem>
-                    <SelectItem value="admin">Blocked</SelectItem>
-                    <SelectItem value="lab">Unblocked</SelectItem>
-                    <SelectItem value="pharmacy">Delete</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                      type="search"
-                      placeholder="Search members..."
-                      className="pl-8 w-full md:w-[250px]"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+          <div className="md:grid max-md:space-y-6 gap-6 md:grid-cols-4">
+            <Card className="md:col-span-3">
+              <CardHeader className="flex flex-col lg:flex-row items-start md:items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <CardTitle>Members List</CardTitle>
                 </div>
-                <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" size="icon" className={activeFilters > 0 ? "relative bg-primary/10" : ""}>
-                      <Filter className="h-4 w-4" />
-                      {activeFilters > 0 && (
-                          <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
+                <div className="flex flex-wrap gap-2">
+                  <Select>
+                    <SelectTrigger className=" w-full w-full sm:w-fit md:w-[250px]">
+                      <SelectValue placeholder="Department" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Bulk Select</SelectItem>
+                      <SelectItem value="medical">Active</SelectItem>
+                      <SelectItem value="nursing">Inactive</SelectItem>
+                      <SelectItem value="admin">Blocked</SelectItem>
+                      <SelectItem value="lab">Unblocked</SelectItem>
+                      <SelectItem value="pharmacy">Delete</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                        type="search"
+                        placeholder="Search members..."
+                        className="pl-8 w-full sm:w-fit md:w-[250px]"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" size="icon" className={activeFilters > 0 ? "relative bg-primary/10" : ""}>
+                        <Filter className="h-4 w-4" />
+                        {activeFilters > 0 && (
+                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
                         {activeFilters}
                       </span>
-                      )}
-                      <span className="sr-only">Filter</span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[280px] p-0" align="end">
-                    <div className="p-4 border-b">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">Filters</h4>
-                        <Button variant="ghost" size="sm" onClick={clearFilters} className="h-auto p-0 text-muted-foreground">
-                          Reset
+                        )}
+                        <span className="sr-only">Filter</span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[280px] p-0" align="end">
+                      <div className="p-4 border-b">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium">Filters</h4>
+                          <Button variant="ghost" size="sm" onClick={clearFilters} className="h-auto p-0 text-muted-foreground">
+                            Reset
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="p-4 space-y-4">
+                        <div className="space-y-2">
+                          <h5 className="text-sm font-medium">Specialty</h5>
+                          <div className="grid grid-cols-1 gap-2">
+                            {membershipOptions.map((memberShip) => (
+                                <div key={memberShip} className="flex items-center space-x-2">
+                                  <Checkbox id={`specialty-${memberShip}`} checked={selectedMemberships.includes(memberShip)} onCheckedChange={() => toggleMembership(memberShip)} />
+                                  <Label htmlFor={`specialty-${memberShip}`} className="text-sm font-normal">
+                                    {memberShip}
+                                  </Label>
+                                </div>
+                            ))}
+                          </div>
+                        </div>
+                        <Separator />
+                        <div className="space-y-2">
+                          <h5 className="text-sm font-medium">Status</h5>
+                          <div className="grid grid-cols-1 gap-2">
+                            {statuses.map((status) => (
+                                <div key={status} className="flex items-center space-x-2">
+                                  <Checkbox id={`status-${status}`} checked={selectedStatuses.includes(status)} onCheckedChange={() => toggleStatus(status)} />
+                                  <Label htmlFor={`status-${status}`} className="text-sm font-normal">
+                                    {status}
+                                  </Label>
+                                </div>
+                            ))}
+                          </div>
+                        </div>
+                        <Separator />
+                        <div className="space-y-2">
+                          <h5 className="text-sm font-medium">Experience</h5>
+                          <div className="grid grid-cols-1 gap-2">
+                            {genderOptions.map((gender) => (
+                                <div key={gender} className="flex items-center space-x-2">
+                                  <Checkbox id={`experience-${gender}`} checked={selectedGender.includes(gender)} onCheckedChange={() => toggleGender(gender)} />
+                                  <Label htmlFor={`experience-${gender}`} className="text-sm font-normal">
+                                    {gender}
+                                  </Label>
+                                </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-4 border-t">
+                        <Button variant="outline" size="sm" onClick={() => setIsFilterOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button size="sm" onClick={applyFilters}>
+                          Apply Filters
+                        </Button>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="list" className="w-full">
+                  <TabsList className="mb-4 grid w-full grid-cols-2">
+                    <TabsTrigger value="list">List View</TabsTrigger>
+                    <TabsTrigger value="grid">Grid View</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="list" className="mt-0">
+                    <div className="rounded-md border">
+                      <Table className="whitespace-nowrap">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Bulk Select</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Gender</TableHead>
+                            <TableHead>Age</TableHead>
+                            <TableHead>Membership</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody className="whitespace-nowrap">
+                          {filteredMembers.length === 0 ? (
+                              <TableRow>
+                                <TableCell colSpan={9} className="h-24 text-center">
+                                  No members found matching your filters.
+                                </TableCell>
+                              </TableRow>
+                          ) : (
+                              filteredMembers.map((member) => (
+                                  <TableRow key={member.id}>
+                                    <TableCell>
+                                      <Checkbox id={`member-${member.id}`} onCheckedChange={() => {}} />
+                                    </TableCell>
+                                    <TableCell>
+                                      <div className="flex items-center gap-3">
+                                        <Avatar className="h-8 w-8">
+                                          <AvatarImage src={member.image || "/user-2.png"} alt={member.name} />
+                                          <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                          <p className="font-medium">{member.name}</p>
+                                          <p className="text-xs text-muted-foreground">{member.email}</p>
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell>{member.gender}</TableCell>
+                                    <TableCell>{member.age}</TableCell>
+                                    <TableCell>
+                                      <Badge
+                                          variant="outline"
+                                          className={
+                                            member.membership === "VIP Member"
+                                                ? "bg-yellow-100 text-yellow-800 border-yellow-200"
+                                                : "bg-blue-100 text-blue-800 border-blue-200"
+                                          }
+                                      >
+                                        {member.membership}
+                                      </Badge>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Badge
+                                          variant={member.status === "Active" ? "default" : "secondary"}
+                                          className={
+                                            member.status === "Active"
+                                                ? "bg-green-500 text-white"
+                                                : member.status === "Inactive"
+                                                    ? "bg-red-500 text-white"
+                                                    : "bg-yellow-500 text-white"
+                                          }
+                                      >
+                                        {member.status}
+                                      </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                      <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                          <Button variant="ghost" size="icon">
+                                            <MoreVertical className="h-4 w-4" />
+                                            <span className="sr-only">Actions</span>
+                                          </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                          <DropdownMenuSeparator />
+                                          <DropdownMenuItem asChild>
+                                            <Link href={`/members/${member.id}`} className="flex items-center gap-2">
+                                              <Eye className="h-4 w-4" />
+                                              View Profile
+                                            </Link>
+                                          </DropdownMenuItem>
+                                          <DropdownMenuItem asChild>
+                                            <Link href={`/members/${member.id}/edit`} className="flex items-center gap-2">
+                                              <Edit className="h-4 w-4" />
+                                              Edit
+                                            </Link>
+                                          </DropdownMenuItem>
+                                          <DropdownMenuSeparator />
+                                          <DropdownMenuItem>
+                                            {member.status === "Active" ? (
+                                                <>
+                                                  <UserX className="mr-2 h-4 w-4" />
+                                                  Deactivate
+                                                </>
+                                            ) : (
+                                                <>
+                                                  <UserCheck className="mr-2 h-4 w-4" />
+                                                  Activate
+                                                </>
+                                            )}
+                                          </DropdownMenuItem>
+                                          <DropdownMenuItem
+                                              onClick={() => setDeleteDialogOpen(true)}
+                                              className="text-red-500"
+                                          >
+                                            <Trash className="mr-2 h-4 w-4" />
+                                            Delete
+                                          </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                      </DropdownMenu>
+                                    </TableCell>
+                                  </TableRow>
+                              ))
+                          )}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="text-sm text-muted-foreground">
+                        Showing <strong>1-8</strong> of <strong>63</strong> staff members
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" disabled>
+                          Previous
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          Next
                         </Button>
                       </div>
                     </div>
-                    <div className="p-4 space-y-4">
-                      <div className="space-y-2">
-                        <h5 className="text-sm font-medium">Specialty</h5>
-                        <div className="grid grid-cols-1 gap-2">
-                          {membershipOptions.map((memberShip) => (
-                              <div key={memberShip} className="flex items-center space-x-2">
-                                <Checkbox id={`specialty-${memberShip}`} checked={selectedMemberships.includes(memberShip)} onCheckedChange={() => toggleMembership(memberShip)} />
-                                <Label htmlFor={`specialty-${memberShip}`} className="text-sm font-normal">
-                                  {memberShip}
-                                </Label>
-                              </div>
-                          ))}
-                        </div>
-                      </div>
-                      <Separator />
-                      <div className="space-y-2">
-                        <h5 className="text-sm font-medium">Status</h5>
-                        <div className="grid grid-cols-1 gap-2">
-                          {statuses.map((status) => (
-                              <div key={status} className="flex items-center space-x-2">
-                                <Checkbox id={`status-${status}`} checked={selectedStatuses.includes(status)} onCheckedChange={() => toggleStatus(status)} />
-                                <Label htmlFor={`status-${status}`} className="text-sm font-normal">
-                                  {status}
-                                </Label>
-                              </div>
-                          ))}
-                        </div>
-                      </div>
-                      <Separator />
-                      <div className="space-y-2">
-                        <h5 className="text-sm font-medium">Experience</h5>
-                        <div className="grid grid-cols-1 gap-2">
-                          {genderOptions.map((gender) => (
-                              <div key={gender} className="flex items-center space-x-2">
-                                <Checkbox id={`experience-${gender}`} checked={selectedGender.includes(gender)} onCheckedChange={() => toggleGender(gender)} />
-                                <Label htmlFor={`experience-${gender}`} className="text-sm font-normal">
-                                  {gender}
-                                </Label>
-                              </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between p-4 border-t">
-                      <Button variant="outline" size="sm" onClick={() => setIsFilterOpen(false)}>
-                        Cancel
-                      </Button>
-                      <Button size="sm" onClick={applyFilters}>
-                        Apply Filters
-                      </Button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {activeFilters > 0 && (
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {selectedMemberships.map((membership) => (
-                        <Badge key={`badge-membership-${membership}`} variant="outline" className="flex items-center gap-1">
-                          {membership}
-                          <X
-                              className="h-3 w-3 cursor-pointer"
-                              onClick={() => toggleMembership(membership)}
-                          />
-                        </Badge>
-                    ))}
-                    {selectedStatuses.map((status) => (
-                        <Badge key={`badge-status-${status}`} variant="outline" className="flex items-center gap-1">
-                          {status}
-                          <X
-                              className="h-3 w-3 cursor-pointer"
-                              onClick={() => toggleStatus(status)}
-                          />
-                        </Badge>
-                    ))}
-                    {selectedGender.map((gender) => (
-                        <Badge key={`badge-age-${gender}`} variant="outline" className="flex items-center gap-1">
-                          {gender}
-                          <X
-                              className="h-3 w-3 cursor-pointer"
-                              onClick={() => toggleGender(gender)}
-                          />
-                        </Badge>
-                    ))}
-                    {activeFilters > 0 && (
-                        <Button variant="ghost" size="sm" onClick={clearFilters} className="h-6 px-2 text-xs">
-                          Clear all
-                        </Button>
-                    )}
-                  </div>
-              )}
-              <Table className="whitespace-nowrap">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Bulk Select</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Gender</TableHead>
-                    <TableHead>Age</TableHead>
-                    <TableHead>Membership</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Join Date</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody className="whitespace-nowrap">
-                  {filteredMembers.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={8} className="h-24 text-center">
-                          No members found matching your filters.
-                        </TableCell>
-                      </TableRow>
-                  ) : (
-                      filteredMembers.map((member) => (
-                          <TableRow key={member.id}>
-                            <TableCell>
-                              <Checkbox id={`member-${member.id}`} onCheckedChange={() => {}} />
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-3">
-                                <Avatar>
-                                  <AvatarImage src={member.image || "/user-2.png"} alt={member.name} />
-                                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <p className="font-medium">{member.name}</p>
-                                  <p className="text-sm text-muted-foreground">{member.email}</p> {/* ← Always shown now */}
+                  </TabsContent>
+                  <TabsContent value="grid" className="mt-0">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {staffMembers.map((staff) => (
+                          <Card key={staff.id} className="overflow-hidden">
+                            <CardContent className="!p-0">
+                              <div className="flex flex-col">
+                                <div className="flex items-center justify-between bg-muted p-2 lg:p-4">
+                                  <div className="flex items-center gap-3">
+                                    <Avatar className="h-10 w-10">
+                                      <AvatarImage src={staff.avatar || "/user-2.png?height=40&width=40&query=person"} alt={staff.name} />
+                                      <AvatarFallback>{staff.initials}</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                      <div className="font-medium">{staff.name}</div>
+                                      <div className="text-xs text-muted-foreground">{staff.role}</div>
+                                    </div>
+                                  </div>
+                                  <Badge variant={staff.status === "Active" ? "success" : staff.status === "On Leave" ? "warning" : "secondary"}>{staff.status}</Badge>
+                                </div>
+                                <div className="p-4">
+                                  <div className="grid gap-2">
+                                    <div className="flex items-center gap-2">
+                                      <Building className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">{staff.department}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Mail className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">{staff.email}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Phone className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">{staff.phone}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">Joined {staff.joinDate}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex border-t">
+                                  <Button asChild variant="ghost" className="flex-1 rounded-none rounded-bl-md py-2">
+                                    <Link href={`/staff/${staff.id}`}>
+                                      <Eye className="mr-2 h-4 w-4" />
+                                      View
+                                    </Link>
+                                  </Button>
+                                  <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2">
+                                    <Link href={`/staff/${staff.id}/edit`}>
+                                      <Edit className="mr-2 h-4 w-4" />
+                                      Edit
+                                    </Link>
+                                  </Button>
+                                  <Button asChild variant="ghost" className="flex-1 rounded-none rounded-br-md border-l py-2">
+                                    <Link href={`/staff/${staff.id}/schedule`}>
+                                      <Calendar className="mr-2 h-4 w-4" />
+                                      Schedule
+                                    </Link>
+                                  </Button>
                                 </div>
                               </div>
-                            </TableCell>
-                            <TableCell>{member.gender}</TableCell>
-                            <TableCell>{member.age}</TableCell>
-                            <TableCell>
-                              <Badge
-                                  variant="outline"
-                                  className={
-                                    member.membership === "VIP Member"
-                                        ? "bg-yellow-100 text-yellow-800 border-yellow-200"
-                                        : "bg-blue-100 text-blue-800 border-blue-200"
-                                  }
-                              >
-                                {member.membership}
-                              </Badge>
-                            </TableCell>
+                            </CardContent>
+                          </Card>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="text-sm text-muted-foreground">
+                        Showing <strong>1-8</strong> of <strong>63</strong> staff members
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" disabled>
+                          Previous
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
 
-                            <TableCell>
-                              <Badge
-                                  variant={member.status === "Active" ? "default" : "secondary"}
-                                  className={member.status === "Active" ? "bg-green-500 text-neutral-700" : "bg-red-500 text-neutral-50"}
-                              >
-                                {member.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>{member.city}</TableCell>
-                            <TableCell>{member.joinDate}</TableCell>
-                            <TableCell className="text-right">
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                    <span className="sr-only">Actions</span>
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem asChild>
-                                    <Link href={`/members/${member.id}`} className="flex items-center gap-2">
-                                      <User className="h-4 w-4" />
-                                      View profile
-                                    </Link>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem asChild>
-                                    <Link href={`/members/${member.id}/edit`} className="flex items-center gap-2">
-                                      <Pencil className="h-4 w-4" />
-                                      Edit details
-                                    </Link>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem asChild>
-                                    <button className="flex items-center gap-2 text-red-600">
-                                      <Trash2 className="h-4 w-4" />
-                                      Delete
-                                    </button>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
-                      ))
-                  )}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+            <div className="flex flex-col gap-6">
+              <Card>
+                <CardHeader className="pb-2 flex !flex-row items-center justify-between">
+                  <CardTitle className="text-base">Overview</CardTitle>
+                  <Users className="size-8 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-3xl font-bold">{members.length}</span>
+                      <span className="text-xs text-muted-foreground">Total Members</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Active</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">
+                          {members.filter(m => m.status === "Active").length}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+            {Math.round((members.filter(m => m.status === "Active").length / members.length) * 100)}%
+          </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Inactive</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">
+                          {members.filter(m => m.status === "Inactive").length}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+            {Math.round((members.filter(m => m.status === "Inactive").length / members.length) * 100)}%
+          </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Blocked</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">
+                          {members.filter(m => m.status === "Blocked").length}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+            {Math.round((members.filter(m => m.status === "Blocked").length / members.length) * 100)}%
+          </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span>VIP Members</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">
+                          {members.filter(m => m.membership === "VIP Member").length}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+            {Math.round((members.filter(m => m.membership === "VIP Member").length / members.length) * 100)}%
+          </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-2">
+                    <Button variant="outline" className="justify-start" asChild>
+                      <Link href="/members/add">
+                        <UserPlus className="mr-2 h-4 w-4" />
+                        Add New Member
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
+
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>
-                Are you sure you want to {filteredMembers[0]?.status === "Active" ? "Deactivate" : "Activate"} this member?
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {filteredMembers[0]?.status === "Active"
-                    ? "This action will deactivate the member and restrict their access to the platform. You can reactivate them later if needed."
-                    : "This action will activate the member and grant them access to the platform."}
-              </AlertDialogDescription>
+              <AlertDialogTitle>Are you sure you want to Delete this staff member?</AlertDialogTitle>
+              <AlertDialogDescription>This action will permanently delete the staff member's record from the system. This action cannot be undone and will remove all associated data including schedules, permissions and attendance records.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                  onClick={() => setDeleteDialogOpen(false)}
-                  className={filteredMembers[0]?.status === "Active" ? "bg-red-500 text-neutral-50 hover:bg-red-700" : "bg-green-500 text-neutral-50 hover:bg-green-700"}
-              >
-                {filteredMembers[0]?.status === "Active" ? "Deactivate" : "Activate"}
+              <AlertDialogAction onClick={() => setDeleteDialogOpen(false)} className="bg-red-500 text-neutral-50 hover:bg-red-700">
+                Delete
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </>
-  )
+  );
 }

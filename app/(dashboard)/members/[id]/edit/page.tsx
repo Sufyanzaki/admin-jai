@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -314,7 +314,7 @@ export default function AddDoctorPage() {
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-4">
         <Button variant="outline" size="icon" asChild>
-          <Link href="/doctors">
+          <Link href="/members">
             <ArrowLeft className="h-4 w-4" />
             <span className="sr-only">Back</span>
           </Link>
@@ -325,20 +325,20 @@ export default function AddDoctorPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="personal" className="flex gap-4 flex-wrap">
-
+      <Tabs defaultValue="personal" className="w-full">
+        <TabsList className="flex mb-4">
+          <TabsTrigger value="personal" className="px-3">Basic Information</TabsTrigger>
+          <TabsTrigger value="professional" className="px-3">Education & Career</TabsTrigger>
+          <TabsTrigger value="behavior" className="px-3">Personality & Behavior</TabsTrigger>
+          <TabsTrigger value="patner" className="px-3">Partner Expectation</TabsTrigger>
+          <TabsTrigger value="life_style" className="px-3">Life Style</TabsTrigger>
+          <TabsTrigger value="hobbies" className="px-3">Hobbies & Interest</TabsTrigger>
+          <TabsTrigger value="languages" className="px-3">Languages</TabsTrigger>
+          <TabsTrigger value="living" className="px-3">Living</TabsTrigger>
+          <TabsTrigger value="about_me" className="px-3">About Me</TabsTrigger>
+        </TabsList>
         <div>
-          <TabsList className="flex flex-col h-fit w-full sm:w-fit">
-            <TabsTrigger value="personal" className="p-3 w-full justify-start">Basic Information</TabsTrigger>
-            <TabsTrigger value="professional" className="p-3 w-full justify-start">Education & Career</TabsTrigger>
-            <TabsTrigger value="behavior" className="p-3 w-full justify-start">Personality & Behavior</TabsTrigger>
-            <TabsTrigger value="patner" className="p-3 w-full justify-start">Partner Expectation</TabsTrigger>
-            <TabsTrigger value="life_style" className="p-3 w-full justify-start">Life Style</TabsTrigger>
-            <TabsTrigger value="hobbies" className="p-3 w-full justify-start">Hobbies & Interest</TabsTrigger>
-            <TabsTrigger value="languages" className="p-3 w-full justify-start">Languages</TabsTrigger>
-            <TabsTrigger value="living" className="p-3 w-full justify-start">Living</TabsTrigger>
-            <TabsTrigger value="about_me" className="p-3 w-full justify-start">About Me</TabsTrigger>
-          </TabsList>
+
         </div>
 
         <div className="grow">
@@ -499,6 +499,10 @@ export default function AddDoctorPage() {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
 
           </TabsContent>
@@ -610,6 +614,10 @@ export default function AddDoctorPage() {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="behavior" className="space-y-4 mt-0">
@@ -644,6 +652,10 @@ export default function AddDoctorPage() {
                   ))}
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
 
           </TabsContent>
@@ -654,154 +666,150 @@ export default function AddDoctorPage() {
                 <CardDescription>Complete your profile details below.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left Column */}
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="origin">Origin</Label>
-                      <Select>
-                        <SelectTrigger id="origin">
-                          <SelectValue placeholder="Hindostaans" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="hindostaans">Hindostaans</SelectItem>
-                          <SelectItem value="european">European</SelectItem>
-                          <SelectItem value="african">African</SelectItem>
-                          <SelectItem value="asian">Asian</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="length">Length</Label>
-                      <Select>
-                        <SelectTrigger id="length">
-                          <SelectValue placeholder="1.70" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1.50">1.50</SelectItem>
-                          <SelectItem value="1.60">1.60</SelectItem>
-                          <SelectItem value="1.70">1.70</SelectItem>
-                          <SelectItem value="1.80">1.80</SelectItem>
-                          <SelectItem value="1.90">1.90</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="relation-status">Relation Status</Label>
-                      <Select>
-                        <SelectTrigger id="relation-status">
-                          <SelectValue placeholder="Single - nooit getrouwd" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="single">Single - nooit getrouwd</SelectItem>
-                          <SelectItem value="divorced">Divorced</SelectItem>
-                          <SelectItem value="widowed">Widowed</SelectItem>
-                          <SelectItem value="separated">Separated</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="weight">Weight</Label>
-                      <Input id="weight" type="number" placeholder="67" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="drinking">Drinking</Label>
-                      <Select>
-                        <SelectTrigger id="drinking">
-                          <SelectValue placeholder="Nee" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="nee">Nee</SelectItem>
-                          <SelectItem value="ja">Ja</SelectItem>
-                          <SelectItem value="occasionally">Occasionally</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                {/* Main Info Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="origin">Origin</Label>
+                    <Select>
+                      <SelectTrigger id="origin">
+                        <SelectValue placeholder="Hindostaans" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="hindostaans">Hindostaans</SelectItem>
+                        <SelectItem value="european">European</SelectItem>
+                        <SelectItem value="african">African</SelectItem>
+                        <SelectItem value="asian">Asian</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
-                  {/* Right Column */}
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="looking-for">Am Looking for</Label>
-                      <Select>
-                        <SelectTrigger id="looking-for">
-                          <SelectValue placeholder="Man" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="man">Man</SelectItem>
-                          <SelectItem value="woman">Woman</SelectItem>
-                          <SelectItem value="both">Both</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="length">Length</Label>
+                    <Select>
+                      <SelectTrigger id="length">
+                        <SelectValue placeholder="1.70" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1.50">1.50</SelectItem>
+                        <SelectItem value="1.60">1.60</SelectItem>
+                        <SelectItem value="1.70">1.70</SelectItem>
+                        <SelectItem value="1.80">1.80</SelectItem>
+                        <SelectItem value="1.90">1.90</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="religion">Religion</Label>
-                      <Select>
-                        <SelectTrigger id="religion">
-                          <SelectValue placeholder="Moslim" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="moslim">Moslim</SelectItem>
-                          <SelectItem value="christian">Christian</SelectItem>
-                          <SelectItem value="hindu">Hindu</SelectItem>
-                          <SelectItem value="buddhist">Buddhist</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="weight">Weight</Label>
+                    <Input id="weight" type="number" placeholder="67" />
+                  </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="education">Education</Label>
-                      <Select>
-                        <SelectTrigger id="education">
-                          <SelectValue placeholder="Basis school" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="basis-school">Basis school</SelectItem>
-                          <SelectItem value="high-school">High School</SelectItem>
-                          <SelectItem value="college">College</SelectItem>
-                          <SelectItem value="university">University</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="relation-status">Relation Status</Label>
+                    <Select>
+                      <SelectTrigger id="relation-status">
+                        <SelectValue placeholder="Single - nooit getrouwd" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="single">Single - nooit getrouwd</SelectItem>
+                        <SelectItem value="divorced">Divorced</SelectItem>
+                        <SelectItem value="widowed">Widowed</SelectItem>
+                        <SelectItem value="separated">Separated</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="smoke">Smoke</Label>
-                      <Select>
-                        <SelectTrigger id="smoke">
-                          <SelectValue placeholder="Ja" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="ja">Ja</SelectItem>
-                          <SelectItem value="nee">Nee</SelectItem>
-                          <SelectItem value="occasionally">Occasionally</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="looking-for">Am Looking for</Label>
+                    <Select>
+                      <SelectTrigger id="looking-for">
+                        <SelectValue placeholder="Man" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="man">Man</SelectItem>
+                        <SelectItem value="woman">Woman</SelectItem>
+                        <SelectItem value="both">Both</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="going-out">Going Out</Label>
-                      <Select>
-                        <SelectTrigger id="going-out">
-                          <SelectValue placeholder="Ja" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="ja">Ja</SelectItem>
-                          <SelectItem value="nee">Nee</SelectItem>
-                          <SelectItem value="sometimes">Sometimes</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="religion">Religion</Label>
+                    <Select>
+                      <SelectTrigger id="religion">
+                        <SelectValue placeholder="Moslim" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="moslim">Moslim</SelectItem>
+                        <SelectItem value="christian">Christian</SelectItem>
+                        <SelectItem value="hindu">Hindu</SelectItem>
+                        <SelectItem value="buddhist">Buddhist</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="education">Education</Label>
+                    <Select>
+                      <SelectTrigger id="education">
+                        <SelectValue placeholder="Basis school" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="basis-school">Basis school</SelectItem>
+                        <SelectItem value="high-school">High School</SelectItem>
+                        <SelectItem value="college">College</SelectItem>
+                        <SelectItem value="university">University</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="smoke">Smoke</Label>
+                    <Select>
+                      <SelectTrigger id="smoke">
+                        <SelectValue placeholder="Ja" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ja">Ja</SelectItem>
+                        <SelectItem value="nee">Nee</SelectItem>
+                        <SelectItem value="occasionally">Occasionally</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="drinking">Drinking</Label>
+                    <Select>
+                      <SelectTrigger id="drinking">
+                        <SelectValue placeholder="Nee" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="nee">Nee</SelectItem>
+                        <SelectItem value="ja">Ja</SelectItem>
+                        <SelectItem value="occasionally">Occasionally</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="going-out">Going Out</Label>
+                    <Select>
+                      <SelectTrigger id="going-out">
+                        <SelectValue placeholder="Ja" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ja">Ja</SelectItem>
+                        <SelectItem value="nee">Nee</SelectItem>
+                        <SelectItem value="sometimes">Sometimes</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
                 <Separator />
 
+                {/* Age Range Section */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Age Range</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -818,9 +826,10 @@ export default function AddDoctorPage() {
 
                 <Separator />
 
+                {/* Location Section */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Location</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="country">Country *</Label>
                       <Select>
@@ -835,6 +844,7 @@ export default function AddDoctorPage() {
                         </SelectContent>
                       </Select>
                     </div>
+
                     <div className="space-y-2">
                       <Label htmlFor="state">State *</Label>
                       <Select>
@@ -849,23 +859,28 @@ export default function AddDoctorPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City *</Label>
-                    <Select>
-                      <SelectTrigger id="city">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="los-angeles">Los Angeles</SelectItem>
-                        <SelectItem value="san-francisco">San Francisco</SelectItem>
-                        <SelectItem value="san-diego">San Diego</SelectItem>
-                        <SelectItem value="sacramento">Sacramento</SelectItem>
-                      </SelectContent>
-                    </Select>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City *</Label>
+                      <Select>
+                        <SelectTrigger id="city">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="los-angeles">Los Angeles</SelectItem>
+                          <SelectItem value="san-francisco">San Francisco</SelectItem>
+                          <SelectItem value="san-diego">San Diego</SelectItem>
+                          <SelectItem value="sacramento">Sacramento</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="life_style" className="space-y-4 mt-0">
@@ -876,54 +891,57 @@ export default function AddDoctorPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Lifestyle Habits */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="smoke">Smoke</Label>
-                    <Select>
-                      <SelectTrigger id="smoke">
-                        <SelectValue placeholder="Ja" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ja">Ja</SelectItem>
-                        <SelectItem value="nee">Nee</SelectItem>
-                        <SelectItem value="occasionally">Occasionally</SelectItem>
-                        <SelectItem value="socially">Socially</SelectItem>
-                        <SelectItem value="trying-to-quit">Trying to quit</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Lifestyle Habits</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="smoke">Smoke</Label>
+                      <Select>
+                        <SelectTrigger id="smoke">
+                          <SelectValue placeholder="Ja" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ja">Ja</SelectItem>
+                          <SelectItem value="nee">Nee</SelectItem>
+                          <SelectItem value="occasionally">Occasionally</SelectItem>
+                          <SelectItem value="socially">Socially</SelectItem>
+                          <SelectItem value="trying-to-quit">Trying to quit</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="drinking">Drinking</Label>
-                    <Select>
-                      <SelectTrigger id="drinking">
-                        <SelectValue placeholder="Nee" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="nee">Nee</SelectItem>
-                        <SelectItem value="ja">Ja</SelectItem>
-                        <SelectItem value="socially">Socially</SelectItem>
-                        <SelectItem value="occasionally">Occasionally</SelectItem>
-                        <SelectItem value="regularly">Regularly</SelectItem>
-                        <SelectItem value="never">Never</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="drinking">Drinking</Label>
+                      <Select>
+                        <SelectTrigger id="drinking">
+                          <SelectValue placeholder="Nee" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="nee">Nee</SelectItem>
+                          <SelectItem value="ja">Ja</SelectItem>
+                          <SelectItem value="socially">Socially</SelectItem>
+                          <SelectItem value="occasionally">Occasionally</SelectItem>
+                          <SelectItem value="regularly">Regularly</SelectItem>
+                          <SelectItem value="never">Never</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="going-out">Going Out</Label>
-                    <Select>
-                      <SelectTrigger id="going-out">
-                        <SelectValue placeholder="Ja" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ja">Ja</SelectItem>
-                        <SelectItem value="nee">Nee</SelectItem>
-                        <SelectItem value="weekends-only">Weekends only</SelectItem>
-                        <SelectItem value="rarely">Rarely</SelectItem>
-                        <SelectItem value="frequently">Frequently</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="space-y-2">
+                      <Label htmlFor="going-out">Going Out</Label>
+                      <Select>
+                        <SelectTrigger id="going-out">
+                          <SelectValue placeholder="Ja" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ja">Ja</SelectItem>
+                          <SelectItem value="nee">Nee</SelectItem>
+                          <SelectItem value="weekends-only">Weekends only</SelectItem>
+                          <SelectItem value="rarely">Rarely</SelectItem>
+                          <SelectItem value="frequently">Frequently</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
 
@@ -932,8 +950,7 @@ export default function AddDoctorPage() {
                 {/* Additional Lifestyle */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Additional Lifestyle</h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="exercise">Exercise</Label>
                       <Select>
@@ -1072,7 +1089,10 @@ export default function AddDoctorPage() {
                   </div>
                 </div>
               </CardContent>
-
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="hobbies" className="space-y-4 mt-0">
@@ -1095,6 +1115,10 @@ export default function AddDoctorPage() {
                     </div>
                 ))}
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="languages" className="space-y-4 mt-0">
@@ -1127,16 +1151,18 @@ export default function AddDoctorPage() {
                     <Label htmlFor="known-languages" className="text-base font-medium">
                       Known Languages *
                     </Label>
-                    <div className="flex flex-wrap gap-2 items-center border rounded-md p-2">
-                      <MultiSelectCombobox
-                          options={languageOptions.filter((lang) => lang !== motherTongue)}
-                          selected={knownLanguages}
-                          onChange={setKnownLanguages}
-                      />
-                    </div>
+                    <MultiSelectCombobox
+                        options={languageOptions.filter((lang) => lang !== motherTongue)}
+                        selected={knownLanguages}
+                        onChange={setKnownLanguages}
+                    />
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="living" className="space-y-4 mt-0">
@@ -1146,7 +1172,8 @@ export default function AddDoctorPage() {
                 <CardDescription className="text-slate-300">Where are you located?</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6 pt-6">
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Country */}
                   <div className="space-y-2">
                     <Label htmlFor="country" className="text-base font-medium">
                       Country *
@@ -1165,12 +1192,21 @@ export default function AddDoctorPage() {
                     </Select>
                   </div>
 
+                  {/* State */}
                   <div className="space-y-2">
                     <Label htmlFor="state" className="text-base font-medium">
                       State *
                     </Label>
-                    <Select value={state} onValueChange={setState} disabled={availableStates.length === 0}>
-                      <SelectTrigger id="state" className="w-full">
+                    <Select
+                        value={state}
+                        onValueChange={setState}
+                        disabled={availableStates.length === 0}
+                    >
+                      <SelectTrigger
+                          id="state"
+                          className="w-full"
+                          aria-disabled={availableStates.length === 0}
+                      >
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -1183,12 +1219,21 @@ export default function AddDoctorPage() {
                     </Select>
                   </div>
 
+                  {/* City */}
                   <div className="space-y-2">
                     <Label htmlFor="city" className="text-base font-medium">
                       City *
                     </Label>
-                    <Select value={city} onValueChange={setCity} disabled={availableCities.length === 0}>
-                      <SelectTrigger id="city" className="w-full">
+                    <Select
+                        value={city}
+                        onValueChange={setCity}
+                        disabled={availableCities.length === 0}
+                    >
+                      <SelectTrigger
+                          id="city"
+                          className="w-full"
+                          aria-disabled={availableCities.length === 0}
+                      >
                         <SelectValue placeholder="Select city" />
                       </SelectTrigger>
                       <SelectContent>
@@ -1202,6 +1247,10 @@ export default function AddDoctorPage() {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="about_me" className="space-y-4 mt-0">
@@ -1368,15 +1417,14 @@ export default function AddDoctorPage() {
                   <MultiSelectCombobox options={languageOptions} selected={languages} onChange={setLanguages} />
                 </div>
               </CardContent>
+              <CardFooter className="justify-end gap-4">
+                <Button variant="outline">Cancel</Button>
+                <Button>Update</Button>
+              </CardFooter>
             </Card>
           </TabsContent>
         </div>
       </Tabs>
-
-      <div className="flex justify-end gap-4">
-        <Button variant="outline">Cancel</Button>
-        <Button>Update</Button>
-      </div>
     </div>
   );
 }

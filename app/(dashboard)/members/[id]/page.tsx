@@ -1,15 +1,30 @@
-"use client";
+"use client"
 
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {ArrowLeft, Upload} from "lucide-react";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {
+    Briefcase,
+    ChevronLeft,
+    Coffee,
+    Globe,
+    GraduationCap,
+    Heart, LucideIcon,
+    Mail,
+    MapPin,
+    Music,
+    Phone,
+    Upload,
+    User
+} from "lucide-react";
 import Link from "next/link";
-import React from "react";
 
-// Sample members data
 const userProfile = [
     {
+        id: "basic_information",
         section: "Basic Information",
         data: {
             Username: "amaad",
@@ -30,6 +45,7 @@ const userProfile = [
         }
     },
     {
+        id: "living",
         section: "Living",
         data: {
             Country: "Nederland",
@@ -38,6 +54,7 @@ const userProfile = [
         }
     },
     {
+        id: "about_me",
         section: "About Me",
         data: {
             Length: "2.05",
@@ -52,18 +69,21 @@ const userProfile = [
         }
     },
     {
+        id: "education",
         section: "Education",
         data: {
             Education: "Diploma"
         }
     },
     {
+        id: "career",
         section: "Career",
         data: {
             Career: "in de techniek"
         }
     },
     {
+        id: "language",
         section: "Language",
         data: {
             "Mother Tongue": "Hindostaans",
@@ -71,6 +91,7 @@ const userProfile = [
         }
     },
     {
+        id: "hobbies_interest",
         section: "Hobbies & Interest",
         data: {
             Sports: "Rugby",
@@ -81,12 +102,14 @@ const userProfile = [
         }
     },
     {
+        id: "personal_attitude_behavior",
         section: "Personal Attitude & Behavior",
         data: {
             "Personal Attitude": "romantisch, uitbundig, sloom"
         }
     },
     {
+        id: "life_style",
         section: "Life Style",
         data: {
             Smoke: "Ja",
@@ -95,6 +118,7 @@ const userProfile = [
         }
     },
     {
+        id: "partner_expectation",
         section: "Partner Expectation",
         data: {
             Origin: "Hindostaans",
@@ -117,41 +141,164 @@ const userProfile = [
     }
 ];
 
-const payment = {
-    invoice: {
-        id: "INV-2025-001",
-        date: "2025-06-01",
-        dueDate: "2025-06-15",
-        description: "Monthly subscription for premium services.",
-        amount: 150.0,
-        items: [
-            { name: "Premium Plan", quantity: 1, price: 100.0 },
-            { name: "Add-on Feature A", quantity: 2, price: 25.0 },
-        ],
-    },
-    amount: 100.0,
-};
+export default function DoctorProfilePage({ params }: { params: Promise<{ id: string }> }) {
 
-// Sample time slots
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case "Active":
+                return "bg-green-500";
+            case "On Leave":
+                return "border-amber-500 text-amber-500";
+            default:
+                return "bg-gray-500";
+        }
+    };
 
-export default function AddAppointmentPage() {
+    const getStatusVariant = (status: string) => {
+        switch (status) {
+            case "Active":
+                return "default";
+            case "On Leave":
+                return "outline";
+            default:
+                return "secondary";
+        }
+    };
+
+    interface TabData {
+        id: string;
+        section: string;
+        data: Record<string, string | undefined>;
+    }
+
+    const getIconForField = (key: string): LucideIcon => {
+        const iconMap: Record<string, LucideIcon> = {
+            'Email': Mail,
+            'Phone': Phone,
+            'Country': MapPin,
+            'State': MapPin,
+            'City': MapPin,
+            'Career': Briefcase,
+            'Education': GraduationCap,
+            'Mother Tongue': Globe,
+            'Known Languages': Globe,
+            'Sports': Music,
+            'Music': Music,
+            'Smoke': Coffee,
+            'Drinking': Coffee,
+            'Religion': Heart
+        };
+        return iconMap[key] || User;
+    };
+
+    const renderTabContent = (tab: TabData) => {
+        const validData = Object.entries(tab.data).filter(([key, value]) =>
+            value && value !== "-" && value !== ""
+        );
+
+        return (
+            <div className="space-y-4">
+                {tab.data["Short Description"] && (
+                    <div className="space-y-2">
+                        <h3 className="text-lg font-medium">Biography</h3>
+                        <p className="text-sm mt-2">{tab.data["Short Description"]}</p>
+                    </div>
+                )}
+
+                {(tab.id === 'hobbies_interest' || tab.id === 'personal_attitude_behavior' || tab.id === 'life_style') && (
+                    <div className="space-y-2">
+                        <h3 className="text-lg font-medium">
+                            {tab.id === 'hobbies_interest' ? 'Interests' :
+                                tab.id === 'personal_attitude_behavior' ? 'Personality' : 'Lifestyle'}
+                        </h3>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {validData.map(([key, value]) => {
+                                if (key === "Short Description") return null;
+                                const Icon = getIconForField(key);
+                                return (
+                                    <Badge key={key} variant="outline" className="flex items-center gap-1">
+                                        <Icon className="h-3 w-3" />
+                                        {key}: {value}
+                                    </Badge>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {(tab.data.Email || tab.data.Phone) && (
+                    <div className="space-y-2">
+                        <h3 className="text-lg font-medium">Contact Information</h3>
+                        <div className="grid gap-2 mt-2">
+                            {tab.data.Email && (
+                                <div className="flex items-center gap-2">
+                                    <Mail className="h-4 w-4  shrink-0" />
+                                    <span className="text-sm">{tab.data.Email}</span>
+                                </div>
+                            )}
+                            {tab.data.Phone && (
+                                <div className="flex items-center gap-2">
+                                    <Phone className="h-4 w-4 shrink-0" />
+                                    <span className="text-sm">{tab.data.Phone}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {!(['hobbies_interest', 'personal_attitude_behavior', 'life_style'].includes(tab.id)) && (
+                    <div className="space-y-2">
+                        <h3 className="text-lg font-medium">Information</h3>
+                        <div className="grid gap-2 mt-2">
+                            {validData.map(([key, value]) => {
+                                if (key === "Short Description" || key === "Email" || key === "Phone") return null;
+                                const Icon = getIconForField(key);
+                                return (
+                                    <div key={key} className="flex items-center gap-2">
+                                        <Icon className="h-4 w-4  shrink-0" />
+                                        <span className="text-sm">
+                    <span className="font-medium">{key}:</span> {value}
+                  </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     return (
-        <div className="flex flex-col gap-5">
-            <div className="flex items-center flex-wrap gap-4">
+        <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-2">
                 <Button variant="outline" size="icon" asChild>
-                    <Link href="/appointments">
-                        <ArrowLeft className="h-4 w-4" />
-                        <span className="sr-only">Back</span>
+                    <Link href="/members">
+                        <ChevronLeft className="h-4 w-4" />
+                        <span className="sr-only">Back to doctors</span>
                     </Link>
                 </Button>
-                <div>
-                    <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Member Overview</h1>
-                    <p className="text-muted-foreground">Review essential information about each member and easily</p>
-                </div>
+                <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Member Profile</h1>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Profile Card */}
+                <div className="space-y-4">
+                    <Card className="md:col-span-1">
+                        <CardHeader className="flex flex-col items-center text-center">
+                            <Avatar className="h-24 w-24 mb-4">
+                                <AvatarImage src={"/user-2.png"} alt="Amaad Kareem" />
+                                <AvatarFallback>Amaad Kareem</AvatarFallback>
+                            </Avatar>
+                            <CardTitle>Amaad Kareem</CardTitle>
+                            <div className="mt-2">
+                                <Badge variant={getStatusVariant("Active")} className={getStatusColor("Active")}>
+                                    Active
+                                </Badge>
+                            </div>
+                        </CardHeader>
+                    </Card>
+
                     <Card>
                         <CardHeader className="xxl:!pb-0">
                             <CardTitle>Manage Status</CardTitle>
@@ -196,32 +343,25 @@ export default function AddAppointmentPage() {
                     </Card>
                 </div>
 
-                <div className="lg:col-span-2 space-y-5">
-                    <div className="flex gap-2 flex-wrap justify-center sm:justify-end">
-                        <Button variant="outline">Package</Button>
-                        <Button variant="outline">Login As Member</Button>
-                        <Button variant="outline">Blocked</Button>
-                        <Button variant="outline">Edit</Button>
-                        <Button variant="outline">Close</Button>
-                    </div>
-                    {userProfile.map((section, idx) => (
-                        <Card key={idx}>
-                            <CardHeader>
-                                <CardTitle>{section.section}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
-                                    {Object.entries(section.data).map(([label, value], index) => (
-                                        <div key={index} className="flex justify-between border-b pb-2">
-                                            <span className="text-muted-foreground">{label}</span>
-                                            <span className="font-medium">{value || "-"}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                {/* Main Content */}
+                <div className="md:col-span-2 space-y-6">
+                    <Tabs defaultValue={userProfile[0].id} className="w-full">
+                        <TabsList className="flex mb-4">
+                            {userProfile.map((tab) => (
+                                <TabsTrigger className="px-6 py-2" value={tab.id}>{tab.section}</TabsTrigger>
+                            ))}
+                        </TabsList>
 
+                        {userProfile.map((tab) => (
+                            <TabsContent value={tab.id} className="space-y-6">
+                                <Card>
+                                    <CardContent>
+                                        {renderTabContent(tab)}
+                                    </CardContent>
+                                </Card>
+                            </TabsContent>
+                        ))}
+                    </Tabs>
                 </div>
             </div>
         </div>

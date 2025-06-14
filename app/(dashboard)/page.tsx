@@ -76,7 +76,7 @@ export default function DashboardPage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {cardData.map((card) => (
-                <div key={card.id} className={`bg-card rounded-lg overflow-hidden border ${card.borderColor}`}>
+                <div key={card.id} className={`bg-card rounded-lg overflow-hidden border shadow-md ${card.borderColor}`}>
                   <div className="p-5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
