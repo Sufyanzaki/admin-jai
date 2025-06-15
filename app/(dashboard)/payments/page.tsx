@@ -32,15 +32,15 @@ import {
   CalendarCheck,
   CalendarDays,
   CalendarRange,
-  Clock,
-  DollarSign,
+  Clock, CreditCard,
+  DollarSign, Download, EyeIcon, FileText,
   List,
   MoreHorizontal,
   Package,
   PackageCheck,
-  PencilIcon, Plus,
+  PencilIcon, Plus, Receipt,
   RotateCcw,
-  Search,
+  Search, SquarePen, Trash2,
   XCircle
 } from "lucide-react";
 import Link from "next/link";
@@ -88,42 +88,55 @@ const monthlyAppointmentsData = [
 
 const paymentStats = [
   {
-    title: "Total Payment",
-    value: "Є216",
+    title: "Total Payments",
+    value: "€216",
     icon: <DollarSign className="size-6 text-muted-foreground" />,
-    description: "All time payments received"
+    description: "All time payments received",
+    status: "completed",
+    count: 12 // example count
   },
   {
-    title: "Package",
+    title: "Active Packages",
     value: "4",
     icon: <Package className="size-6 text-muted-foreground" />,
-    description: "Active packages"
+    description: "Active packages",
+    status: "active",
+    count: 4
   },
   {
-    title: "Payment this month",
-    value: "Є0",
+    title: "This Month",
+    value: "€0",
     icon: <Calendar className="size-6 text-muted-foreground" />,
-    description: "Current month payments"
+    description: "Current month payments",
+    status: "pending",
+    count: 0
   },
   {
-    title: "Payment last month",
-    value: "Є0",
+    title: "Last Month",
+    value: "€0",
     icon: <CalendarDays className="size-6 text-muted-foreground" />,
-    description: "Previous month payments"
+    description: "Previous month payments",
+    status: "completed",
+    count: 0
   },
   {
-    title: "Payment this year",
-    value: "Є216",
+    title: "This Year",
+    value: "€216",
     icon: <CalendarCheck className="size-6 text-muted-foreground" />,
-    description: "Current year payments"
+    description: "Current year payments",
+    status: "completed",
+    count: 12
   },
   {
-    title: "Payment last year",
-    value: "Є0",
+    title: "Last Year",
+    value: "€0",
     icon: <CalendarRange className="size-6 text-muted-foreground" />,
-    description: "Previous year payments"
+    description: "Previous year payments",
+    status: "completed",
+    count: 0
   }
 ];
+
 
 // Sample order data
 const orders = [
@@ -252,53 +265,39 @@ export default function PaymentsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[35%_65%] gap-5 mb-24">
+        <div className="mb-24">
           {/* Payment Stats - 30% width */}
-          <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
             {paymentStats.map((stat, index) => (
-                <Card key={index} className="grid place-items-center">
-                  <CardContent className="flex items-center gap-4 p-3 md:p-2 xxl:p-4">
-                    <div className="p-2 rounded-md bg-muted">
-                      <div className="h-6 w-6 text-primary">{stat.icon}</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold">{stat.value}</div>
-                      <p className="text-sm text-muted-foreground">{stat.description}</p>
+                <Card key={index}>
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                    {stat.icon}
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stat.value}</div>
+                    <p className="text-xs text-muted-foreground">{stat.description}</p>
+                    <div className="mt-2 flex items-center space-x-2">
+                      <div className="h-1 w-full bg-muted">
+                        <div
+                            className={`h-1 ${
+                                stat.status === "completed"
+                                    ? "bg-green-500"
+                                    : stat.status === "pending"
+                                        ? "bg-amber-500"
+                                        : "bg-blue-500"
+                            }`}
+                            style={{
+                              width: `${(stat.count / Math.max(...paymentStats.map(s => s.count))) * 100}%`
+                            }}
+                        />
+                      </div>
+                      <span className="text-xs text-muted-foreground">{stat.count}</span>
                     </div>
                   </CardContent>
                 </Card>
             ))}
           </div>
-
-          {/* Chart - 70% width */}
-          <Card className="">
-            <CardHeader>
-              <CardTitle>Monthly Payments</CardTitle>
-            </CardHeader>
-            <CardContent className="px-0">
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                      layout="vertical"
-                      data={monthlyAppointmentsData}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 80,
-                        bottom: 5,
-                      }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="appointments" fill="#8884d8" name="Revenue" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -404,11 +403,29 @@ export default function PaymentsPage() {
                           </TableCell>
                           <TableCell>{order.date}</TableCell>
                           <TableCell className="text-right">
-                            <Button variant="ghost" size="icon">
-                              <Link href="/payments/1">
-                                <PencilIcon className="h-4 w-4 text-muted-foreground" />
-                              </Link>
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                  <span className="sr-only">Actions</span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem asChild>
+                                  <Link href={`/payments/1`}>
+                                    <Receipt className="mr-2 h-4 w-4" />
+                                    View Order
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Link href={`/payments/1/edit`} className="flex gap-2">
+                                    <FileText className="mr-2 h-4 w-4" />
+                                    Edit Order
+                                  </Link>
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </TableCell>
                         </TableRow>
                     ))}

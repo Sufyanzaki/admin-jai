@@ -6,7 +6,7 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Switch} from "@/components/ui/switch";
-import {Trash2, TrashIcon} from "lucide-react";
+import {Trash2} from "lucide-react";
 
 const profileAttributes = [
   { id: "origin", label: "Origin" },

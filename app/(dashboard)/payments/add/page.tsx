@@ -59,7 +59,7 @@ export default function AddPatientPage() {
     <div className="flex flex-col gap-5">
       <div className="flex items-center flex-wrap gap-4">
         <Button variant="outline" size="icon" asChild>
-          <Link href="/patients">
+          <Link href="/payments">
             <ArrowLeft className="h-4 w-4" />
             <span className="sr-only">Back</span>
           </Link>
@@ -75,7 +75,8 @@ export default function AddPatientPage() {
           <CardTitle>Order Management</CardTitle>
           <CardDescription>Create or edit order details</CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Row 1: Order ID, Order Date, Delivery Date */}
           <div className="space-y-2">
             <Label htmlFor="order-id">Order ID</Label>
             <Input
@@ -122,22 +123,7 @@ export default function AddPatientPage() {
             </Popover>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="payment-method">Payment Method</Label>
-            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-              <SelectTrigger id="payment-method">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                {paymentMethods.map((method) => (
-                    <SelectItem key={method} value={method}>
-                      {method}
-                    </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
+          {/* Row 2: Customer, Packages, Amount */}
           <div className="space-y-2">
             <Label htmlFor="customer">Customer</Label>
             <Select value={customer} onValueChange={setCustomer}>
@@ -184,6 +170,23 @@ export default function AddPatientPage() {
             </div>
           </div>
 
+          {/* Row 3: Payment Method, Delivery Status, Payment Status */}
+          <div className="space-y-2">
+            <Label htmlFor="payment-method">Payment Method</Label>
+            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+              <SelectTrigger id="payment-method">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                {paymentMethods.map((method) => (
+                    <SelectItem key={method} value={method}>
+                      {method}
+                    </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="delivery-status">Delivery Status</Label>
             <Select value={deliveryStatus} onValueChange={setDeliveryStatus}>
@@ -216,7 +219,6 @@ export default function AddPatientPage() {
             </Select>
           </div>
         </CardContent>
-
       </Card>
 
       <div className="flex justify-end gap-4">
