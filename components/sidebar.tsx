@@ -171,7 +171,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         { title: "All Staff", href: "/staff" },
         { title: "Add Staff", href: "/staff/add" },
         { title: "Roles & Permissions", href: "/staff/roles" },
-        { title: "Attendance", href: "/staff/attendance" },
       ],
     },
     {
