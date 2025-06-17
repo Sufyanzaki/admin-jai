@@ -337,7 +337,7 @@ export default function StaffPage() {
             </div>
             <div className="flex items-center flex-wrap gap-2">
               <Button asChild className="w-full sm:w-fit">
-                <Link href="/staff/add">
+                <Link href="/members/add">
                   <UserPlus className="mr-2 h-4 w-4" />
                   Add New Member
                 </Link>

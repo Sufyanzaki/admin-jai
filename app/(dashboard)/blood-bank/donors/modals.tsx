@@ -278,7 +278,7 @@ export function FAQModal({ isOpen, onClose }: any) {
         <div className="max-h-[400px] overflow-y-auto px-1">
           <form className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
+              <Label htmlFor="subject">Question</Label>
               <Input
                   id="subject"
                   name="subject"
@@ -302,7 +302,7 @@ export function FAQModal({ isOpen, onClose }: any) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Answer</Label>
               <Textarea
                   id="description"
                   name="description"

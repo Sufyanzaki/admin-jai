@@ -12,6 +12,7 @@ import {
   Car,
   CheckCircle,
   Edit,
+  Eye,
   MoreHorizontal,
   Notebook, Pencil,
   Plus,
@@ -191,15 +192,36 @@ export default function BlogListPage() {
                           {blog.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right flex justify-end gap-2">
-                        <Button variant="outline" size="icon">
-                          <Link href="/blogs/edit/1">
-                            <Pencil className="w-4 h-4" />
-                          </Link>
-                        </Button>
-                        <Button variant="outline" size="icon">
-                          <Trash className="w-4 h-4 text-red-500" />
-                        </Button>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                              <Link href={`/blogs/view/1`} className="flex items-center w-full">
+                                <Eye className="mr-2 h-4 w-4" />
+                                View
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <Link href={`/blogs/edit/1`} className="flex items-center w-full">
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                className="text-red-600 focus:text-red-600"
+                            >
+                              <Trash className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                 ))}

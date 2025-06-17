@@ -38,7 +38,7 @@ export default function SettingsPage() {
         <p className="text-sm text-muted-foreground">Configure your clinic settings and preferences</p>
       </div>
 
-      <Tabs defaultValue="clinic" className="w-full">
+      <Tabs defaultValue="basic" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
           <TabsTrigger value="basic">Basic</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>

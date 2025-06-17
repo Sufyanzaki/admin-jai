@@ -63,7 +63,7 @@ export default function SettingPage() {
 
                 <div className="flex gap-2">
                     <Button asChild>
-                        <Link href="/faq/category">
+                        <Link href="/frontend-settings/create">
                             <Plus className="mr-2 h-4 w-4" />
                             New Page
                         </Link>

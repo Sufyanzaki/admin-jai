@@ -69,13 +69,13 @@ export default function AddBlogPage() {
                         </div>
 
                         {/* Short Description */}
-                        <div className="col-span-2 space-y-2">
+                        <div className="space-y-2">
                             <Label htmlFor="short-description">Short Description *</Label>
                             <Textarea id="short-description" placeholder="Short Description" rows={4} required />
                         </div>
 
                         {/* Description */}
-                        <div className="col-span-2 space-y-2">
+                        <div className="space-y-2">
                             <Label htmlFor="description">Description</Label>
                             <Textarea id="description" placeholder="Description" rows={6} />
                         </div>
@@ -88,7 +88,7 @@ export default function AddBlogPage() {
 
                         {/* Meta Image */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="meta-image">Meta Image (200x200)+</Label>
+                            <Label htmlFor="meta-image">Meta Image</Label>
                             <Input
                                 id="meta-image"
                                 type="file"
