@@ -234,7 +234,7 @@ export default function ProfilePage() {
                       { action: "Password changed", date: "March 15, 2024 10:30 AM", icon: Key, description: "Changed from web browser (Chrome)", status: "success" },
                       { action: "Login from new device", date: "March 14, 2024 3:45 PM", icon: User, description: "MacBook Pro - New York, USA", status: "warning" },
                       { action: "Profile updated", date: "March 13, 2024 2:15 PM", icon: User, description: "Updated contact information", status: "info" },
-                      { action: "Security settings modified", date: "March 12, 2024 11:20 AM", icon: Shield, description: "Enabled 2FA authentication", status: "success" },
+                      { action: "Security settings-c modified", date: "March 12, 2024 11:20 AM", icon: Shield, description: "Enabled 2FA authentication", status: "success" },
                       { action: "Document downloaded", date: "March 11, 2024 9:15 AM", icon: FileText, description: "Downloaded annual report", status: "info" },
                       { action: "Failed login attempt", date: "March 10, 2024 8:20 PM", icon: Lock, description: "Invalid credentials from unknown IP", status: "error" },
                       { action: "Account recovery initiated", date: "March 9, 2024 4:15 PM", icon: Key, description: "Password reset requested", status: "warning" },

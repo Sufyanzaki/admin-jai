@@ -29,7 +29,7 @@ import {
   Send,
   Copy,
   Eye,
-  MoreHorizontal,
+  MoreHorizontal, PencilIcon,
 } from "lucide-react"
 import Link from "next/link"
 import {
@@ -398,9 +398,9 @@ export default function NotificationsPage() {
                         <DropdownMenuContent align="end" className="bg-background">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem>
-                            <Link href="/settings-b/notifications/1" className="flex gap-2">
-                              <Eye className="mr-2 h-4 w-4" />
-                              Preview
+                            <Link href="/settings/notifications/1" className="flex gap-2">
+                              <PencilIcon className="mr-2 h-4 w-4" />
+                              Edit
                             </Link>
                           </DropdownMenuItem>
                         </DropdownMenuContent>

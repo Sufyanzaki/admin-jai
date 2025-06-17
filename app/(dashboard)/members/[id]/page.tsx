@@ -284,20 +284,27 @@ export default function DoctorProfilePage({ params }: { params: Promise<{ id: st
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Profile Card */}
                 <div className="space-y-4">
-                    <Card className="md:col-span-1">
-                        <CardHeader className="flex flex-col items-center text-center">
-                            <Avatar className="h-24 w-24 mb-4">
-                                <AvatarImage src={"/user-2.png"} alt="Amaad Kareem" />
-                                <AvatarFallback>Amaad Kareem</AvatarFallback>
+                    <Card className="md:col-span-1 shadow-lg rounded-2xl overflow-hidden">
+                        <CardHeader className="flex flex-col items-center text-center p-6 space-y-4">
+                            <Avatar className="h-24 w-24 ring-4 ring-primary/20 shadow-md">
+                                <AvatarImage src="/user-2.png" alt="Amaad Kareem" />
+                                <AvatarFallback className="text-lg font-semibold">AK</AvatarFallback>
                             </Avatar>
-                            <CardTitle>Amaad Kareem</CardTitle>
-                            <div className="mt-2">
-                                <Badge variant={getStatusVariant("Active")} className={getStatusColor("Active")}>
+                            <div className="space-y-1">
+                                <CardTitle className="text-xl font-semibold">Amaad Kareem</CardTitle>
+                                <Badge
+                                    variant={getStatusVariant("Active")}
+                                    className={`px-3 py-1 text-sm rounded-full ${getStatusColor("Active")}`}
+                                >
                                     Active
                                 </Badge>
                             </div>
+                            <Button variant="outline" className="w-full max-w-[200px]" asChild>
+                                <Link href="/members">Edit Profile</Link>
+                            </Button>
                         </CardHeader>
                     </Card>
+
 
                     <Card>
                         <CardHeader className="xxl:!pb-0">

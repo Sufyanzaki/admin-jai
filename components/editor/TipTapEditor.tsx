@@ -149,7 +149,7 @@ export default function TipTapEditor() {
                 <div className="tiptap-button-group" data-orientation="horizontal">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 px-2 lg:px-3">
+                            <Button type="button" variant="ghost" size="sm" className="h-8 px-2 lg:px-3">
                                 <CurrentIcon className="h-4 w-4" />
                                 <span className="sr-only sm:not-sr-only sm:ml-2">
                                     {currentHeading?.label || "Paragraph"}
@@ -183,7 +183,7 @@ export default function TipTapEditor() {
                     </DropdownMenu>
                 </div>
 
-                <Button
+                <Button type="button"
                     variant={editor.isActive("bold") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleBold().run()}
@@ -191,7 +191,7 @@ export default function TipTapEditor() {
                 >
                     <Bold className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive("italic") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -199,7 +199,7 @@ export default function TipTapEditor() {
                 >
                     <Italic className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive("underline") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleUnderline().run()}
@@ -207,7 +207,7 @@ export default function TipTapEditor() {
                 >
                     <UnderlineIcon className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive("strike") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -215,7 +215,7 @@ export default function TipTapEditor() {
                 >
                     <Strikethrough className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive("code") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleCode().run()}
@@ -227,7 +227,7 @@ export default function TipTapEditor() {
                 <div className="h-6 w-px bg-border mx-1" />
 
                 {/* Text alignment */}
-                <Button
+                <Button type="button"
                     variant={editor.isActive({ textAlign: "left" }) ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().setTextAlign("left").run()}
@@ -235,7 +235,7 @@ export default function TipTapEditor() {
                 >
                     <AlignLeft className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive({ textAlign: "center" }) ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().setTextAlign("center").run()}
@@ -243,7 +243,7 @@ export default function TipTapEditor() {
                 >
                     <AlignCenter className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive({ textAlign: "right" }) ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().setTextAlign("right").run()}
@@ -251,7 +251,7 @@ export default function TipTapEditor() {
                 >
                     <AlignRight className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive({ textAlign: "justify" }) ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().setTextAlign("justify").run()}
@@ -263,7 +263,7 @@ export default function TipTapEditor() {
                 <div className="h-6 w-px bg-border mx-1" />
 
                 {/* Lists */}
-                <Button
+                <Button type="button"
                     variant={editor.isActive("bulletList") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -271,7 +271,7 @@ export default function TipTapEditor() {
                 >
                     <List className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive("orderedList") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
@@ -279,7 +279,7 @@ export default function TipTapEditor() {
                 >
                     <ListOrdered className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant={editor.isActive("taskList") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleTaskList().run()}
@@ -291,7 +291,7 @@ export default function TipTapEditor() {
                 <div className="h-6 w-px bg-border mx-1" />
 
                 {/* Blocks */}
-                <Button
+                <Button type="button"
                     variant={editor.isActive("blockquote") ? "default" : "outline"}
                     size="icon"
                     onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -301,7 +301,7 @@ export default function TipTapEditor() {
                 </Button>
 
                 {/* Media */}
-                <Button
+                <Button type="button"
                     variant="outline"
                     size="icon"
                     onClick={addImage}
@@ -313,7 +313,7 @@ export default function TipTapEditor() {
                 <div className="h-6 w-px bg-border mx-1" />
 
                 {/* Undo/Redo */}
-                <Button
+                <Button type="button"
                     variant="outline"
                     size="icon"
                     onClick={() => editor.chain().focus().undo().run()}
@@ -322,7 +322,7 @@ export default function TipTapEditor() {
                 >
                     <Undo className="h-4 w-4" />
                 </Button>
-                <Button
+                <Button type="button"
                     variant="outline"
                     size="icon"
                     onClick={() => editor.chain().focus().redo().run()}
@@ -336,19 +336,19 @@ export default function TipTapEditor() {
             {editor && (
                 <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
                     <div className="flex gap-1 p-1 bg-background border rounded-md shadow-sm">
-                        <Button
+                        <Button type="button"
                             variant={editor.isActive("bold") ? "default" : "outline"}
                             onClick={() => editor.chain().focus().toggleBold().run()}
                         >
                             <Bold className="h-4 w-4" />
                         </Button>
-                        <Button
+                        <Button type="button"
                             variant={editor.isActive("italic") ? "default" : "outline"}
                             onClick={() => editor.chain().focus().toggleItalic().run()}
                         >
                             <Italic className="h-4 w-4" />
                         </Button>
-                        <Button
+                        <Button type="button"
                             variant={editor.isActive("underline") ? "default" : "outline"}
                             onClick={() => editor.chain().focus().toggleUnderline().run()}
                         >
@@ -358,10 +358,10 @@ export default function TipTapEditor() {
                 </BubbleMenu>
             )}
 
-            <CardContent className="p-4">
+            <CardContent className="p-1 md:p-2 xxl:p-3">
                 <EditorContent
                     editor={editor}
-                    className="min-h-[300px] border rounded-md focus:outline-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert max-w-none"
+                    className="min-h-[300px] focus:outline-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert max-w-none"
                 />
             </CardContent>
         </Card>

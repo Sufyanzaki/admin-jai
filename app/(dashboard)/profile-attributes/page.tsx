@@ -7,7 +7,41 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Switch} from "@/components/ui/switch";
-import {X} from "lucide-react";
+import {
+  Globe,
+  Church,
+  Heart,
+  Baby,
+  GraduationCap,
+  Eye,
+  Scissors,
+  Smile,
+  Shirt,
+  Brain,
+  User,
+  Trophy,
+  Palette,
+  Music,
+  Utensils,
+  Search,
+  Briefcase,
+  Languages,
+  Book,
+  Tv,
+  Ruler,
+  MessageSquare,
+  FileText,
+  Mic,
+  Sun,
+  Users,
+  UserCog,
+  UserCheck,
+  GlassWater,
+  PartyPopper,
+  Circle,
+  X
+} from "lucide-react";
+import {Badge} from "@/components/ui/badge";
 
 const profileAttributes = [
   { id: "origin", label: "Origin" },
@@ -61,6 +95,79 @@ type AttributeData = {
 type AttributeDataState = {
   [key: string]: AttributeData;
 };
+
+function getAttributeIcon(id: string) {
+  const iconProps = { className: "h-4 w-4" };
+
+  switch(id) {
+    case 'origin':
+      return <Globe {...iconProps} />;
+    case 'religion':
+      return <Church {...iconProps} />;
+    case 'relation_status':
+      return <Heart {...iconProps} />;
+    case 'children':
+      return <Baby {...iconProps} />;
+    case 'education':
+      return <GraduationCap {...iconProps} />;
+    case 'eye_color':
+      return <Eye {...iconProps} />;
+    case 'hair_color':
+      return <Scissors {...iconProps} />;
+    case 'body_type':
+      return <User {...iconProps} />;
+    case 'appearance':
+      return <Smile {...iconProps} />;
+    case 'clothing_styles':
+      return <Shirt {...iconProps} />;
+    case 'intelligence':
+      return <Brain {...iconProps} />;
+    case 'character_traits':
+      return <User {...iconProps} />;
+    case 'sports':
+      return <Trophy {...iconProps} />;
+    case 'hobbies':
+      return <Palette {...iconProps} />;
+    case 'music':
+      return <Music {...iconProps} />;
+    case 'kitchen':
+      return <Utensils {...iconProps} />;
+    case 'am_looking_for':
+      return <Search {...iconProps} />;
+    case 'career':
+      return <Briefcase {...iconProps} />;
+    case 'known_languages':
+      return <Languages {...iconProps} />;
+    case 'reading':
+      return <Book {...iconProps} />;
+    case 'tv_shows':
+      return <Tv {...iconProps} />;
+    case 'lengte':
+      return <Ruler {...iconProps} />;
+    case 'languages':
+      return <MessageSquare {...iconProps} />;
+    case 'diploma':
+      return <FileText {...iconProps} />;
+    case 'mother_tongue':
+      return <Mic {...iconProps} />;
+    case 'personal_attitude':
+      return <Sun {...iconProps} />;
+    case 'cast':
+      return <Users {...iconProps} />;
+    case 'sub_cast':
+      return <UserCog {...iconProps} />;
+    case 'i_am_a':
+      return <UserCheck {...iconProps} />;
+    case 'smoke':
+      return <User {...iconProps} />;
+    case 'drinking':
+      return <GlassWater {...iconProps} />;
+    case 'going_out':
+      return <PartyPopper {...iconProps} />;
+    default:
+      return <Circle {...iconProps} />;
+  }
+}
 
 export default function AppointmentsPage() {
   const [attributeData, setAttributeData] = useState<AttributeDataState>(
@@ -129,22 +236,27 @@ export default function AppointmentsPage() {
             </p>
           </div>
 
-          <Tabs defaultValue="origin" className="w-full">
-            <div className="mb-6">
-              <TabsList className="grid grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-1 h-auto w-full bg-muted/50 p-2">
+          <Tabs defaultValue="origin" className="flex gap-6 w-full">
+            <div className="w-64">
+              <TabsList className="flex flex-col gap-1 h-auto w-full bg-muted/50 p-2">
                 {profileAttributes.map((attribute) => (
                     <TabsTrigger
                         key={attribute.id}
                         value={attribute.id}
-                        className="text-xs px-2 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                        className=" justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full"
                     >
-                      {attribute.label}
+                      <div className="flex items-center gap-2">
+                        {getAttributeIcon(attribute.id)}
+                        <span className="truncate">{attribute.label}</span>
+                      </div>
+
+                      <span className="border px-1 text-[10px] rounded-sm">0</span>
                     </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
-            <div>
+            <div className="flex-1">
               {profileAttributes.map((attribute) => (
                   <TabsContent
                       key={attribute.id}
@@ -163,7 +275,7 @@ export default function AppointmentsPage() {
                       </CardHeader>
 
                       <CardContent className="space-y-6">
-                        <div className="flex items-center justify-between p-4">
+                        <div className="flex items-center justify-between py-4">
                           <Label
                               htmlFor={`show-${attribute.id}`}
                               className="font-medium"
@@ -213,25 +325,18 @@ export default function AppointmentsPage() {
                                   Current values:
                                 </Label>
                                 <div className="flex flex-wrap gap-2">
-                                  {attributeData[attribute.id].values.map(
-                                      (value, index) => (
-                                          <div
-                                              key={index}
-                                              className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20 hover:bg-primary/20 transition-colors"
-                                          >
-                                            <span>{value}</span>
-                                            <button
-                                                onClick={() =>
-                                                    removeChip(attribute.id, value)
-                                                }
-                                                className="hover:bg-primary/30 rounded-full p-0.5 transition-colors"
-                                                aria-label={`Remove ${value}`}
-                                            >
-                                              <X className="h-3 w-3" />
-                                            </button>
-                                          </div>
-                                      )
-                                  )}
+                                  {attributeData[attribute.id].values.map((value, index) => (
+                                      <Badge variant="secondary" className="">
+                                        <span className="truncate max-w-[120px]">{value}</span>
+                                        <button
+                                            onClick={() => removeChip(attribute.id, value)}
+                                            className="hover:bg-primary/30 rounded-full p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                            aria-label={`Remove ${value}`}
+                                        >
+                                          <X className="h-3.5 w-3.5" />
+                                        </button>
+                                      </Badge>
+                                  ))}
                                 </div>
                               </div>
                           )}

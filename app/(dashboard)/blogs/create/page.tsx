@@ -7,6 +7,7 @@ import {Label} from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import TipTapEditor from "@/components/editor/TipTapEditor";
 
 export default function AddBlogPage() {
 
@@ -69,15 +70,15 @@ export default function AddBlogPage() {
                         </div>
 
                         {/* Short Description */}
-                        <div className="space-y-2">
+                        <div className="space-y-2 col-span-2">
                             <Label htmlFor="short-description">Short Description *</Label>
                             <Textarea id="short-description" placeholder="Short Description" rows={4} required />
                         </div>
 
                         {/* Description */}
-                        <div className="space-y-2">
+                        <div className="space-y-2 col-span-2">
                             <Label htmlFor="description">Description</Label>
-                            <Textarea id="description" placeholder="Description" rows={4} />
+                            <TipTapEditor />
                         </div>
 
                         {/* Meta Title */}

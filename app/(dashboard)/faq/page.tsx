@@ -3,9 +3,9 @@
 import {useState} from "react"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
-import {PlusCircle, Search} from "lucide-react"
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
+import {Edit, PlusCircle, Search, Trash2} from "lucide-react"
 import {FAQModal} from "@/app/(dashboard)/blood-bank/donors/modals";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 
@@ -62,7 +62,7 @@ const faqs = [
         id: "faq-9",
         question: "Can I customize the dashboard?",
         answer:
-            "Yes, you can customize your dashboard. Click on the settings icon in the top-right corner of the dashboard and select 'Customize Dashboard'. You can add, remove, or rearrange widgets based on your preferences and role.",
+            "Yes, you can customize your dashboard. Click on the settings-c icon in the top-right corner of the dashboard and select 'Customize Dashboard'. You can add, remove, or rearrange widgets based on your preferences and role.",
     },
     {
         id: "faq-10",
@@ -119,20 +119,46 @@ export default function SupportFAQ() {
                         />
                     </div>
 
-                    {filteredFAQs.length > 0 ? (
-                        <Accordion type="single" collapsible className="w-full">
-                            {filteredFAQs.map((faq) => (
-                                <AccordionItem key={faq.id} value={faq.id}>
-                                    <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                                    <AccordionContent>{faq.answer}</AccordionContent>
-                                </AccordionItem>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[300px]">Question</TableHead>
+                                <TableHead className="hidden sm:table-cell">Answer</TableHead>
+                                <TableHead className="hidden sm:table-cell">Category</TableHead>
+                                <TableHead className="w-[120px] text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {faqs.map((faq) => (
+                                <TableRow key={faq.id}>
+                                    <TableCell className="font-medium align-top">{faq.question}</TableCell>
+                                    <TableCell className="align-top hidden sm:table-cell">{faq.answer}</TableCell>
+                                    <TableCell className="hidden md:table-cell">Home</TableCell>
+                                    <TableCell className="text-right align-top">
+                                        <div className="flex justify-end gap-2">
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                className="h-8 w-8"
+                                                onClick={() => setOpen(true)}
+                                            >
+                                                <Edit className="h-4 w-4" />
+                                                <span className="sr-only">Edit FAQ</span>
+                                            </Button>
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                className="h-8 w-8 text-destructive hover:text-destructive"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                                <span className="sr-only">Delete FAQ</span>
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
                             ))}
-                        </Accordion>
-                    ) : (
-                        <div className="text-center py-10">
-                            <p className="text-muted-foreground">No FAQs found matching your search</p>
-                        </div>
-                    )}
+                        </TableBody>
+                    </Table>
                 </CardContent>
             </Card>
             <FAQModal isOpen={open} onClose={setOpen} />

@@ -99,7 +99,7 @@ export default function FeedbackEditPage() {
     setUnsavedChanges(true)
   }
 
-  // Function to update survey settings
+  // Function to update survey settings-c
   const updateSurveySettings = (field: string, value: boolean | string) => {
     setSurvey((prev) => ({
       ...prev,

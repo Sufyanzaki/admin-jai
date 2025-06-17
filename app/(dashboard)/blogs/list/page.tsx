@@ -103,9 +103,11 @@ export default function BlogListPage() {
           <h1 className="text-2xl font-bold tracking-tight mb-2">Blog List</h1>
           <p className="text-muted-foreground">Manage and track all ambulances in the fleet</p>
         </div>
-        <Button className="w-full md:w-auto">
-          <Plus className="mr-2 h-4 w-4" />
-          New Blog
+        <Button className="w-full md:w-auto" asChild>
+          <Link className="flex items-center" href="/blogs/create">
+            <Plus className="mr-2 h-4 w-4" />
+            New Blog
+          </Link>
         </Button>
       </div>
 

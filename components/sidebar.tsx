@@ -77,8 +77,20 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     },
     {
       title: "App Settings",
+      href: "/settings-c",
+      icon: Settings,
+    },
+    {
+      title: "Settings",
       href: "/settings",
       icon: Settings,
+      submenu: [
+        { title: "General Settings", href: "/settings" },
+        { title: "Notifications", href: "/settings/notifications" },
+        { title: "Integrations", href: "/settings/integrations" },
+        { title: "Languages", href: "/settings/languages" },
+        { title: "Other Settings", href: "/settings/other-settings" },
+      ],
     },
     {
       title: "Profile Attributes",
@@ -102,7 +114,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     },
     {
       title: "Frontend Settings",
-      href: "/frontend-settings",
+      href: "/frontend-settings-c",
       icon: HelpCircle,
     },
     {
