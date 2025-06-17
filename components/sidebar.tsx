@@ -75,11 +75,11 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       href: "/complains",
       icon: Megaphone,
     },
-    {
-      title: "App Settings",
-      href: "/settings-c",
-      icon: Settings,
-    },
+    // {
+    //   title: "App Settings",
+    //   href: "/settings-c",
+    //   icon: Settings,
+    // },
     {
       title: "Settings",
       href: "/settings",
@@ -114,7 +114,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     },
     {
       title: "Frontend Settings",
-      href: "/frontend-settings-c",
+      href: "/frontend-settings",
       icon: HelpCircle,
     },
     {
