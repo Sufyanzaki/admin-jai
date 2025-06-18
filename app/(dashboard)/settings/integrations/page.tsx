@@ -33,12 +33,6 @@ export default function IntegrationsPage() {
           </Link>
           <h2 className="text-2xl font-bold tracking-tight">Integrations</h2>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <Button variant="outline">
-            <RefreshCw className="mr-2 h-4 w-4" />
-            Refresh Status
-          </Button>
-        </div>
       </div>
 
       <Tabs defaultValue="social">

@@ -127,55 +127,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       ],
     },
     {
-      title: "Pharmacy",
-      href: "/pharmacy/medicines",
-      icon: Pill,
-    },
-    {
-      title: "Blood Bank",
-      href: "/blood-bank",
-      icon: Droplet,
-      submenu: [
-        { title: "Blood Stock", href: "/blood-bank/stock" },
-        { title: "Blood Donor", href: "/blood-bank/donors" },
-        { title: "Blood Issued", href: "/blood-bank/issued" },
-        { title: "Add Blood Unit", href: "/blood-bank/add" },
-        { title: "Issue Blood", href: "/blood-bank/issue" },
-      ],
-    },
-    {
-      title: "Billing",
-      href: "/billing",
-      icon: Receipt,
-      submenu: [
-        { title: "Invoices List", href: "/billing" },
-        { title: "Create Invoice", href: "/billing/create" },
-        { title: "Payments History", href: "/billing/payments" },
-        { title: "Insurance Claims", href: "/billing/insurance" },
-      ],
-    },
-    {
-      title: "Departments",
-      href: "/departments",
-      icon: Building2,
-      submenu: [
-        { title: "Department List", href: "/departments" },
-        { title: "Add Department", href: "/departments/add" },
-        { title: "Services Offered", href: "/departments/services" },
-      ],
-    },
-    {
-      title: "Inventory",
-      href: "/inventory",
-      icon: Package,
-      submenu: [
-        { title: "Inventory List", href: "/inventory" },
-        { title: "Add Item", href: "/inventory/add" },
-        { title: "Stock Alerts", href: "/inventory/alerts" },
-        { title: "Suppliers List", href: "/inventory/suppliers" },
-      ],
-    },
-    {
       title: "Staff",
       href: "/staff",
       icon: UserCog,
@@ -186,38 +137,9 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       ],
     },
     {
-      title: "Records",
-      href: "/records",
-      icon: FileText,
-      submenu: [
-        { title: "Birth Records", href: "/records/birth" },
-        { title: "Death Records", href: "/records/death" },
-      ],
-    },
-    {
-      title: "Room Allotment",
-      href: "/rooms",
-      icon: Bed,
-      submenu: [
-        { title: "Alloted Rooms", href: "/rooms/alloted" },
-        { title: "New Allotment", href: "/rooms/new" },
-        { title: "Rooms by Department", href: "/rooms/departments" },
-        { title: "Add New Room", href: "/rooms/add" },
-      ],
-    },
-    {
-      title: "Reviews",
-      href: "/reviews",
-      icon: Star,
-      submenu: [
-        { title: "Doctor Reviews", href: "/reviews/members" },
-        { title: "Patient Reviews", href: "/reviews/payments" },
-      ],
-    },
-    {
-      title: "Feedback",
-      href: "/feedback",
-      icon: MessageSquare,     
+      title: "Support",
+      href: "/support",
+      icon: MessageSquare,
     },
     {
       title: "Reports",
@@ -225,10 +147,11 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: BarChart3,
       submenu: [
         { title: "Overview", href: "/reports" },
-        { title: "Appointment Reports", href: "/reports/profile-attributes" },
+        { title: "Detailed Reports", href: "/reports/detailed" },
         { title: "Financial Reports", href: "/reports/financial" },
-        { title: "Inventory Reports", href: "/reports/inventory" },
-        { title: "Patient Visit Reports", href: "/reports/payments" },
+        { title: "Income Reports", href: "/reports/income" },
+        { title: "Member Reports", href: "/reports/member" },
+        { title: "Analytics", href: "/reports/analytics" },
       ],
     },
     {
@@ -242,37 +165,11 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         { title: "Profile Settings", href: "/profile" },
       ],
     },
-
-    {
-      title:"Calendar",
-      href:"/calendar",
-      icon: Calendar1,
-    },
-    {
-      title: "Tasks",
-      href: "/tasks",
-      icon: CheckCircle2,
-    },
-    {
-      title: "Contacts",
-      href: "/contact",
-      icon: UserRound,
-    },
-    {
-      title: "Email",
-      href: "/email",
-      icon: Mail,
-    },
     {
       title: "Chat",
       href: "/chat",
       icon: MessageCircle,
-    },
-    {
-      title: "Widgets",
-      href: "/widgets",
-      icon: Grid,
-    },
+    }
   ];
 
   const toggleSubmenu = (title: string) => {

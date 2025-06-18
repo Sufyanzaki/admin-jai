@@ -4,10 +4,10 @@ import {useState} from "react"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
 import {Edit, PlusCircle, Search, Trash2} from "lucide-react"
-import {FAQModal} from "@/app/(dashboard)/blood-bank/donors/modals";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {FAQModal} from "@/components/modals";
 
 const faqs = [
     {
@@ -32,7 +32,7 @@ const faqs = [
         id: "faq-4",
         question: "Can I export patient data?",
         answer:
-            "Yes, you can export patient data. Navigate to the Patients section, select the patients you want to export, then click the 'Export' button. You can choose between CSV, Excel, or PDF formats depending on your needs.",
+            "Yes, you can export patient data. Navigate to the Patients section, select the analytics you want to export, then click the 'Export' button. You can choose between CSV, Excel, or PDF formats depending on your needs.",
     },
     {
         id: "faq-5",

@@ -5,8 +5,8 @@ import Link from "next/link";
 import {Edit, Plus, StepBack, Trash2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {CategoryModal} from "@/app/(dashboard)/blood-bank/donors/modals";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {CategoryModal} from "@/components/modals";
 
 const categories = [
     {

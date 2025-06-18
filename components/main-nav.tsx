@@ -16,8 +16,7 @@ export function MainNav({ onMenuClick }: { onMenuClick: () => void }) {
         </button>
       )}
       <Link href="/" className="flex items-center space-x-2">
-        <Image src={logo} alt="Medixpro" width={36} height={36} />
-        <span className="hidden font-bold xl:text-lg sm:inline-block">Medixpro</span>
+        <Image src="https://ticketprijs.nl/admin/Image/AppSettings/Logo/1730289473_1730098174_1727434463_logo-alt.png" alt="Humsafar" width={127} height={36} />
       </Link>
     </div>
   );

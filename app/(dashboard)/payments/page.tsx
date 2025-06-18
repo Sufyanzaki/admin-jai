@@ -267,7 +267,7 @@ export default function PaymentsPage() {
 
         <div className="mb-24">
           {/* Payment Stats - 30% width */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {paymentStats.map((stat, index) => (
                 <Card key={index}>
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
