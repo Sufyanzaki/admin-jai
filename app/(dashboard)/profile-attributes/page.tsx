@@ -78,13 +78,6 @@ const profileAttributes = [
   { id: "going_out", label: "Going Out" }
 ];
 
-// Define the shape of a profile attribute
-type ProfileAttribute = {
-  id: string;
-  label: string;
-};
-
-
 // Define the attribute data shape
 type AttributeData = {
   showOn: boolean;
@@ -305,7 +298,7 @@ export default function AppointmentsPage() {
                                         e.target.value
                                     )
                                 }
-                                onKeyPress={(e) => handleKeyPress(e, attribute.id)}
+                                onKeyDown={(e) => handleKeyPress(e, attribute.id)}
                                 className="flex-1"
                             />
                             <Button
