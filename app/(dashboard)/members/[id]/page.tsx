@@ -8,19 +8,24 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {
     Briefcase,
+    Calendar,
     ChevronLeft,
     Coffee,
+    Edit,
     Globe,
     GraduationCap,
-    Heart, LucideIcon,
+    Heart,
+    LucideIcon,
     Mail,
     MapPin,
     Music,
     Phone,
-    Upload,
+    Stethoscope,
     User
 } from "lucide-react";
 import Link from "next/link";
+import {useRef} from "react";
+import {Separator} from "@/components/ui/separator";
 
 const userProfile = [
     {
@@ -141,35 +146,27 @@ const userProfile = [
     }
 ];
 
-export default function DoctorProfilePage({ params }: { params: Promise<{ id: string }> }) {
+interface TabData {
+    id: string;
+    section: string;
+    data: Record<string, string | undefined>;
+}
 
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "Active":
-                return "bg-green-500";
-            case "On Leave":
-                return "border-amber-500 text-amber-500";
-            default:
-                return "bg-gray-500";
-        }
+export default function MemberProfilePage({ params }: { params: Promise<{ id: string }> }) {
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleEditClick = () => {
+        fileInputRef.current?.click();
     };
 
-    const getStatusVariant = (status: string) => {
-        switch (status) {
-            case "Active":
-                return "default";
-            case "On Leave":
-                return "outline";
-            default:
-                return "secondary";
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            // handle image upload or preview logic here
+            console.log("Selected file:", file);
         }
     };
-
-    interface TabData {
-        id: string;
-        section: string;
-        data: Record<string, string | undefined>;
-    }
 
     const getIconForField = (key: string): LucideIcon => {
         const iconMap: Record<string, LucideIcon> = {
@@ -192,73 +189,37 @@ export default function DoctorProfilePage({ params }: { params: Promise<{ id: st
     };
 
     const renderTabContent = (tab: TabData) => {
-        const validData = Object.entries(tab.data).filter(([key, value]) =>
-            value && value !== "-" && value !== ""
+        const validData = Object.entries(tab.data).filter(
+            ([key, value]) => value && value !== "-" && value !== ""
         );
 
         return (
-            <div className="space-y-4">
-                {tab.data["Short Description"] && (
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium">Biography</h3>
-                        <p className="text-sm mt-2">{tab.data["Short Description"]}</p>
-                    </div>
-                )}
-
-                {(tab.id === 'hobbies_interest' || tab.id === 'personal_attitude_behavior' || tab.id === 'life_style') && (
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium">
-                            {tab.id === 'hobbies_interest' ? 'Interests' :
-                                tab.id === 'personal_attitude_behavior' ? 'Personality' : 'Lifestyle'}
-                        </h3>
-                        <div className="flex flex-wrap gap-2 mt-2">
+            <div className="space-y-3 text-sm">
+                {(
+                    tab.id === "hobbies_interest" ||
+                    tab.id === "personal_attitude_behavior" ||
+                    tab.id === "life_style" ||
+                    !["hobbies_interest", "personal_attitude_behavior", "life_style"].includes(tab.id)
+                ) && (
+                    <div className="space-y-1">
+                        <div className="grid grid-cols-2 gap-x-8 text-sm">
                             {validData.map(([key, value]) => {
-                                if (key === "Short Description") return null;
-                                const Icon = getIconForField(key);
-                                return (
-                                    <Badge key={key} variant="outline" className="flex items-center gap-1">
-                                        <Icon className="h-3 w-3" />
-                                        {key}: {value}
-                                    </Badge>
-                                );
-                            })}
-                        </div>
-                    </div>
-                )}
+                                if (
+                                    ["Short Description", "Email", "Phone"].includes(key) ||
+                                    value === "-" ||
+                                    value === ""
+                                )
+                                    return null;
 
-                {(tab.data.Email || tab.data.Phone) && (
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium">Contact Information</h3>
-                        <div className="grid gap-2 mt-2">
-                            {tab.data.Email && (
-                                <div className="flex items-center gap-2">
-                                    <Mail className="h-4 w-4  shrink-0" />
-                                    <span className="text-sm">{tab.data.Email}</span>
-                                </div>
-                            )}
-                            {tab.data.Phone && (
-                                <div className="flex items-center gap-2">
-                                    <Phone className="h-4 w-4 shrink-0" />
-                                    <span className="text-sm">{tab.data.Phone}</span>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                )}
-
-                {!(['hobbies_interest', 'personal_attitude_behavior', 'life_style'].includes(tab.id)) && (
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium">Information</h3>
-                        <div className="grid gap-2 mt-2">
-                            {validData.map(([key, value]) => {
-                                if (key === "Short Description" || key === "Email" || key === "Phone") return null;
-                                const Icon = getIconForField(key);
                                 return (
-                                    <div key={key} className="flex items-center gap-2">
-                                        <Icon className="h-4 w-4  shrink-0" />
-                                        <span className="text-sm">
-                    <span className="font-medium">{key}:</span> {value}
-                  </span>
+                                    <div key={key}>
+                                        <div className="grid grid-cols-2 py-1">
+                                            <span className="font-medium text-muted-foreground">{key}</span>
+                                            <span className="text-right font-semibold text-primary">
+                  {value}
+                </span>
+                                        </div>
+                                        <Separator className="my-2" />
                                     </div>
                                 );
                             })}
@@ -268,6 +229,7 @@ export default function DoctorProfilePage({ params }: { params: Promise<{ id: st
             </div>
         );
     };
+
 
     return (
         <div className="flex flex-col gap-6">
@@ -286,23 +248,65 @@ export default function DoctorProfilePage({ params }: { params: Promise<{ id: st
                 <div className="space-y-4">
                     <Card className="md:col-span-1 shadow-lg rounded-2xl overflow-hidden">
                         <CardHeader className="flex flex-col items-center text-center p-6 space-y-4">
-                            <Avatar className="h-24 w-24 ring-4 ring-primary/20 shadow-md">
-                                <AvatarImage src="/user-2.png" alt="Amaad Kareem" />
-                                <AvatarFallback className="text-lg font-semibold">AK</AvatarFallback>
-                            </Avatar>
+                           <div className="relative">
+                               <Avatar className="h-24 w-24 ring-4 ring-primary/20 shadow-md">
+                                   <AvatarImage src="/user-2.png" alt="Dr. Sarah Johnson" />
+                                   <AvatarFallback className="text-lg font-semibold">SJ</AvatarFallback>
+                               </Avatar>
+                               <button
+                                   type="button"
+                                   onClick={handleEditClick}
+                                   className="absolute bottom-0 left-3/4 bg-primary/90 rounded-full p-2 shadow-md"
+                               >
+                                   <Edit className="h-4 w-4 text-white" />
+                               </button>
+
+                               <input
+                                   type="file"
+                                   accept="image/*"
+                                   ref={fileInputRef}
+                                   onChange={handleFileChange}
+                                   className="hidden"
+                               />
+                           </div>
                             <div className="space-y-1">
-                                <CardTitle className="text-xl font-semibold">Amaad Kareem</CardTitle>
+                                <CardTitle className="text-xl font-semibold">Dr. Sarah Johnson</CardTitle>
                                 <Badge
-                                    variant={getStatusVariant("Active")}
-                                    className={`px-3 py-1 text-sm rounded-full ${getStatusColor("Active")}`}
+                                    variant="default"
+                                    className="py-0.5 font-normal text-xs rounded-full bg-black text-white"
                                 >
                                     Active
                                 </Badge>
                             </div>
-                            <Button variant="outline" className="w-full max-w-[200px]" asChild>
-                                <Link href="/members">Edit Profile</Link>
-                            </Button>
                         </CardHeader>
+                        <CardContent className="space-y-3 text-sm text-muted-foreground px-6 pb-6">
+                            <div className="flex items-center gap-2">
+                                <Mail className="h-4 w-4" />
+                                <span>sarah.j@clinic.com</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Phone className="h-4 w-4" />
+                                <span>555-0101</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <MapPin className="h-4 w-4" />
+                                <span>
+        123 Medical Center Drive, Suite 456, San Francisco, CA 94143
+      </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                <span>Joined 5/15/2012</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Briefcase className="h-4 w-4" />
+                                <span>12 years experience</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Stethoscope className="h-4 w-4" />
+                                <span>Medical Department</span>
+                            </div>
+                        </CardContent>
                     </Card>
 
 
@@ -325,50 +329,38 @@ export default function DoctorProfilePage({ params }: { params: Promise<{ id: st
                             </Button>
                         </CardContent>
                     </Card>
-
-                    <Card>
-                        <CardHeader className="xxl:!pb-0">
-                            <CardTitle>Upload Images</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="h-24 w-24 shrink-0 rounded-full bg-muted flex items-center justify-center">
-                                        <Upload className="h-8 w-8 text-muted-foreground" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <input type="file" id="system-logo" className="hidden" />
-                                        <Button variant="outline" onClick={() => document.getElementById("system-logo")?.click()}>Upload Photo</Button>
-                                        <p className="text-sm text-muted-foreground">Upload a profile photo. JPG, PNG or GIF. Max 2MB.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <Button variant="outline" className="w-full">
-                                Submit
-                            </Button>
-                        </CardContent>
-                    </Card>
                 </div>
 
                 {/* Main Content */}
-                <div className="md:col-span-2 space-y-6">
-                    <Tabs defaultValue={userProfile[0].id} className="w-full">
-                        <TabsList className="flex mb-4">
-                            {userProfile.map((tab) => (
-                                <TabsTrigger className="px-6 py-2" value={tab.id}>{tab.section}</TabsTrigger>
-                            ))}
-                        </TabsList>
+                <div className="md:col-span-2">
+                    <Card>
+                        <Tabs defaultValue={userProfile[0].id} className="w-full">
+                            <CardHeader className="xxl:pb-0 space-y-6">
+                                <div className="flex items-center gap-4 justify-between flex-col sm:flex-row">
+                                    <CardTitle className="text-xl font-semibold">Member Information</CardTitle>
+                                    <Button variant="default" asChild>
+                                        <Link href="/members/1/edit">
+                                            <Edit className="h-4 w-4" />
+                                            <span>Edit Profile</span>
+                                        </Link>
+                                    </Button>
+                                </div>
+                                <TabsList className="flex">
+                                    {userProfile.map((tab) => (
+                                        <TabsTrigger className="px-6 py-2" value={tab.id}>{tab.section}</TabsTrigger>
+                                    ))}
+                                </TabsList>
+                            </CardHeader>
 
-                        {userProfile.map((tab) => (
-                            <TabsContent value={tab.id} className="space-y-6">
-                                <Card>
+                            {userProfile.map((tab) => (
+                                <TabsContent value={tab.id}>
                                     <CardContent>
                                         {renderTabContent(tab)}
                                     </CardContent>
-                                </Card>
-                            </TabsContent>
-                        ))}
-                    </Tabs>
+                                </TabsContent>
+                            ))}
+                        </Tabs>
+                    </Card>
                 </div>
             </div>
         </div>

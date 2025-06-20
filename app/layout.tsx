@@ -7,8 +7,11 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MedixPro - Clinic Management System",
-  description: "Modern clinic management system for healthcare professionals",
+    title: "Humsafar",
+    description: "Humsafar matrimonial app",
+    icons: {
+        icon: 'https://ticketprijs.nl/admin/assets/images/logo-alt.png',
+    },
 };
 
 export default function RootLayout({

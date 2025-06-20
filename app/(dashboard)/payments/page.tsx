@@ -255,23 +255,16 @@ export default function PaymentsPage() {
               <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Payments</h1>
               <p className="text-muted-foreground">Manage your payments and their records.</p>
             </div>
-
-            <Button asChild>
-              <Link href="/payments/add">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Order
-              </Link>
-            </Button>
           </div>
         </div>
 
-        <div className="mb-24">
+        <div className="mb-12">
           {/* Payment Stats - 30% width */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {paymentStats.map((stat, index) => (
                 <Card key={index}>
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                    <CardTitle className="text-md xl:text-lg font-medium">{stat.title}</CardTitle>
                     {stat.icon}
                   </CardHeader>
                   <CardContent>

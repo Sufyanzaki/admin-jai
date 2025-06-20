@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   LucideHeart,
   Mail,
+  MapPin,
   Megaphone,
   MessageCircle,
   MessageSquare,
@@ -26,7 +27,7 @@ import {
   Receipt,
   Settings,
   ShieldCheck,
-  Star,
+  Star, TrendingUp,
   UserCog,
   UserRound,
   Users,
@@ -63,7 +64,12 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     {
       title: "Members",
       href: "/members",
-      icon: Users
+      icon: Users,
+    },
+    {
+      title: "Profile Attributes",
+      href: "/profile-attributes",
+      icon: Calendar,
     },
     {
       title: "Payments",
@@ -71,17 +77,58 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: UserRound,
     },
     {
+      title: "Frontend Settings",
+      href: "/frontend-settings",
+      icon: HelpCircle,
+    },
+    {
+      title: "FAQ",
+      href: "/faq",
+      icon: HelpCircle,
+    },
+    {
+      title: "BLOGS",
+      href: "/blogs",
+      icon: Ambulance,
+      submenu: [
+        { title: "List", href: "/blogs/list" },
+        { title: "Category", href: "/blogs/category" },
+      ],
+    },
+    {
+      title: "Packages",
+      href: "/packages",
+      icon: Calendar,
+    },
+    {
       title: "Complaints",
       href: "/complains",
       icon: Megaphone,
     },
-    // {
-    //   title: "App Settings",
-    //   href: "/settings-c",
-    //   icon: Settings,
-    // },
     {
-      title: "Settings",
+      title: "Report",
+      href: "/reports",
+      icon: BarChart3,
+      submenu: [
+        { title: "Overview", href: "/reports" },
+        { title: "Detailed Reports", href: "/reports/detailed" },
+        { title: "Financial Reports", href: "/reports/financial" },
+        { title: "Income Reports", href: "/reports/income" },
+        { title: "Member Reports", href: "/reports/member" },
+        { title: "Analytics", href: "/reports/analytics" },
+      ],
+    },
+    {
+      title: "Marketing",
+      href: "/marketing",
+      icon: TrendingUp,
+      submenu: [
+        { title: "Campaigns", href: "/marketing/campaigns" },
+        { title: "Coupons", href: "/marketing/coupons" },
+      ],
+    },
+    {
+      title: "Setting",
       href: "/settings",
       icon: Settings,
       submenu: [
@@ -90,40 +137,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         { title: "Integrations", href: "/settings/integrations" },
         { title: "Languages", href: "/settings/languages" },
         { title: "Other Settings", href: "/settings/other-settings" },
-      ],
-    },
-    {
-      title: "Profile Attributes",
-      href: "/profile-attributes",
-      icon: Calendar
-    },
-    {
-      title: "Chat & Video Setting",
-      href: "/chat-and-video-setting",
-      icon: Calendar
-    },
-    {
-      title: "Packages",
-      href: "/packages",
-      icon: Calendar
-    },
-    {
-      title: "FAQ",
-      href: "/faq",
-      icon: HelpCircle,
-    },
-    {
-      title: "Frontend Settings",
-      href: "/frontend-settings",
-      icon: HelpCircle,
-    },
-    {
-      title: "Blogs",
-      href: "/blogs",
-      icon: Ambulance,
-      submenu: [
-        { title: "List", href: "/blogs/list" },
-        { title: "Category", href: "/blogs/category" },
       ],
     },
     {
@@ -137,40 +150,22 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       ],
     },
     {
-      title: "Support",
-      href: "/support",
-      icon: MessageSquare,
-    },
-    {
-      title: "Reports",
-      href: "/reports",
-      icon: BarChart3,
-      submenu: [
-        { title: "Overview", href: "/reports" },
-        { title: "Detailed Reports", href: "/reports/detailed" },
-        { title: "Financial Reports", href: "/reports/financial" },
-        { title: "Income Reports", href: "/reports/income" },
-        { title: "Member Reports", href: "/reports/member" },
-        { title: "Analytics", href: "/reports/analytics" },
-      ],
-    },
-    {
-      title: "Authentication",
-      href: "/auth",
-      icon: ShieldCheck,
-      submenu: [
-        { title: "Login", href: "/auth/login" },
-        { title: "Register", href: "/auth/register" },
-        { title: "Forgot Password", href: "/auth/forgot-password" },
-        { title: "Profile Settings", href: "/profile" },
-      ],
+      title: "Chat & Video Setting",
+      href: "/chat-and-video-setting",
+      icon: Calendar,
     },
     {
       title: "Chat",
       href: "/chat",
       icon: MessageCircle,
-    }
+    },
+    {
+      title: "Support",
+      href: "/support",
+      icon: HelpCircle,
+    },
   ];
+  ;
 
   const toggleSubmenu = (title: string) => {
     if (openSubmenu === title) {
@@ -257,18 +252,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
             </div>
           ))}
         </nav>
-      </div>
-      <div className="border-t p-4 shrink-0">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder-user.jpg" alt="Dr. Sarah Johnson" />
-            <AvatarFallback>SJ</AvatarFallback>
-          </Avatar>
-          <div className="space-y-0.5">
-            <p className="text-sm font-medium">Dr. Sarah Johnson</p>
-            <p className="text-xs text-muted-foreground">Administrator</p>
-          </div>
-        </div>
       </div>
     </aside>
   );

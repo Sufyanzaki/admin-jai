@@ -16,6 +16,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import {Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator"
 import {Label} from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import {Textarea} from "@/components/ui/textarea";
 
 
 // Mock data for staff members
@@ -251,17 +260,6 @@ const staffMembers = [
   },
 ];
 
-// Mock data for department stats
-const departmentStats = [
-  { name: "Medical", count: 12, color: "bg-blue-500" },
-  { name: "Nursing", count: 18, color: "bg-green-500" },
-  { name: "Administration", count: 8, color: "bg-purple-500" },
-  { name: "Laboratory", count: 5, color: "bg-amber-500" },
-  { name: "Pharmacy", count: 4, color: "bg-red-500" },
-  { name: "Radiology", count: 3, color: "bg-indigo-500" },
-  { name: "Therapy", count: 6, color: "bg-pink-500" },
-  { name: "Support", count: 7, color: "bg-cyan-500" },
-];
 
 export default function StaffPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -327,6 +325,7 @@ export default function StaffPage() {
   const applyFilters = () => {
     setIsFilterOpen(false);
   };
+
   return (
       <>
         <div className="flex flex-col gap-6">
@@ -353,8 +352,8 @@ export default function StaffPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Select>
-                    <SelectTrigger className=" w-full w-full sm:w-fit md:w-[250px]">
-                      <SelectValue placeholder="Department" />
+                    <SelectTrigger className="w-full sm:w-fit md:w-[250px]">
+                      <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Bulk Select</SelectItem>
@@ -462,7 +461,9 @@ export default function StaffPage() {
                       <Table className="whitespace-nowrap">
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Bulk Select</TableHead>
+                            <TableHead>
+                              <Checkbox id={`member-0`} onCheckedChange={() => {}} />
+                            </TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Gender</TableHead>
                             <TableHead>Age</TableHead>
@@ -544,7 +545,7 @@ export default function StaffPage() {
                                           <DropdownMenuItem asChild>
                                             <Link href={`/members/${member.id}/edit`} className="flex items-center gap-2">
                                               <Edit className="h-4 w-4" />
-                                              Edit
+                                              Edit Profile
                                             </Link>
                                           </DropdownMenuItem>
                                           <DropdownMenuSeparator />

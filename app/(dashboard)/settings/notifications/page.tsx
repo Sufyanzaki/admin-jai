@@ -315,53 +315,6 @@ export default function NotificationsPage() {
         <div className="flex items-center gap-2">
           <Input type="search" placeholder="Search templates..." className="w-[300px]" />
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Create Template
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-background">
-              <DialogHeader>
-                <DialogTitle>Create Email Template</DialogTitle>
-                <DialogDescription>Create a new email notification template</DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="template-name">Template Name</Label>
-                  <Input id="template-name" placeholder="Enter template name" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="template-subject">Email Subject</Label>
-                  <Input id="template-subject" placeholder="Enter email subject" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="template-content">Email Content</Label>
-                  <Textarea id="template-content" placeholder="Enter email content" className="min-h-[200px]" />
-                  <p className="text-xs text-muted-foreground">
-                    Use {"{variable}"} syntax for dynamic content. Available variables: {"{patient_name}"},{" "}
-                    {"{doctor_name}"}, {"{appointment_date}"}, {"{appointment_time}"}, {"{clinic_name}"},{" "}
-                    {"{clinic_address}"}, {"{clinic_phone}"}
-                  </p>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button variant="outline">Cancel</Button>
-                <Button>Create Template</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-          <Button variant="outline">
-            <Upload className="mr-2 h-4 w-4" />
-            Import
-          </Button>
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-        </div>
       </div>
 
       <Card className="bg-background">

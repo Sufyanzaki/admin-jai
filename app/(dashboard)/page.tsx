@@ -70,13 +70,13 @@ export default function DashboardPage() {
       <div className="flex min-h-screen w-full flex-col">
         <main className="flex-1 space-y-6">
           <div className="flex flex-col space-y-2">
-            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Welcome back, Dr. Sarah</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Welcome back</h2>
             <p className="text-muted-foreground">Here's what's happening today.</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {cardData.map((card) => (
-                <div key={card.id} className={`bg-card rounded-lg overflow-hidden border shadow-md ${card.borderColor}`}>
+                <div key={card.id} className={`bg-card rounded-lg overflow-hidden border shadow-md`}>
                   <div className="p-5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
