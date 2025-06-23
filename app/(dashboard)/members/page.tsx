@@ -25,6 +25,7 @@ import {
   DialogTitle
 } from "@/components/ui/dialog";
 import {Textarea} from "@/components/ui/textarea";
+import PaginationSection from "@/components/Pagination";
 
 
 // Mock data for staff members
@@ -578,19 +579,7 @@ export default function StaffPage() {
                         </TableBody>
                       </Table>
                     </div>
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="text-sm text-muted-foreground">
-                        Showing <strong>1-8</strong> of <strong>63</strong> staff members
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" disabled>
-                          Previous
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          Next
-                        </Button>
-                      </div>
-                    </div>
+                    <PaginationSection />
                   </TabsContent>
                   <TabsContent value="grid" className="mt-0">
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

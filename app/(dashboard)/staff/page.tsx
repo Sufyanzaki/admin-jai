@@ -13,6 +13,7 @@ import { Award, Building, Calendar, Clipboard, Clock, Download, Edit, Eye, FileT
 import Link from "next/link";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+import PaginationSection from "@/components/Pagination";
 
 const staffData = [
   {
@@ -189,19 +190,7 @@ export default function StaffPage() {
               </Table>
 
             </div>
-            <div className="mt-4 flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
-                Showing <strong>1-8</strong> of <strong>63</strong> staff members
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" disabled>
-                  Previous
-                </Button>
-                <Button variant="outline" size="sm">
-                  Next
-                </Button>
-              </div>
-            </div>
+            <PaginationSection />
           </CardContent>
         </Card>
 

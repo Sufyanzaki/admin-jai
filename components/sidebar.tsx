@@ -123,8 +123,8 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       href: "/marketing",
       icon: TrendingUp,
       submenu: [
-        { title: "Campaigns", href: "/marketing/campaigns" },
-        { title: "Coupons", href: "/marketing/coupons" },
+        { title: "Newsletter", href: "/marketing/newsletter" },
+        { title: "Banners", href: "/marketing/banners" },
       ],
     },
     {

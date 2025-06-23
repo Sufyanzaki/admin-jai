@@ -91,7 +91,7 @@ export default function LanguagesManagementPage() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                                    <DropdownMenuItem>Translate Language</DropdownMenuItem>
                                                     <DropdownMenuItem className="text-red-600">
                                                         {language.status === "Active" ? "Deactivate" : "Activate"}
                                                     </DropdownMenuItem>
