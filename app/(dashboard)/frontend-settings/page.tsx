@@ -54,8 +54,8 @@ const settings = [
 
 export default function SettingPage() {
     return (
-        <div className="container py-6 space-y-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="container space-y-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex flex-col space-y-2">
                     <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Frontend Settings</h1>
                     <p className="text-muted-foreground">Get help with your clinic management system or submit a support ticket.</p>

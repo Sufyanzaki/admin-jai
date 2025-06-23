@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import TipTapEditor from "@/components/editor/TipTapEditor";
+import Link from "next/link";
+import {ArrowLeft} from "lucide-react";
 
 export default function AddBlogPage() {
 
@@ -16,10 +18,17 @@ export default function AddBlogPage() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/blogs/list">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight mb-2">Edit Blog</h1>
-                    <p className="text-muted-foreground">Manage and track all ambulances in the fleet</p>
+                    <p className="text-muted-foreground">Update and manage your existing blog content</p>
                 </div>
             </div>
 

@@ -333,7 +333,7 @@ export default function StaffPage() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members Management</h2>
-              <p className="text-muted-foreground">Manage clinic staff, roles, and permissions</p>
+              <p className="text-muted-foreground">Manage staff, roles, and permissions</p>
             </div>
             <div className="flex items-center flex-wrap gap-2">
               <Button asChild className="w-full sm:w-fit">

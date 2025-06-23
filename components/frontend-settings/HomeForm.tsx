@@ -7,7 +7,9 @@ import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import {Checkbox} from "@/components/ui/checkbox"
-import {ImageUploadField} from "@/components/frontend-settings/image-upload";
+import { CustomImageUpload } from "./CustomImageInput"
+import Link from "next/link";
+import {ArrowLeft} from "lucide-react";
 
 export default function HomeForm() {
     const [bannerImage, setBannerImage] = useState<File | null>(null)
@@ -29,10 +31,21 @@ export default function HomeForm() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col space-y-2">
-                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Home</h2>
-                <p className="text-muted-foreground">Here's what's happening today.</p>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/frontend-settings">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+
+                <div className="flex flex-col space-y-2">
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Home</h2>
+                    <p className="text-muted-foreground">Fill the form to add new page.</p>
+                </div>
             </div>
+
+
             {/* Banner Section */}
             <Card>
                 <CardHeader>
@@ -57,7 +70,7 @@ export default function HomeForm() {
                         />
                     </div>
 
-                    <ImageUploadField
+                    <CustomImageUpload
                         label="Banner Image (Recommended size 1920x1080)"
                         file={bannerImage}
                         onFileChange={(file) => handleImageUpload(file, "banner")}
@@ -146,28 +159,28 @@ export default function HomeForm() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <ImageUploadField
+                        <CustomImageUpload
                             label="Dating Site Image Title1"
                             file={datingImages.image1}
                             onFileChange={(file) => handleImageUpload(file, "image1")}
                             type="dating-image-1"
                         />
 
-                        <ImageUploadField
+                        <CustomImageUpload
                             label="Dating Site Image Title2"
                             file={datingImages.image2}
                             onFileChange={(file) => handleImageUpload(file, "image2")}
                             type="dating-image-2"
                         />
 
-                        <ImageUploadField
+                        <CustomImageUpload
                             label="Dating Site Image Title3"
                             file={datingImages.image3}
                             onFileChange={(file) => handleImageUpload(file, "image3")}
                             type="dating-image-3"
                         />
 
-                        <ImageUploadField
+                        <CustomImageUpload
                             label="Dating Site Image Title4"
                             file={datingImages.image4}
                             onFileChange={(file) => handleImageUpload(file, "image4")}

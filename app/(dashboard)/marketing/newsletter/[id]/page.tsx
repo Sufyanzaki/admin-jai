@@ -1,6 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import {ArrowLeft} from "lucide-react";
+import React from "react";
 
 const emails = [
     "talhakhalid628@gmail.com",
@@ -15,7 +19,13 @@ const emails = [
 export default function NewsletterViewPage() {
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/marketing/newsletter">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
                 <div>
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Newsletter Details</h2>
                     <p className="text-muted-foreground">Detailed view of sent newsletter</p>

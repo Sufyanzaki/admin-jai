@@ -6,8 +6,9 @@ import {Label} from "@/components/ui/label"
 import {useState} from "react"
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
-import {Upload, X} from "lucide-react"
+import {ArrowLeft, Upload, X} from "lucide-react"
 import TipTapEditor from "@/components/editor/TipTapEditor";
+import Link from "next/link"
 
 export default function ContactForm() {
 
@@ -21,9 +22,18 @@ export default function ContactForm() {
     return (
         <>
             <div className="space-y-6">
-                <div className="flex flex-col space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Contact</h2>
-                    <p className="text-muted-foreground">Here's what's happening today.</p>
+                <div className="flex items-center gap-4">
+                    <Button variant="outline" size="icon" asChild>
+                        <Link href="/frontend-settings">
+                            <ArrowLeft className="h-4 w-4" />
+                            <span className="sr-only">Back</span>
+                        </Link>
+                    </Button>
+
+                    <div className="flex flex-col space-y-2">
+                        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Contact</h2>
+                        <p className="text-muted-foreground">Fill the form to add new page.</p>
+                    </div>
                 </div>
                 <Card>
                     <CardHeader>

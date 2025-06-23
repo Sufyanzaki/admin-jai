@@ -6,6 +6,10 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import {ArrowLeft} from "lucide-react";
+import React from "react";
 
 export default function BannerInformationCard() {
     const banner = {
@@ -23,7 +27,14 @@ export default function BannerInformationCard() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/marketing/banners">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+
                 <div>
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">View Banner</h2>
                     <p className="text-muted-foreground">Upload banner and define scheduling details</p>

@@ -1,30 +1,26 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {Plus, Search, Eye, Trash2, MoreVertical, Copy, Save} from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import PaginationSection from "@/components/Pagination";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {ArrowLeft} from "lucide-react";
 import {Label} from "@/components/ui/label";
-import {Switch} from "@/components/ui/switch";
 import TipTapEditor from "@/components/editor/TipTapEditor";
+import Link from "next/link";
 
 export default function NewsletterAddPage() {
     return (
         <div className="flex flex-col gap-6">
-            {/* Page Header */}
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/marketing/newsletter">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+
                 <div>
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add Newsletter</h2>
-                    <p className="text-muted-foreground">View and manage newsletters</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">Add Newsletter</h2>
+                    <p className="text-muted-foreground">Create and publish a new newsletter</p>
                 </div>
             </div>
 

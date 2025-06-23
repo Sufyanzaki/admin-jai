@@ -8,8 +8,10 @@ import { Label } from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import {Checkbox} from "@/components/ui/checkbox"
 import TipTapEditor from "@/components/editor/TipTapEditor";
-import { Upload } from "lucide-react"
+import {ArrowLeft, Upload} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
+import Link from "next/link";
 
 
 export default function AgendaForm(){
@@ -24,9 +26,17 @@ export default function AgendaForm(){
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col space-y-2">
-                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Agenda</h2>
-                <p className="text-muted-foreground">Here's what's happening today.</p>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/frontend-settings">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+                <div className="flex flex-col space-y-2">
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Agenda</h2>
+                    <p className="text-muted-foreground">Here's what's happening today.</p>
+                </div>
             </div>
             <Card>
                 <CardHeader>
@@ -71,28 +81,7 @@ export default function AgendaForm(){
                         <p className="text-sm text-muted-foreground">Separate with coma</p>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label>Meta Image (200x200+)</Label>
-                        <div className="flex items-center gap-2">
-                            <Input
-                                id="meta-image"
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => handleImageUpload(e.target.files?.[0] || null)}
-                                className="hidden"
-                            />
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => document.getElementById("meta-image")?.click()}
-                                className="flex items-center gap-2"
-                            >
-                                <Upload className="h-4 w-4" />
-                                Choose File
-                            </Button>
-                            <span className="text-sm text-muted-foreground">{metaImage ? metaImage.name : "No file chosen"}</span>
-                        </div>
-                    </div>
+                    <CustomImageUpload label="Meta Image (200x200+)" file={null} onFileChange={()=>{}} type="meta-image" />
 
                     <div className="space-y-2">
                         <Label htmlFor="page-type">Page type*</Label>

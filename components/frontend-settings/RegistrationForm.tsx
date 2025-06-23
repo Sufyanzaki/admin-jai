@@ -6,7 +6,9 @@ import {Label} from "@/components/ui/label"
 import {useState} from "react"
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
-import {Upload} from "lucide-react"
+import {ArrowLeft} from "lucide-react"
+import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
+import Link from "next/link"
 
 export default function RegistrationForm(){
 
@@ -19,42 +21,27 @@ export default function RegistrationForm(){
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col space-y-2">
-                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Contact</h2>
-                <p className="text-muted-foreground">Here's what's happening today.</p>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/frontend-settings">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+
+                <div className="flex flex-col space-y-2">
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Registration</h2>
+                    <p className="text-muted-foreground">Fill the form to add new page.</p>
+                </div>
             </div>
+
             <Card>
                 <CardHeader>
                     <CardTitle>Registration Section</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {/* Banner Image */}
-                    <div className="space-y-2">
-                        <Label>Banner Image</Label>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex items-center gap-2">
-                                <Input
-                                    id="banner-image"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleImageUpload(e.target.files?.[0] || null)}
-                                    className="hidden"
-                                />
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => document.getElementById("banner-image")?.click()}
-                                    className="flex items-center gap-2"
-                                >
-                                    <Upload className="h-4 w-4" />
-                                    Choose File
-                                </Button>
-                                <span className="text-sm text-muted-foreground">
-                      {bannerImage ? bannerImage.name : "No file chosen"}
-                    </span>
-                            </div>
-                        </div>
-                    </div>
+                    <CustomImageUpload label="Banner Image" file={null} onFileChange={()=> {}} type="banner-1" />
 
                     {/* Step 1: Create */}
                     <div className="space-y-2">

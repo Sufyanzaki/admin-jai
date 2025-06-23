@@ -7,8 +7,9 @@ import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import TipTapEditor from "@/components/editor/TipTapEditor";
-import {Upload} from "lucide-react"
+import {ArrowLeft, Upload} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import Link from "next/link";
 
 
 export default function CreatePage(){
@@ -22,10 +23,20 @@ export default function CreatePage(){
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col space-y-2">
-                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Add New Page</h2>
-                <p className="text-muted-foreground">Here's what's happening today.</p>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/frontend-settings">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
+
+                <div className="flex flex-col space-y-2">
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Add New Page</h2>
+                    <p className="text-muted-foreground">Fill the form to add new page.</p>
+                </div>
             </div>
+
             <Card>
                 <CardHeader>
                     <CardTitle>Page Content</CardTitle>

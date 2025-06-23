@@ -2,7 +2,7 @@
 
 import React, {useState} from "react"
 import Link from "next/link";
-import {Edit, Plus, StepBack, Trash2} from "lucide-react";
+import {ArrowLeft, Edit, Plus, StepBack, Trash2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
@@ -21,12 +21,22 @@ export default function CategoryPage() {
     return (
     <div className="container py-6 space-y-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col space-y-2">
-              <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">FAQ</h1>
-              <p className="text-muted-foreground">Get help with your clinic management system or submit a support ticket.</p>
-          </div>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/faq">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
 
-          <div className="flex gap-2">
+                <div className="flex flex-col space-y-2">
+                    <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Manage Categories</h1>
+                    <p className="text-muted-foreground">
+                        Create and manage categories for organizing your FAQ content
+                    </p>
+                </div>
+            </div>
+            <div className="flex gap-2">
               <Button asChild variant="secondary">
                   <Link href="/faq">
                       Back
