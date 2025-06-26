@@ -73,7 +73,7 @@ export default function LanguagesManagementPage() {
                                         <TableCell className="uppercase">{language.code}</TableCell>
                                         <TableCell>
                                           <span
-                                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                              className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
                                                   language.status === "Active"
                                                       ? "bg-green-100 text-green-800"
                                                       : "bg-gray-100 text-gray-800"

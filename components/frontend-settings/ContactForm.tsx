@@ -7,8 +7,8 @@ import {useState} from "react"
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {ArrowLeft, Upload, X} from "lucide-react"
-import TipTapEditor from "@/components/editor/TipTapEditor";
 import Link from "next/link"
+import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 
 export default function ContactForm() {
 
@@ -100,7 +100,7 @@ export default function ContactForm() {
 
                         <div className="space-y-2">
                             <Label>Description</Label>
-                            <TipTapEditor/>
+                            <SimpleEditor/>
                         </div>
 
                         <div className="space-y-2">
@@ -148,7 +148,7 @@ export default function ContactForm() {
 
                         <div className="space-y-2">
                             <Label>Email Description</Label>
-                            <TipTapEditor />
+                            <SimpleEditor />
                         </div>
 
                         <div className="flex items-center space-x-2 pt-4">

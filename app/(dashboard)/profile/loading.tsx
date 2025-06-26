@@ -16,7 +16,7 @@ export default function ProfileLoading() {
       
       <Card>
         <CardHeader className="flex flex-row items-center gap-4">
-          <Skeleton className="h-16 w-16 rounded-full" />
+          <Skeleton className="h-16 w-16 rounded-md" />
           <div className="space-y-2">
             <Skeleton className="h-6 w-32" />
             <Skeleton className="h-4 w-24" />

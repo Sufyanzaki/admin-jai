@@ -20,7 +20,7 @@ export default function RolesAndPermissionsLoading() {
             <Card key={i} className="bg-background">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Skeleton className="h-5 w-32" />
-                <Skeleton className="h-4 w-4 rounded-full" />
+                <Skeleton className="h-4 w-4 rounded-md" />
               </CardHeader>
               <CardContent>
                 <Skeleton className="h-8 w-16 mb-2" />

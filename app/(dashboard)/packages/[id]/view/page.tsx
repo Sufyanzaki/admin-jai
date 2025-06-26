@@ -147,7 +147,7 @@ export default function PackageDetailsPage({ params }: { params: Promise<{ id: s
                                 <div className="space-y-4">
                                     {pkg.features.map((feature, i) => (
                                         <div key={i} className="flex items-center gap-4">
-                                            <div className="flex items-center justify-center rounded-full bg-primary/10 p-2">
+                                            <div className="flex items-center justify-center rounded-md bg-primary/10 p-2">
                                                 <Star className="h-4 w-4 text-primary" />
                                             </div>
                                             <div>

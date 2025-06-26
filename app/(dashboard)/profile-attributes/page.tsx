@@ -323,7 +323,7 @@ export default function AppointmentsPage() {
                                         <span className="truncate max-w-[120px]">{value}</span>
                                         <button
                                             onClick={() => removeChip(attribute.id, value)}
-                                            className="hover:bg-primary/30 rounded-full p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                            className="hover:bg-primary/30 rounded-md p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
                                             aria-label={`Remove ${value}`}
                                         >
                                           <X className="h-3.5 w-3.5" />

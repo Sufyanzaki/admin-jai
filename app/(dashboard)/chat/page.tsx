@@ -238,7 +238,7 @@ export default function ChatPage() {
                 >
                   <div className="relative">
                     {conversation.isGroup ? (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
                         {conversation.name
                           .split(" ")
                           .map((word) => word[0])
@@ -258,7 +258,7 @@ export default function ChatPage() {
                       </Avatar>
                     )}
                     {conversation.online && (
-                      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-green-500" />
+                      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-md border-2 border-background bg-green-500" />
                     )}
                   </div>
                   <div className="flex-1 overflow-hidden">
@@ -287,7 +287,7 @@ export default function ChatPage() {
           <div className="flex h-16 items-center justify-between border-b px-2 lg:px-4">
             <div className="flex items-center gap-3">
               {activeConversation.isGroup ? (
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
                   {activeConversation.name
                     .split(" ")
                     .map((word) => word[0])

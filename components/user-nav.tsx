@@ -15,7 +15,7 @@ export function UserNav() {
       <NotificationDropdown />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Button variant="ghost" className="relative h-8 w-8 rounded-md">
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder-user.jpg" alt="Dr. Sarah Johnson" />
               <AvatarFallback>SJ</AvatarFallback>

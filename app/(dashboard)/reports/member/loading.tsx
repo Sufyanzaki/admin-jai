@@ -32,7 +32,7 @@ export default function InventoryReportLoading() {
             <Card key={i}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <Skeleton className="h-5 w-[120px]" />
-                <Skeleton className="h-4 w-4 rounded-full" />
+                <Skeleton className="h-4 w-4 rounded-md" />
               </CardHeader>
               <CardContent>
                 <Skeleton className="h-8 w-[80px]" />

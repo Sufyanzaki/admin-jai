@@ -77,8 +77,8 @@ export default function FinancialReportsPage() {
             <p className="text-xs text-muted-foreground">
               <span className="text-green-500">+18.2%</span> from last month
             </p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[75%] rounded-full bg-primary"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[75%] rounded-md bg-primary"></div>
             </div>
           </CardContent>
         </Card>
@@ -92,8 +92,8 @@ export default function FinancialReportsPage() {
             <p className="text-xs text-muted-foreground">
               <span className="text-red-500">+5.4%</span> from last month
             </p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[68%] rounded-full bg-red-500"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[68%] rounded-md bg-red-500"></div>
             </div>
           </CardContent>
         </Card>
@@ -107,8 +107,8 @@ export default function FinancialReportsPage() {
             <p className="text-xs text-muted-foreground">
               <span className="text-green-500">+12.8%</span> from last month
             </p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[32%] rounded-full bg-green-500"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[32%] rounded-md bg-green-500"></div>
             </div>
           </CardContent>
         </Card>
@@ -122,8 +122,8 @@ export default function FinancialReportsPage() {
             <p className="text-xs text-muted-foreground">
               <span className="text-red-500">+3.2%</span> from last month
             </p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[18%] rounded-full bg-amber-500"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[18%] rounded-md bg-amber-500"></div>
             </div>
           </CardContent>
         </Card>

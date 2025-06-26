@@ -148,7 +148,7 @@ export default function PackagesPage() {
                                                 <TableCell>{pkg.features.join(", ")}</TableCell>
                                                 <TableCell>
                           <span
-                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                              className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
                                   pkg.status === "Active"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-yellow-100 text-yellow-800"
@@ -221,7 +221,7 @@ export default function PackagesPage() {
                                                     <TableCell>{pkg.duration}</TableCell>
                                                     <TableCell>{pkg.features.join(", ")}</TableCell>
                                                     <TableCell>
-                            <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                            <span className="inline-flex items-center rounded-md bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
                               {pkg.status}
                             </span>
                                                     </TableCell>
@@ -294,7 +294,7 @@ export default function PackagesPage() {
                                                     <TableCell>{pkg.duration}</TableCell>
                                                     <TableCell>{pkg.features.join(", ")}</TableCell>
                                                     <TableCell>
-                            <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
+                            <span className="inline-flex items-center rounded-md bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
                               {pkg.status}
                             </span>
                                                     </TableCell>

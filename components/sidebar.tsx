@@ -1,43 +1,29 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { useMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
+import {Button} from "@/components/ui/button";
+import {useMobile} from "@/hooks/use-mobile";
+import {cn} from "@/lib/utils";
 import {
   Ambulance,
   BarChart3,
-  Bed,
-  Building2,
   Calendar,
-  Calendar1,
-  CheckCircle2,
-  Droplet,
-  FileText,
-  Grid,
   HelpCircle,
   LayoutDashboard,
   LucideHeart,
-  Mail,
-  MapPin,
   Megaphone,
   MessageCircle,
-  MessageSquare,
-  Package,
-  Pill,
-  Receipt,
   Settings,
-  ShieldCheck,
-  Star, TrendingUp,
+  TrendingUp,
   UserCog,
   UserRound,
   Users,
   X
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import type React from "react";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import AnimateHeight from "react-animate-height";
+
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;

@@ -7,11 +7,11 @@ import {Input} from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import {Checkbox} from "@/components/ui/checkbox"
-import TipTapEditor from "@/components/editor/TipTapEditor";
 import {ArrowLeft, Upload} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
 import Link from "next/link";
+import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 
 export default function TOSForm(){
@@ -57,7 +57,7 @@ export default function TOSForm(){
 
                     <div className="space-y-2">
                         <Label htmlFor="add-content">Add Content</Label>
-                        <TipTapEditor />
+                        <SimpleEditor />
                     </div>
                 </CardContent>
             </Card>

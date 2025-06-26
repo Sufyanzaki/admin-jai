@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import {Textarea} from "@/components/ui/textarea";
 import PaginationSection from "@/components/Pagination";
+import {CheckedState} from "@radix-ui/react-checkbox";
 
 
 // Mock data for staff members
@@ -261,6 +262,10 @@ const staffMembers = [
   },
 ];
 
+type SingleCheck = {
+  checked: CheckedState;
+  value: string;
+}
 
 export default function StaffPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -269,6 +274,8 @@ export default function StaffPage() {
   const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
+
+  const [checkedAll, setCheckedAll] = useState<string[]>([]);
 
   const statuses = [...new Set(members.map((member) => member.status))];
   const membershipOptions = [...new Set(members.map((member) => member.membership))];
@@ -327,6 +334,16 @@ export default function StaffPage() {
     setIsFilterOpen(false);
   };
 
+  const handleCheckAll = (checked: CheckedState) => {
+    if(checked) setCheckedAll(members.map((member) => member.id));
+    else setCheckedAll([]);
+  }
+
+  const handleSingleCheck = ({checked, value}: SingleCheck)=>{
+    if(checked) setCheckedAll(prev => [...prev, value]);
+    else setCheckedAll(prev => prev.filter((id) => id !== value));
+  }
+
   return (
       <>
         <div className="flex flex-col gap-6">
@@ -380,7 +397,7 @@ export default function StaffPage() {
                       <Button variant="outline" size="icon" className={activeFilters > 0 ? "relative bg-primary/10" : ""}>
                         <Filter className="h-4 w-4" />
                         {activeFilters > 0 && (
-                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
+                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-md bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
                         {activeFilters}
                       </span>
                         )}
@@ -463,7 +480,7 @@ export default function StaffPage() {
                         <TableHeader>
                           <TableRow>
                             <TableHead>
-                              <Checkbox id={`member-0`} onCheckedChange={() => {}} />
+                              <Checkbox id={`member-0`} onCheckedChange={handleCheckAll} />
                             </TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Gender</TableHead>
@@ -484,7 +501,7 @@ export default function StaffPage() {
                               filteredMembers.map((member) => (
                                   <TableRow key={member.id}>
                                     <TableCell>
-                                      <Checkbox id={`member-${member.id}`} onCheckedChange={() => {}} />
+                                      <Checkbox id={`member-${member.id}`} checked={checkedAll.includes(member.id)} onCheckedChange={checked => handleSingleCheck({checked, value:member.id})} />
                                     </TableCell>
                                     <TableCell>
                                       <div className="flex items-center gap-3">

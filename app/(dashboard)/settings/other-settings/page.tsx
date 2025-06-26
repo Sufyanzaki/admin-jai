@@ -249,7 +249,7 @@ export default function SettingsPage() {
                               <span className="truncate max-w-[120px]">{value}</span>
                               <button
                                   onClick={() => removeChip(value)}
-                                  className="hover:bg-primary/30 rounded-full p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                  className="hover:bg-primary/30 rounded-md p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
                                   aria-label={`Remove ${value}`}
                               >
                                 <X className="h-3.5 w-3.5" />
@@ -289,7 +289,7 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Footer Logo</h3>
                     <div className="flex items-center gap-4">
-                      <div className="h-24 w-24 shrink-0 rounded-full bg-muted flex items-center justify-center">
+                      <div className="h-24 w-24 shrink-0 rounded-md bg-muted flex items-center justify-center">
                         <Upload className="h-8 w-8 text-muted-foreground" />
                       </div>
                       <div className="space-y-2">

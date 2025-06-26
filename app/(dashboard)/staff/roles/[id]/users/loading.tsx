@@ -42,7 +42,7 @@ export default function RoleUsersLoading() {
               .map((_, i) => (
                 <div key={i} className="flex items-center justify-between py-2">
                   <div className="flex items-center gap-2 w-[250px]">
-                    <Skeleton className="h-8 w-8 rounded-full" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
                     <div>
                       <Skeleton className="h-5 w-32 mb-1" />
                       <Skeleton className="h-3 w-40" />
@@ -51,7 +51,7 @@ export default function RoleUsersLoading() {
                   <Skeleton className="h-5 w-24" />
                   <Skeleton className="h-5 w-24" />
                   <Skeleton className="h-5 w-24 hidden md:block" />
-                  <Skeleton className="h-6 w-16 rounded-full" />
+                  <Skeleton className="h-6 w-16 rounded-md" />
                   <Skeleton className="h-8 w-8 rounded-md" />
                 </div>
               ))}

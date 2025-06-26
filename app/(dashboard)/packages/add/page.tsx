@@ -31,7 +31,7 @@ export default function AddPackagesPage() {
                 </CardHeader>
 
                 <CardContent className="pt-6 space-y-6">
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-3">
                         {/* Name Field */}
                         <div className="space-y-2">
                             <Label htmlFor="name">
@@ -60,6 +60,25 @@ export default function AddPackagesPage() {
                                     id="price"
                                     placeholder="0.00"
                                     className="pl-8 bg-background"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                />
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Set 0 for free packages
+                            </p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="price">
+                                Validity <span className="text-red-500">*</span>
+                            </Label>
+                            <div className="relative">
+                                <Input
+                                    id="price"
+                                    placeholder="0 Days"
+                                    className="bg-background"
                                     type="number"
                                     step="0.01"
                                     min="0"

@@ -28,7 +28,7 @@ import {
   Database,
   HardDrive, Settings,
 } from "lucide-react"
-import TipTapEditor from "@/components/editor/TipTapEditor";
+import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function SettingsPage() {
   return (
@@ -311,7 +311,7 @@ export default function SettingsPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="first-name">Cookie Agreement Text</Label>
-                  <TipTapEditor />
+                  <SimpleEditor />
                 </div>
 
                 <div className="flex justify-end pt-6">
@@ -361,7 +361,7 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Meta Image</h3>
                   <div className="flex items-center gap-4">
-                    <div className="h-24 w-24 shrink-0 rounded-full bg-muted flex items-center justify-center">
+                    <div className="h-24 w-24 shrink-0 rounded-md bg-muted flex items-center justify-center">
                       <Upload className="h-8 w-8 text-muted-foreground" />
                     </div>
                     <div className="space-y-2">

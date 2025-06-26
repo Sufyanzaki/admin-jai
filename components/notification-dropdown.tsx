@@ -70,9 +70,9 @@ export function NotificationDropdown() {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute right-1 top-1 flex h-2 w-2 rounded-full bg-primary">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            <span className="absolute right-1 top-1 flex h-2 w-2 rounded-md bg-primary">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-md bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-md h-2 w-2 bg-primary"></span>
             </span>
           )}
           <span className="sr-only">Notifications</span>

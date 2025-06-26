@@ -5,6 +5,7 @@ import {DoctorAppointments} from "@/components/doctor/doctor-appointments";
 import {BestSelling} from "@/components/doctor/best-selling";
 import {PatientNotes} from "@/components/doctor/patient-notes";
 import {DoctorStats} from "@/components/doctor/doctor-stats";
+import Link from "next/link";
 
 const cardData = [
   {
@@ -94,10 +95,10 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="mt-6">
-                      <button className={`flex items-center justify-between w-full text-sm ${card.buttonColor} font-medium hover:underline`}>
+                      <Link href="/members" className={`flex items-center justify-between w-full text-sm ${card.buttonColor} font-medium hover:underline`}>
                         <span>{card.buttonText}</span>
                         <ArrowUpRight className="h-4 w-4" />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

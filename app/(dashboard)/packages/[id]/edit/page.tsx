@@ -196,7 +196,7 @@ const PackageEditPage = () => {
                                     {["bg-red-500", "bg-blue-500", "bg-green-500", "bg-yellow-500", "bg-purple-500"].map((color) => (
                                         <div
                                             key={color}
-                                            className={`h-8 w-8 rounded-full ${color} ${color === currentColor ? "ring-2 ring-primary" : ""} cursor-pointer ring-offset-2`}
+                                            className={`h-8 w-8 rounded-md ${color} ${color === currentColor ? "ring-2 ring-primary" : ""} cursor-pointer ring-offset-2`}
                                             onClick={() => setCurrentColor(color)}
                                         />
                                     ))}

@@ -5,8 +5,8 @@ import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {ArrowLeft, Mail,} from "lucide-react"
 import Link from "next/link"
-import TipTapEditor from "@/components/editor/TipTapEditor"
 import {Switch} from "@/components/ui/switch";
+import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function NotificationsDetailsPage() {
   return (
@@ -55,7 +55,7 @@ export default function NotificationsDetailsPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="email-content" className="text-base">Email Content</Label>
-                  <TipTapEditor />
+                  <SimpleEditor />
                   <p className="text-sm text-muted-foreground">
                     Use the toolbar to format your email content
                   </p>

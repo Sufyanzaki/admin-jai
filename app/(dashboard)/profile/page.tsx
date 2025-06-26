@@ -243,7 +243,7 @@ export default function ProfilePage() {
                       { action: "Backup completed", date: "March 6, 2024 9:00 AM", icon: FileText, description: "System backup successful", status: "success" }
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-4">
-                        <div className={`rounded-full p-2 ${
+                        <div className={`rounded-md p-2 ${
                           item.status === "success" ? "bg-green-100 text-green-600" :
                           item.status === "warning" ? "bg-yellow-100 text-yellow-600" :
                           item.status === "error" ? "bg-red-100 text-red-600" :
@@ -330,7 +330,7 @@ export default function ProfilePage() {
                       <div key={i}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className={`rounded-full p-2 ${
+                            <div className={`rounded-md p-2 ${
                               item.status === "enabled" ? "bg-green-500/20 text-green-600" :
                               item.status === "warning" ? "bg-yellow-500/20 text-yellow-600" :
                               "bg-muted"

@@ -51,7 +51,7 @@ export default function EditRoleLoading() {
               <div key={i} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-6 w-6 rounded-full" />
+                  <Skeleton className="h-6 w-6 rounded-md" />
                 </div>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   {Array(4)

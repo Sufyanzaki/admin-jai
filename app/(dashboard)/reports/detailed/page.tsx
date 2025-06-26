@@ -100,8 +100,8 @@ export default function DetailedReportsPage() {
           <CardContent>
             <h2 className="text-2xl lg:text-4xl mb-2 font-bold">1,248</h2>
             <p className="text-xs text-muted-foreground">+12.5% from last month</p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[75%] rounded-full bg-primary"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[75%] rounded-md bg-primary"></div>
             </div>
           </CardContent>
         </Card>
@@ -113,8 +113,8 @@ export default function DetailedReportsPage() {
           <CardContent>
             <h2 className="text-2xl lg:text-4xl mb-2 font-bold">876</h2>
             <p className="text-xs text-muted-foreground">70.2% completion rate</p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[70%] rounded-full bg-green-500"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[70%] rounded-md bg-green-500"></div>
             </div>
           </CardContent>
         </Card>
@@ -126,8 +126,8 @@ export default function DetailedReportsPage() {
           <CardContent>
             <h2 className="text-2xl lg:text-4xl mb-2 font-bold">187</h2>
             <p className="text-xs text-muted-foreground">15% cancellation rate</p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[15%] rounded-full bg-red-500"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[15%] rounded-md bg-red-500"></div>
             </div>
           </CardContent>
         </Card>
@@ -139,8 +139,8 @@ export default function DetailedReportsPage() {
           <CardContent>
             <h2 className="text-2xl lg:text-4xl mb-2 font-bold">85</h2>
             <p className="text-xs text-muted-foreground">6.8% no-show rate</p>
-            <div className="mt-4 h-1 w-full rounded-full bg-secondary">
-              <div className="h-1 w-[7%] rounded-full bg-amber-500"></div>
+            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
+              <div className="h-1 w-[7%] rounded-md bg-amber-500"></div>
             </div>
           </CardContent>
         </Card>

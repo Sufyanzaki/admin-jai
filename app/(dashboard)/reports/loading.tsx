@@ -16,7 +16,7 @@ export default function ReportsLoading() {
             <Card key={i} className="flex flex-col">
               <CardHeader>
                 <div className="flex items-center gap-2">
-                  <Skeleton className="h-5 w-5 rounded-full" />
+                  <Skeleton className="h-5 w-5 rounded-md" />
                   <Skeleton className="h-6 w-[180px]" />
                 </div>
                 <Skeleton className="h-4 w-[250px]" />

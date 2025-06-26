@@ -242,7 +242,7 @@ export default function StaffPage() {
               <div className="space-y-3">
                 {/* Count admin roles */}
                 <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-blue-500" />
+                  <div className="h-3 w-3 rounded-md bg-blue-500" />
                   <div className="flex flex-1 items-center justify-between">
                     <span className="text-sm">Admins</span>
                     <Badge variant="outline">
@@ -253,7 +253,7 @@ export default function StaffPage() {
 
                 {/* Count Mod roles */}
                 <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-green-500" />
+                  <div className="h-3 w-3 rounded-md bg-green-500" />
                   <div className="flex flex-1 items-center justify-between">
                     <span className="text-sm">Moderators</span>
                     <Badge variant="outline">
@@ -267,7 +267,7 @@ export default function StaffPage() {
                     .filter(role => !['admin', 'Mod'].includes(role))
                     .map(role => (
                         <div key={role} className="flex items-center gap-2">
-                          <div className="h-3 w-3 rounded-full bg-purple-500" />
+                          <div className="h-3 w-3 rounded-md bg-purple-500" />
                           <div className="flex flex-1 items-center justify-between">
                             <span className="text-sm">{role.charAt(0).toUpperCase() + role.slice(1)}</span>
                             <Badge variant="outline">

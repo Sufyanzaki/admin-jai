@@ -73,7 +73,7 @@ export function DoctorStats() {
             <BarChart data={patientVisitsData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
               <XAxis dataKey="month" />
               <YAxis />
-              {/* <Tooltip /> */}
+               <Tooltip />
               <Bar dataKey="visits" fill="#6366f1" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

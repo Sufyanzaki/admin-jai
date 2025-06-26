@@ -7,8 +7,8 @@ import {useState} from "react"
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {ArrowLeft, Upload, X} from "lucide-react"
-import TipTapEditor from "@/components/editor/TipTapEditor";
 import Link from "next/link";
+import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 
 export default function HowItWorks(){
 
@@ -90,7 +90,7 @@ export default function HowItWorks(){
 
                     <div className="space-y-2">
                         <Label htmlFor="sub-title">Sub Title</Label>
-                        <TipTapEditor/>
+                        <SimpleEditor/>
                     </div>
 
                     <div className="space-y-2">
@@ -118,12 +118,12 @@ export default function HowItWorks(){
 
                     <div className="space-y-2">
                         <Label htmlFor="faq-sub-title">Sub Title</Label>
-                        <TipTapEditor/>
+                        <SimpleEditor/>
                     </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="description">Description</Label>
-                        <TipTapEditor/>
+                        <SimpleEditor/>
                     </div>
 
                     <div className="space-y-2">

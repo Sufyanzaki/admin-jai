@@ -63,7 +63,7 @@ export default function RoleDetailsLoading() {
                         {Array(4)
                           .fill(null)
                           .map((_, j) => (
-                            <Skeleton key={j} className="h-6 w-16 rounded-full" />
+                            <Skeleton key={j} className="h-6 w-16 rounded-md" />
                           ))}
                       </div>
                     </div>

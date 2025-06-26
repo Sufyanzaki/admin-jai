@@ -486,7 +486,7 @@ export default function AddDoctorPage() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Profile Photo</h3>
                   <div className="flex items-center gap-4">
-                    <div className="h-24 w-24 shrink-0 rounded-full bg-muted flex items-center justify-center">
+                    <div className="h-24 w-24 shrink-0 rounded-md bg-muted flex items-center justify-center">
                       <Upload className="h-8 w-8 text-muted-foreground" />
                     </div>
                     <div className="space-y-2">

@@ -6,11 +6,11 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
-import TipTapEditor from "@/components/editor/TipTapEditor";
 import {ArrowLeft} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
 import Link from "next/link";
+import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 
 export default function VragenForm(){
@@ -55,7 +55,7 @@ export default function VragenForm(){
 
                     <div className="space-y-2">
                         <Label htmlFor="add-content">Add Content</Label>
-                        <TipTapEditor />
+                        <SimpleEditor />
                     </div>
                 </CardContent>
             </Card>

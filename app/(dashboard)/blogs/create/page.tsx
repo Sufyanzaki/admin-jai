@@ -7,9 +7,9 @@ import {Label} from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import TipTapEditor from "@/components/editor/TipTapEditor";
 import Link from "next/link";
 import {ArrowLeft} from "lucide-react";
+import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function AddBlogPage() {
 
@@ -89,7 +89,7 @@ export default function AddBlogPage() {
                         {/* Description */}
                         <div className="space-y-2 col-span-2">
                             <Label htmlFor="description">Description</Label>
-                            <TipTapEditor />
+                            <SimpleEditor />
                         </div>
 
                         {/* Meta Title */}

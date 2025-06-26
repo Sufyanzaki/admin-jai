@@ -4,8 +4,8 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {ArrowLeft} from "lucide-react";
 import {Label} from "@/components/ui/label";
-import TipTapEditor from "@/components/editor/TipTapEditor";
 import Link from "next/link";
+import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function NewsletterAddPage() {
     return (
@@ -41,7 +41,7 @@ export default function NewsletterAddPage() {
 
                         <div className="space-y-2">
                             <Label htmlFor="add-content">Newsletter Content</Label>
-                            <TipTapEditor />
+                            <SimpleEditor />
                         </div>
 
                         <div className="flex justify-end pt-6">

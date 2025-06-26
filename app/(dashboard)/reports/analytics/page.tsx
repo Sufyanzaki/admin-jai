@@ -1,29 +1,38 @@
 "use client";
 
-import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {DateRangePicker} from "@/components/date-range-picker";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {
-  DownloadIcon,
-  LaptopIcon,
+  HeartIcon,
+  LaptopIcon, MessageCircleIcon,
   MinusIcon,
-  RefreshCwIcon,
-  SearchIcon,
   SmartphoneIcon,
   TabletIcon,
   TrendingDownIcon,
-  TrendingUpIcon,
-  UserIcon,
+  TrendingUpIcon, UserPlusIcon,
   UsersIcon
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {Input} from "@/components/ui/input";
-import {useState} from "react";
-import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis} from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer, Tooltip,
+  XAxis,
+  YAxis
+} from "recharts";
 import {ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
+import {Progress} from "@/components/ui/progress";
 
 // Sample data for charts
 const visitTypesData = [
@@ -97,22 +106,60 @@ const conditionTrendsData = [
   { name: "Jun", hypertension: 145, diabetes: 105, respiratory: 95 },
 ];
 
-// Colors for charts
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"];
+const analytics = [
+  {
+    title: "Total Users",
+    value: "12,540",
+    icon: <UsersIcon className="size-8 text-muted-foreground" />,
+    change: "+5.6%",
+    changeColor: "text-green-500",
+    subtitle: "since last month",
+  },
+  {
+    title: "New Signups",
+    value: "1,230",
+    icon: <UserPlusIcon className="size-8 text-muted-foreground" />,
+    change: "+9.3%",
+    changeColor: "text-green-500",
+    subtitle: "in the past week",
+  },
+  {
+    title: "Matches Made",
+    value: "378",
+    icon: <HeartIcon className="size-8 text-muted-foreground" />,
+    change: "+2.1%",
+    changeColor: "text-green-500",
+    subtitle: "in the last 30 days",
+  },
+  {
+    title: "Messages Sent",
+    value: "14,892",
+    icon: <MessageCircleIcon className="size-8 text-muted-foreground" />,
+    change: "+11.8%",
+    changeColor: "text-green-500",
+    subtitle: "compared to previous period",
+  },
+]
+
+const appRevenueData = [
+  { name: "Pakistan", value: 48250 },
+  { name: "India", value: 39700 },
+  { name: "Bangladesh", value: 24600 },
+  { name: "United Arab Emirates", value: 18500 },
+  { name: "United Kingdom", value: 14250 },
+  { name: "Other", value: 20350 },
+]
+
+const DEPARTMENT_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82ca9d"]
 
 export default function PatientVisitReportPage() {
-  const [date, setDate] = useState<{ from: Date; to?: Date }>({
-    from: new Date(new Date().setDate(new Date().getDate() - 30)),
-    to: new Date(),
-  });
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Patient Visit Report</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Analytics Reports</h1>
         </div>
-        <p className="text-muted-foreground">Track patient visits, demographics, and health trends</p>
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -132,65 +179,26 @@ export default function PatientVisitReportPage() {
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Visits</CardTitle>
-            <UsersIcon className="size-8 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">3,842</h2>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-500">+12.5%</span> from previous period
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">New Patients</CardTitle>
-            <UserIcon className="size-8 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">428</h2>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-500">+8.2%</span> from previous period
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Avg. Visit Duration</CardTitle>
-            <Badge variant="outline" className="px-1.5 py-0.5 text-xs">
-              32 min
-            </Badge>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">32 min</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-red-500">-2.5 min</span> from previous period
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">No-Show Rate</CardTitle>
-            <Badge variant="outline" className="px-1.5 py-0.5 text-xs">
-              6.8%
-            </Badge>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">6.8%</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-500">-0.5%</span> from previous period
-            </p>
-          </CardContent>
-        </Card>
+        {analytics.map((item, index) => (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">{item.title}</CardTitle>
+                {item.icon}
+              </CardHeader>
+              <CardContent>
+                <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{item.value}</h2>
+                <p className="text-xs text-muted-foreground">
+                  <span className={item.changeColor}>{item.change}</span> {item.subtitle}
+                </p>
+              </CardContent>
+            </Card>
+        ))}
       </div>
 
       <div className="md:grid max-md:space-y-6 gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Monthly Visit Trends</CardTitle>
-            <CardDescription>Patient visits over time</CardDescription>
+            <CardTitle>Gender Distribution</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -241,8 +249,7 @@ export default function PatientVisitReportPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Visit Distribution by Day</CardTitle>
-            <CardDescription>Patient visits by day of week</CardDescription>
+            <CardTitle>Average Age</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -278,6 +285,78 @@ export default function PatientVisitReportPage() {
             </ChartContainer>
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Top 10 Countries</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] w-full">
+              <ChartContainer
+                  config={{
+                    value: {
+                      label: "Revenue",
+                      color: "hsl(var(--chart-1))",
+                    },
+                  }}
+                  className="h-full w-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                        data={appRevenueData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={true}
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        paddingAngle={2}
+                    >
+                      {appRevenueData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={DEPARTMENT_COLORS[index % DEPARTMENT_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                        content={<ChartTooltipContent />}
+                        wrapperStyle={{
+                          backgroundColor: 'white',
+                          padding: '8px',
+                          borderRadius: '4px',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        }}
+                    />
+                    <Legend
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Top 10 Cities</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {[
+              { city: "Lahore", percent: 82 },
+              { city: "Karachi", percent: 76 },
+              { city: "Islamabad", percent: 68 },
+              { city: "Faisalabad", percent: 59 },
+              { city: "Rawalpindi", percent: 53 },
+            ].map(({ city, percent }, idx) => (
+                <div key={idx} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-medium">{city}</div>
+                    <div className="text-sm text-muted-foreground">{percent}%</div>
+                  </div>
+                  <Progress value={percent} className="h-2 [&>*]:bg-green-500" />
+                </div>
+            ))}
+          </CardContent>
+        </Card>
+
       </div>
 
       <div className="flex flex-col gap-4">
