@@ -23,7 +23,7 @@ import {ChartContainer, ChartTooltipContent} from "@/components/ui/chart"
 
 export default function FinancialReportsPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Financial Reports</h1>
         <p className="text-muted-foreground">Track revenue, expenses, and financial performance metrics</p>

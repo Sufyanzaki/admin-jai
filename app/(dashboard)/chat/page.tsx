@@ -212,19 +212,6 @@ export default function ChatPage() {
               />
             </div>
           </div>
-          <Tabs defaultValue="all" className="px-4">
-            <TabsList className="w-full">
-              <TabsTrigger value="all" className="flex-1">
-                All
-              </TabsTrigger>
-              <TabsTrigger value="unread" className="flex-1">
-                Unread
-              </TabsTrigger>
-              <TabsTrigger value="groups" className="flex-1">
-                Groups
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
           <div className="h-[calc(100vh-12rem)] overflow-y-auto">
             <div className="p-2">
               {filteredConversations.map((conversation) => (

@@ -155,7 +155,7 @@ const DEPARTMENT_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"
 export default function PatientVisitReportPage() {
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Analytics Reports</h1>

@@ -98,7 +98,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div>
         <h2 className="text-2xl font-bold">App Settings</h2>
         <p className="text-sm text-muted-foreground">Configure your app settings and preferences</p>

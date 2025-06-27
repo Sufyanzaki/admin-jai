@@ -56,7 +56,7 @@ export default function AddPatientPage() {
   const paymentStatuses = ["Pending", "Processing", "Completed", "Failed", "Refunded", "Cancelled"]
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 p-4 xl:p-6">
       <div className="flex items-center flex-wrap gap-4">
         <Button variant="outline" size="icon" asChild>
           <Link href="/payments">

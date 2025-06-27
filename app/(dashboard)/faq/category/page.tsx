@@ -19,7 +19,7 @@ export default function CategoryPage() {
     const [open, setOpen] = useState(false)
 
     return (
-    <div className="container py-6 space-y-6">
+    <div className="container py-6 space-y-6 p-4 xl:p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
                 <Button variant="outline" size="icon" asChild>

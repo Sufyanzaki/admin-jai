@@ -30,7 +30,7 @@ import {Separator} from "@/components/ui/separator";
 const userProfile = [
     {
         id: "basic_information",
-        section: "Basic Information",
+        section: "Introduction",
         data: {
             Username: "amaad",
             "First Name": "amaad",
@@ -60,7 +60,7 @@ const userProfile = [
     },
     {
         id: "about_me",
-        section: "About Me",
+        section: "About",
         data: {
             Length: "2.05",
             "Eye Color": "Green",
@@ -97,7 +97,7 @@ const userProfile = [
     },
     {
         id: "hobbies_interest",
-        section: "Hobbies & Interest",
+        section: "Hobbies",
         data: {
             Sports: "Rugby",
             Music: "blues",
@@ -108,7 +108,7 @@ const userProfile = [
     },
     {
         id: "personal_attitude_behavior",
-        section: "Personal Attitude & Behavior",
+        section: "Behavior",
         data: {
             "Personal Attitude": "romantisch, uitbundig, sloom"
         }
@@ -124,7 +124,7 @@ const userProfile = [
     },
     {
         id: "partner_expectation",
-        section: "Partner Expectation",
+        section: "Expectation",
         data: {
             Origin: "Hindostaans",
             "Am Looking for": "Man",
@@ -232,7 +232,7 @@ export default function MemberProfilePage({ params }: { params: Promise<{ id: st
 
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 p-4 xl:p-6">
             <div className="flex items-center gap-2">
                 <Button variant="outline" size="icon" asChild>
                     <Link href="/members">
@@ -347,7 +347,7 @@ export default function MemberProfilePage({ params }: { params: Promise<{ id: st
                                 </div>
                                 <TabsList className="flex">
                                     {userProfile.map((tab) => (
-                                        <TabsTrigger className="px-6 py-2" value={tab.id}>{tab.section}</TabsTrigger>
+                                        <TabsTrigger className="px-4 py-2" value={tab.id}>{tab.section}</TabsTrigger>
                                     ))}
                                 </TabsList>
                             </CardHeader>

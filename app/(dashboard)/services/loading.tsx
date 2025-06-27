@@ -4,7 +4,7 @@ import { Activity, Clock, DollarSign, Stethoscope } from "lucide-react"
 
 export default function ServicesLoading() {
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 p-4 xl:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <Skeleton className="h-8 w-[250px]" />

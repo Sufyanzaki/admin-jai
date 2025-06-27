@@ -28,7 +28,7 @@ const newsletterData = [
 
 export default function NewsletterListPage() {
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 p-4 xl:p-6">
             {/* Page Header */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>

@@ -3,8 +3,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {DoctorAppointments} from "@/components/doctor/doctor-appointments";
 import {BestSelling} from "@/components/doctor/best-selling";
-import {PatientNotes} from "@/components/doctor/patient-notes";
-import {DoctorStats} from "@/components/doctor/doctor-stats";
+import {MemberStats} from "@/components/doctor/member-stats";
 import Link from "next/link";
 
 const cardData = [
@@ -69,7 +68,7 @@ const cardData = [
 export default function DashboardPage() {
   return (
       <div className="flex min-h-screen w-full flex-col">
-        <main className="flex-1 space-y-6">
+        <main className="flex-1 space-y-6 p-4 xl:p-6">
           <div className="flex flex-col space-y-2">
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Welcome back</h2>
             <p className="text-muted-foreground">Here's what's happening today.</p>
@@ -147,7 +146,7 @@ export default function DashboardPage() {
                   <CardDescription>Your platform's matching success and user engagement</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DoctorStats />
+                  <MemberStats />
                 </CardContent>
               </Card>
             </TabsContent>

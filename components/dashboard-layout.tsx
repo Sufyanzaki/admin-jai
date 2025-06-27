@@ -46,7 +46,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         <div ref={sidebarRef}>
           <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
         </div>
-        <main className="flex-1 xl:ml-64 overflow-auto p-4 xl:p-6">{children}</main>
+        <main className="flex-1 xl:ml-64 overflow-auto">{children}</main>
       </div>
     </div>
   );

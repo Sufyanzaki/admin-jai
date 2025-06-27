@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import Link from "next/link"
 
 export default function LanguagesManagementPage() {
     const languages = [
@@ -43,7 +44,7 @@ export default function LanguagesManagementPage() {
         },
     ]
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 p-4 xl:p-6">
             <div>
                 <h2 className="text-2xl font-bold">Languages Management</h2>
                 <p className="text-sm text-muted-foreground">Manage available languages for your application</p>
@@ -91,7 +92,9 @@ export default function LanguagesManagementPage() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem>Translate Language</DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        <Link href="/settings/languages/1">Translate Language</Link>
+                                                    </DropdownMenuItem>
                                                     <DropdownMenuItem className="text-red-600">
                                                         {language.status === "Active" ? "Deactivate" : "Activate"}
                                                     </DropdownMenuItem>

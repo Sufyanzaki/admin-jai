@@ -9,7 +9,7 @@ import {Plus} from "lucide-react";
 
 export default function ChatAndVideoSetting() {
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Chat & Video Setting</h2>

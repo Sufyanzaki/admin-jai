@@ -248,8 +248,8 @@ export default function PaymentsPage() {
   };
 
   return (
-      <>
-        <div className="flex flex-col gap-5 mb-10">
+      <div className="p-4 xl:p-6">
+        <div className="flex flex-col gap-5 mb-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Payments</h1>
@@ -411,12 +411,6 @@ export default function PaymentsPage() {
                                     View Order
                                   </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Link href={`/payments/1/edit`} className="flex gap-2">
-                                    <FileText className="mr-2 h-4 w-4" />
-                                    Edit Order
-                                  </Link>
-                                </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>
@@ -493,9 +487,6 @@ export default function PaymentsPage() {
                                     <DropdownMenuItem asChild>
                                       <Link href={`/orders/${order.id}`}>View Order</Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                      <Link href={`/orders/${order.id}/edit`}>Edit Order</Link>
-                                    </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)} className="text-red-600">
                                       Delete
@@ -512,6 +503,6 @@ export default function PaymentsPage() {
               </TabsContent>
           ))}
         </Tabs>
-      </>
+      </div>
   );
 }

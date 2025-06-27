@@ -24,7 +24,7 @@ const memberStatusData = [
 
 export default function InventoryReportPage() {
   return (
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Member Report</h1>

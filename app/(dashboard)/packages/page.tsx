@@ -49,7 +49,7 @@ export default function PackagesPage() {
 
     return (
         <>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 p-4 xl:p-6">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Packages</h2>

@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function PatientVisitReportLoading() {
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <Skeleton className="h-9 w-[250px]" />

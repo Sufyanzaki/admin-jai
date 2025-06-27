@@ -2,14 +2,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Save, Search, Copy } from "lucide-react";
+import {Save, Search, Copy, ArrowLeft} from "lucide-react";
 import type React from "react";
 import PaginationSection from "@/components/Pagination";
+import Link from "next/link";
 
 export default function LanguageTranslatePage() {
     return (
-        <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-6 p-4 xl:p-6">
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/settings/languages">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
                 <div>
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Manage Translations</h2>
                     <p className="text-muted-foreground">Manage clinic staff, roles, and permissions</p>

@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
 export default function IntegrationsLoading() {
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col space-y-6 p-4 xl:p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Skeleton className="h-8 w-8 rounded-md" />

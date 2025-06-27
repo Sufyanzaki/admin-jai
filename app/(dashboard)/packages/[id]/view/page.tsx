@@ -14,7 +14,7 @@ export default function PackageDetailsPage({ params }: { params: Promise<{ id: s
     const pkg = packages.find((p) => p.id === packageId) || packages[0]
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 p-4 xl:p-6">
             <div className="flex items-center gap-2">
                 <Link href="/packages">
                     <Button variant="ghost" size="icon">

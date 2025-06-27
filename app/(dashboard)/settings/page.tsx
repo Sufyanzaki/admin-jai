@@ -32,7 +32,7 @@ import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function SettingsPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div>
         <h2 className="text-2xl font-bold">General Settings</h2>
         <p className="text-sm text-muted-foreground">Configure your clinic settings and preferences</p>
@@ -235,6 +235,41 @@ export default function SettingsPage() {
                 <Label htmlFor="use-insurance">Maintenance Mode Activation</Label>
                 <Switch id="use-insurance" defaultChecked />
               </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="default-currency">Default Currency</Label>
+                <Select defaultValue="usd">
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="usd">USD – US Dollar</SelectItem>
+                    <SelectItem value="eur">EUR – Euro</SelectItem>
+                    <SelectItem value="gbp">GBP – British Pound</SelectItem>
+                    <SelectItem value="cad">CAD – Canadian Dollar</SelectItem>
+                    <SelectItem value="pkr">PKR – Pakistani Rupee</SelectItem>
+                    <SelectItem value="inr">INR – Indian Rupee</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="default-language">Default Language</Label>
+                <Select defaultValue="en">
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Select language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="es">Spanish</SelectItem>
+                    <SelectItem value="fr">French</SelectItem>
+                    <SelectItem value="de">German</SelectItem>
+                    <SelectItem value="ur">Urdu</SelectItem>
+                    <SelectItem value="hi">Hindi</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
 
               <div className="flex justify-end pt-6">
                 <Button className="px-8">Save Configuration</Button>

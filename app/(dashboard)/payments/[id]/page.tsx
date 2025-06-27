@@ -120,7 +120,7 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
     const total = subtotal + tax;
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 p-4 xl:p-6">
             {/* Header Section */}
             <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div className="flex items-center gap-4">

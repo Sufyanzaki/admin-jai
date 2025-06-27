@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const [isChangingPassword, setIsChangingPassword] = useState(false)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 xl:p-6">
       <div>
         <h3 className="text-lg font-medium">Profile</h3>
         <p className="text-sm text-muted-foreground">

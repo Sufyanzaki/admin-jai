@@ -71,8 +71,8 @@ const reportCards = [
 
 export default function ReportsPage() {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
+      <div className="flex flex-col">
         <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Reports</h1>
         <p className="text-muted-foreground">Access and generate detailed reports for your clinic</p>
       </div>

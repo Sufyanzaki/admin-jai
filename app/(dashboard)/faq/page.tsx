@@ -83,7 +83,7 @@ export default function SupportFAQ() {
     )
 
     return (
-        <div className="container mx-auto space-y-6">
+        <div className="container mx-auto space-y-6 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h2 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">Feedback Management</h2>

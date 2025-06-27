@@ -30,7 +30,7 @@ export default function AddStaffPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex items-center flex-wrap gap-2">
         <Button variant="outline" size="icon" asChild>
           <Link href="/staff">

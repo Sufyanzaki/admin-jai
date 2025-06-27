@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Award, Building, Calendar, Clipboard, Clock, Download, Edit, Eye, FileText, Filter, Mail, MoreVertical, Phone, RefreshCw, Search, Shield, Trash, UserCheck, UserPlus, Users, UserX } from "lucide-react";
+import {
+  Award, Building, Calendar, Clipboard, Clock, Download, Edit, Eye, FileText, Filter, Mail,
+  MapPin, MoreVertical, Package, Phone, RefreshCw, Search, Shield, Slash, Trash,
+  User, UserCheck, UserPlus, Users, UserX
+} from "lucide-react";
 import Link from "next/link";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useState } from "react";
@@ -346,7 +350,7 @@ export default function StaffPage() {
 
   return (
       <>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 p-4 xl:p-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members Management</h2>
@@ -600,43 +604,55 @@ export default function StaffPage() {
                   </TabsContent>
                   <TabsContent value="grid" className="mt-0">
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      {staffMembers.map((staff) => (
+                      {filteredMembers.map((staff) => (
                           <Card key={staff.id} className="overflow-hidden">
                             <CardContent className="!p-0">
                               <div className="flex flex-col">
                                 <div className="flex items-center justify-between bg-muted p-2 lg:p-4">
                                   <div className="flex items-center gap-3">
                                     <Avatar className="h-10 w-10">
-                                      <AvatarImage src={staff.avatar || "/user-2.png?height=40&width=40&query=person"} alt={staff.name} />
-                                      <AvatarFallback>{staff.initials}</AvatarFallback>
+                                      <AvatarImage src={staff.image || "/user-2.png"} alt={staff.name} />
+                                      <AvatarFallback>{staff.name?.[0]}</AvatarFallback>
                                     </Avatar>
                                     <div>
                                       <div className="font-medium">{staff.name}</div>
-                                      <div className="text-xs text-muted-foreground">{staff.role}</div>
+                                      <div className="text-xs text-muted-foreground">{staff.membership}</div>
                                     </div>
                                   </div>
-                                  <Badge variant={staff.status === "Active" ? "success" : staff.status === "On Leave" ? "warning" : "secondary"}>{staff.status}</Badge>
+                                  <Badge variant={
+                                    staff.status === "Active" ? "success" :
+                                        staff.status === "On Leave" ? "warning" :
+                                            "secondary"
+                                  }>
+                                    {staff.status}
+                                  </Badge>
                                 </div>
+
                                 <div className="p-4">
                                   <div className="grid gap-2">
                                     <div className="flex items-center gap-2">
-                                      <Building className="h-4 w-4 text-muted-foreground" />
-                                      <span className="text-sm">{staff.department}</span>
+                                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">Joined {staff.joinDate}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                       <Mail className="h-4 w-4 text-muted-foreground" />
                                       <span className="text-sm">{staff.email}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      <Phone className="h-4 w-4 text-muted-foreground" />
-                                      <span className="text-sm">{staff.phone}</span>
+                                      <User className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">{staff.gender}, {staff.age} years</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                                      <span className="text-sm">Joined {staff.joinDate}</span>
+                                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">{staff.city}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Package className="h-4 w-4 text-muted-foreground" />
+                                      <span className="text-sm">Plan: {staff.plan || "N/A"}</span>
                                     </div>
                                   </div>
                                 </div>
+
                                 <div className="flex border-t">
                                   <Button asChild variant="ghost" className="flex-1 rounded-none rounded-bl-md py-2">
                                     <Link href={`/staff/${staff.id}`}>
@@ -644,23 +660,27 @@ export default function StaffPage() {
                                       View
                                     </Link>
                                   </Button>
+
                                   <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2">
                                     <Link href={`/staff/${staff.id}/edit`}>
                                       <Edit className="mr-2 h-4 w-4" />
                                       Edit
                                     </Link>
                                   </Button>
-                                  <Button asChild variant="ghost" className="flex-1 rounded-none rounded-br-md border-l py-2">
-                                    <Link href={`/staff/${staff.id}/schedule`}>
-                                      <Calendar className="mr-2 h-4 w-4" />
-                                      Schedule
-                                    </Link>
+
+                                  <Button
+                                      variant="ghost"
+                                      className="flex-1 rounded-none rounded-br-md border-l py-2"
+                                  >
+                                    <Trash className="mr-2 h-4 w-4 text-red-600" />
+                                    Delete
                                   </Button>
                                 </div>
                               </div>
                             </CardContent>
                           </Card>
                       ))}
+
                     </div>
                     <div className="mt-4 flex items-center justify-between">
                       <div className="text-sm text-muted-foreground">
