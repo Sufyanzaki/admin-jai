@@ -654,26 +654,24 @@ export default function StaffPage() {
                                 </div>
 
                                 <div className="flex border-t">
-                                  <Button asChild variant="ghost" className="flex-1 rounded-none rounded-bl-md py-2">
+                                  <Button asChild variant="ghost" className="flex-1 rounded-none rounded-bl-md py-2 justify-center">
                                     <Link href={`/staff/${staff.id}`}>
-                                      <Eye className="mr-2 h-4 w-4" />
-                                      View
+                                      <Eye className="h-4 w-4" />
                                     </Link>
                                   </Button>
 
-                                  <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2">
+                                  <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center">
                                     <Link href={`/staff/${staff.id}/edit`}>
-                                      <Edit className="mr-2 h-4 w-4" />
-                                      Edit
+                                      <Edit className="h-4 w-4" />
                                     </Link>
                                   </Button>
 
-                                  <Button
-                                      variant="ghost"
-                                      className="flex-1 rounded-none rounded-br-md border-l py-2"
-                                  >
-                                    <Trash className="mr-2 h-4 w-4 text-red-600" />
-                                    Delete
+                                  <Button variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center">
+                                    <Slash className="h-4 w-4 text-yellow-600" />
+                                  </Button>
+
+                                  <Button variant="ghost" className="flex-1 rounded-none rounded-br-md border-l py-2 justify-center">
+                                    <Trash className="h-4 w-4 text-red-600" />
                                   </Button>
                                 </div>
                               </div>

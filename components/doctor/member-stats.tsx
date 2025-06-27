@@ -115,7 +115,7 @@ export function MemberStats() {
                   {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90].map((top) => (
                       <div
                           key={top}
-                          className="absolute w-full border-t border-dashed border-gray-300"
+                          className="absolute w-full border-t border-dashed border-gray-300 dark:border-gray-700"
                           style={{ top: `${top}%` }}
                       />
                   ))}

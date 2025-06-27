@@ -229,14 +229,14 @@ export default function AppointmentsPage() {
             </p>
           </div>
 
-          <Tabs defaultValue="origin" className="flex gap-6 w-full">
-            <div className="w-64">
-              <TabsList className="flex flex-col gap-1 h-auto w-full bg-muted/50 p-2">
+          <Tabs defaultValue="origin" className="flex flex-col md:flex-row gap-6 w-full">
+            <div className="w-full md:w-64">
+              <TabsList className="flex md:flex-col flex-row gap-1 h-auto w-full bg-muted/50 p-2 overflow-x-auto md:overflow-visible">
                 {profileAttributes.map((attribute) => (
                     <TabsTrigger
                         key={attribute.id}
                         value={attribute.id}
-                        className=" justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full"
+                        className="justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full min-w-[140px] md:min-w-0"
                     >
                       <div className="flex items-center gap-2">
                         {getAttributeIcon(attribute.id)}
@@ -249,63 +249,41 @@ export default function AppointmentsPage() {
               </TabsList>
             </div>
 
-            <div className="flex-1">
+            <div className="flex-1 w-full">
               {profileAttributes.map((attribute) => (
-                  <TabsContent
-                      key={attribute.id}
-                      value={attribute.id}
-                      className="mt-0"
-                  >
+                  <TabsContent key={attribute.id} value={attribute.id} className="mt-0">
                     <Card className="shadow-sm">
                       <CardHeader className="pb-4">
-                        <CardTitle className="text-xl">
-                          {attribute.label}
-                        </CardTitle>
+                        <CardTitle className="text-xl">{attribute.label}</CardTitle>
                         <CardDescription>
-                          Add values for {attribute.label.toLowerCase()} that will
-                          appear on your profile.
+                          Add values for {attribute.label.toLowerCase()} that will appear on your profile.
                         </CardDescription>
                       </CardHeader>
 
                       <CardContent className="space-y-6">
                         <div className="flex items-center justify-between py-4">
-                          <Label
-                              htmlFor={`show-${attribute.id}`}
-                              className="font-medium"
-                          >
+                          <Label htmlFor={`show-${attribute.id}`} className="font-medium">
                             Show on profile
                           </Label>
                           <Switch
                               id={`show-${attribute.id}`}
                               checked={attributeData[attribute.id]?.showOn || false}
-                              onCheckedChange={(checked) =>
-                                  updateAttribute(attribute.id, "showOn", checked)
-                              }
+                              onCheckedChange={(checked) => updateAttribute(attribute.id, "showOn", checked)}
                           />
                         </div>
 
                         <div className="space-y-4">
-                          <div className="flex gap-2">
+                          <div className="flex flex-col sm:flex-row gap-2">
                             <Input
                                 placeholder={`Add ${attribute.label.toLowerCase()} value...`}
-                                value={
-                                    attributeData[attribute.id]?.inputValue || ""
-                                }
-                                onChange={(e) =>
-                                    updateAttribute(
-                                        attribute.id,
-                                        "inputValue",
-                                        e.target.value
-                                    )
-                                }
+                                value={attributeData[attribute.id]?.inputValue || ""}
+                                onChange={(e) => updateAttribute(attribute.id, "inputValue", e.target.value)}
                                 onKeyDown={(e) => handleKeyPress(e, attribute.id)}
                                 className="flex-1"
                             />
                             <Button
                                 onClick={() => addChip(attribute.id)}
-                                disabled={
-                                  !attributeData[attribute.id]?.inputValue?.trim()
-                                }
+                                disabled={!attributeData[attribute.id]?.inputValue?.trim()}
                                 variant="outline"
                             >
                               Add
@@ -319,7 +297,7 @@ export default function AppointmentsPage() {
                                 </Label>
                                 <div className="flex flex-wrap gap-2">
                                   {attributeData[attribute.id].values.map((value, index) => (
-                                      <Badge variant="secondary" className="">
+                                      <Badge key={index} variant="secondary">
                                         <span className="truncate max-w-[120px]">{value}</span>
                                         <button
                                             onClick={() => removeChip(attribute.id, value)}
@@ -336,19 +314,16 @@ export default function AppointmentsPage() {
                         </div>
                       </CardContent>
 
-                      <CardFooter className="flex justify-end gap-3 pt-6">
+                      <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 pt-6">
                         <Button
                             variant="outline"
-                            onClick={() =>
-                                updateAttribute(attribute.id, "values", [])
-                            }
-                            disabled={
-                                attributeData[attribute.id]?.values?.length === 0
-                            }
+                            onClick={() => updateAttribute(attribute.id, "values", [])}
+                            disabled={attributeData[attribute.id]?.values?.length === 0}
+                            className="w-full sm:w-auto"
                         >
                           Clear All
                         </Button>
-                        <Button>Save Changes</Button>
+                        <Button className="w-full sm:w-auto">Save Changes</Button>
                       </CardFooter>
                     </Card>
                   </TabsContent>
