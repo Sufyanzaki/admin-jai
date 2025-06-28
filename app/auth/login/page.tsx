@@ -1,52 +1,26 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Eye, EyeOff, Lock, Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {useState} from "react"
+import {Eye, EyeOff, Lock, Mail} from "lucide-react"
+import {Button} from "@/components/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
+import {Checkbox} from "@/components/ui/checkbox"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [email, setEmail] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
-  const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // For demo purposes, simple validation
-      if (email === "admin@clinic.com" && password === "password") {
-        router.push("/")
-      } else {
-        setError("Invalid email or password")
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.")
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-12">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <img src="https://ticketprijs.nl/admin/Image/AppSettings/Logo/1730289473_1730098174_1727434463_logo-alt.png" alt="Logo" className="mx-auto" />
+          <img src="https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png" alt="Logo" className="mx-auto" />
         </div>
 
         <Card className="border-gray-800 bg-gray-900">
@@ -56,7 +30,7 @@ export default function LoginPage() {
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
-              {error && <div className="rounded-md bg-red-900/20 p-3 text-sm text-red-400">{error}</div>}
+              {false && <div className="rounded-md bg-red-900/20 p-3 text-sm text-red-400">Error</div>}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-300">
                   Email
@@ -67,8 +41,6 @@ export default function LoginPage() {
                     id="email"
                     type="email"
                     placeholder="name@clinic.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     className="border-gray-800 bg-gray-800 pl-10 text-white placeholder:text-gray-500"
                     required
                   />
@@ -79,17 +51,12 @@ export default function LoginPage() {
                   <Label htmlFor="password" className="text-gray-300">
                     Password
                   </Label>
-                  <Link href="/auth/forgot-password" className="text-xs text-blue-400 hover:text-blue-300">
-                    Forgot password?
-                  </Link>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     className="border-gray-800 bg-gray-800 pl-10 text-white placeholder:text-gray-500"
                     required
@@ -114,14 +81,11 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign in"}
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" >
+                Sign in
               </Button>
               <p className="text-center text-sm text-gray-400">
-                Don't have an account?{" "}
-                <Link href="/auth/register" className="text-blue-400 hover:text-blue-300">
-                  Create an account
-                </Link>
+                Don't have an account?
               </p>
             </CardFooter>
           </form>

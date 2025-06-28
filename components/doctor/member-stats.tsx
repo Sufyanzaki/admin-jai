@@ -99,7 +99,7 @@ export function MemberStats() {
         <TabsTrigger value="satisfaction">Matching Satisfaction</TabsTrigger>
       </TabsList>
       <TabsContent value="visits" className="space-y-4">
-        <div className="w-full min-w-0 py-6">
+        <div className="w-full min-w-0 py-12">
           <div className="w-full overflow-x-auto py-2">
             <div className="relative min-w-[600px] sm:min-w-0">
               <div className="absolute left-0 -top-5 h-full flex flex-col justify-between text-xs text-gray-500 pr-4">
@@ -166,7 +166,7 @@ export function MemberStats() {
               </div>
           )}
 
-          <div className="flex items-center justify-center space-x-6 translate-y-8 text-sm">
+          <div className="flex items-center justify-center space-x-6 translate-y-4 text-sm">
             <div className="flex items-center space-x-2">
               <div className="w-4 h-0.5 bg-[#3a98db]" />
               <span className="text-gray-700">Profit</span>

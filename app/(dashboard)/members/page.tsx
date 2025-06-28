@@ -1,34 +1,54 @@
 "use client"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {
-  Award, Building, Calendar, Clipboard, Clock, Download, Edit, Eye, FileText, Filter, Mail,
-  MapPin, MoreVertical, Package, Phone, RefreshCw, Search, Shield, Slash, Trash,
-  User, UserCheck, UserPlus, Users, UserX
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {
+  Ban,
+  Calendar,
+  Edit,
+  Eye,
+  Filter,
+  Mail,
+  MapPin,
+  MoreVertical,
+  Package,
+  Search,
+  Trash,
+  User,
+  UserCheck,
+  UserPlus,
+  Users,
+  UserX
 } from "lucide-react";
 import Link from "next/link";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import {Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator"
-import {Label} from "@/components/ui/label";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog";
-import {Textarea} from "@/components/ui/textarea";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
+import {useState} from "react";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Separator} from "@/components/ui/separator"
+import {Label} from "@/components/ui/label";
 import PaginationSection from "@/components/Pagination";
 import {CheckedState} from "@radix-ui/react-checkbox";
 
@@ -667,7 +687,7 @@ export default function StaffPage() {
                                   </Button>
 
                                   <Button variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center">
-                                    <Slash className="h-4 w-4 text-yellow-600" />
+                                    <Ban className="h-4 w-4 text-yellow-600" />
                                   </Button>
 
                                   <Button variant="ghost" className="flex-1 rounded-none rounded-br-md border-l py-2 justify-center">
