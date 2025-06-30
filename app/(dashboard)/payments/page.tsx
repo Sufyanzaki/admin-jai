@@ -251,7 +251,7 @@ export default function PaymentsPage() {
       <div className="p-4 xl:p-6">
         <div className="flex flex-col gap-5 mb-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
+            <div className="space-y-2">
               <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Payments</h1>
               <p className="text-muted-foreground">Manage your payments and their records.</p>
             </div>

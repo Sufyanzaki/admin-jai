@@ -76,7 +76,9 @@ export default function SettingPage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Website Pages</CardTitle>
-                    <CardDescription>Find answers to common questions about using the clinic management system</CardDescription>
+                    <CardDescription>
+                        Create, edit, and manage the content of your website pages with ease.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     {settings.length > 0 ? (

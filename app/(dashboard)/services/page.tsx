@@ -12,9 +12,11 @@ export default function ServicesPage() {
   return (
     <div className="flex flex-col gap-5 p-4 xl:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
+        <div className="space-y-2">
           <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Services Offered</h2>
-          <p className="text-muted-foreground">Manage all services provided by your clinic</p>
+          <p className="text-muted-foreground">
+            Manage all matchmaking services such as premium plans, profile promotions, and personalized match support.
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/services/add">

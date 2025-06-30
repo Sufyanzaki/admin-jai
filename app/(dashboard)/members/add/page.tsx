@@ -28,7 +28,7 @@ interface LocationData {
   cities: Record<string, Record<string, string[]>>
 }
 
-export default function AddDoctorPage() {
+export default function AddMemberPage() {
   const [appointmentDate, setAppointmentDate] = useState<Date | undefined>(new Date());
   const [interests, setInterests] = useState<InterestSection[]>([
     {
@@ -319,7 +319,7 @@ export default function AddDoctorPage() {
             <span className="sr-only">Back</span>
           </Link>
         </Button>
-        <div>
+        <div className="space-y-2">
           <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add Member</h1>
           <p className="text-muted-foreground">Add a new member to your app.</p>
         </div>
@@ -490,7 +490,9 @@ export default function AddDoctorPage() {
           <Card>
             <CardHeader>
               <CardTitle>Professional Details</CardTitle>
-              <CardDescription>Enter the doctor's professional information.</CardDescription>
+              <CardDescription>
+                Enter the member’s occupation, education, and other professional background details.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
@@ -600,7 +602,9 @@ export default function AddDoctorPage() {
           <Card>
             <CardHeader>
               <CardTitle>Personality Traits</CardTitle>
-              <CardDescription>Select traits that describe the doctor's personality.</CardDescription>
+              <CardDescription>
+                Select traits that best describe the member’s personality, lifestyle, and values.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

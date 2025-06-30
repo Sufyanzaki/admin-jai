@@ -130,7 +130,7 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
                             <span className="sr-only">Back</span>
                         </Link>
                     </Button>
-                    <div>
+                    <div className="space-y-2">
                         <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Payment Receipt</h1>
                         <p className="text-sm text-muted-foreground">{invoice.id} • RCP-007-2024</p>
                     </div>

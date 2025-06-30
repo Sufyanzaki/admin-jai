@@ -18,7 +18,7 @@ export default function NewsletterAddPage() {
                     </Link>
                 </Button>
 
-                <div>
+                <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">Add Newsletter</h2>
                     <p className="text-muted-foreground">Create and publish a new newsletter</p>
                 </div>

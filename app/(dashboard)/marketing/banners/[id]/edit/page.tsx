@@ -31,7 +31,7 @@ export default function BannerEditPage() {
                     </Link>
                 </Button>
 
-                <div>
+                <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">Edit Banner</h2>
                     <p className="text-muted-foreground">Upload banner and define scheduling details</p>
                 </div>

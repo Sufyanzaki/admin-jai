@@ -67,11 +67,13 @@ export default function AddServicePage() {
   return (
     <div className="flex flex-col gap-5 p-4 xl:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add Service</h2>
-          <p className="text-muted-foreground">Create a new service offering for your clinic</p>
-        </div>
-        <div className="flex items-center gap-2">
+          <div className="space-y-2">
+              <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add Service</h2>
+              <p className="text-muted-foreground">
+                  Create a new service offering such as premium memberships, profile boosts, or personalized matchmaking.
+              </p>
+          </div>
+          <div className="flex items-center gap-2">
           <Link href="/services">
             <Button variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -247,11 +249,13 @@ export default function AddServicePage() {
                     name="requiresReferral"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">Referral Required</FormLabel>
-                          <FormDescription>Does this service require a doctor's referral?</FormDescription>
-                        </div>
-                        <FormControl>
+                          <div className="space-y-0.5">
+                              <FormLabel className="text-base">Referral Required</FormLabel>
+                              <FormDescription>
+                                  Specify if this service or membership requires a referral from an agent or existing member.
+                              </FormDescription>
+                          </div>
+                          <FormControl>
                           <Switch checked={field.value} onCheckedChange={field.onChange} />
                         </FormControl>
                       </FormItem>

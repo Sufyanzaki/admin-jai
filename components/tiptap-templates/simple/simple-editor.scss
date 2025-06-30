@@ -37,8 +37,17 @@
   min-height: 176px;
 }
 
+.editor-toolbar{
+  width: fit-content !important;
+}
+
 @media screen and (max-width: 480px) {
   .simple-editor-content .tiptap.ProseMirror {
     padding: 1rem 1.5rem;
   }
+}
+
+.simple-editor-content ::selection {
+  background: rgba(0, 120, 255, 0.3);
+  color: inherit;
 }

@@ -422,7 +422,9 @@ export default function SettingsPage() {
                 <Building className="mr-2 h-5 w-5" />
                 User Dashboard Footer Section
               </CardTitle>
-              <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              <CardDescription>
+                Customize the footer content shown on the user dashboard, including links, contact info, and disclaimers.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">

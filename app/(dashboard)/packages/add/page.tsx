@@ -18,7 +18,7 @@ export default function AddPackagesPage() {
                         <span className="sr-only">Back</span>
                     </Link>
                 </Button>
-                <div>
+                <div className="space-y-2">
                     <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Add Package</h1>
                     <p className="text-muted-foreground">Update package details and pricing</p>
                 </div>

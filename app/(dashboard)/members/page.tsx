@@ -372,7 +372,7 @@ export default function StaffPage() {
       <>
         <div className="flex flex-col gap-6 p-4 xl:p-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
+            <div className="space-y-2">
               <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members Management</h2>
               <p className="text-muted-foreground">Manage staff, roles, and permissions</p>
             </div>

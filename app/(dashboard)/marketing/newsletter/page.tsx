@@ -31,7 +31,7 @@ export default function NewsletterListPage() {
         <div className="flex flex-col gap-6 p-4 xl:p-6">
             {/* Page Header */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div>
+                <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Newsletter List</h2>
                     <p className="text-muted-foreground">View and manage newsletters</p>
                 </div>
@@ -66,7 +66,7 @@ export default function NewsletterListPage() {
                         </TableHeader>
                         <TableBody>
                             {newsletterData.map((item, index) => (
-                                <TableRow key={item.id} className="odd:bg-muted/40">
+                                <TableRow key={item.id}>
                                     <TableCell className="text-center">{index + 1}</TableCell>
                                     <TableCell>{item.subject}</TableCell>
                                     <TableCell className="whitespace-pre-line">{item.content}</TableCell>

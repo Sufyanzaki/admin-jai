@@ -52,8 +52,11 @@ export default function CategoryPage() {
         <Card>
             <CardHeader>
                 <CardTitle>Categories</CardTitle>
-                <CardDescription>Find answers to common questions about using the clinic management system</CardDescription>
+                <CardDescription>
+                    Organize and manage user profile categories such as religion, caste, profession, and lifestyle preferences.
+                </CardDescription>
             </CardHeader>
+
             <CardContent>
 
                 {categories.length > 0 ? (

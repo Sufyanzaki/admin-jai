@@ -361,10 +361,13 @@ export default function SettingsPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Building className="mr-2 h-5 w-5" />
-                Seo Settings
+                SEO Settings
               </CardTitle>
-              <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              <CardDescription>
+                Manage meta titles, descriptions, and keywords to improve your app’s visibility in search engines.
+              </CardDescription>
             </CardHeader>
+
 
             <CardContent className="space-y-6 pt-6">
               <form className="grid gap-6 w-full">

@@ -256,7 +256,7 @@ export default function MemberProfilePage({ params }: { params: Promise<{ id: st
                                <button
                                    type="button"
                                    onClick={handleEditClick}
-                                   className="absolute bottom-0 left-3/4 bg-primary/90 rounded-md p-2 shadow-md"
+                                   className="absolute bottom-0 left-3/4 bg-gray-500/90 rounded-md p-2 shadow-md"
                                >
                                    <Edit className="h-4 w-4 text-white" />
                                </button>

@@ -46,10 +46,10 @@ const reportCards = [
   {
     type: "Members",
     icon: <ChartBarIcon className="h-5 w-5" />,
-    title: "Staff Performance",
-    description: "Evaluate staff productivity, attendance, and performance",
+    title: "Member Performance",
+    description: "Evaluate members productivity, attendance, and performance",
     stats: [
-      { label: "Staff Count", value: "48" },
+      { label: "Count", value: "48" },
       { label: "Avg. Attendance", value: "92.5%" },
       { label: "Productivity", value: "87.3%" },
     ],
@@ -58,7 +58,7 @@ const reportCards = [
   {
     type: "Analytic",
     icon: <LineChartIcon className="h-5 w-5" />,
-    title: "Custom Reports",
+    title: "Analytics",
     description: "Create customized reports with specific metrics and filters",
     stats: [
       { label: "Saved Reports", value: "5" },
@@ -72,11 +72,12 @@ const reportCards = [
 export default function ReportsPage() {
   return (
     <div className="flex flex-col gap-6 p-4 xl:p-6">
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Reports</h1>
-        <p className="text-muted-foreground">Access and generate detailed reports for your clinic</p>
+        <p className="text-muted-foreground">
+          Access and generate detailed reports on user activity, memberships, and match performance.
+        </p>
       </div>
-
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {reportCards.map((card, index) => (
             <Card key={index} className="flex flex-col">

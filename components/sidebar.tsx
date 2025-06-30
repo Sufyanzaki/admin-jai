@@ -11,7 +11,7 @@ import {
   LucideHeart,
   Megaphone,
   MessageCircle,
-  Settings,
+  Settings, Settings2,
   TrendingUp,
   UserCog,
   UserRound,
@@ -65,7 +65,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     {
       title: "Frontend Settings",
       href: "/frontend-settings",
-      icon: HelpCircle,
+      icon: Settings2,
     },
     {
       title: "FAQ",

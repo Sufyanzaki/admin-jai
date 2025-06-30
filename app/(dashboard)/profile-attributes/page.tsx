@@ -224,8 +224,7 @@ export default function AppointmentsPage() {
               Profile Attributes
             </h2>
             <p className="text-muted-foreground">
-              A collection of UI components and widgets for building dashboards
-              and interfaces.
+              Define and display key user characteristics like age, location, interests, and activity status for building personalized profiles and user interfaces.
             </p>
           </div>
 

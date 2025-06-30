@@ -17,9 +17,11 @@ export default function LanguageTranslatePage() {
                         <span className="sr-only">Back</span>
                     </Link>
                 </Button>
-                <div>
+                <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Manage Translations</h2>
-                    <p className="text-muted-foreground">Manage clinic staff, roles, and permissions</p>
+                    <p className="text-muted-foreground">
+                        Add and update translations for different languages to make the platform accessible to a wider audience.
+                    </p>
                 </div>
             </div>
 

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AmbulanceListLoading() {
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">
+    <div className="flex flex-col gap-4 p-4 xl:p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
           <Skeleton className="h-8 w-[250px]" />

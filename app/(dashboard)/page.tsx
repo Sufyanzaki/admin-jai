@@ -1,9 +1,9 @@
 import {ArrowUpRight, Ban, Star, User, Users} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {DoctorAppointments} from "@/components/doctor/doctor-appointments";
-import {BestSelling} from "@/components/doctor/best-selling";
-import {MemberStats} from "@/components/doctor/member-stats";
+import {NewMembers} from "@/components/members/new-members";
+import {BestSelling} from "@/components/members/best-selling";
+import {MemberStats} from "@/components/members/member-stats";
 import Link from "next/link";
 
 const cardData = [
@@ -13,7 +13,7 @@ const cardData = [
     count: 115,
     description: "All registered members",
     status: "",
-    icon: Users, // Assuming you're using the same Users icon
+    icon: Users,
     buttonText: "View All Members",
     borderColor: "border-blue-100 dark:border-blue-900/60",
     iconBg: "bg-blue-100 dark:bg-blue-900/50",
@@ -27,7 +27,7 @@ const cardData = [
     count: 5,
     description: "Members with premium subscriptions",
     status: "",
-    icon: Star, // You might want to use a Star icon for premium members
+    icon: Star,
     buttonText: "Manage Premium",
     borderColor: "border-emerald-100 dark:border-emerald-900/60",
     iconBg: "bg-emerald-100 dark:bg-emerald-900/50",
@@ -41,7 +41,7 @@ const cardData = [
     count: 110,
     description: "Members with free accounts",
     status: "",
-    icon: User, // Basic user icon for free members
+    icon: User,
     buttonText: "View Free Members",
     borderColor: "border-amber-100 dark:border-amber-900/60",
     iconBg: "bg-amber-100 dark:bg-amber-900/50",
@@ -52,10 +52,10 @@ const cardData = [
   {
     id: 4,
     title: "Blocked Members",
-    count: 0, // Assuming 0 blocked members unless specified
+    count: 0,
     description: "Suspended or blocked accounts",
     status: "",
-    icon: Ban, // Ban icon for blocked members
+    icon: Ban,
     buttonText: "Manage Restrictions",
     borderColor: "border-rose-100 dark:border-rose-900/60",
     iconBg: "bg-rose-100 dark:bg-rose-900/50",
@@ -119,7 +119,7 @@ export default function DashboardPage() {
                     <CardDescription>You have 13 new users added</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DoctorAppointments />
+                    <NewMembers />
                   </CardContent>
                 </Card>
               </div>

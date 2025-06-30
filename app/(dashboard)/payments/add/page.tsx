@@ -66,8 +66,11 @@ export default function AddPatientPage() {
         </Button>
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add Payment</h1>
-          <p className="text-muted-foreground">Register a new patient in your clinic.</p>
+          <p className="text-muted-foreground">
+            Record a new payment or subscription made by a member for premium features or services.
+          </p>
         </div>
+
       </div>
 
       <Card>

@@ -46,9 +46,9 @@ export default function BlogCategoryManagement() {
         <div className="container mx-auto space-y-4 p-4 xl:p-6">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight mb-2">Manage Categories</h1>
-                        <p className="text-muted-foreground">Manage and track all ambulances in the fleet</p>
+                    <div className="space-y-2">
+                        <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">Manage Categories</h1>
+                        <p className="text-muted-foreground">Manage and track all categories in the app</p>
                     </div>
                 </div>
             </div>

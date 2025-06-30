@@ -319,9 +319,9 @@ export default function AddDoctorPage() {
             <span className="sr-only">Back</span>
           </Link>
         </Button>
-        <div>
+        <div className="space-y-2">
           <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Edit Member</h1>
-          <p className="text-muted-foreground">Add a new doctor to your clinic.</p>
+          <p className="text-muted-foreground">Update profile details, preferences, and personal information for this member.</p>
         </div>
       </div>
 
@@ -510,7 +510,9 @@ export default function AddDoctorPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Professional Details</CardTitle>
-                <CardDescription>Enter the doctor's professional information.</CardDescription>
+                <CardDescription>
+                  Enter the member’s education, occupation, and career-related information.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
@@ -624,7 +626,9 @@ export default function AddDoctorPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Personality Traits</CardTitle>
-                <CardDescription>Select traits that describe the doctor's personality.</CardDescription>
+                <CardDescription>
+                  Select traits that describe the member’s personality, habits, and lifestyle.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

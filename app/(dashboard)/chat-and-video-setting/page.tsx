@@ -11,7 +11,7 @@ export default function ChatAndVideoSetting() {
     return (
         <div className="flex flex-col gap-5 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
+                <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Chat & Video Setting</h2>
                     <p className="text-muted-foreground">Manage your users and their information.</p>
                 </div>
