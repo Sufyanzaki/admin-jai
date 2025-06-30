@@ -675,13 +675,13 @@ export default function StaffPage() {
 
                                 <div className="flex border-t">
                                   <Button asChild variant="ghost" className="flex-1 rounded-none rounded-bl-md py-2 justify-center">
-                                    <Link href={`/staff/${staff.id}`}>
+                                    <Link href={`/members/${staff.id}`}>
                                       <Eye className="h-4 w-4" />
                                     </Link>
                                   </Button>
 
                                   <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center">
-                                    <Link href={`/staff/${staff.id}/edit`}>
+                                    <Link href={`/members/${staff.id}/edit`}>
                                       <Edit className="h-4 w-4" />
                                     </Link>
                                   </Button>
