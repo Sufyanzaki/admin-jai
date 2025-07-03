@@ -6,11 +6,11 @@ import {Button} from "@/components/ui/button"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
 import {X} from "lucide-react"
 import {cn} from "@/lib/utils"
-import {useLaptop, useMobile} from "@/hooks/use-mobile"
+import {useLaptop} from "@/hooks/use-mobile"
 import AnimateHeight from "react-animate-height"
 import {useTheme} from "next-themes";
 import Image from "next/image";
-import { sidebarItems } from "@/constant/sideOptions"
+import {sidebarItems} from "@/constant/sideOptions"
 
 interface SidebarProps {
   isOpen: boolean
@@ -78,7 +78,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
                   href={item.href}
                   className={cn(
                       "flex items-center justify-center rounded-md p-3 text-sm font-medium transition-colors",
-                      isActive ? "bg-primary/10 text-primary" : "text-black hover:bg-muted hover:text-foreground",
+                      isActive ? "bg-primary/10 text-primary" : "hover:bg-muted hover:text-foreground",
                   )}
                   onClick={() => isMobile && setIsOpen(false)}
               >
@@ -100,7 +100,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
                     onClick={() => toggleSubmenu(item.title)}
                     className={cn(
                         "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                        isActive ? "bg-primary/10 text-primary" : "text-black hover:bg-muted hover:text-foreground",
+                        isActive ? "bg-primary/10 text-primary" : "hover:bg-muted hover:text-foreground",
                     )}
                 >
                   <div className="flex items-center">
@@ -149,7 +149,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
                   href={item.href}
                   className={cn(
                       "flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                      isActive ? "bg-primary/10 text-primary" : "text-black hover:bg-muted hover:text-foreground",
+                      isActive ? "bg-primary/10 text-primary" : "hover:bg-muted hover:text-foreground",
                   )}
                   onClick={() => isMobile && setIsOpen(false)}
               >
