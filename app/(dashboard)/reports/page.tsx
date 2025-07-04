@@ -27,7 +27,7 @@ const reportCards = [
       { label: "Completion Rate", value: "70.2%" },
       { label: "No-Show Rate", value: "6.8%" },
     ],
-    link: "/reports/detailed",
+    link: "/reports/income",
     buttonVariant: "default",
   },
   {
@@ -40,7 +40,7 @@ const reportCards = [
       { label: "New Patients", value: "428" },
       { label: "Avg. Duration", value: "32 min" },
     ],
-    link: "/reports/analytics",
+    link: "/reports/detailed",
     buttonVariant: "default",
   },
   {
@@ -53,7 +53,7 @@ const reportCards = [
       { label: "Avg. Attendance", value: "92.5%" },
       { label: "Productivity", value: "87.3%" },
     ],
-    link: "#",
+    link: "/reports/member",
   },
   {
     type: "Analytic",
@@ -65,7 +65,7 @@ const reportCards = [
       { label: "Templates", value: "12" },
       { label: "Export Options", value: "PDF, CSV, Excel" },
     ],
-    link: "#",
+    link: "/reports/analytics",
   },
 ];
 

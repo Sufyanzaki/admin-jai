@@ -165,7 +165,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
       <TooltipProvider delayDuration={300}>
         <aside className={sidebarClasses}>
           <div className="flex items-center justify-between p-4 border-b h-16">
-            {(!isCollapsed || isMobile) && (
+            {(!isCollapsed || isMobile) ? (
                 <>
                   <Link href="/">
                     <Image
@@ -183,7 +183,16 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
                       </Button>
                   )}
                 </>
-            )}
+            ) : <Link href="/">
+                <Image
+                    src={theme === "dark"
+                        ? "https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png"
+                        : "https://ticketprijs.nl/admin/Image/AppSettings/Logo/1730289473_1730098174_1727434463_logo-alt.png"}
+                    alt="Humsafar"
+                    width={127}
+                    height={36}
+                />
+            </Link>}
           </div>
 
           <div className="flex-1 py-2 overflow-y-auto">

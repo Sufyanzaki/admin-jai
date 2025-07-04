@@ -44,7 +44,7 @@ export const sidebarItems = [
     },
     {
         title: "BLOGS",
-        href: "/blogs",
+        href: "/blogs/list",
         icon: Ambulance,
         submenu: [
             { title: "List", href: "/blogs/list" },
@@ -76,7 +76,7 @@ export const sidebarItems = [
     },
     {
         title: "Marketing",
-        href: "/marketing",
+        href: "/marketing/newsletter",
         icon: TrendingUp,
         submenu: [
             { title: "Newsletter", href: "/marketing/newsletter" },
