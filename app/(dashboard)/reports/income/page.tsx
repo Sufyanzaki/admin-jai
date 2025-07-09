@@ -75,7 +75,7 @@ export default function FinancialReportsPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <CardTitle className="text-sm font-medium">Avg. monthly</CardTitle>
               <DollarSignIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -85,7 +85,7 @@ export default function FinancialReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Monthly</CardTitle>
+              <CardTitle className="text-sm font-medium">Last 3 months</CardTitle>
               <TrendingUpIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -97,7 +97,7 @@ export default function FinancialReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Top Customer</CardTitle>
+              <CardTitle className="text-sm font-medium">Total this year</CardTitle>
               <UserIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -107,7 +107,7 @@ export default function FinancialReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Collections</CardTitle>
+              <CardTitle className="text-sm font-medium">Difference with last year</CardTitle>
               <CreditCardIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -144,7 +144,7 @@ export default function FinancialReportsPage() {
           {/* Customer Distribution Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Revenue by Customer</CardTitle>
+              <CardTitle>Revenue by Gender</CardTitle>
               <CardDescription>Income distribution by customer type</CardDescription>
             </CardHeader>
             <CardContent className="h-80">

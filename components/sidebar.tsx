@@ -4,7 +4,7 @@ import {usePathname} from "next/navigation"
 import Link from "next/link"
 import {Button} from "@/components/ui/button"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
-import {X} from "lucide-react"
+import {Heart, X} from "lucide-react"
 import {cn} from "@/lib/utils"
 import {useLaptop} from "@/hooks/use-mobile"
 import AnimateHeight from "react-animate-height"
@@ -184,14 +184,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
                   )}
                 </>
             ) : <Link href="/">
-                <Image
-                    src={theme === "dark"
-                        ? "https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png"
-                        : "https://ticketprijs.nl/admin/Image/AppSettings/Logo/1730289473_1730098174_1727434463_logo-alt.png"}
-                    alt="Humsafar"
-                    width={127}
-                    height={36}
-                />
+                <Heart className="w-6 h-6" />
             </Link>}
           </div>
 

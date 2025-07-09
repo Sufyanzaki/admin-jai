@@ -114,16 +114,21 @@ export default function FinancialReportsPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Outstanding Payments</CardTitle>
-            <CreditCardIcon className="size-8 text-muted-foreground" />
+            <CardTitle className="text-sm xl:text-lg font-medium">Payment Methods</CardTitle>
+            <CreditCardIcon className="size-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$23,540</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-red-500">+3.2%</span> from last month
-            </p>
-            <div className="mt-4 h-1 w-full rounded-md bg-secondary">
-              <div className="h-1 w-[18%] rounded-md bg-amber-500"></div>
+          <CardContent className="text-sm space-y-2">
+            <div className="flex justify-between">
+              <span>Credit Card</span>
+              <span className="font-medium">2</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Debit Card</span>
+              <span className="font-medium">1</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Other</span>
+              <span className="font-medium">1</span>
             </div>
           </CardContent>
         </Card>
@@ -214,7 +219,7 @@ export default function FinancialReportsPage() {
         </Card>
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Revenue by Department</CardTitle>
+            <CardTitle>Best Selling Package</CardTitle>
             <CardDescription>Distribution of revenue across different departments</CardDescription>
           </CardHeader>
           <CardContent>

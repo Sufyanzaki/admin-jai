@@ -1,50 +1,48 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CalendarDateRangePicker as DateRangePicker } from "@/components/date-range-picker"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {CalendarDateRangePicker as DateRangePicker} from "@/components/date-range-picker"
+import {CalendarIcon, CheckCircleIcon, ClockIcon, XCircleIcon,} from "lucide-react"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import {Input} from "@/components/ui/input"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table"
+import {Badge} from "@/components/ui/badge"
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CalendarIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  DownloadIcon,
-  FileTextIcon,
-  FilterIcon,
-  RefreshCcwIcon,
-  XCircleIcon,
-} from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ComposedChart,
+  Legend, Line,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
 } from "recharts"
+import {ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart"
+
+const patientAdmissionsData = [
+  { month: "Jan", admissions: 120 },
+  { month: "Feb", admissions: 135 },
+  { month: "Mar", admissions: 150 },
+  { month: "Apr", admissions: 165 },
+  { month: "May", admissions: 180 },
+  { month: "Jun", admissions: 195 },
+  { month: "Jul", admissions: 210 },
+  { month: "Aug", admissions: 225 },
+  { month: "Sep", admissions: 240 },
+  { month: "Oct", admissions: 255 },
+  { month: "Nov", admissions: 270 },
+  { month: "Dec", admissions: 285 },
+];
+
+const stockStatusData = [
+  { name: "In Stock", value: 1121, color: "#4ade80" },
+  { name: "Low Stock", value: 86, color: "#facc15" },
+  { name: "Out of Stock", value: 38, color: "#f87171" },
+]
 
 export default function DetailedReportsPage() {
   return (
@@ -94,7 +92,7 @@ export default function DetailedReportsPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Total Entries</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">Daily Login</CardTitle>
             <CalendarIcon className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -107,7 +105,7 @@ export default function DetailedReportsPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">Completed Profile</CardTitle>
             <CheckCircleIcon className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -120,7 +118,7 @@ export default function DetailedReportsPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Canceled</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">Delete Accounts</CardTitle>
             <XCircleIcon className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -133,7 +131,7 @@ export default function DetailedReportsPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">No-Shows</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">Never Logins</CardTitle>
             <ClockIcon className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -149,7 +147,7 @@ export default function DetailedReportsPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Appointment Status Distribution</CardTitle>
+            <CardTitle>Relation Status</CardTitle>
             <CardDescription>Breakdown of appointments by their current status</CardDescription>
           </CardHeader>
           <CardContent>
@@ -179,7 +177,7 @@ export default function DetailedReportsPage() {
         </Card>
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Appointments by Department</CardTitle>
+            <CardTitle>Origin</CardTitle>
             <CardDescription>Distribution of appointments across different departments</CardDescription>
           </CardHeader>
           <CardContent>
@@ -207,6 +205,218 @@ export default function DetailedReportsPage() {
           </CardContent>
         </Card>
       </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Religion</CardTitle>
+            <CardDescription>Monthly trend for the current year</CardDescription>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={patientAdmissionsData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="admissions" fill="#8884d8" barSize={20} />
+                <Line type="monotone" dataKey="admissions" stroke="#ff7300" />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Gender</CardTitle>
+            <CardDescription>Distribution of appointments across different departments</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            <ChartContainer
+                config={{
+                  inStock: {
+                    label: "In Stock",
+                    color: "#4ade80",
+                  },
+                  lowStock: {
+                    label: "Low Stock",
+                    color: "#facc15",
+                  },
+                  outOfStock: {
+                    label: "Out of Stock",
+                    color: "#f87171",
+                  },
+                }}
+                className="h-[300px] w-full max-w-full"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                      data={stockStatusData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      paddingAngle={5}
+                      dataKey="value"
+                  >
+                    {stockStatusData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Legend
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      align="center"
+                      wrapperStyle={{
+                        paddingTop: "20px",
+                        fontSize: "12px"
+                      }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Career</CardTitle>
+            <CardDescription>Breakdown of appointments by their current status</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                      data={statusDistributionData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                  >
+                    {statusDistributionData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value, name) => [`${value} appointments`, name]} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Education</CardTitle>
+            <CardDescription>Distribution of appointments across different departments</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                    layout="vertical"
+                    data={departmentData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 80,
+                      bottom: 5,
+                    }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="appointments" fill="#8884d8" name="Appointments" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Cast</CardTitle>
+            <CardDescription>Breakdown of appointments by their current status</CardDescription>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={patientAdmissionsData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="admissions" fill="#8884d8" barSize={20} />
+                <Line type="monotone" dataKey="admissions" stroke="#ff7300" />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Sub Cast</CardTitle>
+            <CardDescription>Distribution of appointments across different departments</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            <ChartContainer
+                config={{
+                  inStock: {
+                    label: "In Stock",
+                    color: "#4ade80",
+                  },
+                  lowStock: {
+                    label: "Low Stock",
+                    color: "#facc15",
+                  },
+                  outOfStock: {
+                    label: "Out of Stock",
+                    color: "#f87171",
+                  },
+                }}
+                className="h-[300px] w-full max-w-full"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                      data={stockStatusData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      paddingAngle={5}
+                      dataKey="value"
+                  >
+                    {stockStatusData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Legend
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      align="center"
+                      wrapperStyle={{
+                        paddingTop: "20px",
+                        fontSize: "12px"
+                      }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
+
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between gap-4 flex-wrap">
