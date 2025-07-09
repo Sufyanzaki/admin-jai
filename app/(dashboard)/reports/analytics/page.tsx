@@ -182,7 +182,7 @@ export default function PatientVisitReportPage() {
         {analytics.map((item, index) => (
             <Card key={index}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">{item.title}</CardTitle>
+                <CardTitle className="mb-2 tracking-tight text-sm xl:text-lg font-medium">{item.title}</CardTitle>
                 {item.icon}
               </CardHeader>
               <CardContent>

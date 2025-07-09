@@ -72,7 +72,7 @@ export default function InventoryReportPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Members</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">Total Members</CardTitle>
               <UsersIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -82,7 +82,7 @@ export default function InventoryReportPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Active Members</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">Active Members</CardTitle>
               <Badge variant="success" className="px-1.5 py-0.5 text-xs">
                 1,032
               </Badge>
@@ -96,7 +96,7 @@ export default function InventoryReportPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">New Members</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">New Members</CardTitle>
               <Badge variant="secondary">
                 28
               </Badge>
@@ -110,7 +110,7 @@ export default function InventoryReportPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Membership</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">Avg. Membership</CardTitle>
               <CalendarIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
