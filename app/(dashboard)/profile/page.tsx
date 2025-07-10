@@ -271,20 +271,6 @@ export default function ProfilePage() {
                   <div className="space-y-6">
                     {[
                       {
-                        title: "Two-Factor Authentication",
-                        description: "Add an extra layer of security to your account",
-                        icon: Shield,
-                        action: "Configure",
-                        status: "enabled"
-                      },
-                      {
-                        title: "Password Settings",
-                        description: "Manage your password and security preferences",
-                        icon: Key,
-                        action: "Update",
-                        status: "enabled"
-                      },
-                      {
                         title: "Active Sessions",
                         description: "View and manage your active login sessions",
                         icon: User,
@@ -311,20 +297,6 @@ export default function ProfilePage() {
                         icon: Save,
                         action: "Configure",
                         status: "disabled"
-                      },
-                      {
-                        title: "API Access",
-                        description: "Manage third-party application access",
-                        icon: Code,
-                        action: "Manage",
-                        status: "enabled"
-                      },
-                      {
-                        title: "Privacy Settings",
-                        description: "Control your data sharing preferences",
-                        icon: Eye,
-                        action: "Configure",
-                        status: "enabled"
                       }
                     ].map((item, i) => (
                       <div key={i}>
@@ -371,18 +343,13 @@ export default function ProfilePage() {
                       {
                         title: "Email Notifications",
                         description: "Receive important updates via email",
-                        options: ["Security Alerts", "Account Updates", "Newsletter"]
+                        options: ["Security Alerts", "Account Updates"]
                       },
                       {
                         title: "Push Notifications",
                         description: "Get instant notifications on your devices",
-                        options: ["Login Alerts", "Critical Updates", "Reminders"]
+                        options: ["Login Alerts", "Notification Updates"]
                       },
-                      {
-                        title: "System Notifications",
-                        description: "In-app notification preferences",
-                        options: ["Task Updates", "Comments", "Mentions"]
-                      }
                     ].map((section, i) => (
                       <div key={i} className="space-y-4">
                         <div>
