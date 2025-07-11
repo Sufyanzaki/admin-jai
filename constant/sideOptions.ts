@@ -107,7 +107,7 @@ export const sidebarItems = [
     },
     {
         title: "Chat & Video Setting",
-        href: "/chat-and-video-setting",
+        href: "/video-setting",
         icon: Calendar,
     },
     {
