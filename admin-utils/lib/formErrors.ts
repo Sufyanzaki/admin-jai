@@ -1,11 +1,10 @@
-import {primaryColor} from "./misc.ts";
 import Swal from "sweetalert2";
 
 export const showError = (error: {message?: string}) => {
   Swal.fire({
-    // icon: 'error',
-    // title: 'Error',
+    icon: 'error',
+    title: 'Error',
     text: error.message,
-    confirmButtonColor: primaryColor,
+    confirmButtonColor: "red",
   })
 };

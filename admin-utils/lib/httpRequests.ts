@@ -1,4 +1,4 @@
-import { fetchExtra } from './fetchExtra.ts';
+import {fetchExtra} from "@/admin-utils";
 
 type postRequestDto<T> = {
   url: string;
@@ -82,25 +82,4 @@ export async function getRequest<T>({
       useAuth
     )
   ).response as T;
-}
-
-export async function postImageRequest<T extends BodyInit>({
-                                         url,
-                                         data,
-                                         useAuth = false,
-                                         otherHeaders = {},
-                                     }: postRequestDto<T>) {
-    return (
-        await fetchExtra(
-            url,
-            {
-                method: 'POST',
-                headers: {
-                    ...otherHeaders,
-                },
-                body: data,
-            },
-            useAuth
-        )
-    )
 }

@@ -1,5 +1,7 @@
+"use client"
+
+import { Button } from "@/components/ui/button";
 import React, {ReactNode} from "react";
-import { Button } from "../components/mangtum-web";
 
 interface ErrorBoundaryState {
     hasError: boolean;

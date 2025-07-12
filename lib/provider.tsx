@@ -1,18 +1,31 @@
 "use client";
 
+import ErrorBoundary from "@/admin-utils/ErrorBoundary";
 import { ThemeProvider } from "next-themes";
 import { useEffect, useState } from "react";
+import { SessionProvider } from "next-auth/react";
+import {Session} from "next-auth";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
+export default function Providers({
+                                      children,
+                                      session
+                                  }: {
+    children: React.ReactNode;
+    session: Session | null;
+}) {
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
-  return <ThemeProvider attribute="class">{children}</ThemeProvider>;
+    return (
+        <SessionProvider session={session}>
+            <ErrorBoundary>
+                <ThemeProvider attribute="class" enableSystem={mounted}>
+                    {children}
+                </ThemeProvider>
+            </ErrorBoundary>
+        </SessionProvider>
+    );
 }

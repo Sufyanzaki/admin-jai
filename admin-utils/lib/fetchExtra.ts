@@ -1,50 +1,77 @@
-import { clearAccessToken, getAccessToken } from './accessToken.ts';
+import { getSession } from "next-auth/react";
+import { type GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080';
 
-export const baseURL = import.meta.env.VITE_BASE_URI || 'https://mangtum.store/admin/api/v1.0/';
+interface FetchExtraResponse {
+  status: number;
+  response?: any;
+}
 
 export async function fetchExtra(
-  input: string,
-  init: RequestInit,
-  useAuth: boolean = true
-) {
+    input: string,
+    init: RequestInit = {},
+    useAuth: boolean = true,
+    context?: GetServerSidePropsContext
+): Promise<FetchExtraResponse> {
+  let session = null;
+
   if (useAuth) {
-    const token = getAccessToken();
-    if (token) {
-      if (!init?.headers) {
-        init!.headers = {};
+    if (context) {
+      session = await getServerSession(context.req, context.res, authOptions);
+    } else {
+      try {
+        session = await getSession();
+      } catch (e) {
+        console.warn("Couldn't get client session", e);
+      }
+    }
+
+    if (session?.accessToken) {
+      if (!init.headers) {
+        init.headers = {};
       }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      init.headers['Authorization'] = `Bearer ${token}`;
+      const headers = new Headers(init.headers);
+      headers.set('Authorization', `Bearer ${session.accessToken}`);
+      init.headers = headers;
     }
   }
-  const response = await fetch(`${baseURL}${input}`, init);
 
-  switch (response.status) {
-    case 200:
-    case 201:
-      return {
-        status: response.status,
-        response: response.json(),
-      };
-    case 204:
-      return {
-        status: response.status,
-      };
-    case 429:
-      throw {message: "Too many requests"};
-    case 401:
-      clearAccessToken();
-      window.location.href = '/login';
-      throw await response.json();
-    case 404:
-      window.location.href = '/404';
-      throw await response.json();
-    case 500:
-      // window.location.href = '/500';
-      throw await response.json();
-    default:
-      throw await response.json();
+  try {
+    const response = await fetch(`${baseURL}${input}`, init);
+
+    switch (response.status) {
+      case 200:
+      case 201:
+        return {
+          status: response.status,
+          response: await response.json(),
+        };
+      case 204:
+        return {
+          status: response.status,
+        };
+      case 429:
+        throw { message: "Too many requests" };
+      case 401:
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+        throw await response.json();
+      case 404:
+        if (typeof window !== 'undefined') {
+          window.location.href = '/404';
+        }
+        throw await response.json();
+      case 500:
+        throw await response.json();
+      default:
+        throw await response.json();
+    }
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
   }
 }

@@ -7,8 +7,19 @@ import { HelpCircle, LogOut, MessageCircle, Settings, User } from "lucide-react"
 import { NotificationDropdown } from "./notification-dropdown";
 import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function UserNav() {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut({ 
+      redirect: true 
+    });
+    // router.push("/auth/login");
+  };
+
   return (
     <div className="flex items-center gap-4">
       <ThemeToggle />
@@ -57,11 +68,9 @@ export function UserNav() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link href="/auth/login" className="flex items-center gap-2">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </Link>
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
