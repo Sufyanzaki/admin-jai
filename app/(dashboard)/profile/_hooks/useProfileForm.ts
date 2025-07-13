@@ -38,7 +38,7 @@ type UpdateProfileProps = {
 
 export default function useProfileForm() {
     const { data: session } = useSession();
-    const { mutate, mergedUser } = useProfile();
+    const { mutate } = useProfile();
     
     const { trigger, isMutating } = useSWRMutation(
         'updateProfile',
@@ -75,7 +75,7 @@ export default function useProfileForm() {
     console.log(session)
 
     useEffect(() => {
-        const user = mergedUser || session?.user as any;
+        const user = session?.user as any;
         if (user) {
             setValue("firstName", user.firstName || "");
             setValue("lastName", user.lastName || "");
@@ -83,7 +83,7 @@ export default function useProfileForm() {
             setValue("phone", user.phone || "");
             setValue("location", user.location || "");
         }
-    }, [mergedUser, session, setValue]);
+    }, [session, setValue]);
 
     const onSubmit = async (values: ProfileFormValues, callback?: (data: {status: number} | undefined) => void) => {
         try {
@@ -105,12 +105,7 @@ export default function useProfileForm() {
             });
 
             if (result?.status === 200) {
-                // Instead of updating session directly, trigger a refetch of profile data
-                // which will update the session with fresh data
-                console.log('Profile update successful, triggering mutate...');
                 await mutate();
-                console.log('Mutate completed');
-                
                 showSuccess('Profile updated successfully!');
                 reset();
                 callback?.(result);

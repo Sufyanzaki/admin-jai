@@ -16,11 +16,10 @@ import { useProfile } from './_hooks/useProfile';
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
-  const { user, mergedUser } = useProfile();
+  const { user } = useProfile();
   const { data: session } = useSession();
 
-  // Use merged user data (fresh profile data + session data)
-  const displayUser = mergedUser || session?.user as any;
+  const displayUser = user || session?.user as any;
 
   return (
     <div className="space-y-6 p-4 xl:p-6">

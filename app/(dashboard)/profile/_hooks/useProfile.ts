@@ -1,3 +1,5 @@
+"use client"
+
 import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
 import { getProfile } from "@/app/(dashboard)/profile/_api/getProfile";
 import { useSession } from "next-auth/react";
@@ -14,7 +16,7 @@ export const useProfile = () => {
         throw new Error('Failed to fetch profile');
       }
       
-      const updatedSession = await update({
+      await update({
         ...session,
         user: {
           ...session?.user,
@@ -44,8 +46,6 @@ export const useProfile = () => {
             : response.user.username,
         }
       });
-      console.log(updatedSession);
-
 
       return response;
     }

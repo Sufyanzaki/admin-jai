@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Card,
     CardContent,
@@ -8,22 +10,69 @@ import {
 import { Badge } from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {ArrowLeft} from "lucide-react";
+import {ArrowLeft, Loader2} from "lucide-react";
 import React from "react";
+import { useBannerDetails } from "../_hooks/useBannerDetails";
+import { format } from "date-fns";
+import { useParams } from "next/navigation";
 
 export default function BannerInformationCard() {
-    const banner = {
-        id: 3,
-        name: "Test Banner",
-        link: "https://example.com",
-        cpm: 122.0,
-        page: "Blog Details",
-        startDate: "07-04-2025",
-        endDate: "17-04-2025",
-        views: 2,
-        viewsLeft: 120,
-        status: "Active",
+    const params = useParams();
+    const id = params.id as string;
+    const { banner, bannerLoading, error } = useBannerDetails(id);
+
+    // Format date for display
+    const formatDate = (dateString: string) => {
+        try {
+            return format(new Date(dateString), 'dd-MM-yyyy HH:mm');
+        } catch {
+            return 'Invalid Date';
+        }
     };
+
+    // Show loading state
+    if (bannerLoading) {
+        return (
+            <div className="flex flex-col gap-6 p-4 xl:p-6">
+                <div className="flex items-center justify-center h-64">
+                    <div className="flex items-center gap-2">
+                        <Loader2 className="h-6 w-6 animate-spin" />
+                        <span>Loading banner details...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Show error state
+    if (error) {
+        return (
+            <div className="flex flex-col gap-6 p-4 xl:p-6">
+                <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                        <p className="text-red-500 mb-2">Error loading banner details</p>
+                        <p className="text-sm text-muted-foreground">{error.message}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Show not found state
+    if (!banner) {
+        return (
+            <div className="flex flex-col gap-6 p-4 xl:p-6">
+                <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                        <p className="text-muted-foreground mb-2">Banner not found</p>
+                        <Button asChild>
+                            <Link href="/marketing/banners">Back to Banners</Link>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -47,14 +96,14 @@ export default function BannerInformationCard() {
                         <CardDescription>Details about this banner</CardDescription>
                     </div>
                     <Badge
-                        variant={banner.status === "Active" ? "default" : "secondary"}
+                        variant={banner.isActive ? "default" : "secondary"}
                         className={
-                            banner.status === "Active"
+                            banner.isActive
                                 ? "bg-green-500 text-white"
                                 : "bg-gray-500 text-white"
                         }
                     >
-                        {banner.status}
+                        {banner.isActive ? "Active" : "Inactive"}
                     </Badge>
                 </CardHeader>
 
@@ -62,13 +111,13 @@ export default function BannerInformationCard() {
                     {[
                         { label: "Banner ID", value: banner.id },
                         { label: "Name", value: banner.name },
-                        { label: "Link", value: <span className="text-blue-600 underline">{banner.link}</span> },
+                        { label: "Link", value: <a href={banner.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{banner.link}</a> },
                         { label: "CPM", value: `$${banner.cpm.toFixed(2)}` },
-                        { label: "Start Date", value: banner.startDate },
-                        { label: "End Date", value: banner.endDate },
+                        { label: "Start Date", value: formatDate(banner.startDate) },
+                        { label: "End Date", value: formatDate(banner.endDate) },
                         { label: "Page Displayed", value: banner.page },
-                        { label: "Views Count", value: banner.views },
-                        { label: "Views Left", value: banner.viewsLeft },
+                        { label: "Created At", value: formatDate(banner.createdAt) },
+                        { label: "Banner Image", value: <a href={banner.bannerImage} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">View Image</a> },
                     ].map((item, index) => (
                         <div
                             key={index}

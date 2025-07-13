@@ -7,17 +7,61 @@ import { HelpCircle, LogOut, MessageCircle, Settings, User } from "lucide-react"
 import { NotificationDropdown } from "./notification-dropdown";
 import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useProfile } from "@/app/(dashboard)/profile/_hooks/useProfile";
 
 export function UserNav() {
   const router = useRouter();
+  const { data: session } = useSession();
+  const { user } = useProfile();
 
   const handleLogout = async () => {
     await signOut({ 
       redirect: true 
     });
     // router.push("/auth/login");
+  };
+
+  const getUserInitials = () => {
+    const displayUser = user || session?.user;
+    // Handle profile user (from API)
+    if (user?.firstName && user?.lastName) {
+      return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+    }
+    // Handle session user (from login)
+    if (session?.user?.name) {
+      return session.user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+    if (displayUser?.email) {
+      return displayUser.email[0].toUpperCase();
+    }
+    return "U";
+  };
+
+  const getUserName = () => {
+    // Handle profile user (from API)
+    if (user?.firstName && user?.lastName) {
+      return `${user.firstName} ${user.lastName}`;
+    }
+    if (user?.username) {
+      return user.username;
+    }
+    // Handle session user (from login)
+    if (session?.user?.name) {
+      return session.user.name;
+    }
+    return "User";
+  };
+
+  const getUserEmail = () => {
+    const displayUser = user || session?.user;
+    return displayUser?.email || "user@example.com";
+  };
+
+  const getUserImage = () => {
+    const displayUser = user || session?.user;
+    return displayUser?.image || "/placeholder-user.jpg";
   };
 
   return (
@@ -28,16 +72,23 @@ export function UserNav() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-md">
             <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder-user.jpg" alt="Dr. Sarah Johnson" />
-              <AvatarFallback>SJ</AvatarFallback>
+              <AvatarImage 
+                src={getUserImage()} 
+                alt={getUserName()} 
+              />
+              <AvatarFallback>{getUserInitials()}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Dr. Sarah Johnson</p>
-              <p className="text-xs leading-none text-muted-foreground">admin@medixpro.com</p>
+              <p className="text-sm font-medium leading-none">
+                {getUserName()}
+              </p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {getUserEmail()}
+              </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

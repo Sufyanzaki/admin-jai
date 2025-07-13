@@ -25,89 +25,62 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {Search, MoreHorizontal, UserPlus} from "lucide-react";
+import {Search, MoreHorizontal, UserPlus, Loader2} from "lucide-react";
 import PaginationSection from "@/components/Pagination";
+import { useBanners } from "./_hooks/useBanners";
+import { format } from "date-fns";
 
-// Sample banner data
-const bannerData = [
-    {
-        id: 1,
-        name: "admin",
-        cpm: "21.00",
-        startDate: "30-11--0001",
-        endDate: "30-11--0001",
-        views: 0,
-        viewsLeft: 21,
-        page: "Registration",
-    },
-    {
-        id: 2,
-        name: "Test",
-        cpm: "5000.00",
-        startDate: "07-04-2025",
-        endDate: "18-04-2025",
-        views: 2,
-        viewsLeft: 4998,
-        page: "Blog",
-    },
-    {
-        id: 3,
-        name: "Test Banner",
-        cpm: "122.00",
-        startDate: "07-04-2025",
-        endDate: "17-04-2025",
-        views: 2,
-        viewsLeft: 120,
-        page: "Blog Details",
-    },
-    {
-        id: 4,
-        name: "banner2",
-        cpm: "23.00",
-        startDate: "07-04-2025",
-        endDate: "25-04-2025",
-        views: 2,
-        viewsLeft: 21,
-        page: "Agenda",
-    },
-    {
-        id: 5,
-        name: "Home",
-        cpm: "119.00",
-        startDate: "07-04-2025",
-        endDate: "18-04-2025",
-        views: 10,
-        viewsLeft: 109,
-        page: "Home",
-    },
-    {
-        id: 6,
-        name: "test12",
-        cpm: "21.00",
-        startDate: "07-04-2025",
-        endDate: "30-04-2025",
-        views: 2,
-        viewsLeft: 19,
-        page: "How Work",
-    },
-    {
-        id: 7,
-        name: "home banner",
-        cpm: "200.00",
-        startDate: "21-03-2025",
-        endDate: "25-03-2025",
-        views: 0,
-        viewsLeft: 200,
-        page: "Home",
-    },
-];
+
 
 export default function BannerListPage() {
-    const [filteredData] = useState(bannerData);
+    const { banners, bannersLoading, error } = useBanners();
+    const [searchTerm, setSearchTerm] = useState("");
+
+    // Filter banners based on search term
+    const filteredBanners = banners?.filter(banner => 
+        banner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        banner.page.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+
+    // Format date for display
+    const formatDate = (dateString: string) => {
+        try {
+            return format(new Date(dateString), 'dd-MM-yyyy');
+        } catch {
+            return 'Invalid Date';
+        }
+    };
+
+    // Show loading state
+    if (bannersLoading) {
+        return (
+            <div className="flex flex-col gap-6 p-4 xl:p-6">
+                <div className="flex items-center justify-center h-64">
+                    <div className="flex items-center gap-2">
+                        <Loader2 className="h-6 w-6 animate-spin" />
+                        <span>Loading banners...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Show error state
+    if (error) {
+        return (
+            <div className="flex flex-col gap-6 p-4 xl:p-6">
+                <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                        <p className="text-red-500 mb-2">Error loading banners</p>
+                        <p className="text-sm text-muted-foreground">{error.message}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
-            {/* Page Header */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Manage Banners</h2>
@@ -129,7 +102,12 @@ export default function BannerListPage() {
                         <CardTitle>All Banners</CardTitle>
                         <div className="relative mt-2 sm:mt-0">
                             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input placeholder="Search banners" className="pl-8" />
+                            <Input 
+                                placeholder="Search banners" 
+                                className="pl-8" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
                     </div>
                 </CardHeader>
@@ -143,29 +121,33 @@ export default function BannerListPage() {
                                 <TableHead>CPM</TableHead>
                                 <TableHead>Start Date</TableHead>
                                 <TableHead>End Date</TableHead>
-                                <TableHead>Views</TableHead>
-                                <TableHead>Views Left</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Created</TableHead>
                                 <TableHead>Page</TableHead>
                                 <TableHead className="text-right">Option</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {filteredData.length === 0 ? (
+                            {filteredBanners.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={9} className="h-24 text-center">
                                         No banners found.
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                filteredData.map((banner) => (
+                                filteredBanners.map((banner) => (
                                     <TableRow key={banner.id}>
                                         <TableCell>{banner.id}</TableCell>
                                         <TableCell>{banner.name}</TableCell>
-                                        <TableCell>{banner.cpm}</TableCell>
-                                        <TableCell>{banner.startDate}</TableCell>
-                                        <TableCell>{banner.endDate}</TableCell>
-                                        <TableCell>{banner.views}</TableCell>
-                                        <TableCell>{banner.viewsLeft}</TableCell>
+                                        <TableCell>${banner.cpm.toFixed(2)}</TableCell>
+                                        <TableCell>{formatDate(banner.startDate)}</TableCell>
+                                        <TableCell>{formatDate(banner.endDate)}</TableCell>
+                                        <TableCell>
+                                            <Badge variant={banner.isActive ? "default" : "secondary"}>
+                                                {banner.isActive ? "Active" : "Inactive"}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>{formatDate(banner.createdAt)}</TableCell>
                                         <TableCell>
                                             <Badge variant="outline">{banner.page}</Badge>
                                         </TableCell>
@@ -179,10 +161,10 @@ export default function BannerListPage() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
                                                     <DropdownMenuItem asChild>
-                                                        <Link href={`/marketing/banners/1`}>View Details</Link>
+                                                        <Link href={`/marketing/banners/${banner.id}`}>View Details</Link>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem asChild>
-                                                        <Link href={`/marketing/banners/1/edit`}>Edit Banner</Link>
+                                                        <Link href={`/marketing/banners/${banner.id}/edit`}>Edit Banner</Link>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem>Deactivate</DropdownMenuItem>
                                                 </DropdownMenuContent>
