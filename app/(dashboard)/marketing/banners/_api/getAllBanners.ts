@@ -17,13 +17,10 @@ export type BannersResponse = Banner[];
 
 export async function getAllBanners(): Promise<BannersResponse | undefined> {
     try {
-        console.log('Calling getAllBanners API...');
-        const response = await getRequest<BannersResponse>({
+        return await getRequest<BannersResponse>({
             url: 'banner',
             useAuth: true
         });
-        console.log('getAllBanners API response:', response);
-        return response;
     } catch (error) {
         console.error('getAllBanners API error:', error);
         throw error;

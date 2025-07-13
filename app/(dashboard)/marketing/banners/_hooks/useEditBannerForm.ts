@@ -17,17 +17,20 @@ const editBannerSchema = z.object({
         .url("Please enter a valid URL"),
     bannerImage: z.string()
         .min(1, "Banner image is required"),
-    startDate: z.string()
-        .min(1, "Start date is required"),
-    endDate: z.string()
-        .min(1, "End date is required"),
+    startDate: z.date({
+        required_error: "Start date is required",
+    }),
+    endDate: z.date({
+        required_error: "End date is required",
+    }),
     cpm: z.number()
         .min(0, "CPM must be a positive number"),
     page: z.string()
         .min(1, "Page selection is required"),
     isActive: z.boolean()
         .default(true),
-}).refine((data) => new Date(data.startDate) < new Date(data.endDate), {
+    dateRange: z.any().optional(), // For the DateRangePicker controller
+}).refine((data) => data.startDate < data.endDate, {
     message: "End date must be after start date",
     path: ["endDate"],
 });
@@ -78,11 +81,12 @@ export default function useEditBannerForm(id: string) {
             name: "",
             link: "",
             bannerImage: "",
-            startDate: "",
-            endDate: "",
+            startDate: new Date(),
+            endDate: new Date(),
             cpm: 0,
             page: "homepage",
             isActive: true,
+            dateRange: undefined,
         },
         mode: 'onBlur'
     });
@@ -94,28 +98,34 @@ export default function useEditBannerForm(id: string) {
             name: banner.name,
             link: banner.link,
             bannerImage: banner.bannerImage,
-            startDate: banner.startDate.split('T')[0] + 'T' + banner.startDate.split('T')[1].substring(0, 5),
-            endDate: banner.endDate.split('T')[0] + 'T' + banner.endDate.split('T')[1].substring(0, 5),
+            startDate: new Date(banner.startDate),
+            endDate: new Date(banner.endDate),
             cpm: banner.cpm,
             page: banner.page,
             isActive: banner.isActive,
+            dateRange: {
+                from: new Date(banner.startDate),
+                to: new Date(banner.endDate)
+            }
         });
         setImagePreview(banner.bannerImage);
         
-    }, [banner]);
+    }, [banner, reset]);
 
     const handleFileChange = useCallback((file: File | null) => {
         setSelectedFile(file);
         if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setImagePreview(e.target?.result as string);
+            };
+            reader.readAsDataURL(file);
             setValue("bannerImage", "https://example.com/images/banner.jpg", { shouldValidate: false });
+        } else {
+            setImagePreview("");
+            // Don't update form value when file is null (cancelled selection)
         }
-        // Don't update form value when file is null (cancelled selection)
     }, [setValue]);
-
-    const handleDateRangeChange = (startDate: string, endDate: string) => {
-        setValue("startDate", startDate);
-        setValue("endDate", endDate);
-    };
 
     const onSubmit = async (values: EditBannerFormValues, callback?: (data: {status: number} | undefined) => void) => {
         try {
@@ -125,8 +135,8 @@ export default function useEditBannerForm(id: string) {
                 name: values.name,
                 link: values.link,
                 bannerImage: values.bannerImage,
-                startDate: values.startDate,
-                endDate: values.endDate,
+                startDate: values.startDate.toISOString(),
+                endDate: values.endDate.toISOString(),
                 cpm: values.cpm,
                 page: values.page,
                 isActive: values.isActive,
@@ -155,7 +165,6 @@ export default function useEditBannerForm(id: string) {
         selectedFile,
         imagePreview,
         handleFileChange,
-        handleDateRangeChange,
         banner,
     };
 } 

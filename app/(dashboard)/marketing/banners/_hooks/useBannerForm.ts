@@ -16,17 +16,20 @@ const bannerSchema = z.object({
         .url("Please enter a valid URL"),
     bannerImage: z.string()
         .min(1, "Banner image is required"),
-    startDate: z.string()
-        .min(1, "Start date is required"),
-    endDate: z.string()
-        .min(1, "End date is required"),
+    startDate: z.date({
+        required_error: "Start date is required",
+    }),
+    endDate: z.date({
+        required_error: "End date is required",
+    }),
     cpm: z.number()
         .min(0, "CPM must be a positive number"),
     page: z.string()
         .min(1, "Page selection is required"),
     isActive: z.boolean()
         .default(true),
-}).refine((data) => new Date(data.startDate) < new Date(data.endDate), {
+    dateRange: z.any().optional(), // For the DateRangePicker controller
+}).refine((data) => data.startDate < data.endDate, {
     message: "End date must be after start date",
     path: ["endDate"],
 });
@@ -70,17 +73,19 @@ export default function useBannerForm() {
         setValue,
         reset,
         watch,
+        control,
     } = useForm<BannerFormValues>({
         resolver: zodResolver(bannerSchema),
         defaultValues: {
             name: "",
             link: "",
             bannerImage: "",
-            startDate: "",
-            endDate: "",
+            startDate: new Date(),
+            endDate: new Date(),
             cpm: 0,
             page: "home",
             isActive: true,
+            dateRange: undefined,
         },
         mode: 'onBlur'
     });
@@ -101,21 +106,14 @@ export default function useBannerForm() {
         }
     }, [setValue]);
 
-    const handleDateRangeChange = (startDate: string, endDate: string) => {
-        setValue("startDate", startDate);
-        setValue("endDate", endDate);
-    };
-
-
-
     const onSubmit = async (values: BannerFormValues, callback?: (data: {status: number} | undefined) => void) => {
         try {
             const result = await trigger({
                 name: values.name,
                 link: values.link,
                 bannerImage: values.bannerImage,
-                startDate: values.startDate,
-                endDate: values.endDate,
+                startDate: values.startDate.toISOString(),
+                endDate: values.endDate.toISOString(),
                 cpm: values.cpm,
                 page: values.page,
                 isActive: values.isActive,
@@ -142,9 +140,9 @@ export default function useBannerForm() {
         register,
         setValue,
         watch,
+        control,
         selectedFile,
         imagePreview,
         handleFileChange,
-        handleDateRangeChange,
     };
 } 

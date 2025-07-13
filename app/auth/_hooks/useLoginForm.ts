@@ -52,7 +52,6 @@ export default function useLoginForm() {
                 setError('root', { message: errorMessage });
             } else {
                 callback?.();
-                // Redirect to dashboard after successful login
                 router.push('/');
             }
         } catch (error) {

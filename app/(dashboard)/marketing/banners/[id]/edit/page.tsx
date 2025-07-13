@@ -36,11 +36,12 @@ export default function BannerEditPage() {
         isLoading,
         register,
         control,
+        setValue,
         imagePreview,
         handleFileChange,
-        handleDateRangeChange,
         banner,
     } = useEditBannerForm(id);
+
 
     const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] || null;
@@ -50,7 +51,6 @@ export default function BannerEditPage() {
         }
     };
 
-    // Show loading state while banner data is being fetched
     if (isLoading && !banner) {
         return (
             <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -117,10 +117,22 @@ export default function BannerEditPage() {
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="grid gap-2">
                             <Label>Start / End Date</Label>
-                            <DateRangePicker 
-                                className="w-full [&>button]:w-full" 
-                                onDateRangeChange={handleDateRangeChange}
+                            <Controller
+                                name="dateRange"
+                                control={control}
+                                render={({ field }) => (
+                                    <DateRangePicker
+                                        className="w-full [&>button]:w-full"
+                                        value={field.value as any}
+                                        onDateRangeChange={(startDate, endDate) => {
+                                            setValue('startDate', new Date(startDate));
+                                            setValue('endDate', new Date(endDate));
+                                            field.onChange({ from: new Date(startDate), to: new Date(endDate) });
+                                        }}
+                                    />
+                                )}
                             />
+                
                             {(errors.startDate || errors.endDate) && (
                                 <div className="space-y-1">
                                     {errors.startDate && (

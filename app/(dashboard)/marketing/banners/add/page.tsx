@@ -21,6 +21,7 @@ import {DateRangePicker} from "@/components/date-range-picker";
 import Link from "next/link";
 import useBannerForm from "../_hooks/useBannerForm";
 import { useRef } from "react";
+import { Controller } from "react-hook-form";
 
 export default function BannerAddPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,9 +33,9 @@ export default function BannerAddPage() {
         register,
         watch,
         setValue,
+        control,
         imagePreview,
         handleFileChange,
-        handleDateRangeChange,
     } = useBannerForm();
 
     const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,23 +94,36 @@ export default function BannerAddPage() {
 
                         {/* Date Range Picker + CPM */}
                         <div className="grid gap-4 md:grid-cols-2">
-                            <div className="grid gap-2">
-                                <Label>Start / End Date</Label>
-                                <DateRangePicker 
-                                    className="w-full [&>button]:w-full" 
-                                    onDateRangeChange={handleDateRangeChange}
-                                />
-                                {(errors.startDate || errors.endDate) && (
-                                    <div className="space-y-1">
-                                        {errors.startDate && (
-                                            <p className="text-sm text-red-400">{errors.startDate.message}</p>
-                                        )}
-                                        {errors.endDate && (
-                                            <p className="text-sm text-red-400">{errors.endDate.message}</p>
-                                        )}
-                                    </div>
+                                                    <div className="grid gap-2">
+                            <Label>Start / End Date</Label>
+                            <Controller
+                                name="dateRange"
+                                control={control}
+                                render={({ field }) => (
+                                    <>
+                                        <DateRangePicker
+                                            className="w-full [&>button]:w-full"
+                                            value={field.value as any}
+                                            onDateRangeChange={(startDate, endDate) => {
+                                                setValue('startDate', new Date(startDate));
+                                                setValue('endDate', new Date(endDate));
+                                                field.onChange({ from: new Date(startDate), to: new Date(endDate) });
+                                            }}
+                                        />
+                                    </>
                                 )}
-                            </div>
+                            />
+                            {(errors.startDate || errors.endDate) && (
+                                <div className="space-y-1">
+                                    {errors.startDate && (
+                                        <p className="text-sm text-red-400">{errors.startDate.message}</p>
+                                    )}
+                                    {errors.endDate && (
+                                        <p className="text-sm text-red-400">{errors.endDate.message}</p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
 
                             <div className="grid gap-2">
                                 <Label htmlFor="cpm">CPM</Label>

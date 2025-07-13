@@ -11,19 +11,29 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 // Define the component with one name
-interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DateRangePickerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   onDateRangeChange?: (startDate: string, endDate: string) => void;
+  value?: DateRange;
+  defaultValue?: DateRange;
 }
 
-function DateRangePickerComponent({ className, onDateRangeChange }: DateRangePickerProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
-  })
+function DateRangePickerComponent({
+  className,
+  onDateRangeChange,
+  value,
+  defaultValue = { from: new Date(), to: new Date() }
+}: DateRangePickerProps) {
+  const [internalDate, setInternalDate] = React.useState<DateRange | undefined>(defaultValue);
+
+  // Use controlled value if provided, otherwise use internal state
+  const date = value !== undefined ? value : internalDate;
 
   const handleDateSelect = (selectedDate: DateRange | undefined) => {
-    setDate(selectedDate);
-    
+    // Update internal state only if not controlled
+    if (value === undefined) {
+      setInternalDate(selectedDate);
+    }
+
     if (selectedDate?.from && selectedDate?.to && onDateRangeChange) {
       // Convert dates to ISO string format for form compatibility
       const startDate = selectedDate.from.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
