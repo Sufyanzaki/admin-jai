@@ -16,7 +16,7 @@ const loginSchema = z.object({
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
-export default function useLoginForm({ onSuccess }: { onSuccess?: () => void }) {
+export default function useLoginForm() {
     const router = useRouter();
 
     const {
@@ -34,15 +34,12 @@ export default function useLoginForm({ onSuccess }: { onSuccess?: () => void }) 
         mode: 'onBlur'
     });
 
-    const onSubmit = handleSubmit(async (data) => {
-
-        console.log('Login form submitted', data);
-
+    const onSubmit = async (values: LoginFormValues, callback?: () => void) => {
         try {
             const result = await signIn('credentials', {
                 redirect: false,
-                email: data.email,
-                password: data.password,
+                email: values.email,
+                password: values.password,
                 callbackUrl: '/',
             });
 
@@ -54,17 +51,18 @@ export default function useLoginForm({ onSuccess }: { onSuccess?: () => void }) 
                 showError({message: errorMessage});
                 setError('root', { message: errorMessage });
             } else {
-                onSuccess?.();
-                router.push(result?.url || '/dashboard');
+                callback?.();
+                router.push(result?.url || '/');
             }
         } catch (error) {
             showError({message: 'An unexpected error occurred. Please try again.'});
             console.error('Login error:', error);
         }
-    });
+    };
 
     return {
         register,
+        handleSubmit,
         onSubmit,
         errors,
         isLoading: isSubmitting,

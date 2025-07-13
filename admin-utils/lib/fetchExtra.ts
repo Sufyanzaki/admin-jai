@@ -28,13 +28,13 @@ export async function fetchExtra(
       }
     }
 
-    if (session?.accessToken) {
+    if (session?.token) {
       if (!init.headers) {
         init.headers = {};
       }
 
       const headers = new Headers(init.headers);
-      headers.set('Authorization', `Bearer ${session.accessToken}`);
+      headers.set('Authorization', `Bearer ${session.token}`);
       init.headers = headers;
     }
   }
@@ -56,14 +56,8 @@ export async function fetchExtra(
       case 429:
         throw { message: "Too many requests" };
       case 401:
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
-        }
         throw await response.json();
       case 404:
-        if (typeof window !== 'undefined') {
-          window.location.href = '/404';
-        }
         throw await response.json();
       case 500:
         throw await response.json();

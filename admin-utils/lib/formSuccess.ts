@@ -6,7 +6,6 @@ export const showSuccess = (message: string, handleSuccess?: () => void): void =
     title: 'Success',
     text: message,
     allowOutsideClick: false,
-    confirmButtonColor: '#F6A92C',
   }).then((result) => {
     if (result.isConfirmed && handleSuccess) {
       handleSuccess();

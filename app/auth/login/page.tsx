@@ -13,14 +13,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const {
     register,
-    onSubmit,
+    handleSubmit,
     errors,
+    onSubmit,
     isLoading
-  } = useLoginForm({
-    onSuccess: () => {
-      console.log("Login successful!")
-    }
-  })
+  } = useLoginForm()
 
   return (
       <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-12">
@@ -34,7 +31,7 @@ export default function LoginPage() {
               <CardTitle className="text-xl text-white">Sign in to your account</CardTitle>
               <CardDescription className="text-gray-400">Enter your credentials to access the dashboard</CardDescription>
             </CardHeader>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleSubmit((data: any) => onSubmit(data, () => console.log("Login successful!")))}>
               <CardContent className="space-y-4">
                 {errors.root && (
                     <div className="rounded-md bg-red-900/20 p-3 text-sm text-red-400">

@@ -1,20 +1,26 @@
 "use client";
 
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Activity, Bell, Key, Lock, Shield, User, Mail, Phone, MapPin, Calendar, Clock, Building, FileText, Settings, Code, Save, Eye } from 'lucide-react'
+import { Activity, Bell, Key, Lock, Shield, User, Mail, Phone, MapPin, Clock, Building, FileText, Settings, Save, Calendar, Users } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import PasswordForm from './_components/PasswordForm';
+import ProfileEditForm from './_components/ProfileEditForm';
+import { useSession } from 'next-auth/react';
+import { useProfile } from './_hooks/useProfile';
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
+  const { user, mergedUser } = useProfile();
+  const { data: session } = useSession();
+
+  // Use merged user data (fresh profile data + session data)
+  const displayUser = mergedUser || session?.user as any;
 
   return (
     <div className="space-y-6 p-4 xl:p-6">
@@ -33,16 +39,11 @@ export default function ProfilePage() {
           {/* Profile Summary Card */}
           <Card>
             <CardHeader className="flex flex-row items-center gap-4">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src="/avatars/admin.png" alt="Admin" />
-                <AvatarFallback>AD</AvatarFallback>
-              </Avatar>
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="text-xl font-semibold">John Doe</h4>
-                  <Badge variant="secondary">Admin</Badge>
+                  <h4 className="text-xl font-semibold">{displayUser?.firstName} {displayUser?.lastName}</h4>
+                  <Badge variant="secondary">{displayUser?.role}</Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">System Administrator</p>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -62,58 +63,36 @@ export default function ProfilePage() {
                   </Button>
                 </div>
 
-                {isEditing ? (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
-                      <Input id="name" defaultValue="John Doe" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" defaultValue="admin@example.com" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input id="phone" defaultValue="+1 (555) 123-4567" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="location">Location</Label>
-                      <Input id="location" defaultValue="New York, USA" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="department">Department</Label>
-                      <Input id="department" defaultValue="IT Operations" />
-                    </div>
-                  </div>
-                ) : (
+                {isEditing ? <ProfileEditForm /> : (
                   <div className="grid gap-3 text-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Email</span>
                       </div>
-                      <span>admin@example.com</span>
+                      <span>{displayUser?.email || "No email provided"}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Phone</span>
                       </div>
-                      <span>+1 (555) 123-4567</span>
+                      <span>{displayUser?.phone || "No phone provided"}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Location</span>
                       </div>
-                      <span>New York, USA</span>
+                      <span>{displayUser?.location || "No location provided"}</span>
                     </div>
+                  
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Building className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Department</span>
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">Age</span>
                       </div>
-                      <span>IT Operations</span>
+                      <span>{displayUser?.age ? `${displayUser.age} years` : "Not specified"}</span>
                     </div>
                   </div>
                 )}
@@ -137,22 +116,7 @@ export default function ProfilePage() {
                   </Button>
                 </div>
 
-                {isChangingPassword ? (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="current-password">Current Password</Label>
-                      <Input id="current-password" type="password" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="new-password">New Password</Label>
-                      <Input id="new-password" type="password" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="confirm-password">Confirm New Password</Label>
-                      <Input id="confirm-password" type="password" />
-                    </div>
-                  </div>
-                ) : (
+                {isChangingPassword ? <PasswordForm /> : (
                   <div className="grid gap-2 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">2FA Status</span>
@@ -161,10 +125,6 @@ export default function ProfilePage() {
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">Last Password Change</span>
                       <span>7 days ago</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Security Score</span>
-                      <Badge variant="secondary">95/100</Badge>
                     </div>
                   </div>
                 )}
