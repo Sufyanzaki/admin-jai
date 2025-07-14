@@ -1,3 +1,5 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,81 +23,11 @@ import {
   Wrench
 } from "lucide-react";
 import Link from "next/link";
-
-const blogData = [
-  {
-    id: 1,
-    title: "Flirten & versieren Magazine",
-    category: "Home",
-    date: "30-10-2024",
-    status: "Active",
-  },
-  {
-    id: 2,
-    title: "Flirten",
-    category: "Home",
-    date: "30-10-2024",
-    status: "Active",
-  },
-  {
-    id: 3,
-    title: "Versieren",
-    category: "Home",
-    date: "30-10-2024",
-    status: "Active",
-  },
-  {
-    id: 4,
-    title: "Magazine",
-    category: "Home",
-    date: "30-10-2024",
-    status: "Active",
-  },
-  {
-    id: 5,
-    title: "Transcendental Learning: Adapting to Educational Innovations",
-    category: "Technology",
-    date: "01-11-2024",
-    status: "Active",
-  },
-  {
-    id: 6,
-    title: "Unraveling The Mysteries Of Dark Matter",
-    category: "Technology",
-    date: "01-11-2024",
-    status: "Active",
-  },
-  {
-    id: 7,
-    title: "A Journey Through The Enchanting Landspace Of New Zealand",
-    category: "Technology",
-    date: "01-11-2024",
-    status: "Active",
-  },
-  {
-    id: 8,
-    title: "The Important Of Mental Health In Modern Society",
-    category: "Technology",
-    date: "01-11-2024",
-    status: "Active",
-  },
-  {
-    id: 9,
-    title: "Culinary Delights: Exploring Exotic Flavors Around The World",
-    category: "Technology",
-    date: "01-11-2024",
-    status: "Active",
-  },
-  {
-    id: 10,
-    title: "The Rise Of E-Sports: A New Era In Competitive Gaming",
-    category: "Technology",
-    date: "01-11-2024",
-    status: "Active",
-  },
-];
+import { useBlogs } from "../_hooks/useBlogs";
 
 export default function BlogListPage() {
+  const { blogs = [], loading, error } = useBlogs();
+
   return (
     <div className="flex flex-col gap-4 p-4 xl:p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -159,77 +91,65 @@ export default function BlogListPage() {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <Table className="whitespace-nowrap">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead className="hidden md:table-cell">Category</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="whitespace-nowrap">
-                {blogData.map((blog) => (
+            {loading ? (
+              <div className="flex items-center justify-center h-32">Loading blogs...</div>
+            ) : error ? (
+              <div className="flex items-center justify-center h-32 text-red-500">Error loading blogs</div>
+            ) : (
+              <Table className="whitespace-nowrap">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>ID</TableHead>
+                    <TableHead>Title</TableHead>
+                    <TableHead className="hidden md:table-cell">Category</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="whitespace-nowrap">
+                  {blogs.map((blog) => (
                     <TableRow key={blog.id}>
                       <TableCell className="font-medium">
-                        <Link href="/(dashboard)/blogs/details" className="hover:underline">
+                        <Link href={`/blogs/${blog.id}`} className="hover:underline">
                           {blog.id}
                         </Link>
                       </TableCell>
                       <TableCell>{blog.title}</TableCell>
-                      <TableCell className="hidden md:table-cell">{blog.category}</TableCell>
-                      <TableCell>{blog.date}</TableCell>
+                      <TableCell className="hidden md:table-cell">{blog.categoryId}</TableCell>
+                      <TableCell>{blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : ''}</TableCell>
                       <TableCell>
-                        <Badge
-                            variant={
-                              blog.status === "Active"
-                                  ? "default"
-                                  : blog.status === "Inactive"
-                                      ? "outline"
-                                      : "secondary"
-                            }
-                        >
-                          {blog.status}
-                        </Badge>
+                        <Badge variant="default">Active</Badge>
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem asChild>
-                              <Link href={`/blogs/view/1`} className="flex items-center w-full">
-                                <Eye className="mr-2 h-4 w-4" />
-                                View
+                              <Link href={`/blogs/list/${blog.id}`}>
+                                <Pencil className="mr-2 h-4 w-4" /> View
                               </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                              <Link href={`/blogs/edit/1`} className="flex items-center w-full">
-                                <Pencil className="mr-2 h-4 w-4" />
-                                Edit
+                              <Link href={`/blogs/list/edit/${blog.id}`}>
+                                <Pencil className="mr-2 h-4 w-4" /> Edit
                               </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                className="text-red-600 focus:text-red-600"
-                            >
-                              <Trash className="mr-2 h-4 w-4" />
-                              Delete
+                            <DropdownMenuItem className="text-red-600">
+                              <Trash className="mr-2 h-4 w-4" /> Delete
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
                     </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -167,16 +167,27 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
+function unescapeHtml(html: string): string {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.documentElement.textContent || html;
+}
+
+export function SimpleEditor({ existingValue, onChange }: { existingValue?: string; onChange?: (val: string) => void } = {}) {
+
+  const value = unescapeHtml(existingValue ?? '');
+
   const isMobile = useMobile()
   const windowSize = useWindowSize()
-  const { theme } = useTheme()
   const [mobileView, setMobileView] = React.useState<
     "main" | "highlighter" | "link"
   >("main")
   const toolbarRef = React.useRef<HTMLDivElement>(null)
 
   const editor = useEditor({
+    content: value ?? '',
+      parseOptions: {
+          preserveWhitespace: 'full',
+      },
     immediatelyRender: false,
     editorProps: {
       attributes: {
@@ -197,7 +208,6 @@ export function SimpleEditor() {
       Typography,
       Superscript,
       Subscript,
-
       Selection,
       ImageUploadNode.configure({
         accept: "image/*",
@@ -209,7 +219,20 @@ export function SimpleEditor() {
       TrailingNode,
       Link.configure({ openOnClick: false }),
     ],
+    onUpdate({ editor }) {
+      if (onChange) {
+        onChange(editor.getHTML());
+      }
+    },
   })
+
+  // Keep editor content in sync with value prop
+  React.useEffect(() => {
+    if (editor && typeof value === 'string' && value !== editor.getHTML()) {
+      editor.commands.setContent(value, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   const bodyRect = useCursorVisibility({
     editor,
@@ -223,41 +246,41 @@ export function SimpleEditor() {
   }, [isMobile, mobileView])
 
   return (
-      <EditorContext.Provider value={{ editor }}>
-          <div className="editor-container border-input border rounded-md">
-              <Toolbar
-                  ref={toolbarRef}
-                  style={
-                      isMobile
-                          ? {
-                              bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
-                          }
-                          : {}
-                  }
-                  className="editor-toolbar"
-              >
-                  {mobileView === "main" ? (
-                      <MainToolbarContent
-                          onHighlighterClick={() => setMobileView("highlighter")}
-                          onLinkClick={() => setMobileView("link")}
-                          isMobile={isMobile}
-                      />
-                  ) : (
-                      <MobileToolbarContent
-                          type={mobileView === "highlighter" ? "highlighter" : "link"}
-                          onBack={() => setMobileView("main")}
-                      />
-                  )}
-              </Toolbar>
+    <EditorContext.Provider value={{ editor }}>
+      <div className="editor-container border-input border rounded-md">
+        <Toolbar
+          ref={toolbarRef}
+          style={
+            isMobile
+              ? {
+                  bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
+                }
+              : {}
+          }
+          className="editor-toolbar"
+        >
+          {mobileView === "main" ? (
+            <MainToolbarContent
+              onHighlighterClick={() => setMobileView("highlighter")}
+              onLinkClick={() => setMobileView("link")}
+              isMobile={isMobile}
+            />
+          ) : (
+            <MobileToolbarContent
+              type={mobileView === "highlighter" ? "highlighter" : "link"}
+              onBack={() => setMobileView("main")}
+            />
+          )}
+        </Toolbar>
 
-              <div className="content-wrapper">
-                  <EditorContent
-                      editor={editor}
-                      role="presentation"
-                      className="simple-editor-content border-t border-input min-h-44"
-                  />
-              </div>
-          </div>
-      </EditorContext.Provider>
+        <div className="content-wrapper">
+          <EditorContent
+            editor={editor}
+            role="presentation"
+            className="simple-editor-content border-t border-input min-h-44"
+          />
+        </div>
+      </div>
+    </EditorContext.Provider>
   )
 }

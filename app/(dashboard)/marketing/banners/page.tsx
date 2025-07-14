@@ -29,12 +29,14 @@ import {Search, MoreHorizontal, UserPlus, Loader2} from "lucide-react";
 import PaginationSection from "@/components/Pagination";
 import { useBanners } from "./_hooks/useBanners";
 import { format } from "date-fns";
-
+import { useDeleteBanner } from "./_hooks/useDeleteBanner";
 
 
 export default function BannerListPage() {
     const { banners, bannersLoading, error } = useBanners();
     const [searchTerm, setSearchTerm] = useState("");
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const { deleteBannerById, isDeleting } = useDeleteBanner();
 
     // Filter banners based on search term
     const filteredBanners = banners?.filter(banner => 
@@ -152,23 +154,37 @@ export default function BannerListPage() {
                                             <Badge variant="outline">{banner.page}</Badge>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                        <span className="sr-only">Open menu</span>
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={`/marketing/banners/${banner.id}`}>View Details</Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={`/marketing/banners/${banner.id}/edit`}>Edit Banner</Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem>Deactivate</DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
+                                            {isDeleting && deletingId === String(banner.id) ? (
+                                                <div className="flex items-center justify-center h-10">
+                                                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                                                </div>
+                                            ) : (
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="icon">
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                            <span className="sr-only">Open menu</span>
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={`/marketing/banners/${banner.id}`}>View Details</Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={`/marketing/banners/${banner.id}/edit`}>Edit Banner</Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={async () => {
+                                                                setDeletingId(String(banner.id));
+                                                                await deleteBannerById(String(banner.id));
+                                                                setDeletingId(null);
+                                                            }}
+                                                        >
+                                                            Deactivate
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))

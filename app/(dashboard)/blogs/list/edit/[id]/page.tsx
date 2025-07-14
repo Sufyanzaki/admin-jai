@@ -9,13 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import {ArrowLeft} from "lucide-react";
 import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
-import { useBlogCategories } from "../category/_hooks/useBlogCategories";
-import useCreateBlog from "../_hooks/useCreateBlog";
+import { useParams } from "next/navigation";
+import { useBlogCategories } from "../../../category/_hooks/useBlogCategories";
+import useEditBlog from "../../../_hooks/useEditBlog";
 import { Controller } from "react-hook-form";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 
-export default function AddBlogPage() {
-
+export default function EditBlogPage() {
+    const params = useParams();
+    const id = params.id as string | number;
     const { categories = [], loading: categoriesLoading } = useBlogCategories();
 
     const {
@@ -25,23 +27,30 @@ export default function AddBlogPage() {
         isLoading,
         register,
         control,
-    } = useCreateBlog(imageUpload);
+        blog,
+        blogLoading,
+        blogError,
+    } = useEditBlog(id, imageUpload);
 
+    if (blogLoading) {
+        return <div className="flex items-center justify-center h-64">Loading blog...</div>;
+    }
+    if (blogError || !blog) {
+        return <div className="flex items-center justify-center h-64 text-red-500">Blog not found</div>;
+    }
     return (
         <div className="flex flex-col gap-4 p-4 xl:p-6">
-            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-4">
-                    <Button variant="outline" size="icon" asChild>
-                        <Link href="/blogs/list">
-                            <ArrowLeft className="h-4 w-4" />
-                            <span className="sr-only">Back</span>
-                        </Link>
-                    </Button>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/blogs/list">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Back</span>
+                    </Link>
+                </Button>
 
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight mb-2">Add Blog</h1>
-                        <p className="text-muted-foreground">Create and publish new blog content</p>
-                    </div>
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight mb-2">Edit Blog</h1>
+                    <p className="text-muted-foreground">Update and manage your existing blog content</p>
                 </div>
             </div>
 
@@ -52,12 +61,7 @@ export default function AddBlogPage() {
                 </CardHeader>
 
                 <CardContent>
-                    <form
-                        className="grid grid-cols-2 gap-6"
-                        onSubmit={handleSubmit(async (values) => {
-                            await onSubmit(values);
-                        })}
-                    >
+                    <form className="grid grid-cols-2 gap-6" onSubmit={handleSubmit(async (values) => { await onSubmit(values); })}>
                         {/* Blog Title */}
                         <div className="flex-1 space-y-2">
                             <Label htmlFor="title">Blog Title *</Label>
@@ -72,21 +76,25 @@ export default function AddBlogPage() {
                                 control={control}
                                 name="categoryId"
                                 render={({ field }) => (
-                                    <Select
-                                        required
-                                        disabled={categoriesLoading || categories.length === 0}
-                                        value={field.value ? String(field.value) : ''}
-                                        onValueChange={val => field.onChange(Number(val))}
-                                    >
-                                <SelectTrigger>
-                                            <SelectValue placeholder={categoriesLoading ? "Loading..." : "Select"} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                            {categories.map((cat) => (
-                                                <SelectItem key={cat.id} value={String(cat.id)}>{cat.name}</SelectItem>
-                                            ))}
-                                </SelectContent>
-                            </Select>
+                                    field.value === undefined || field.value === null ? (
+                                        <div className="flex items-center h-10">Loading...</div>
+                                    ) : (
+                                        <Select
+                                            required
+                                            disabled={categoriesLoading || categories.length === 0}
+                                            value={String(field.value)}
+                                            onValueChange={val => field.onChange(Number(val))}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={categoriesLoading ? "Loading..." : "Select"} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {categories.map((cat) => (
+                                                    <SelectItem key={cat.id} value={String(cat.id)}>{cat.name}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    )
                                 )}
                             />
                             {errors.categoryId && <div className="text-red-500 text-sm">{errors.categoryId.message}</div>}
@@ -105,14 +113,32 @@ export default function AddBlogPage() {
                             <Controller
                                 control={control}
                                 name="bannerImage"
-                                render={({ field }) => (
-                            <Input
-                                id="banner"
-                                type="file"
-                                accept="image/*"
-                                        onChange={(e) => field.onChange(e.target.files?.[0] || null)}
-                                    />
-                                )}
+                                render={({ field }) => {
+                                    const value = field.value;
+                                    const isFile = value instanceof File;
+                                    const isUrl = typeof value === 'string' && value !== '';
+                                    return (
+                                        <div className="space-y-2">
+                                            {isUrl && (
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-muted-foreground">Current: {value.split('/').pop()}</span>
+                                                    <img src={value} alt="Banner" className="h-10 rounded" />
+                                                </div>
+                                            )}
+                                            {isFile && (
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-muted-foreground">Selected: {value.name}</span>
+                                                </div>
+                                            )}
+                                            <Input
+                                                id="banner"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={e => field.onChange(e.target.files?.[0] || null)}
+                                            />
+                                        </div>
+                                    );
+                                }}
                             />
                         </div>
 
@@ -152,14 +178,32 @@ export default function AddBlogPage() {
                             <Controller
                                 control={control}
                                 name="metaImage"
-                                render={({ field }) => (
-                            <Input
-                                id="meta-image"
-                                type="file"
-                                accept="image/*"
-                                        onChange={(e) => field.onChange(e.target.files?.[0] || null)}
-                                    />
-                                )}
+                                render={({ field }) => {
+                                    const value = field.value;
+                                    const isFile = value instanceof File;
+                                    const isUrl = typeof value === 'string' && value !== '';
+                                    return (
+                                        <div className="space-y-2">
+                                            {isUrl && (
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-muted-foreground">Current: {value.split('/').pop()}</span>
+                                                    <img src={value} alt="Meta Image" className="h-10 rounded" />
+                                                </div>
+                                            )}
+                                            {isFile && (
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-muted-foreground">Selected: {value.name}</span>
+                                                </div>
+                                            )}
+                                            <Input
+                                                id="meta-image"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={e => field.onChange(e.target.files?.[0] || null)}
+                                            />
+                                        </div>
+                                    );
+                                }}
                             />
                         </div>
 

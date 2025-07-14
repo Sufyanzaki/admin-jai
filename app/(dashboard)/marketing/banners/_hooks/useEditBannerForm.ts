@@ -15,8 +15,10 @@ const editBannerSchema = z.object({
     link: z.string()
         .min(1, "Link is required")
         .url("Please enter a valid URL"),
-    bannerImage: z.string()
-        .min(1, "Banner image is required"),
+    bannerImage: z.union([
+        z.string().min(1, "Banner image is required"),
+        z.instanceof(File, { message: "Banner image is required" })
+    ]),
     startDate: z.date({
         required_error: "Start date is required",
     }),
@@ -49,11 +51,7 @@ type UpdateBannerProps = {
 }
 
 export default function useEditBannerForm(id: string) {
-
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string>("");
     const { banner, bannerLoading } = useBannerDetails(id);
-
     const { trigger, isMutating } = useSWRMutation(
         'updateBanner',
         async (url: string, { arg }: { arg: UpdateBannerProps }) => {
@@ -66,7 +64,6 @@ export default function useEditBannerForm(id: string) {
             }
         }
     );
-
     const {
         handleSubmit,
         formState: { errors, isSubmitting },
@@ -90,10 +87,8 @@ export default function useEditBannerForm(id: string) {
         },
         mode: 'onBlur'
     });
-
     useEffect(() => {
         if(!banner) return;
-
         reset({
             name: banner.name,
             link: banner.link,
@@ -108,43 +103,30 @@ export default function useEditBannerForm(id: string) {
                 to: new Date(banner.endDate)
             }
         });
-        setImagePreview(banner.bannerImage);
-        
     }, [banner, reset]);
-
-    const handleFileChange = useCallback((file: File | null) => {
-        setSelectedFile(file);
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setImagePreview(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
-            setValue("bannerImage", "https://example.com/images/banner.jpg", { shouldValidate: false });
-        } else {
-            setImagePreview("");
-            // Don't update form value when file is null (cancelled selection)
-        }
-    }, [setValue]);
-
-    const onSubmit = async (values: EditBannerFormValues, callback?: (data: {status: number} | undefined) => void) => {
+    // Remove all file/preview logic from the hook
+    // Accepts a File | null as an argument to onSubmit
+    const onSubmit = async (values: EditBannerFormValues, bannerImageFile: File | null, callback?: (data: {status: number} | undefined) => void) => {
         try {
-            console.log('Edit banner form submitted', values);
-
+            let bannerImageUrl = typeof values.bannerImage === 'string' ? values.bannerImage : '';
+            if (bannerImageFile) {
+                // Use the uploadDocument function to upload the file and get the URL
+                const { uploadDocument } = await import('@/admin-utils/utils/uploadDocument');
+                const uploadResult = await uploadDocument({ name: bannerImageFile.name, type: bannerImageFile.type });
+                bannerImageUrl = uploadResult.url;
+            }
             const result = await trigger({
                 name: values.name,
                 link: values.link,
-                bannerImage: values.bannerImage,
+                bannerImage: bannerImageUrl,
                 startDate: values.startDate.toISOString(),
                 endDate: values.endDate.toISOString(),
                 cpm: values.cpm,
                 page: values.page,
                 isActive: values.isActive,
             });
-
             if (result?.status === 200) {
                 showSuccess('Banner updated successfully!');
-                setSelectedFile(null);
                 callback?.(result);
             }
         } catch (error: any) {
@@ -152,7 +134,6 @@ export default function useEditBannerForm(id: string) {
             console.error('Banner update error:', error);
         }
     };
-
     return {
         handleSubmit,
         onSubmit,
@@ -162,9 +143,6 @@ export default function useEditBannerForm(id: string) {
         setValue,
         watch,
         control,
-        selectedFile,
-        imagePreview,
-        handleFileChange,
         banner,
     };
 } 
