@@ -1,13 +1,19 @@
+"use client"
+
 import React from "react";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {ArrowLeft} from "lucide-react";
-import {Label} from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
+import useNewsletterForm from "./_hooks/useNewsletterForm";
+import { Controller } from "react-hook-form";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function NewsletterAddPage() {
+    const { handleSubmit, onSubmit, errors, isLoading, register, control } = useNewsletterForm();
+
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
             <div className="flex items-center gap-4">
@@ -32,20 +38,33 @@ export default function NewsletterAddPage() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <form className="space-y-6">
-
+                    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <div className="space-y-2">
-                            <Label htmlFor="first-name">Newsletter Subject</Label>
-                            <Input id="first-name" placeholder="Enter subject" />
+                            <Label htmlFor="title">Newsletter Subject</Label>
+                            <Input id="title" placeholder="Enter subject" {...register("title")} disabled={isLoading} />
+                            {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title.message}</p>}
                         </div>
-
                         <div className="space-y-2">
-                            <Label htmlFor="add-content">Newsletter Content</Label>
-                            <SimpleEditor />
+                            <Label htmlFor="content">Newsletter Content</Label>
+                            <Controller
+                                control={control}
+                                name="content"
+                                render={({ field }) => (
+                                    <SimpleEditor
+                                        existingValue={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                            {errors.content && <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>}
                         </div>
-
+                        <div className="space-y-2">
+                            <Label htmlFor="emails">Emails</Label>
+                            <Input id="emails" placeholder="Comma separated emails (user1@example.com, user2@example.com)" {...register("emails")} disabled={isLoading} />
+                            {errors.emails && <p className="text-sm text-red-500 mt-1">{errors.emails.message}</p>}
+                        </div>
                         <div className="flex justify-end pt-6">
-                            <Button className="px-8">Save</Button>
+                            <Button className="px-8" type="submit" disabled={isLoading}>{isLoading ? "Submitting..." : "Save"}</Button>
                         </div>
                     </form>
                 </CardContent>

@@ -7,6 +7,7 @@ import { showError } from "@/admin-utils/lib/formErrors";
 import { showSuccess } from "@/admin-utils/lib/formSuccess";
 import { postFaqCategory, PostFaqCategoryProps } from "../_api/postFaqCategory";
 import useSWRMutation from "swr/mutation";
+import { useSWRConfig } from "swr";
 
 const createFaqCategorySchema = z.object({
   name: z.string().min(1, "Category name is required"),
@@ -15,6 +16,7 @@ const createFaqCategorySchema = z.object({
 export type CreateFaqCategoryFormValues = z.infer<typeof createFaqCategorySchema>;
 
 export default function useFaqCategoryForm() {
+  const { mutate: globalMutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation(
     "createFaqCategory",
     async (_: string, { arg }: { arg: PostFaqCategoryProps }) => {
@@ -43,13 +45,29 @@ export default function useFaqCategoryForm() {
 
   const onSubmit = async (
     values: CreateFaqCategoryFormValues,
-    callback?: (data: { status: number } | undefined) => void
+    callback?: (value: boolean) => void
   ) => {
     const result = await trigger({ name: values.name });
     if (result?.status === 201) {
       showSuccess("FAQ Category created successfully!");
       reset();
-      callback?.(result);
+      // Optimistically update the faq-categories cache
+      globalMutate(
+        "faq-categories",
+        (current: any[] = []) => [
+          ...current,
+          {
+            id: Date.now(),
+            name: values.name,
+            isActive: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            faqs: [],
+          },
+        ],
+        false
+      );
+      callback?.(false);
     }
   };
 

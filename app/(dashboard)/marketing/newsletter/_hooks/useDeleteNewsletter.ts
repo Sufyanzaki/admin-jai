@@ -1,40 +1,40 @@
 import { useSWRConfig } from "swr";
-import { deleteFaqCategory } from "../_api/deleteFaqCategory";
+import { deleteNewsletter } from "../_api/deleteNewsletter";
 import { showError } from "@/admin-utils/lib/formErrors";
 import { showSuccess } from "@/admin-utils/lib/formSuccess";
 import { useState } from "react";
 
-export default function useFaqCategoryDelete() {
+export default function useDeleteNewsletter() {
   const { mutate } = useSWRConfig();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const deleteCategory = async (id: number) => {
+  const deleteNewsletterById = async (id: number) => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await deleteFaqCategory(id);
+      const result = await deleteNewsletter(id);
       if (result?.status === 200 || result?.status === 204) {
-        showSuccess("FAQ Category deleted successfully!");
+        showSuccess("Newsletter deleted successfully!");
         mutate(
-          "faq-categories",
-          (current: any[] = []) => current.filter((cat) => cat.id !== id),
+          "newsletters",
+          (current: any[] = []) => current.filter((item) => item.id !== id),
           false
         );
       } else {
-        throw new Error("Failed to delete category");
+        throw new Error("Failed to delete newsletter");
       }
     } catch (err: any) {
-      setError(err.message || "Failed to delete category");
-      showError({ message: err.message || "Failed to delete category" });
+      setError(err.message || "Failed to delete newsletter");
+      showError({ message: err.message || "Failed to delete newsletter" });
     } finally {
       setIsLoading(false);
     }
   };
 
   return {
-    deleteCategory,
+    deleteNewsletterById,
     isLoading,
     error,
   };
-}
+} 

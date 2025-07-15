@@ -1,9 +1,9 @@
 import { deleteRequest } from "@/admin-utils";
 
-export async function deleteFaq(id: number): Promise<{ status: number } | undefined> {
+export async function deleteNewsletter(id: number): Promise<{ status: number } | undefined> {
   const r = await deleteRequest({
-    url: `faq/${id}`,
+    url: `newsletter/${id}`,
     useAuth: true,
   });
   return { status: r.status };
-}
+} 
