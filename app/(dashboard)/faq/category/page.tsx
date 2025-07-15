@@ -6,7 +6,7 @@ import {ArrowLeft, Edit, Plus, StepBack, Trash2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {CategoryModal} from "@/components/modals";
+import {CategoryModal} from "@/app/(dashboard)/faq/_components/modals";
 
 const categories = [
     {

@@ -64,6 +64,7 @@ import {handleImageUpload, MAX_FILE_SIZE} from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 import {useTheme} from "next-themes";
+import { unescapeHtml } from "@/lib/utils"
 
 
 const MainToolbarContent = ({
@@ -166,11 +167,6 @@ const MobileToolbarContent = ({
     )}
   </>
 )
-
-function unescapeHtml(html: string): string {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.documentElement.textContent || html;
-}
 
 export function SimpleEditor({ existingValue, onChange }: { existingValue?: string; onChange?: (val: string) => void } = {}) {
 

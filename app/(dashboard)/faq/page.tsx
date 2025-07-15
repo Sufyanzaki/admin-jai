@@ -7,7 +7,7 @@ import {Edit, PlusCircle, Search, Trash2} from "lucide-react"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {FAQModal} from "@/components/modals";
+import {FAQModal} from "@/app/(dashboard)/faq/_components/modals";
 
 const faqs = [
     {
@@ -86,8 +86,8 @@ export default function SupportFAQ() {
         <div className="container mx-auto space-y-6 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="space-y-2">
-                    <h2 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">Feedback Management</h2>
-                    <p className="text-muted-foreground">Create and manage members feedback surveys</p>
+                    <h2 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">FAQ Management</h2>
+                    <p className="text-muted-foreground">Create and manage members faq surveys</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <Button variant="secondary" size="sm">

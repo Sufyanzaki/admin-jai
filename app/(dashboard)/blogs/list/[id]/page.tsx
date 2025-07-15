@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { useParams } from "next/navigation";
 import useBlogById from "../../_hooks/useBlogById";
+import { unescapeHtml } from "@/lib/utils"
 
 export default function BlogListDetails() {
   const params = useParams();
@@ -122,7 +123,7 @@ export default function BlogListDetails() {
                   </p>
                   <div
                       className="prose max-w-none dark:prose-invert"
-                      dangerouslySetInnerHTML={{ __html: blog.description }}
+                      dangerouslySetInnerHTML={{ __html: unescapeHtml(blog.description) }}
                   />
                 </TabsContent>
                 <TabsContent value="seo" className="space-y-4">
