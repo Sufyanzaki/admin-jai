@@ -28,6 +28,7 @@ import Link from "next/link";
 import {Switch} from "@/components/ui/switch";
 import {Textarea} from "@/components/ui/textarea";
 import {MultiSelectCombobox} from "@/components/ui/combo-box";
+import AbusiveCard from "./_components/abusive-card";
 
 const currencies = [
   {
@@ -72,30 +73,11 @@ export default function SettingsPage() {
   const [openFormatDialog, setOpenFormatDialog] = useState(false);
   const [currencyToDelete, setCurrencyToDelete] = useState(currencies[0]);
 
-  const [abusiveWords, setAbusiveWords] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
   const [openFooterDialog, setOpenFooterDialog] = useState(false);
 
   const [selectedPage, setSelectedPage] = useState<string[]>([])
 
-  const addChip = () => {
-    const trimmed = inputValue.trim();
-    if (trimmed && !abusiveWords.includes(trimmed)) {
-      setAbusiveWords((prev) => [...prev, trimmed]);
-      setInputValue("");
-    }
-  };
 
-  const removeChip = (valueToRemove: string) => {
-    setAbusiveWords((prev) => prev.filter((value) => value !== valueToRemove));
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addChip();
-    }
-  };
 
   return (
     <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -219,52 +201,7 @@ export default function SettingsPage() {
               </div>
             </CardHeader>
 
-            <CardContent className="p-0">
-              <div className="space-y-4">
-                <div className="flex gap-2">
-                  <Input
-                      placeholder="Add value..."
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyDown={handleKeyPress}
-                      className="flex-1"
-                  />
-                  <Button
-                      onClick={addChip}
-                      disabled={!inputValue.trim()}
-                      variant="outline"
-                  >
-                    Add
-                  </Button>
-                </div>
-
-                {abusiveWords.length > 0 && (
-                    <div className="space-y-3">
-                      <Label className="text-sm font-medium text-muted-foreground">
-                        Current values:
-                      </Label>
-                      <div className="flex flex-wrap gap-2">
-                        {abusiveWords.map((value, index) => (
-                            <Badge key={index} variant="destructive">
-                              <span className="truncate max-w-[120px]">{value}</span>
-                              <button
-                                  onClick={() => removeChip(value)}
-                                  className="hover:bg-primary/30 rounded-md p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
-                                  aria-label={`Remove ${value}`}
-                              >
-                                <X className="h-3.5 w-3.5" />
-                              </button>
-                            </Badge>
-                        ))}
-                      </div>
-                    </div>
-                )}
-              </div>
-            </CardContent>
-
-            <CardFooter className="justify-end">
-              <Button className="px-8">Save Configuration</Button>
-            </CardFooter>
+            <AbusiveCard />
 
           </Card>
         </TabsContent>

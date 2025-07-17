@@ -29,6 +29,7 @@ import {
   HardDrive, Settings,
 } from "lucide-react"
 import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
+import CookiesForm from "./_components/cookies-form"
 
 export default function SettingsPage() {
   return (
@@ -329,30 +330,11 @@ export default function SettingsPage() {
                 <Building className="mr-2 h-5 w-5" />
                 Cookies
               </CardTitle>
-              <CardDescription>Update your clinic's basic information and contact details</CardDescription>
+              <CardDescription>Update your cookies basic information</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
 
-              <form className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="use-insurance">Show cookie Agreement</Label>
-                  <Switch id="use-insurance" defaultChecked />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="first-name">SITE KEY</Label>
-                  <Input id="first-name" placeholder="Enter subject" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="first-name">Cookie Agreement Text</Label>
-                  <SimpleEditor />
-                </div>
-
-                <div className="flex justify-end pt-6">
-                  <Button className="px-8">Save Template</Button>
-                </div>
-              </form>
+              <CookiesForm />
             </CardContent>
           </Card>
         </TabsContent>
@@ -369,52 +351,7 @@ export default function SettingsPage() {
             </CardHeader>
 
 
-            <CardContent className="space-y-6 pt-6">
-              <form className="grid gap-6 w-full">
-                {/* Meta Title */}
-                <div className="grid gap-2">
-                  <Label htmlFor="metaTitle">Meta Title</Label>
-                  <Input id="metaTitle" name="metaTitle" placeholder="Humsafar - Home" />
-                </div>
-
-                {/* Meta Description */}
-                <div className="grid gap-2">
-                  <Label htmlFor="metaDescription">Meta Description</Label>
-                  <Textarea id="metaDescription" name="metaDescription" placeholder="Humsafar - Home" />
-                </div>
-
-                {/* Keywords */}
-                <div className="grid gap-2">
-                  <Label htmlFor="keywords">Keywords</Label>
-                  <Textarea
-                      id="keywords"
-                      name="keywords"
-                      placeholder="Humsafar,"
-                      className="resize-none"
-                  />
-                  <p className="text-xs text-muted-foreground">Separate with commas</p>
-                </div>
-
-                {/* Meta Image */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Meta Image</h3>
-                  <div className="flex items-center gap-4">
-                    <div className="h-24 w-24 shrink-0 rounded-md bg-muted flex items-center justify-center">
-                      <Upload className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-2">
-                      <input type="file" id="system-logo" className="hidden" />
-                      <Button variant="outline" onClick={() => document.getElementById("system-logo")?.click()}>Upload Photo</Button>
-                      <p className="text-sm text-muted-foreground">Upload a profile photo. JPG, PNG or GIF. Max 2MB.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-end pt-6">
-                  <Button className="px-8">Save Configuration</Button>
-                </div>
-              </form>
-            </CardContent>
+            
           </Card>
         </TabsContent>
       </Tabs>
