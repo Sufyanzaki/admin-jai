@@ -1,4 +1,4 @@
-import { getRequest } from "@/client-utils";
+import { getRequest } from "@/shared-lib";
 
 export type Category = {
     id: number;

@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/client-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getBlogCategories, BlogCategoryResponse } from "../_api/getBlogCategories";
 
 export const useBlogCategories = () => {

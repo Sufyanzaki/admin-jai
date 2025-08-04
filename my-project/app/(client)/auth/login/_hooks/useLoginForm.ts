@@ -2,7 +2,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useRouter} from 'next/navigation';
-import {showError} from "@/client-utils/lib/formErrors";
+import {showError} from "@/shared-lib";
 
 const loginSchema = z.object({
     email: z.string()

@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/client-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAllFaq, Faq } from "../_api/getFaq";
 
 export default function useFaq() {
