@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="687d0cec-732e-4a9a-8f2a-c9f5600fcb68" name="Changes" comment="added Admin Panel">
+      <change afterPath="$PROJECT_DIR$/app/admin/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/admin/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components.json" beforeDir="false" afterPath="$PROJECT_DIR$/components.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/Pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/Pagination.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/dashboard-layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/dashboard-layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/date-range-picker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/date-range-picker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/AgendaForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/AgendaForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/ContactForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/ContactForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/CustomImageInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/CustomImageInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/HomeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/HomeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/HowItWorks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/HowItWorks.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/RegistrationForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/RegistrationForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/TOSForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/TOSForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/frontend-settings/VragenForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/frontend-settings/VragenForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/location-search.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/location-search.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/DeleteMemberDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/delete-member-dialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/MembersFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/members-filters.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/MembersGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/members-grid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/MembersOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/members-overview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/MembersTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/members-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/best-selling.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/best-selling.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/member-stats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/member-stats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/members/new-members.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/members/new-members.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/mobile-nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/mobile-nav.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/notification-dropdown.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/notification-dropdown.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/notification-item.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/notification-item.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/roles/delete-role-modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/roles/delete-role-modal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/support/support-ticket-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/support/support-ticket-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/theme-toggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/theme-toggle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/alert-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/alert-dialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/carousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/carousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/combo-box.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/combo-box.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/command.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/command.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/pagination.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/toaster.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/toaster.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/toggle-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/toggle-group.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/ui/use-toast.ts" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/ui/use-toast.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/admin/user-nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/admin/user-nav.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Sufyanzaki&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:Sufyanzaki/admin-jai.git&quot;,
+    &quot;accountId&quot;: &quot;a0ff2ec5-a86a-4667-a277-7ffbe4fcb60e&quot;
+  }
+}</component>
+  <component name="NamedScopeManager">
+    <scope name="admin scope" pattern="file[my-project]:app/admin/*||file[my-project]:app/admin/(dashboard)/*||file[my-project]:app/admin/api/*||file[my-project]:app/admin/auth/*||file:app/admin/favicon.ico||file:app/admin/globals.css||file:app/admin/layout.tsx" />
+    <scope name="client scope" pattern="file[my-project]:app/client/*" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="30medwamfxEpmHqblgVnJ6tQIgA" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sufyan/Documents/work/my-project/app/admin&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/sufyan/Documents/work/my-project/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/components/admin" />
+      <recent name="$PROJECT_DIR$/components/client" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/components" />
+      <recent name="$PROJECT_DIR$/lib" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$/app/admin" />
+      <recent name="$PROJECT_DIR$/app/client" />
+      <recent name="$PROJECT_DIR$/pages" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-WS-251.23774.424" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="687d0cec-732e-4a9a-8f2a-c9f5600fcb68" name="Changes" comment="" />
+      <created>1754237266831</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1754237266831</updated>
+      <workItem from="1754237267937" duration="13012000" />
+      <workItem from="1754250322803" duration="675000" />
+      <workItem from="1754312885464" duration="6668000" />
+      <workItem from="1754319787790" duration="3249000" />
+      <workItem from="1754323124117" duration="3878000" />
+    </task>
+    <task id="LOCAL-00001" summary="test commit">
+      <option name="closed" value="true" />
+      <created>1754250333455</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1754250333455</updated>
+    </task>
+    <task id="LOCAL-00002" summary="test commit 2">
+      <option name="closed" value="true" />
+      <created>1754250743668</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1754250743668</updated>
+    </task>
+    <task id="LOCAL-00003" summary="test commit 3">
+      <option name="closed" value="true" />
+      <created>1754250780934</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1754250780934</updated>
+    </task>
+    <task id="LOCAL-00004" summary="working chnages">
+      <option name="closed" value="true" />
+      <created>1754317256475</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1754317256475</updated>
+    </task>
+    <task id="LOCAL-00005" summary="functional UI">
+      <option name="closed" value="true" />
+      <created>1754317730317</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1754317730317</updated>
+    </task>
+    <task id="LOCAL-00006" summary="functional UI">
+      <option name="closed" value="true" />
+      <created>1754317937802</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1754317937802</updated>
+    </task>
+    <task id="LOCAL-00007" summary="functional UI 1">
+      <option name="closed" value="true" />
+      <created>1754318072135</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1754318072135</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added Admin Panel">
+      <option name="closed" value="true" />
+      <created>1754324298716</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1754324298716</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="test commit" />
+    <MESSAGE value="test commit 2" />
+    <MESSAGE value="test commit 3" />
+    <MESSAGE value="working chnages" />
+    <MESSAGE value="functional UI" />
+    <MESSAGE value="functional UI 1" />
+    <MESSAGE value="added Admin Panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Admin Panel" />
+  </component>
+</project>

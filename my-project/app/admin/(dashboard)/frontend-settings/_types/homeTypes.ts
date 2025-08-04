@@ -1,0 +1,28 @@
+export type HomePageSettingsDto = {
+  id: number;
+  Title: string;
+  Url: string;
+  bannerTitle: string;
+  bannerSubTitle: string;
+  bannerImage: string;
+  faqsTitle: string;
+  faqsSubTitle: string;
+  faqsDescription: string;
+  faqname: string;
+  faqlatestTitle: string;
+  faqlatestSubTitle: string;
+  blogTitle: string;
+  datingSiteTitle: string;
+  datingSiteImageTitle1: string;
+  datingSiteImage1: string;
+  datingSiteImageTitle2: string;
+  datingSiteImage2: string;
+  datingSiteImageTitle3: string;
+  datingSiteImage3: string;
+  datingSiteImageTitle4: string;
+  datingSiteImage4: string;
+  showOnHeader: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}; 
