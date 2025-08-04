@@ -38,7 +38,6 @@ function AuthGuard({ children, mounted }: { children: React.ReactNode; mounted: 
     const router = useRouter();
 
     useEffect(() => {
-        console.log(status)
         if (mounted && status === "unauthenticated") {
             router.push("/auth/login");
         }
