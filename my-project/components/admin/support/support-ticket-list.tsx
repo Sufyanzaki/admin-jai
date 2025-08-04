@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Filter, Eye, MessageSquare } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {useState} from "react"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Badge} from "@/components/admin/ui/badge"
+import {Button} from "@/components/admin/ui/button"
+import {Input} from "@/components/admin/ui/input"
+import {Eye, MessageSquare, Search} from "lucide-react"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
 import {
   Dialog,
   DialogContent,
@@ -14,9 +14,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/components/ui/use-toast"
+} from "@/components/admin/ui/dialog"
+import {Textarea} from "@/components/admin/ui/textarea"
+import {useToast} from "@/components/admin/ui/use-toast"
 
 // Sample ticket data
 const tickets = [

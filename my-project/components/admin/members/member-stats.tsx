@@ -1,8 +1,8 @@
 "use client"
 
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/tabs"
 import { useState } from "react"
 
 type MonthlyData = {

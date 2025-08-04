@@ -1,11 +1,11 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/admin/ui/badge";
+import { Button } from "@/components/admin/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card";
 import { UserPlus, Users } from "lucide-react";
 import Link from "next/link";
-import { MemberStats } from "@/app/(dashboard)/members/_types/member";
+import {MemberStats} from "@/app/admin/(dashboard)/members/_types/member";
 
 interface MembersOverviewProps {
   stats?: MemberStats;

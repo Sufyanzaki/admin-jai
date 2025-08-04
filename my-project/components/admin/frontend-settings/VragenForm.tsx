@@ -1,18 +1,18 @@
 "use client"
 
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Textarea} from "@/components/ui/textarea"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import {Label} from "@/components/admin/ui/label"
+import {Textarea} from "@/components/admin/ui/textarea"
 import {ArrowLeft, Loader2} from "lucide-react"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select"
 import Link from "next/link"
-import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor"
 import {Controller} from "react-hook-form"
-import useVeeForm from "@/app/(dashboard)/frontend-settings/_hooks/useVeeForm";
-import Preloader from "@/components/ui/Preloader";
+import Preloader from "@/components/admin/ui/Preloader";
+import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
+import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
+import useVeeForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useVeeForm"
 
 export default function VragenForm() {
     const {

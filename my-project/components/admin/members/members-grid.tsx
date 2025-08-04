@@ -1,13 +1,13 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar";
+import { Badge } from "@/components/admin/ui/badge";
+import { Button } from "@/components/admin/ui/button";
+import { Card, CardContent } from "@/components/admin/ui/card";
 import {Ban, Calendar, Edit, Eye, Mail, MapPin, Package, Trash2, User, UserCheck} from "lucide-react";
 import Link from "next/link";
-import { Member } from "@/app/(dashboard)/members/_types/member";
 import Preloader from "../ui/Preloader";
+import {Member} from "@/app/admin/(dashboard)/members/_types/member";
 
 interface MembersGridProps {
   members: Member[];

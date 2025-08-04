@@ -1,6 +1,6 @@
-import {Label} from "@/components/ui/label";
+import {Label} from "@/components/admin/ui/label";
 import {FileText, Upload} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import {Button} from "@/components/admin/ui/button";
 import { useRef } from "react";
 import React from "react";
 

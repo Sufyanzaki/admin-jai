@@ -1,8 +1,8 @@
 "use client"
 
 import { X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Button } from "@/components/admin/ui/button"
+import { Sheet, SheetContent } from "@/components/admin/ui/sheet"
 
 interface MobileNavProps {
   isOpen: boolean

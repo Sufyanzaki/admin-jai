@@ -1,16 +1,16 @@
 "use client"
 
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Checkbox} from "@/components/ui/checkbox"
-import {Button} from "@/components/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import {Label} from "@/components/admin/ui/label"
+import {Checkbox} from "@/components/admin/ui/checkbox"
+import {Button} from "@/components/admin/ui/button"
 import {ArrowLeft} from "lucide-react"
-import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput"
 import Link from "next/link"
 import { Controller } from "react-hook-form"
-import useRegistrationForm from "@/app/(dashboard)/frontend-settings/_hooks/useRegisterationForm";
-import Preloader from "@/components/ui/Preloader";
+import Preloader from "@/components/admin/ui/Preloader";
+import useRegistrationForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useRegisterationForm"
+import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
 
 export default function RegistrationForm() {
     const {

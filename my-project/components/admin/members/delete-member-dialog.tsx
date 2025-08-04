@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
-} from "@/components/ui/alert-dialog";
+} from "@/components/admin/ui/alert-dialog";
 
 type Props = {
   key: string;

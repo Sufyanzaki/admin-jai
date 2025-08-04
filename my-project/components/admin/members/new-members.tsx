@@ -1,12 +1,12 @@
 "use client"
 
 import { CalendarDays, Clock } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { UserDto } from "@/app/(dashboard)/profile/_types/profile-types"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar"
+import { Button } from "@/components/admin/ui/button"
+import { Badge } from "@/components/admin/ui/badge"
 import { format } from "date-fns"
 import Link from "next/link"
+import {UserDto} from "@/app/admin/(dashboard)/profile/_types/profile-types";
 
 export function NewMembers({ users }: { users: UserDto[] }) {
   return (

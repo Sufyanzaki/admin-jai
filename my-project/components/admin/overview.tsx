@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from "recharts"
+import {useEffect, useState} from "react"
+import {Bar, BarChart, Legend, ResponsiveContainer, XAxis} from "recharts"
 
 const data = [
   {

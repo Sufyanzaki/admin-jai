@@ -1,18 +1,18 @@
 "use client"
 
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {Textarea} from "@/components/ui/textarea"
-import {Checkbox} from "@/components/ui/checkbox"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import { Label } from "@/components/admin/ui/label"
+import {Textarea} from "@/components/admin/ui/textarea"
+import {Checkbox} from "@/components/admin/ui/checkbox"
 import {ArrowLeft, Loader2} from "lucide-react"
-import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
 import Link from "next/link";
-import {SimpleEditor} from "@/components/tiptap-templates/simple/simple-editor";
 import { Controller } from "react-hook-form";
-import useTOSForm from "@/app/(dashboard)/frontend-settings/_hooks/useTOSForm";
-import Preloader from "@/components/ui/Preloader";
+import Preloader from "@/components/admin/ui/Preloader";
+import useTOSForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useTOSForm";
+import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
+import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
 
 export default function TOSForm(){
     const {
@@ -22,7 +22,6 @@ export default function TOSForm(){
         errors,
         isLoading,
         isUploading,
-        isFormSubmitting,
         onSubmit,
         tosLoading
     } = useTOSForm();
@@ -39,7 +38,7 @@ export default function TOSForm(){
             <div className="space-y-6 p-4 xl:p-6">
                 <div className="flex items-center gap-4">
                     <Button variant="outline" size="icon" asChild>
-                        <Link href="/frontend-settings">
+                        <Link href="/admin/frontend-settings">
                             <ArrowLeft className="h-4 w-4" />
                             <span className="sr-only">Back</span>
                         </Link>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/admin/ui/input"
 import { cn } from "@/lib/utils"
 import debounce from "lodash.debounce"
 import type { OpenStreetMapProvider } from "leaflet-geosearch"

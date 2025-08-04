@@ -1,12 +1,13 @@
 "use client"
+
 import type React from "react"
-import { Sidebar } from "@/components/sidebar"
-import { UserNav } from "@/components/user-nav"
-import {useLaptop, useMobile} from "@/hooks/use-mobile"
-import { useEffect, useState, useRef } from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import {useEffect, useRef, useState} from "react"
+import {useLaptop} from "@/hooks/use-mobile"
+import {cn} from "@/lib/utils"
+import {Button} from "@/components/admin/ui/button"
 import {ChevronLeft, Menu} from 'lucide-react'
+import {UserNav} from "@/components/admin/user-nav";
+import { Sidebar } from "./sidebar"
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useLaptop()

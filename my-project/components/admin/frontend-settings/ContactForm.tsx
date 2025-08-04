@@ -1,17 +1,17 @@
 "use client"
 
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Checkbox} from "@/components/ui/checkbox";
-import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import {Label} from "@/components/admin/ui/label"
+import {Checkbox} from "@/components/admin/ui/checkbox";
+import {Button} from "@/components/admin/ui/button";
 import {ArrowLeft, Loader2} from "lucide-react"
 import Link from "next/link"
 import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 import { CustomImageUpload } from "./CustomImageInput"
 import useContactForm from "@/app/(dashboard)/frontend-settings/_hooks/useContactForm"
 import { Controller } from "react-hook-form"
-import Preloader from "@/components/ui/Preloader";
+import Preloader from "@/components/admin/ui/Preloader";
 
 export default function ContactForm() {
     const {

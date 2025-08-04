@@ -1,8 +1,8 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar";
+import { Badge } from "@/components/admin/ui/badge";
+import { Button } from "@/components/admin/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,14 +10,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
+} from "@/components/admin/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/admin/ui/table";
+import { Checkbox } from "@/components/admin/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Edit, Eye, MoreVertical, Trash, UserCheck, UserX } from "lucide-react";
 import Link from "next/link";
-import { Member } from "@/app/(dashboard)/members/_types/member";
 import Preloader from "../ui/Preloader";
+import {Member} from "@/app/admin/(dashboard)/members/_types/member";
 
 interface MembersTableProps {
   members: Member[];

@@ -2,8 +2,8 @@
 
 import { Check } from "lucide-react"
 import { useState } from "react"
-import { Command, CommandItem, CommandList, CommandInput } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Command, CommandItem, CommandList, CommandInput } from "@/components/admin/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/admin/ui/popover"
 import { cn } from "@/lib/utils"
 
 interface MultiSelectComboboxProps {

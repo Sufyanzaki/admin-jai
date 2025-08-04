@@ -1,17 +1,16 @@
 "use client"
 
-import {useState} from "react"
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Textarea} from "@/components/ui/textarea"
-import {Checkbox} from "@/components/ui/checkbox"
-import { CustomImageUpload } from "./CustomImageInput"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import {Label} from "@/components/admin/ui/label"
+import {Textarea} from "@/components/admin/ui/textarea"
+import {Checkbox} from "@/components/admin/ui/checkbox"
+import {CustomImageUpload} from "./CustomImageInput"
 import Link from "next/link";
 import {ArrowLeft} from "lucide-react";
-import useHomeForm from "@/app/(dashboard)/frontend-settings/_hooks/useHomeForm";
-import Preloader from "@/components/ui/Preloader";
+import Preloader from "@/components/admin/ui/Preloader";
+import useHomeForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useHomeForm";
 
 export default function HomeForm() {
     const { handleSubmit, onSubmit, errors, isLoading, register, setValue, watch, homeLoading } = useHomeForm();

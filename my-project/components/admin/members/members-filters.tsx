@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/admin/ui/button";
+import { Input } from "@/components/admin/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/admin/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/admin/ui/popover";
+import { Checkbox } from "@/components/admin/ui/checkbox";
+import { Separator } from "@/components/admin/ui/separator";
+import { Label } from "@/components/admin/ui/label";
 import { Filter, Search } from "lucide-react";
 
 interface MembersFiltersProps {

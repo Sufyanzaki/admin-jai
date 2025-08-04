@@ -5,7 +5,7 @@ import {
     PaginationContent,
     PaginationItem,
     PaginationLink,
-} from "@/components/ui/pagination";
+} from "@/components/admin/ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 

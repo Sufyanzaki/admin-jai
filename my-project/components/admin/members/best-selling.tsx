@@ -1,11 +1,10 @@
 "use client"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { usePackages } from "@/app/(dashboard)/packages/_hooks/usePackages"
-import { format } from "date-fns"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar"
+import { Button } from "@/components/admin/ui/button"
+import { Badge } from "@/components/admin/ui/badge"
 import Link from "next/link";
+import { usePackages } from "@/app/admin/(dashboard)/packages/_hooks/usePackages";
 
 export function BestSelling() {
   const { packages, loading } = usePackages()

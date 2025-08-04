@@ -1,13 +1,13 @@
 "use client"
 
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {Textarea} from "@/components/ui/textarea"
-import {Checkbox} from "@/components/ui/checkbox"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import { Label } from "@/components/admin/ui/label"
+import {Textarea} from "@/components/admin/ui/textarea"
+import {Checkbox} from "@/components/admin/ui/checkbox"
 import {ArrowLeft, Loader2} from "lucide-react"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select";
 import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
 import Link from "next/link";
 import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
