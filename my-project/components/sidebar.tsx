@@ -66,8 +66,8 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
   }, [isCollapsed, pathname])
 
   const renderMenuItem = (item: any) => {
-    const isActive = (item.href !== "/" && pathname.startsWith(item.href)) ||
-        (pathname === "/" && item.href === "/")
+    const isActive = (item.href !== "/dashboard" && pathname.startsWith(item.href)) ||
+        (pathname === "/" && item.href === "/dashboard")
     const hasSubmenu = item.submenu && !isCollapsed && !isMobile
 
     if (isCollapsed && !isMobile) {
