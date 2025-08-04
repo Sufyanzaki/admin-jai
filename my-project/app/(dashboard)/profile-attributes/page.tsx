@@ -150,7 +150,7 @@ export default function AppointmentsPage() {
                     <TabsTrigger
                         key={attribute.id}
                         value={attribute.id.toString()}
-                        className="justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full min-w-[140px] md:min-w-0"
+                        className="justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full min-w-[140px] cursor-pointer md:min-w-0"
                     >
                       <div className="flex items-center gap-2">
                         {getAttributeIcon(attribute.label)}
