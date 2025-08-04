@@ -39,7 +39,7 @@ function AuthGuard({ children, mounted }: { children: React.ReactNode; mounted: 
 
     useEffect(() => {
         if (mounted && status === "unauthenticated") {
-            router.push("/auth/login");
+            router.push("/admin/auth/login");
         }
     }, [mounted, status, router]);
 
