@@ -17,7 +17,7 @@ import {
     SelectItem,
 } from "@/components/admin/ui/select";
 import {ArrowLeft, Upload, X, Loader2} from "lucide-react";
-import {DateRangePicker} from "@/components/date-range-picker";
+import {DateRangePicker} from "@/components/admin/date-range-picker";
 import Link from "next/link";
 import useEditBannerForm from "../../_hooks/useEditBannerForm";
 import { useParams } from "next/navigation";

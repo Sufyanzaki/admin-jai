@@ -1,6 +1,6 @@
 "use client"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
-import {DateRangePicker} from "@/components/date-range-picker"
+import {DateRangePicker} from "@/components/admin/date-range-picker"
 import {CreditCardIcon, DollarSignIcon, SearchIcon, TrendingDownIcon, TrendingUpIcon, UserIcon, WalletIcon,} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select"
 import {Input} from "@/components/admin/ui/input"

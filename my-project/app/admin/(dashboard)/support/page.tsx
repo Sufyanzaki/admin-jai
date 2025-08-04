@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import {SupportTicketList} from "@/components/support/support-ticket-list";
+import {SupportTicketList} from "@/components/admin/support/support-ticket-list";
 
 export default function SupportPage() {
 

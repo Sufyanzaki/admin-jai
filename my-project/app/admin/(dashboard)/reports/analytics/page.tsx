@@ -1,7 +1,7 @@
 "use client";
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
-import {DateRangePicker} from "@/components/date-range-picker";
+import {DateRangePicker} from "@/components/admin/date-range-picker";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";

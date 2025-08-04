@@ -1,12 +1,11 @@
 "use client"
 
-import { Button } from "@/components/admin/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/admin/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/tabs"
-import { Badge } from "@/components/admin/ui/badge"
-import { Input } from "@/components/admin/ui/input"
-import { Label } from "@/components/admin/ui/label"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/admin/ui/table"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
+import {Badge} from "@/components/admin/ui/badge"
+import {Input} from "@/components/admin/ui/input"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,42 +18,32 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/admin/ui/dialog"
 import {
   ArrowLeft,
-  Search,
-  Plus,
-  MoreHorizontal,
-  Edit,
-  Trash,
-  Users,
-  Shield,
-  UserCog,
-  FileText,
-  Pencil,
-  LayoutDashboard,
   CreditCard,
-  Sliders,
-  HelpCircle,
-  NotebookText,
-  Package,
-  AlertCircle,
-  BarChart2,
-  Megaphone, Settings, Video,
   Eye,
+  FileText,
+  LayoutDashboard,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Search,
+  Shield,
+  Trash,
+  UserCog,
+  Users,
 } from "lucide-react"
 import Link from "next/link"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/admin/ui/tooltip"
-import { useState } from "react"
-import { DeleteRoleModal } from "@/components/roles/delete-role-modal"
+import {useState} from "react"
 import RoleForm from "./_components/roleForm"
 import useRoles from "./_hook/useRoles"
 import useDeleteRole from "./_hook/useDeleteRole";
 import Preloader from "@/components/admin/ui/Preloader";
+import {DeleteRoleModal} from "@/components/admin/roles/delete-role-modal";
 
 export default function RolesAndPermissionsPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
