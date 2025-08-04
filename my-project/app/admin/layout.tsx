@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
 import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/admin/api/auth/[...nextauth]/route";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import "@/app/admin/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

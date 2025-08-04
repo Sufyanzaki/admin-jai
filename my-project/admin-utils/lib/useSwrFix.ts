@@ -1,7 +1,7 @@
 "use client"
 
-import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
-import { useEffect, useState } from 'react';
+import useSWR, {SWRConfiguration} from 'swr';
+import {useEffect, useState} from 'react';
 
 export type UseSWRFixProps<T, U> = {
     key: string | string[] | (() => string | string[] | null);

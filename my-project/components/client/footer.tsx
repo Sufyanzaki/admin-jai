@@ -5,7 +5,7 @@ import {Button} from "@/components/client/ux/button";
 import {Facebook, Heart, Instagram, Twitter} from "lucide-react";
 import type {JSX} from "react/jsx-runtime"; // Import JSX to fix the undeclared variable error
 import {Container} from "@/components/client/ux/container";
-import {useIsMobile} from "@/hooks/use-mobile";
+import {useMobile} from "@/hooks/use-mobile";
 
 // Type definitions
 interface FooterLink {
@@ -146,7 +146,7 @@ const isSocialLink = (link: FooterLink | SocialLink): link is SocialLink => {
 };
 
 export function Footer(): JSX.Element {
-  const isMobile = useIsMobile();
+  const isMobile = useMobile();
 
   const links = isMobile ? mobileFooterLinks : footerLinks;
   return (

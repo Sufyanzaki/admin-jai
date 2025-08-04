@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
-import {authOptions} from "@/app/admin/api/auth/[...nextauth]/authOptions";
+import {authOptions} from "@/app/api/auth/[...nextauth]/authOptions";
 export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080';
 
 interface FetchExtraResponse {

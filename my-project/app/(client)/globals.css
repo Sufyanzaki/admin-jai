@@ -1,0 +1,117 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --accent: #ccc;
+  --app-theme: #19B7EA;
+  --app-blue: #3576AF;
+  --app-sky-blue: #3DB5D6;
+  --app-dark-blue: #011026;
+  --app-pink: #EA0F8A;
+  --app-light-pink: #F65FA4;
+  --app-gray: #374756;
+  --app-border: #e4e4e4;
+  --app-red: #F50E16;
+  --app-yellow: #F8954A;
+  --app-gold: #FFC300;
+  --app-green: #2BA346;
+  --bg-footer: #fafafa;
+  --danger: #E8340C;
+  --radius: 20px;
+
+  --font-poppins: 'Poppins', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+}
+
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-app-blue: var(--app-blue);
+  --color-app-theme: var(--app-theme);
+  --color-app-pink: var(--app-pink);
+  --color-app-yellow: var(--app-yellow);
+  --color-app-gold: var(--app-gold);
+  --color-app-green: var(--app-green);
+  --color-app-gray: var(--app-gray);
+  --color-app-sky-blue: var(--app-sky-blue);
+  --color-dark-blue: var(--app-dark-blue);
+  --color-app-light-pink: var(--app-light-pink);
+  --color-app-red: var(--app-red);
+  --color-danger: var(--danger);
+  --color-accent: var(--accent);
+  --color-app-border: var(--app-border);
+  --color-footer: var(--bg-footer);
+  --radius-app: var(--radius);
+
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1436px;
+  --breakpoint-3xl: 1920px;
+}
+
+@theme inline {
+  --font-pop: var(--font-poppins);
+  --font-mon: var(--font-montserrat);
+}
+
+body {
+  color: var(--foreground);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  padding: 0;
+  margin: 0;
+}
+
+/* Default scrollbar style applied globally */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  /* light gray/black */
+  border-radius: 9999px;
+}
+
+/* Custom class to hide scrollbar until scroll or hover */
+.scrollbar-hide-until-hover {
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide-until-hover::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari */
+}
+
+.scrollbar-hide-until-hover:hover {
+  scrollbar-width: thin;
+}
+
+.scrollbar-hide-until-hover:hover::-webkit-scrollbar {
+  display: block;
+}
+
+/* Custom class to hide scrollbar */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide:hover {
+  scrollbar-width: none;
+}

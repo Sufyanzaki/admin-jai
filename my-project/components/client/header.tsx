@@ -14,7 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/client/ux/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { SidebarList } from "@/components/sidebar-list";
+import { SidebarList } from "@/components/client/sidebar-list";
 
 const navLinks = [
   { label: "Hoe werkt niet", href: "/how-it-works" },
@@ -58,7 +58,7 @@ export function Header() {
 
               {/* Desktop Navigation */}
               <div className="flex flex-row items-center space-x-10">
-                <Link href={"/auth/login"}>
+                <Link href={"/app/client/auth/login"}>
                   <button className="hidden md:flex text-xl text-white hover:text-app-pink transition-colors">
                     Inloggen
                   </button>
@@ -131,7 +131,7 @@ export function Header() {
                   );
                 })}
                 {/* Login Button */}
-                <Link href="/auth/login">
+                <Link href="/client/auth/login">
                   <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
                     LOGIN
                   </Button>{" "}

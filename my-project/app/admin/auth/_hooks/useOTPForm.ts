@@ -39,10 +39,12 @@ export default function useOTPForm() {
         redirect: false,
         ...values,
         email,
-        callbackUrl: '/dashboard',
+        callbackUrl: '/admin/dashboard',
     });
+    console.log(result);
 
     if (result?.error) {
+      console.log(result);
         const errorMessage = result.error === 'CredentialsSignin'
             ? 'Invalid OTP '
             : 'Login failed. Please try again.';
