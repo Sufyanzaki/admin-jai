@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getContactPageSettings } from "../_api/contactApi";
 import { ContactSettingDto } from "../_types/contactTypes";
 

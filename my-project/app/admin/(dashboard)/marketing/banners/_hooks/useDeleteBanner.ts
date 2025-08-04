@@ -1,6 +1,6 @@
 import { deleteBanner } from "@/app/admin/(dashboard)/marketing/banners/_api/deleteBanner";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useBanners } from "./useBanners";
 

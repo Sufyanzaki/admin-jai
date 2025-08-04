@@ -1,4 +1,4 @@
-import { getRequest } from '@/admin-utils';
+import { getRequest } from "@/shared-lib";
 import { GoogleSettings } from '../../_types/google';
 
 export async function getGoogleSettings(): Promise<GoogleSettings> {

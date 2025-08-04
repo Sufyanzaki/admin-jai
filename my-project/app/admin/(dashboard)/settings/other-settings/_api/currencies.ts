@@ -1,4 +1,4 @@
-import {deleteRequest, getRequest, patchRequest, postRequest} from "@/admin-utils";
+import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
 
 export interface Currency {
   id: string;

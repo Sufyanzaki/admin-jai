@@ -1,4 +1,4 @@
-import { patchRequest } from "@/admin-utils";
+import { patchRequest } from "@/shared-lib";
 import type { Package } from "./getAllPackages";
 
 export type EditPackagePayload = Partial<Omit<Package, 'id'>> & { id: number | string };

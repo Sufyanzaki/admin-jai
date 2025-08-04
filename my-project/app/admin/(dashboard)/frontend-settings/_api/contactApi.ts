@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import { ContactSettingDto } from "../_types/contactTypes";
 
 export async function getContactPageSettings(): Promise<ContactSettingDto | undefined> {

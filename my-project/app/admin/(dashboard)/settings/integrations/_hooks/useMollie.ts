@@ -1,4 +1,4 @@
-import { useSWRFix } from '@/admin-utils/lib/useSwrFix';
+import { useSWRFix } from '@/shared-lib';
 import { getMollie } from '../_api/mollie';
 
 export default function useMollie() {

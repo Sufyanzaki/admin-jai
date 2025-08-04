@@ -26,7 +26,7 @@ import { Badge } from "@/components/admin/ui/badge";
 import { Input } from "@/components/admin/ui/input";
 import { Button } from "@/components/admin/ui/button";
 import {Search, MoreHorizontal, UserPlus, Loader2} from "lucide-react";
-import PaginationSection from "@/components/Pagination";
+import PaginationSection from "@/components/admin/Pagination";
 import { useBanners } from "./_hooks/useBanners";
 import { format } from "date-fns";
 import { useDeleteBanner } from "./_hooks/useDeleteBanner";

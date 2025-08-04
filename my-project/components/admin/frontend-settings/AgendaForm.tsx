@@ -8,11 +8,11 @@ import {Textarea} from "@/components/admin/ui/textarea"
 import {Checkbox} from "@/components/admin/ui/checkbox"
 import {ArrowLeft, Loader2} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select";
-import {CustomImageUpload} from "@/components/frontend-settings/CustomImageInput";
+import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
 import Link from "next/link";
 import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 import { Controller } from "react-hook-form"
-import useAgendaForm from "@/app/(dashboard)/frontend-settings/_hooks/useAgendaForm";
+import useAgendaForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useAgendaForm";
 
 export default function AgendaForm() {
     const {

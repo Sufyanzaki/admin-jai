@@ -14,7 +14,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuItem,
 } from "@/components/admin/ui/dropdown-menu";
-import PaginationSection from "@/components/Pagination";
+import PaginationSection from "@/components/admin/Pagination";
 import Link from "next/link";
 import useNewsletters from "./_hooks/useNewsletters";
 import useDeleteNewsletter from "./_hooks/useDeleteNewsletter";

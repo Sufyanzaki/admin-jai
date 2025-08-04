@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import {HomePageSettingsDto} from "@/app/admin/(dashboard)/frontend-settings/_types/homeTypes";
 
 export async function getHomePageSettings(): Promise<HomePageSettingsDto | undefined> {

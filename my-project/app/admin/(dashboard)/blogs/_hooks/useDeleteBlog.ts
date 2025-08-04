@@ -1,6 +1,6 @@
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { showError, showSuccess } from "@/admin-utils";
+import { showError, showSuccess } from "@/shared-lib";
 import { useState } from "react";
 import { deleteBlog } from "../_api/deleteBlog";
 import { BlogsResponse } from "../_api/getAllBlogs";

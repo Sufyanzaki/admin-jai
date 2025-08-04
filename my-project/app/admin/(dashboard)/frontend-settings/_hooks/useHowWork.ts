@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getHowWorkSettings } from "../_api/howWorkApi";
 import { HowItWorksSettingsDto } from "../_types/howWorks";
 

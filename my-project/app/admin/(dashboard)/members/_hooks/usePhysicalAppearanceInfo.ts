@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
 import { getPhysicalAppearance } from "../_api/updatePhysicalAppearance";
 import { useParams } from "next/navigation";

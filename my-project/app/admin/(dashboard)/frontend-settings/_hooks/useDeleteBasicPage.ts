@@ -1,5 +1,5 @@
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { deleteBasicPage } from "@/app/admin/(dashboard)/frontend-settings/_api/basicPageApi";
 import { mutate as globalMutate } from "swr";

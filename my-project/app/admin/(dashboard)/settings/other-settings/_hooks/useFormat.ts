@@ -1,4 +1,4 @@
-import {useSWRFix} from "@/admin-utils/lib/useSwrFix";
+import {useSWRFix} from "@/shared-lib";
 import {getCurrencyFormat} from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
 
 export function useFormat() {

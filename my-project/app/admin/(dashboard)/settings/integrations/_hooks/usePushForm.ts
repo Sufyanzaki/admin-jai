@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
 import useSWRMutation from 'swr/mutation';
-import { showError } from '@/admin-utils/lib/formErrors';
-import { showSuccess } from '@/admin-utils/lib/formSuccess';
+import { showError } from '@/shared-lib';
+import { showSuccess } from '@/shared-lib';
 import { patchPush } from '../_api/push';
 import usePush from './usePush';
 

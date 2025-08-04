@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAllNewsletter, Newsletter } from "../_api/getAllNewsletter";
 
 export default function useNewsletters() {

@@ -8,8 +8,8 @@ import { RoleDto, Permission, RolePayload } from "../add/_types/roleTypes";
 import { useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import { patchRole } from "../_api/rolesApi";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import { mutate } from "swr";
 
 const permissionSchema = z.object({

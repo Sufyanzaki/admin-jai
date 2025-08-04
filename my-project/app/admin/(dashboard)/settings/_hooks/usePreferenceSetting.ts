@@ -1,4 +1,4 @@
-import {useSWRFix} from "@/admin-utils/lib/useSwrFix";
+import {useSWRFix} from "@/shared-lib";
 import {getPreferenceSettings, SystemSettingsDto} from "@/app/admin/(dashboard)/settings/_api/preferences";
 
 export function usePreferenceSettings() {

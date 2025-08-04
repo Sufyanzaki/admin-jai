@@ -1,6 +1,6 @@
 "use client"
 
-import {useSWRFix} from "@/admin-utils/lib/useSwrFix";
+import {useSWRFix} from "@/shared-lib";
 import {getLanguages, Language} from "../_api/getLanguages";
 import {useSession} from "next-auth/react";
 

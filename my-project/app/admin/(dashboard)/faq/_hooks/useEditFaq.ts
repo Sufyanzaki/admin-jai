@@ -1,8 +1,8 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import { patchFaq, PatchFaqProps } from "../_api/patchFaq";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";

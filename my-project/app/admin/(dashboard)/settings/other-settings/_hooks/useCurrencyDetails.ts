@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getCurrencyById, Currency } from "../_api/currencies";
 
 export function useCurrencyDetails(id: string | undefined) {

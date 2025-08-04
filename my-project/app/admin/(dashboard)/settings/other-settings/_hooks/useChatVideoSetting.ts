@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getChatVideoSetting } from "../_api/getChatVideoSetting";
 import { ChatSettingPayload } from "../_api/postChatSetting";
 

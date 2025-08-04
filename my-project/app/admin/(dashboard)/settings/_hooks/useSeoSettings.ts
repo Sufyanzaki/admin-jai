@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import {getSeoSettings, PostSeoSettingsPayload} from "@/app/admin/(dashboard)/settings/_api/seoSettings";
 
 export function useSeoSettings() {

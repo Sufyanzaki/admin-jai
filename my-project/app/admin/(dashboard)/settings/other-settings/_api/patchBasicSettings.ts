@@ -1,4 +1,4 @@
-import {patchRequest} from "@/admin-utils"; // or "@/admin-utils/lib/httpRequests"
+import {patchRequest} from "@/shared-lib";
 
 export async function patchBasicSettings(data: any) {
   return patchRequest({

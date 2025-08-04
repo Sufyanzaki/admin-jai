@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import { BasicSettingsFormValues } from "../_hooks/useBasicSettingsForm";
 
 export async function getBasicSettings(): Promise<BasicSettingsFormValues> {

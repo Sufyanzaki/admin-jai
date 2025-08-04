@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import type { Package } from "./getAllPackages";
 
 export async function getPackageById(id: number | string): Promise<Package> {

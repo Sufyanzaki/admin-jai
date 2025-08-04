@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import { AgendaSettingsDto } from "../_types/agenda";
 
 export async function getAgendaSettings(): Promise<AgendaSettingsDto | undefined> {

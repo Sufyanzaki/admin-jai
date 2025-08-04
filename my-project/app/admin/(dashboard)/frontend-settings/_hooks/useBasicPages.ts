@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getBasicPages } from "../_api/basicPageApi";
 import {BasicPageDto} from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
 

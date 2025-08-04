@@ -1,7 +1,7 @@
 import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
 import {deleteMember} from "@/app/admin/(dashboard)/members/_api/deleteMember";
-import {showError, showSuccess} from "@/admin-utils";
+import {showError, showSuccess} from "@/shared-lib";
 import {GetAllMembersResponse} from "@/app/admin/(dashboard)/members/_types/member";
 import { useState } from "react";
 

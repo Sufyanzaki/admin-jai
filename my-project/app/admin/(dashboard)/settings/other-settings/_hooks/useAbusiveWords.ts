@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAbusiveWords } from "../_api/getAbusiveWords";
 
 export const useAbusiveWords = () => {

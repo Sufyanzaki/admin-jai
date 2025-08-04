@@ -18,7 +18,7 @@ import {
   limitShift,
   FloatingPortal,
 } from "@floating-ui/react"
-import "@/components/tiptap-ui-primitive/popover/popover.scss"
+import "@/components/admin/tiptap-ui-primitive/popover/popover.scss"
 
 type PopoverContextValue = ReturnType<typeof usePopover> & {
   setLabelId: (id: string | undefined) => void

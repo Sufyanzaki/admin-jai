@@ -1,4 +1,4 @@
-import {useSWRFix} from "@/admin-utils/lib/useSwrFix";
+import {useSWRFix} from "@/shared-lib";
 import { BasicPageDto } from "../_types/basicPage";
 import {getBasicPagesById} from "@/app/admin/(dashboard)/frontend-settings/_api/basicPageApi";
 

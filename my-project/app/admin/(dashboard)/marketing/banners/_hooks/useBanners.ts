@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAllBanners, BannersResponse } from "@/app/admin/(dashboard)/marketing/banners/_api/getAllBanners";
 import { useSession } from "next-auth/react";
 

@@ -1,4 +1,4 @@
-import { patchRequest } from "@/admin-utils";
+import { patchRequest } from "@/shared-lib";
 import { CreateBlogProps } from "./createBlog";
 
 export async function editBlog(id: number | string, props: Partial<CreateBlogProps>): Promise<{ status: number } | undefined> {

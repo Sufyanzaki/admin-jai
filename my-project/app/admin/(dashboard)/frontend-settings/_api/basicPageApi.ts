@@ -1,5 +1,5 @@
 import {BasicPageDto} from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
-import {deleteRequest, getRequest, patchRequest, postRequest} from "@/admin-utils";
+import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
 
 type BasicPagePropsDto = {
     id?: string;

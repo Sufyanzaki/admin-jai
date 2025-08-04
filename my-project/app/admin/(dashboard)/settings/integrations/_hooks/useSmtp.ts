@@ -1,4 +1,4 @@
-import { useSWRFix } from '@/admin-utils/lib/useSwrFix';
+import { useSWRFix } from '@/shared-lib';
 import { getSmtp } from '../_api/smtp';
 
 export default function useSmtp() {

@@ -1,7 +1,7 @@
 import { useSWRConfig } from "swr";
 import { deleteFaqCategory } from "../_api/deleteFaqCategory";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import { useState } from "react";
 
 export default function useFaqCategoryDelete() {

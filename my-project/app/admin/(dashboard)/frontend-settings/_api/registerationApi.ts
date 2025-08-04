@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import { RegistrationSettingDto } from "../_types/registerationTypes";
 
 export async function getRegistrationPageSettings(): Promise<RegistrationSettingDto | undefined> {

@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import { HowItWorksSettingsDto } from "../_types/howWorks";
 
 export async function getHowWorkSettings(): Promise<HowItWorksSettingsDto | undefined> {

@@ -1,7 +1,7 @@
 import useSWRMutation from "swr/mutation";
 import { deleteBlogCategory } from "../_api/deleteBlogCategory";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 
 export default function useDeleteBlogCategory() {
     const { trigger, isMutating, error } = useSWRMutation(

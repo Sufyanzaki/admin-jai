@@ -2,7 +2,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useRouter} from 'next/navigation';
-import {showError} from "@/admin-utils/lib/formErrors";
+import {showError} from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
 import { postLoginForm } from '../_api/postLoginForm';
 

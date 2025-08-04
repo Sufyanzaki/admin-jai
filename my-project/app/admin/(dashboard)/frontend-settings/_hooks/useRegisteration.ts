@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getRegistrationPageSettings } from "../_api/registerationApi";
 import { RegistrationSettingDto } from "../_types/registerationTypes";
 

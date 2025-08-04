@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getFaqCategories, FaqCategory } from "../_api/getFaqCategories";
 
 export default function useFaqCategories() {

@@ -1,12 +1,12 @@
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
-import { postFaq, PostFaqProps } from "../_api/postFaq";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {showError} from "@/shared-lib";
+import {showSuccess} from "@/shared-lib";
+import {postFaq, PostFaqProps} from "../_api/postFaq";
 import useSWRMutation from "swr/mutation";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
-import { useSWRConfig } from "swr";
+import {useSWRConfig} from "swr";
 
 const faqSchema = z.object({
   question: z.string().min(1, "Question is required"),

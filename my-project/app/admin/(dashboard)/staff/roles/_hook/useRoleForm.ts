@@ -1,8 +1,8 @@
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postRole } from "../_api/rolesApi";
 import { RolePayload, RoleDto } from "../add/_types/roleTypes";

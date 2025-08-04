@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 
 export type Newsletter = {
   id: number;

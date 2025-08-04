@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getUser } from "../add/_api/createUser";
 import { getUserTrackingId } from "@/lib/access-token";
 import { useParams } from "next/navigation";

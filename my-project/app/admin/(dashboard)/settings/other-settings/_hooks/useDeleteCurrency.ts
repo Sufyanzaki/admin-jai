@@ -1,6 +1,6 @@
 import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
-import {showError, showSuccess} from "@/admin-utils";
+import {showError, showSuccess} from "@/shared-lib";
 import {useState} from "react";
 import {Currency, deleteCurrency} from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
 

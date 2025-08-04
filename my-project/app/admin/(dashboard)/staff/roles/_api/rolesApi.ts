@@ -1,4 +1,4 @@
-import { getRequest, postRequest, patchRequest, deleteRequest } from "@/admin-utils";
+import { getRequest, postRequest, patchRequest, deleteRequest } from "@/shared-lib";
 import { RoleDto, RolePayload } from "../add/_types/roleTypes";
 
 export async function postRole(payload: RolePayload): Promise<RoleDto> {

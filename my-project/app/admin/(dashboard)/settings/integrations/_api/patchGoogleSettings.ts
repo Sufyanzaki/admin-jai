@@ -1,4 +1,4 @@
-import { patchRequest } from '@/admin-utils';
+import { patchRequest } from "@/shared-lib";
 import { GoogleSettings } from '../../_types/google';
 
 export type PatchGoogleSettingsProps = {

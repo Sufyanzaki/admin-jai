@@ -6,8 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 
 import { patchCookieSettings } from "../_api/cookieSettings";
 import {useCookieSettings} from "@/app/admin/(dashboard)/settings/_hooks/useCookieSetting";

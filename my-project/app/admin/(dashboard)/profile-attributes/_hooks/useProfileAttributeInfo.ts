@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getProfileAttribute } from "../_api/getProfileAttribute";
 
 export function useProfileAttributeInfo(attributeId: string) {

@@ -1,4 +1,4 @@
-import { patchRequest } from "@/admin-utils";
+import { patchRequest } from "@/shared-lib";
 
 export interface PatchLanguageStatusPayload {
   id: string | number;

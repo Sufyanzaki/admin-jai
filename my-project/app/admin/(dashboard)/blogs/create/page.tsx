@@ -22,7 +22,6 @@ export default function AddBlogPage() {
         onSubmit,
         errors,
         isLoading,
-        watch,
         register,
         control,
     } = useCreateBlog();

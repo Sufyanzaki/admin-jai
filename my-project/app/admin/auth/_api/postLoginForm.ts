@@ -1,4 +1,4 @@
-import {postRequest} from "@/admin-utils";
+import {postRequest} from "@/shared-lib";
 import {LoginResponse} from "@/app/admin/auth/_types/auth";
 
 type LoginProps = {

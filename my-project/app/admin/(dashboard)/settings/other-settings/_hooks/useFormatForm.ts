@@ -6,8 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 
 import { patchCurrencyFormat } from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
 import { useFormat } from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFormat";

@@ -1,4 +1,4 @@
-import { deleteRequest } from "@/admin-utils";
+import { deleteRequest } from "@/shared-lib";
 
 export async function deleteFaqCategory(id: number): Promise<{ status: number } | undefined> {
   const r = await deleteRequest({

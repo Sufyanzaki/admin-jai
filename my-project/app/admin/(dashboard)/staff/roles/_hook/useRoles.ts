@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAllRoles } from "../_api/rolesApi";
 import { RoleDto } from "../add/_types/roleTypes";
 

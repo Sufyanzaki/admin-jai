@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 
 export async function getAbusiveWords(): Promise<{ word: string }> {
   const res = await getRequest<{ word: string }>({

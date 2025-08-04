@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import { BlogCategoryList } from "../_types/category-types";
 
 export async function getAllBlogCategories(): Promise<BlogCategoryList> {

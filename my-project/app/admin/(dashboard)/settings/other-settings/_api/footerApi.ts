@@ -1,4 +1,4 @@
-import {patchRequest, getRequest, postRequest} from "@/admin-utils";
+import {patchRequest, getRequest, postRequest} from "@/shared-lib";
 
 export interface FooterFormData {
   footerLogo?: string;

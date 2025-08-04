@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getEmailTemplates } from "../_api/getEmailTemplates";
 import type { EmailTemplate } from "../_types/emailTemplateTypes";
 

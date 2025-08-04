@@ -1,4 +1,4 @@
-import { getRequest } from '@/admin-utils';
+import { getRequest } from "@/shared-lib";
 import { Newsletter } from '../_types/newsletter';
 
 export async function getNewsletterById(id: string): Promise<Newsletter> {

@@ -1,4 +1,4 @@
-import { postRequest, patchRequest } from "@/admin-utils";
+import { postRequest, patchRequest } from "@/shared-lib";
 
 export interface PartnerExpectationPayload {
   origin: string;

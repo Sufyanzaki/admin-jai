@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAgendaSettings } from "../_api/agendaApi";
 import { AgendaSettingsDto } from "../_types/agenda";
 

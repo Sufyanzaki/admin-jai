@@ -1,6 +1,6 @@
 "use client";
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getUserDashboardFooterSettings, UserDashboardFooterApiResponse } from "../_api/userDashboardFooterApi";
 
 export function useDashboardFooterSetting() {

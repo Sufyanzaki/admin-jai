@@ -1,5 +1,5 @@
 
-import {getRequest, patchRequest} from "@/admin-utils";
+import {getRequest, patchRequest} from "@/shared-lib";
 
 export interface SystemSettingsDto {
     maintenanceMode: boolean;

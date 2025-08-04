@@ -1,4 +1,4 @@
-import { useSWRFix } from '@/admin-utils/lib/useSwrFix';
+import { useSWRFix } from '@/shared-lib';
 import { getFacebookSettings } from '../_api/getFacebookSettings';
 import { FacebookSettings } from '../../_types/facebook';
 

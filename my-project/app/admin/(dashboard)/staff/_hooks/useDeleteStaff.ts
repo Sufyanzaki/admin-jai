@@ -1,7 +1,7 @@
 import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
 import {deleteStaff} from "@/app/admin/(dashboard)/staff/_api/deleteStaff";
-import {showError, showSuccess} from "@/admin-utils";
+import {showError, showSuccess} from "@/shared-lib";
 import {StaffListResponse} from "@/app/admin/(dashboard)/staff/_types/staff";
 import { useState } from "react";
 

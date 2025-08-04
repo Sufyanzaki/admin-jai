@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
 import { getLifeStyle } from "../_api/updateLifeStyle";
 import { useParams } from "next/navigation";

@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import { TermsSettingsDto } from "../_types/tosTypes";
 
 export async function getTermsConditionsSettings(): Promise<TermsSettingsDto | undefined> {

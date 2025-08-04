@@ -1,4 +1,4 @@
-import {getRequest} from "@/admin-utils";
+import {getRequest} from "@/shared-lib";
 import {DashboardStats} from "@/app/admin/(dashboard)/_types/dashboard";
 
 export async function getDashboardStats(): Promise<DashboardStats | undefined> {

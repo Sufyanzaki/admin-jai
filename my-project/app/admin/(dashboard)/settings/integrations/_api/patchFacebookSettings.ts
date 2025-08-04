@@ -1,4 +1,4 @@
-import { patchRequest } from '@/admin-utils';
+import { patchRequest } from "@/shared-lib";
 import { FacebookSettings } from '../../_types/facebook';
 
 export type PatchFacebookSettingsProps = {

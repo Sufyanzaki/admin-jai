@@ -16,42 +16,42 @@ import {Superscript} from "@tiptap/extension-superscript"
 import {Underline} from "@tiptap/extension-underline"
 
 // --- Custom Extensions ---
-import {Link} from "@/components/tiptap-extension/link-extension"
-import {Selection} from "@/components/tiptap-extension/selection-extension"
-import {TrailingNode} from "@/components/tiptap-extension/trailing-node-extension"
+import {Link} from "@/components/admin/tiptap-extension/link-extension"
+import {Selection} from "@/components/admin/tiptap-extension/selection-extension"
+import {TrailingNode} from "@/components/admin/tiptap-extension/trailing-node-extension"
 
 // --- UI Primitives ---
-import {Button} from "@/components/tiptap-ui-primitive/button"
-import {Spacer} from "@/components/tiptap-ui-primitive/spacer"
-import {Toolbar, ToolbarGroup, ToolbarSeparator,} from "@/components/tiptap-ui-primitive/toolbar"
+import {Button} from "@/components/admin/tiptap-ui-primitive/button"
+import {Spacer} from "@/components/admin/tiptap-ui-primitive/spacer"
+import {Toolbar, ToolbarGroup, ToolbarSeparator,} from "@/components/admin/tiptap-ui-primitive/toolbar"
 
 // --- Tiptap Node ---
-import {ImageUploadNode} from "@/components/tiptap-node/image-upload-node/image-upload-node-extension"
-import "@/components/tiptap-node/code-block-node/code-block-node.scss"
-import "@/components/tiptap-node/list-node/list-node.scss"
-import "@/components/tiptap-node/image-node/image-node.scss"
-import "@/components/tiptap-node/paragraph-node/paragraph-node.scss"
+import {ImageUploadNode} from "@/components/admin/tiptap-node/image-upload-node/image-upload-node-extension"
+import "@/components/admin/tiptap-node/code-block-node/code-block-node.scss"
+import "@/components/admin/tiptap-node/list-node/list-node.scss"
+import "@/components/admin/tiptap-node/image-node/image-node.scss"
+import "@/components/admin/tiptap-node/paragraph-node/paragraph-node.scss"
 
 // --- Tiptap UI ---
-import {HeadingDropdownMenu} from "@/components/tiptap-ui/heading-dropdown-menu"
-import {ImageUploadButton} from "@/components/tiptap-ui/image-upload-button"
-import {ListDropdownMenu} from "@/components/tiptap-ui/list-dropdown-menu"
-import {BlockquoteButton} from "@/components/tiptap-ui/blockquote-button"
-import {CodeBlockButton} from "@/components/tiptap-ui/code-block-button"
+import {HeadingDropdownMenu} from "@/components/admin/tiptap-ui/heading-dropdown-menu"
+import {ImageUploadButton} from "@/components/admin/tiptap-ui/image-upload-button"
+import {ListDropdownMenu} from "@/components/admin/tiptap-ui/list-dropdown-menu"
+import {BlockquoteButton} from "@/components/admin/tiptap-ui/blockquote-button"
+import {CodeBlockButton} from "@/components/admin/tiptap-ui/code-block-button"
 import {
     ColorHighlightPopover,
     ColorHighlightPopoverButton,
     ColorHighlightPopoverContent,
-} from "@/components/tiptap-ui/color-highlight-popover"
-import {LinkButton, LinkContent, LinkPopover,} from "@/components/tiptap-ui/link-popover"
-import {MarkButton} from "@/components/tiptap-ui/mark-button"
-import {TextAlignButton} from "@/components/tiptap-ui/text-align-button"
-import {UndoRedoButton} from "@/components/tiptap-ui/undo-redo-button"
+} from "@/components/admin/tiptap-ui/color-highlight-popover"
+import {LinkButton, LinkContent, LinkPopover,} from "@/components/admin/tiptap-ui/link-popover"
+import {MarkButton} from "@/components/admin/tiptap-ui/mark-button"
+import {TextAlignButton} from "@/components/admin/tiptap-ui/text-align-button"
+import {UndoRedoButton} from "@/components/admin/tiptap-ui/undo-redo-button"
 
 // --- Icons ---
-import {ArrowLeftIcon} from "@/components/tiptap-icons/arrow-left-icon"
-import {HighlighterIcon} from "@/components/tiptap-icons/highlighter-icon"
-import {LinkIcon} from "@/components/tiptap-icons/link-icon"
+import {ArrowLeftIcon} from "@/components/admin/tiptap-icons/arrow-left-icon"
+import {HighlighterIcon} from "@/components/admin/tiptap-icons/highlighter-icon"
+import {LinkIcon} from "@/components/admin/tiptap-icons/link-icon"
 
 // --- Hooks ---
 import {useMobile} from "@/hooks/use-mobile"
@@ -62,7 +62,7 @@ import {useCursorVisibility} from "@/hooks/use-cursor-visibility"
 import {handleImageUpload, MAX_FILE_SIZE} from "@/lib/tiptap-utils"
 
 // --- Styles ---
-import "@/components/tiptap-templates/simple/simple-editor.scss"
+import "@/components/admin/tiptap-templates/simple/simple-editor.scss"
 import {useTheme} from "next-themes";
 import { unescapeHtml } from "@/lib/utils"
 

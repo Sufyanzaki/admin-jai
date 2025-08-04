@@ -12,7 +12,7 @@ import { Filter, MoreVertical, RefreshCw, Search, Shield, Trash, UserPlus, Users
 import Link from "next/link";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/admin/ui/alert-dialog";
 import { useState, useMemo } from "react";
-import PaginationSection from "@/components/Pagination";
+import PaginationSection from "@/components/admin/Pagination";
 import { useStaffMembers } from "./_hooks/useStaffMembers";
 import Preloader from "@/components/admin/ui/Preloader";
 import { useDebounce } from "@/hooks/useDebounce";

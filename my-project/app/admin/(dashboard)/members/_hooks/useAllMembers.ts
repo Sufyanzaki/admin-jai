@@ -1,4 +1,4 @@
-import { useSWRFix } from '@/admin-utils/lib/useSwrFix';
+import { useSWRFix } from '@/shared-lib';
 import { getAllMembers, GetAllMembersParams } from '../_api/getAllMembers';
 
 export default function useAllMembers(params?: GetAllMembersParams) {

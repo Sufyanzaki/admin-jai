@@ -6,7 +6,7 @@ import {z} from 'zod';
 import useSWRMutation from "swr/mutation";
 import { useState } from 'react'; // Add this import
 import {imageUpload} from '@/admin-utils/utils/imageUpload';
-import {showError, showSuccess} from "@/admin-utils";
+import {showError, showSuccess} from "@/shared-lib";
 import {postBasicPage} from '../_api/basicPageApi';
 
 const basicFormSchema = z.object({

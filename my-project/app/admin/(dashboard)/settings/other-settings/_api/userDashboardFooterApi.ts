@@ -1,4 +1,4 @@
-import { patchRequest, getRequest } from "@/admin-utils";
+import { patchRequest, getRequest } from "@/shared-lib";
 
 export interface UserDashboardFooterFormData {
   sectionPage: string;

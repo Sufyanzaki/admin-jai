@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import useSWRMutation from "swr/mutation";
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {showError, showSuccess} from "@/admin-utils";
+import {showError, showSuccess} from "@/shared-lib";
 import {patchBasicPage} from '../_api/basicPageApi';
 import {useParams} from "next/navigation";
 import {useBasicPage} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPage";

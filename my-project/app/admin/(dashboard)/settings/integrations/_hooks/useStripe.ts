@@ -1,4 +1,4 @@
-import { useSWRFix } from '@/admin-utils/lib/useSwrFix';
+import { useSWRFix } from '@/shared-lib';
 import { getStripe } from '../_api/stripe';
 
 export default function useStripe() {

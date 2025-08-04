@@ -1,4 +1,4 @@
-import { postRequest, patchRequest, getRequest } from "@/admin-utils";
+import { postRequest, patchRequest, getRequest } from "@/shared-lib";
 
 export interface UserPayloadBase {
   email: string;

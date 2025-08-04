@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import type { EmailTemplate } from "../_types/emailTemplateTypes";
 
 export async function getEmailTemplateById(id: number | string): Promise<EmailTemplate> {

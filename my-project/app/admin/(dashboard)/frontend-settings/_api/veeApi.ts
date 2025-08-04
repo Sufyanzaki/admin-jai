@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/admin-utils";
+import { getRequest, patchRequest } from "@/shared-lib";
 import { TermsSettingsDto } from "../_types/tosTypes";
 import {VeeDto} from "@/app/admin/(dashboard)/frontend-settings/_types/vee";
 

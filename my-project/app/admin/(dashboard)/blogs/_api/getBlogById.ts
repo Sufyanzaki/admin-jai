@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import { Blog } from "./getAllBlogs";
 
 export async function getBlogById(id: number | string): Promise<Blog> {

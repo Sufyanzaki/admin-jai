@@ -3,8 +3,8 @@
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {showError} from "@/admin-utils/lib/formErrors";
-import {showSuccess} from "@/admin-utils/lib/formSuccess";
+import {showError} from "@/shared-lib";
+import {showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import {Currency, patchCurrency} from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
 import {useSWRConfig} from "swr";

@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAllBlogs, BlogsResponse } from "../_api/getAllBlogs";
 
 export const useBlogs = () => {

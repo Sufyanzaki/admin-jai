@@ -1,6 +1,6 @@
 "use client"
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getRoleById } from "../_api/rolesApi";
 import { RoleDto } from "../add/_types/roleTypes";
 

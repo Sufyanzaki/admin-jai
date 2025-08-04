@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from '@/admin-utils';
+import { getRequest, patchRequest } from "@/shared-lib";
 
 export type StripeSettings = {
   key: string;

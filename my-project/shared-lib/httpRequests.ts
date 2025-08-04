@@ -1,4 +1,4 @@
-import { fetchExtra } from "@/admin-utils";
+import {fetchExtra} from "@/shared-lib/fetchExtra";
 
 type postRequestDto<T> = {
     url: string;

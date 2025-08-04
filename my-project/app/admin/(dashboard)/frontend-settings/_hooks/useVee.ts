@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getTermsConditionsSettings } from "../_api/tosApi";
 import { TermsSettingsDto } from "../_types/tosTypes";
 import {getVeeSettings} from "@/app/admin/(dashboard)/frontend-settings/_api/veeApi";

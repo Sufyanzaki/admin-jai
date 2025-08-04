@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import { ChatSettingPayload } from "./postChatSetting";
 
 export async function getChatVideoSetting(): Promise<ChatSettingPayload> {

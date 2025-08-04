@@ -1,4 +1,4 @@
-import { getRequest } from '@/admin-utils';
+import { getRequest } from "@/shared-lib";
 import { FacebookSettings } from '../../_types/facebook';
 
 export async function getFacebookSettings(): Promise<FacebookSettings> {

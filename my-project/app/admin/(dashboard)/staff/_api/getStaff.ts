@@ -1,4 +1,4 @@
-import { getRequest } from "@/admin-utils";
+import { getRequest } from "@/shared-lib";
 import type { StaffListResponse, StaffMember } from "../_types/staff";
 
 export async function getStaffMembers(params?: { page?: number; limit?: number; search?: string; allow?: string; isActive?: boolean }) {

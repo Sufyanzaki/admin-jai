@@ -1,6 +1,6 @@
 'use client';
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getHomePageSettings } from "../_api/homeApi";
 import { HomePageSettingsDto } from "../_types/homeTypes";
 

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {ArrowLeft, Plus, Save, Trash2, Upload, X} from 'lucide-react';
 import {Button} from '@/components/admin/ui/button';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/admin/ui/card';
@@ -8,7 +8,6 @@ import {Input} from '@/components/admin/ui/input';
 import {Label} from '@/components/admin/ui/label';
 import {Switch} from '@/components/admin/ui/switch';
 import {Controller} from 'react-hook-form';
-import {CustomImageUpload} from '@/components/frontend-settings/CustomImageInput';
 import Preloader from "@/components/admin/ui/Preloader";
 import useEditPackage from "@/app/admin/(dashboard)/packages/_hooks/useEditPackage";
 

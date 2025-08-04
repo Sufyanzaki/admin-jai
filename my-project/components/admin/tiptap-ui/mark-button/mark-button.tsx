@@ -7,20 +7,20 @@ import { isNodeSelection, type Editor } from "@tiptap/react"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 // --- Icons ---
-import { BoldIcon } from "@/components/tiptap-icons/bold-icon"
-import { Code2Icon } from "@/components/tiptap-icons/code2-icon"
-import { ItalicIcon } from "@/components/tiptap-icons/italic-icon"
-import { StrikeIcon } from "@/components/tiptap-icons/strike-icon"
-import { SubscriptIcon } from "@/components/tiptap-icons/subscript-icon"
-import { SuperscriptIcon } from "@/components/tiptap-icons/superscript-icon"
-import { UnderlineIcon } from "@/components/tiptap-icons/underline-icon"
+import { BoldIcon } from "@/components/admin/tiptap-icons/bold-icon"
+import { Code2Icon } from "@/components/admin/tiptap-icons/code2-icon"
+import { ItalicIcon } from "@/components/admin/tiptap-icons/italic-icon"
+import { StrikeIcon } from "@/components/admin/tiptap-icons/strike-icon"
+import { SubscriptIcon } from "@/components/admin/tiptap-icons/subscript-icon"
+import { SuperscriptIcon } from "@/components/admin/tiptap-icons/superscript-icon"
+import { UnderlineIcon } from "@/components/admin/tiptap-icons/underline-icon"
 
 // --- Lib ---
 import { isMarkInSchema } from "@/lib/tiptap-utils"
 
 // --- UI Primitives ---
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
+import type { ButtonProps } from "@/components/admin/tiptap-ui-primitive/button"
+import { Button } from "@/components/admin/tiptap-ui-primitive/button"
 
 export type Mark =
   | "bold"

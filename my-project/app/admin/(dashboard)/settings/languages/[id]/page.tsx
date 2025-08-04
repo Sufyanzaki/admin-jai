@@ -4,7 +4,7 @@ import { Button } from "@/components/admin/ui/button";
 import { Input } from "@/components/admin/ui/input";
 import {Save, Search, Copy, ArrowLeft} from "lucide-react";
 import type React from "react";
-import PaginationSection from "@/components/Pagination";
+import PaginationSection from "@/components/admin/Pagination";
 import Link from "next/link";
 
 export default function LanguageTranslatePage() {

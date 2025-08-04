@@ -1,4 +1,4 @@
-import { postRequest } from "@/admin-utils";
+import { postRequest } from "@/shared-lib";
 import { LoginResponse } from "../_types/auth";
 
 export type OtpProps = {

@@ -2,13 +2,13 @@
 
 import {Button} from "@/components/admin/ui/button";
 import Link from "next/link";
-import {ArrowLeft, Plus, Save, Trash2, Upload} from "lucide-react";
+import {ArrowLeft, Plus, Save, Trash2} from "lucide-react";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/admin/ui/card";
 import {Label} from "@/components/admin/ui/label";
 import {Input} from "@/components/admin/ui/input";
-import { Controller } from "react-hook-form";
+import {Controller} from "react-hook-form";
 import usePackageForm from "../_hooks/usePackageForm";
-import { CustomImageUpload } from "@/components/frontend-settings/CustomImageInput";
+import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
 
 export default function AddPackagesPage() {
     const {

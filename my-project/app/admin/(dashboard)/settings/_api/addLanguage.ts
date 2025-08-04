@@ -1,4 +1,4 @@
-import { postRequest } from "@/admin-utils";
+import { postRequest } from "@/shared-lib";
 
 export interface AddLanguagePayload {
   code: string;

@@ -1,4 +1,4 @@
-import { useSWRFix } from '@/admin-utils/lib/useSwrFix';
+import { useSWRFix } from '@/shared-lib';
 import { getGoogleSettings } from '../_api/getGoogleSettings';
 import { GoogleSettings } from '../../_types/google';
 

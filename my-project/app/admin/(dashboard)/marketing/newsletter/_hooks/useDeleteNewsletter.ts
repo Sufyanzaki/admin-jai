@@ -1,7 +1,7 @@
 import { useSWRConfig } from "swr";
 import { deleteNewsletter } from "../_api/deleteNewsletter";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import { useState } from "react";
 
 export default function useDeleteNewsletter() {

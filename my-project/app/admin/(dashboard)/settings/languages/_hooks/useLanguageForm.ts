@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import { addLanguage } from "@/app/admin/(dashboard)/settings/_api/addLanguage";
 import useSWRMutation from "swr/mutation";
 import { mutate as globalMutate } from "swr";

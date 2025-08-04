@@ -1,6 +1,6 @@
 "use client"
 
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getProfile } from "@/app/admin/(dashboard)/profile/_api/getProfile";
 import { ProfileResponse } from "../_types/profile-types";
 

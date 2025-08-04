@@ -4,7 +4,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useRouter, useSearchParams} from 'next/navigation';
-import {showError} from '@/admin-utils/lib/formErrors';
+import {showError} from '@/shared-lib';
 import {signIn} from 'next-auth/react';
 
 const otpSchema = z.object({

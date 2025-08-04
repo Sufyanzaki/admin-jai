@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useSWRMutation from "swr/mutation";
 
-import { showError } from "@/admin-utils/lib/formErrors";
-import { showSuccess } from "@/admin-utils/lib/formSuccess";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import { patchSeoSettings } from "../_api/seoSettings";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import {useSeoSettings} from "@/app/admin/(dashboard)/settings/_hooks/useSeoSettings";

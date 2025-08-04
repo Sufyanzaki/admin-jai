@@ -1,4 +1,4 @@
-import { getRequest } from '@/admin-utils';
+import { getRequest } from "@/shared-lib";
 import { GetAllMembersResponse } from '../_types/member';
 
 export type GetAllMembersParams = {

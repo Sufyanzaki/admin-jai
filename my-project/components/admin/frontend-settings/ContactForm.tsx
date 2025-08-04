@@ -9,9 +9,9 @@ import {ArrowLeft, Loader2} from "lucide-react"
 import Link from "next/link"
 import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 import { CustomImageUpload } from "./CustomImageInput"
-import useContactForm from "@/app/(dashboard)/frontend-settings/_hooks/useContactForm"
 import { Controller } from "react-hook-form"
 import Preloader from "@/components/admin/ui/Preloader";
+import useContactForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useContactForm";
 
 export default function ContactForm() {
     const {

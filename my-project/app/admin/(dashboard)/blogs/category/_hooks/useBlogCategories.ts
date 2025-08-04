@@ -1,4 +1,4 @@
-import { useSWRFix } from "@/admin-utils/lib/useSwrFix";
+import { useSWRFix } from "@/shared-lib";
 import { getAllBlogCategories } from "../_api/getAllBlogCategories";
 import { BlogCategoryList } from "../_types/category-types";
 
