@@ -137,13 +137,13 @@ export default function MembersTable({
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem asChild>
-                            <Link href={`/members/${member.id}`} className="flex items-center gap-2">
+                            <Link href={`/admin/members/${member.id}`} className="flex items-center gap-2">
                               <Eye className="h-4 w-4" />
                               View Profile
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link href={`/members/${member.id}/edit`} className="flex items-center gap-2">
+                            <Link href={`/admin/members/${member.id}/edit`} className="flex items-center gap-2">
                               <Edit className="h-4 w-4" />
                               Edit Profile
                             </Link>

@@ -98,13 +98,13 @@ export default function MembersGrid({
 
                 <div className="flex border-t">
                   <Button asChild variant="ghost" className="flex-1 rounded-none rounded-bl-md py-2 justify-center">
-                    <Link href={`/members/${member.id}`}>
+                    <Link href={`/admin/members/${member.id}`}>
                       <Eye className="h-4 w-4" />
                     </Link>
                   </Button>
 
                   <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center">
-                    <Link href={`/members/${member.id}/edit`}>
+                    <Link href={`/admin/members/${member.id}/edit`}>
                       <Edit className="h-4 w-4" />
                     </Link>
                   </Button>

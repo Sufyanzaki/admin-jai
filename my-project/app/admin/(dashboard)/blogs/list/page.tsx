@@ -132,12 +132,12 @@ export default function BlogListPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem asChild>
-                              <Link href={`/blogs/list/${blog.id}`}>
+                              <Link href={`/admin/blogs/list/${blog.id}`}>
                                 <Eye className="mr-2 h-4 w-4" /> View
                               </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                              <Link href={`/blogs/list/edit/${blog.id}`}>
+                              <Link href={`/admin/blogs/list/edit/${blog.id}`}>
                                 <Pencil className="mr-2 h-4 w-4" /> Edit
                               </Link>
                             </DropdownMenuItem>

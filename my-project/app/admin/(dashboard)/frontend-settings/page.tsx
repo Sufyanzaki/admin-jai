@@ -76,7 +76,7 @@ export default function SettingPage() {
                                     <TableCell className="text-right align-top">
                                         <div className="flex justify-end gap-2">
                                             <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                                                <Link href={`/frontend-settings/edit?slug=${page.type}`}>
+                                                <Link href={`/admin/frontend-settings/edit?slug=${page.type}`}>
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit</span>
                                                 </Link>
@@ -121,7 +121,7 @@ export default function SettingPage() {
                                         <TableCell className="text-right align-top">
                                             <div className="flex justify-end gap-2">
                                                 <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                                                    <Link href={`/frontend-settings/edit/${page.id}/basic`}>
+                                                    <Link href={`/admin/frontend-settings/edit/${page.id}/basic`}>
                                                         <Edit className="h-4 w-4" />
                                                         <span className="sr-only">Edit</span>
                                                     </Link>

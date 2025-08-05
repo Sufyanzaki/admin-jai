@@ -15,7 +15,7 @@ export default function ListCard({profile}: {profile: Profile}){
     return (
         <div className="overflow-hidden rounded-[5px] transition-shadow cursor-pointer mb-4">
             <div className="hidden md:flex flex-row py-4">
-                <Link href={`/app/client/dashboard/search/${profile.id}`}>
+                <Link href={`/dashboard/search/${profile.id}`}>
                     <div className="relative flex-shrink-0">
                         <ImageWrapper
                             src={profile.image || "/placeholder.svg"}
@@ -97,7 +97,7 @@ export default function ListCard({profile}: {profile: Profile}){
             {/* Mobile Layout */}
             <div className="md:hidden p-4">
                 <div className="flex gap-3 mb-3">
-                    <Link href={`/app/client/dashboard/search/${profile.id}`}>
+                    <Link href={`/dashboard/search/${profile.id}`}>
                         <div className="relative flex-shrink-0">
                             <ImageWrapper
                                 src={profile.image || "/placeholder.svg"}

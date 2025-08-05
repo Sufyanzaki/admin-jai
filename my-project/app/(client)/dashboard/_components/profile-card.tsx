@@ -30,7 +30,7 @@ export default function ProfileCard({
 
   return (
     <div className="relative rounded-t-[5px] overflow-hidden hover:shadow-lg transition-shadow">
-      <Link href={`/app/client/dashboard/search/${profile.id}`} className="block">
+      <Link href={`/dashboard/search/${profile.id}`} className="block">
         <div className="relative flex aspect-square">
           <div className="relative bg-gray-200 w-full">
               <ImageWrapper

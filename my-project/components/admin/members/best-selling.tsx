@@ -64,7 +64,7 @@ export function BestSelling() {
               </div>
               <div className="flex flex-col items-end space-y-2">
 
-                <Link href={`/packages/${pkg.id}/view`} className="flex space-x-2">
+                <Link href={`/admin/packages/${pkg.id}/view`} className="flex space-x-2">
                   <Button size="sm" variant="outline">
                     View Details
                   </Button>

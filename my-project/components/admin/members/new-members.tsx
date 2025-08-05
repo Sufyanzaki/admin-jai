@@ -53,7 +53,7 @@ export function NewMembers({ users }: { users: UserDto[] }) {
                   <Clock className="mr-1 h-3 w-3" />
                   {format(new Date(user.createdAt), "MMM d, yyyy")}
                 </div>
-                <Link href={`/members/${user.id}`}>
+                <Link href={`/admin/members/${user.id}`}>
                   <Button size="sm" variant="outline">
                     View
                   </Button>

@@ -16,6 +16,7 @@ import LifeStyle from "@/app/admin/(dashboard)/members/[id]/_components/LifeStyl
 import PartnerExpectation from "@/app/admin/(dashboard)/members/[id]/_components/PartnerExpectation";
 import ManageStatus from "./_components/ManageStatus";
 import BasicInfo from "@/app/admin/(dashboard)/members/[id]/_components/BasicInfo";
+import React from "react";
 
 const userProfile = [
     {
@@ -65,9 +66,9 @@ const userProfile = [
     }
   ];
 
-export default function MemberProfilePage({ params }: { params: { id: string } }) {
+export default function MemberProfilePage({ params }: { params: Promise<{ id: string }>}) {
 
-    const { id:memberId } = params;
+    const { id:memberId } =  React.use(params);
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">

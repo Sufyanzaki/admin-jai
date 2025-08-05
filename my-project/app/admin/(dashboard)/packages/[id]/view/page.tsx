@@ -110,13 +110,13 @@ export default function PackageDetailsPage({ params }: { params: Promise<{ id: s
                             <p className="mt-1 text-xs text-muted-foreground">{pkg.id * 25}% increase this quarter</p>
                         </div>
                         <div className="flex gap-2 pt-4 flex-wrap">
-                            <Link href={`/packages/${pkg.id}/edit`}>
+                            <Link href={`/admin/packages/${pkg.id}/edit`}>
                                 <Button variant="outline" size="sm">
                                     <Edit className="mr-2 h-4 w-4" />
                                     Edit Package
                                 </Button>
                             </Link>
-                            {/*<Link href={`/packages/${pkg.id}/subscribers`}>*/}
+                            {/*<Link href={`/admin/packages/${pkg.id}/subscribers`}>*/}
                             {/*    <Button size="sm">*/}
                             {/*        <Users className="mr-2 h-4 w-4" />*/}
                             {/*        View Subscribers*/}
@@ -193,7 +193,7 @@ export default function PackageDetailsPage({ params }: { params: Promise<{ id: s
                                             </div>
                                         ))}
 
-                                    {/*<Link href={`/packages/${pkg.id}/subscribers`}>*/}
+                                    {/*<Link href={`/admin/packages/${pkg.id}/subscribers`}>*/}
                                     {/*    <Button variant="outline" className="w-full mt-2">*/}
                                     {/*        <Users className="mr-2 h-4 w-4" />*/}
                                     {/*        View All Subscribers*/}

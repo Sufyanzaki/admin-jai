@@ -185,12 +185,12 @@ export default function PackagesPage() {
                                                         <DropdownMenuContent align="end">
                                                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                             <DropdownMenuItem>
-                                                                <Link href={`/packages/${pkg.id}/view`} className="flex w-full">
+                                                                <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">
                                                                     View details
                                                                 </Link>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem>
-                                                                <Link href={`/packages/${pkg.id}/edit`} className="flex w-full">
+                                                                <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
                                                                     Edit package
                                                                 </Link>
                                                             </DropdownMenuItem>
@@ -253,17 +253,17 @@ export default function PackagesPage() {
                                                             <DropdownMenuContent align="end">
                                                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                                 <DropdownMenuItem>
-                                                                    <Link href={`/packages/${pkg.id}/view`} className="flex w-full">
+                                                                    <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">
                                                                         View details
                                                                     </Link>
                                                                 </DropdownMenuItem>
                                                                 <DropdownMenuItem>
-                                                                    <Link href={`/packages/${pkg.id}/edit`} className="flex w-full">
+                                                                    <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
                                                                         Edit package
                                                                     </Link>
                                                                 </DropdownMenuItem>
                                                                 {/*<DropdownMenuItem>*/}
-                                                                {/*    <Link href={`/packages/${pkg.id}/subscribers`} className="flex w-full">*/}
+                                                                {/*    <Link href={`/admin/packages/${pkg.id}/subscribers`} className="flex w-full">*/}
                                                                 {/*        View subscribers*/}
                                                                 {/*    </Link>*/}
                                                                 {/*</DropdownMenuItem>*/}
@@ -326,17 +326,17 @@ export default function PackagesPage() {
                                                             <DropdownMenuContent align="end">
                                                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                                 <DropdownMenuItem>
-                                                                    <Link href={`/packages/${pkg.id}/view`} className="flex w-full">
+                                                                    <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">
                                                                         View details
                                                                     </Link>
                                                                 </DropdownMenuItem>
                                                                 <DropdownMenuItem>
-                                                                    <Link href={`/packages/${pkg.id}/edit`} className="flex w-full">
+                                                                    <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
                                                                         Edit package
                                                                     </Link>
                                                                 </DropdownMenuItem>
                                                                 {/*<DropdownMenuItem>*/}
-                                                                {/*    <Link href={`/packages/${pkg.id}/subscribers`} className="flex w-full">*/}
+                                                                {/*    <Link href={`/admin/packages/${pkg.id}/subscribers`} className="flex w-full">*/}
                                                                 {/*        View subscribers*/}
                                                                 {/*    </Link>*/}
                                                                 {/*</DropdownMenuItem>*/}

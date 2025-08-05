@@ -406,7 +406,7 @@ export default function PaymentsPage() {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuItem asChild>
-                                  <Link href={`/payments/1`}>
+                                  <Link href={`/admin/payments/1`}>
                                     <Receipt className="mr-2 h-4 w-4" />
                                     View Order
                                   </Link>

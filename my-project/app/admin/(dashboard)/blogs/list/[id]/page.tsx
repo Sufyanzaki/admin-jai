@@ -89,7 +89,7 @@ export default function BlogListDetails() {
                 <p className="text-xs text-muted-foreground">{blog.metaTitle}</p>
               </div>
               <div className="flex gap-2 pt-4 flex-wrap">
-                <Link href={`/blogs/list/edit/${blog.id}`}>
+                <Link href={`/admin/blogs/list/edit/${blog.id}`}>
                   <Button variant="outline" size="sm">
                     <Edit className="mr-2 h-4 w-4" />
                     Edit Blog
