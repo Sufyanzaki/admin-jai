@@ -16,7 +16,7 @@ import { Checkbox } from "@/components/admin/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Edit, Eye, MoreVertical, Trash, UserCheck, UserX } from "lucide-react";
 import Link from "next/link";
-import Preloader from "../ui/Preloader";
+import Preloader from "../../shared/Preloader";
 import {Member} from "@/app/admin/(dashboard)/members/_types/member";
 
 interface MembersTableProps {

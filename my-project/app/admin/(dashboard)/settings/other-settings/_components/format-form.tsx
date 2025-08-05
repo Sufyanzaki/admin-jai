@@ -14,7 +14,7 @@ import { Button } from "@/components/admin/ui/button";
 
 import { Currency } from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
 import useFormatForm from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFormatForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import {Save} from "lucide-react";
 import {DialogFooter} from "@/components/admin/ui/dialog";
 

@@ -30,7 +30,7 @@ export default function LoginPage() {
               <CardTitle className="text-xl text-white">Sign in to your account</CardTitle>
               <CardDescription className="text-gray-400">Enter your credentials to access the dashboard</CardDescription>
             </CardHeader>
-            <form onSubmit={handleSubmit((data: any) => onSubmit(data, () => console.log("Login successful!")))}>
+            <form onSubmit={handleSubmit((data: any) => onSubmit(data))}>
               <CardContent className="space-y-4">
                 {errors.root && (
                     <div className="rounded-md bg-red-900/20 p-3 text-sm text-red-400">

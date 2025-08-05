@@ -5,6 +5,7 @@ import {useRouter} from 'next/navigation';
 import {showError} from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
 import { postLoginForm } from '../_api/postLoginForm';
+import {setUserEmail} from "@/lib/access-token";
 
 const loginSchema = z.object({
     email: z.string()
@@ -45,13 +46,14 @@ export default function useLoginForm() {
         mode: 'onBlur'
     });
 
-    const onSubmit = async (values: LoginFormValues, callback?: (data: any) => void) => {
+    const onSubmit = async (values: LoginFormValues) => {
         try {
             await trigger({
                 email: values.email,
                 password: values.password,
             });
-            router.push('/admin/auth/otp?email=' + values.email);
+            setUserEmail(values.email);
+            router.push('/admin/auth/otp');
         } catch (error: any) {
             showError({ message: error.message || 'An unexpected error occurred. Please try again.' });
         }

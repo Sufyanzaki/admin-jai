@@ -35,7 +35,7 @@ export default function useOTPForm() {
   });
 
   const onSubmit = async (values: OtpFormValues) => {
-    const result = await signIn('credentials', {
+    const result = await signIn('admin-otp', {
         redirect: false,
         ...values,
         email,
@@ -44,7 +44,6 @@ export default function useOTPForm() {
     console.log(result);
 
     if (result?.error) {
-      console.log(result);
         const errorMessage = result.error === 'CredentialsSignin'
             ? 'Invalid OTP '
             : 'Login failed. Please try again.';

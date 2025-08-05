@@ -30,7 +30,7 @@ import Link from "next/link"
 import { use } from "react"
 import useRoleById from "../_hook/useRoleById"
 import { RoleDto, Permission } from "../add/_types/roleTypes"
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function RoleDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)

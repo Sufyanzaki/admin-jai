@@ -4,7 +4,7 @@ import {MultiSelectCombobox} from "@/components/admin/ui/combo-box";
 import {DialogFooter} from "@/components/admin/ui/dialog";
 import {Button} from "@/components/admin/ui/button";
 import {useBasicPages} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function FooterSectionForm(){
 

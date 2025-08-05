@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/client/ux/card";
 import { Bell, MoveRight } from "lucide-react";
 import ProfileCard from "./_components/profile-card";
 import { cardData, matches, recentMembers } from "./_const/contant";
+import {useSession} from "next-auth/react";
 
 export default function Dashboard() {
   return (

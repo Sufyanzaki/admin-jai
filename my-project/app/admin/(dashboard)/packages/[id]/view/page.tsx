@@ -10,7 +10,7 @@ import { ArrowLeft, Box, Calendar, CreditCard, Edit, Mail, Phone, Star, Users } 
 import Link from "next/link"
 import React, { use } from "react"
 import usePackageById from "../../_hooks/usePackageById"
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import useAllMembers from "@/app/admin/(dashboard)/members/_hooks/useAllMembers";
 
 export default function PackageDetailsPage({ params }: { params: Promise<{ id: string }> }) {

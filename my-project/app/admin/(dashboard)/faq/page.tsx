@@ -11,7 +11,7 @@ import {FaqAddModal} from "@/app/admin/(dashboard)/faq/_components/faq-add-modal
 import useFaq from "./_hooks/useFaq";
 import { useRouter, useSearchParams } from "next/navigation";
 import useDeleteFaq from "./_hooks/useDeleteFaq";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import {FaqEditModal} from "@/app/admin/(dashboard)/faq/_components/faq-edit-modal";
 
 export default function SupportFAQ() {

@@ -11,7 +11,7 @@ import Link from "next/link"
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor"
 import {Controller} from "react-hook-form"
 import useBasicEditForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicEditForm";
-import Preloader from "@/components/admin/ui/Preloader"
+import Preloader from "@/components/shared/Preloader"
 
 export default function EditPage() {
     const {

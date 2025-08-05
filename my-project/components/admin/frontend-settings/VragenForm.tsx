@@ -9,7 +9,7 @@ import {ArrowLeft, Loader2} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select"
 import Link from "next/link"
 import {Controller} from "react-hook-form"
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
 import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
 import useVeeForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useVeeForm"

@@ -12,7 +12,7 @@ import {useParams} from "next/navigation";
 import {useBlogCategories} from "../../../category/_hooks/useBlogCategories";
 import useEditBlog from "../../../_hooks/useEditBlog";
 import {Controller} from "react-hook-form";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
 
 export default function EditBlogPage() {

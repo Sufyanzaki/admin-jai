@@ -26,8 +26,6 @@ export default function ProfileCard({
 
   const [loaded, setIsLoaded] = useState(false);
 
-  console.log(loaded)
-
   return (
     <div className="relative rounded-t-[5px] overflow-hidden hover:shadow-lg transition-shadow">
       <Link href={`/dashboard/search/${profile.id}`} className="block">

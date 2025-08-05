@@ -10,7 +10,7 @@ import {Separator} from "@/components/admin/ui/separator";
 import {AlertCircle, Building} from "lucide-react";
 import {Controller} from "react-hook-form";
 import useSmtpForm from "../_hooks/useSmtpForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function SMTPForm() {
   const {

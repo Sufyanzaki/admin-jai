@@ -3,6 +3,9 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useRouter} from 'next/navigation';
 import {showError} from "@/shared-lib";
+import useSWRMutation from 'swr/mutation';
+import { postLoginForm } from '../_api/postLoginForm';
+import {setUserEmail} from "@/lib/access-token";
 
 const loginSchema = z.object({
     email: z.string()
@@ -15,13 +18,25 @@ const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function useLoginForm() {
+
     const router = useRouter();
+
+    const { trigger } = useSWRMutation(
+        'login',
+        async (_: string, { arg }: { arg: { email: string; password: string } }) => {
+            return await postLoginForm(arg);
+        },
+        {
+            onError: (error: any) => {
+                showError({ message: error.message });
+            }
+        }
+    );
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        setError,
     } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -31,29 +46,16 @@ export default function useLoginForm() {
         mode: 'onBlur'
     });
 
-    const onSubmit = async (values: LoginFormValues, callback?: () => void) => {
+    const onSubmit = async (values: LoginFormValues) => {
         try {
-            // const result = await signIn('credentials', {
-            //     redirect: false,
-            //     email: values.email,
-            //     password: values.password,
-            //     callbackUrl: '/',
-            // });
-
-            // if (result?.error) {
-            //     const errorMessage = result.error === 'CredentialsSignin'
-            //         ? 'Invalid email or password'
-            //         : 'Login failed. Please try again.';
-            //
-            //     showError({message: errorMessage});
-            //     setError('root', { message: errorMessage });
-            // } else {
-            //     callback?.();
-            //     router.push('/');
-            // }
-        } catch (error) {
-            showError({message: 'An unexpected error occurred. Please try again.'});
-            console.error('Login error:', error);
+            await trigger({
+                email: values.email,
+                password: values.password,
+            });
+            setUserEmail(values.email);
+            router.push('/auth/otp');
+        } catch (error: any) {
+            showError({ message: error.message || 'An unexpected error occurred. Please try again.' });
         }
     };
 
@@ -62,6 +64,6 @@ export default function useLoginForm() {
         handleSubmit,
         onSubmit,
         errors,
-        isLoading: isSubmitting,
+        isSubmitting,
     };
 }

@@ -6,7 +6,7 @@ import { Button } from "@/components/admin/ui/button";
 import { Card, CardContent } from "@/components/admin/ui/card";
 import {Ban, Calendar, Edit, Eye, Mail, MapPin, Package, Trash2, User, UserCheck} from "lucide-react";
 import Link from "next/link";
-import Preloader from "../ui/Preloader";
+import Preloader from "../../shared/Preloader";
 import {Member} from "@/app/admin/(dashboard)/members/_types/member";
 
 interface MembersGridProps {

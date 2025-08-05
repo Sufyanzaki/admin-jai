@@ -13,7 +13,7 @@ import type { FieldErrors } from "react-hook-form";
 import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
 import { AlertTriangle } from "lucide-react";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function AboutMeTab() {
 

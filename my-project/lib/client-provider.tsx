@@ -1,17 +1,17 @@
 "use client";
 
 import ErrorBoundary from "@/admin-utils/ErrorBoundary";
-import {ThemeProvider} from "next-themes";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {SessionProvider, useSession} from "next-auth/react";
 import {Session} from "next-auth";
 import {useRouter} from "next/navigation";
+import Preloader from "@/components/shared/Preloader";
 
-export default function Providers({
+export default function ClientProvider({
                                       children,
                                       session: serverSession
                                   }: {
-    children: React.ReactNode;
+    children: ReactNode;
     session: Session | null;
 }) {
     const [mounted, setMounted] = useState(false);
@@ -24,30 +24,28 @@ export default function Providers({
         <SessionProvider session={serverSession}>
             <AuthGuard mounted={mounted}>
                 <ErrorBoundary>
-                    <ThemeProvider defaultTheme="system" attribute="class" enableSystem={mounted}>
-                        {children}
-                    </ThemeProvider>
+                    {children}
                 </ErrorBoundary>
             </AuthGuard>
         </SessionProvider>
     );
 }
 
-function AuthGuard({ children, mounted }: { children: React.ReactNode; mounted: boolean }) {
-    const { status, data } = useSession();
+function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolean }) {
+    const { status } = useSession();
     const router = useRouter();
 
     useEffect(() => {
 
-        if (mounted && (status === "unauthenticated" || data?.user.role !== "ADMIN")) {
-            router.push("/admin/auth/login");
+        if (mounted && (status === "unauthenticated")) {
+            router.push("/auth/login");
         }
     }, [mounted, status, router]);
 
     if (!mounted || status === "loading") {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+                <Preloader />
             </div>
         );
     }

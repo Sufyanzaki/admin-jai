@@ -9,7 +9,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/ta
 import {useParams} from "next/navigation";
 import useBlogById from "../../_hooks/useBlogById";
 import {unescapeHtml} from "@/lib/utils"
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function BlogListDetails() {
   const params = useParams();

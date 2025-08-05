@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 import useEditFaq from "../_hooks/useEditFaq";
 import useFaq from "../_hooks/useFaq";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (value: boolean) => void }) {
     const searchParams = useSearchParams();

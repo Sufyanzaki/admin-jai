@@ -10,7 +10,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import useNewsletterById from "../_hooks/useNewsletterById";
 import { unescapeHtml } from "@/lib/utils";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function NewsletterViewPage() {
     const params = useParams();

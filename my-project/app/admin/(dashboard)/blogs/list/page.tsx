@@ -13,7 +13,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {Ban, CheckCircle, Eye, MoreHorizontal, Notebook, Pencil, Plus, Trash} from "lucide-react";
 import Link from "next/link";
 import {useBlogs} from "../_hooks/useBlogs";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import {useDeleteBlog} from "../_hooks/useDeleteBlog";
 
 export default function BlogListPage() {

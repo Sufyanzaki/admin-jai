@@ -8,7 +8,7 @@ import {Button} from "@/components/admin/ui/button"
 import {ArrowLeft} from "lucide-react"
 import Link from "next/link"
 import { Controller } from "react-hook-form"
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import useRegistrationForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useRegisterationForm"
 import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";
 

@@ -35,11 +35,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                   />
                 </Link>
               </div>
-              {pathname === "/admin/auth/login" ? (
+              {pathname === "/auth/login" ? (
                 <div className=" text-black text-md">
                   Don&apos;t have an account?
                   <a
-                    href="/admin/auth/profile/create"
+                    href="/auth/profile/create"
                     className="ml-1 hover:underline font-medium"
                   >
                     Register
@@ -49,7 +49,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                 <div className=" text-black text-md">
                   Do you have an account?
                   <a
-                    href="/admin/admin/auth/login"
+                    href="/auth/login"
                     className="ml-1 hover:underline font-medium"
                   >
                     Login
@@ -89,7 +89,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             <div className=" text-black text-md text-center w-full mt-7">
               Don&apos;t have an account?
               <a
-                href="/admin/auth/profile/create"
+                href="/auth/profile/create"
                 className="ml-1 hover:underline font-medium"
               >
                 Register

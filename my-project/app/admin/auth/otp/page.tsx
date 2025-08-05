@@ -5,13 +5,11 @@ import { Button } from "@/components/admin/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/admin/ui/card";
 import { Input } from "@/components/admin/ui/input";
 import useOTPForm from "../_hooks/useOTPForm";
-import useResendOtp from "../_hooks/useResendOtp";
-import { useSearchParams } from "next/navigation";
 import { Controller } from "react-hook-form";
+import useResendOtp from "@/app/shared-hooks/useResendOtp";
+import {getUserEmail} from "@/lib/access-token";
 
 export default function OtpPage() {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email") || "";
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   
   const {
@@ -25,9 +23,10 @@ export default function OtpPage() {
   const { resendOtp, isLoading: isResending } = useResendOtp();
 
   const handleResend = () => {
-    if (email) {
-      resendOtp(email);
-    }
+
+    const email = getUserEmail();
+
+    if (email) resendOtp(email).finally();
   };
 
   return (

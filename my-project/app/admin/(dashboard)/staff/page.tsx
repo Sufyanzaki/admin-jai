@@ -14,7 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useState, useMemo } from "react";
 import PaginationSection from "@/components/admin/Pagination";
 import { useStaffMembers } from "./_hooks/useStaffMembers";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import { useDebounce } from "@/hooks/useDebounce";
 import useRoles from "./roles/_hook/useRoles";
 import {useDeleteStaff} from "@/app/admin/(dashboard)/staff/_hooks/useDeleteStaff";

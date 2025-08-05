@@ -8,7 +8,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
 import {useBasicPages} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
 import {useDeleteBasicPage} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useDeleteBasicPage";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function SettingPage() {
     const { basicPages, isLoading, error } = useBasicPages();

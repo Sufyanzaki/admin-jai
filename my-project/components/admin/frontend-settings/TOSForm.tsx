@@ -9,7 +9,7 @@ import {Checkbox} from "@/components/admin/ui/checkbox"
 import {ArrowLeft, Loader2} from "lucide-react"
 import Link from "next/link";
 import { Controller } from "react-hook-form";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import useTOSForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useTOSForm";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
 import {CustomImageUpload} from "@/components/admin/frontend-settings/CustomImageInput";

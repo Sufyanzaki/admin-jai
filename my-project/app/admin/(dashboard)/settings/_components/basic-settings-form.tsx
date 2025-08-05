@@ -10,7 +10,7 @@ import { Label } from "@/components/admin/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/admin/ui/select";
 import { Textarea } from "@/components/admin/ui/textarea";
 import { Settings, Upload, X } from "lucide-react";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function BasicSettingsForm() {
   const { 

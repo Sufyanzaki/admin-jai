@@ -32,6 +32,9 @@ interface OpenStreetMapRaw {
     postcode?: string
     country?: string
     country_code?: string
+    town?: string
+    village?: string
+    region?: string
   }
   boundingbox: [string, string, string, string]
 }
@@ -45,29 +48,47 @@ interface GeosearchResult {
   raw: OpenStreetMapRaw
 }
 
-interface LocationData {
-  x: number
-  y: number
-  label: string
-  bounds: [[number, number], [number, number]] | null
-  raw: OpenStreetMapRaw
+export interface LocationData {
+  country?: string
+  city?: string
+  state?: string
 }
 
 interface LocationSearchInputProps {
   onSelect: (location: LocationData) => void
   className?: string
   placeholder?: string
+  value?: LocationData | null
+}
+
+// Helper function to create display label from location data
+export function getDisplayLabel(location: LocationData | null): string {
+  if (!location) return "";
+
+  const { city, state, country } = location;
+  const displayParts = [city, state, country].filter(Boolean);
+  return displayParts.join(", ");
 }
 
 export default function LocationSearchInput({
-  onSelect,
-  className,
-  placeholder = "What is your location",
-}: LocationSearchInputProps) {
+                                              onSelect,
+                                              className,
+                                              placeholder = "What is your location",
+                                              value: propValue = null,
+                                            }: LocationSearchInputProps) {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<LocationData[]>([])
   const hasSelectedRef = useRef(false)
   const [provider, setProvider] = useState<OpenStreetMapProvider | null>(null)
+
+  // Sync internal state with external value prop
+  useEffect(() => {
+    if (propValue) {
+      setQuery(getDisplayLabel(propValue))
+    } else {
+      setQuery("")
+    }
+  }, [propValue])
 
   useEffect(() => {
     const initProvider = async () => {
@@ -100,18 +121,39 @@ export default function LocationSearchInput({
     try {
       const searchResults = (await provider.search({ query: value })) as unknown as GeosearchResult[]
 
-      // Remove duplicates based on display_name and properly type the results
+      // Extract city, state, country from results
+      const locationResults = searchResults.map((item): LocationData => {
+        const address = item.raw.address;
+
+        // Extract city from various possible fields
+        const city =
+            address.city ||
+            address.town ||
+            address.village ||
+            address.suburb ||
+            address.neighbourhood ||
+            "";
+
+        // Extract state from various possible fields
+        const state =
+            address.state ||
+            address.county ||
+            address.region ||
+            "";
+
+        // Extract country
+        const country = address.country || "";
+
+        return { city, state, country };
+      });
+
+      // Remove duplicates based on the combined values
       const uniqueResults = Array.from(
-        new Map(searchResults.map((item) => [item.raw.display_name, item])).values(),
-      ).map(
-        (item): LocationData => ({
-          x: item.x,
-          y: item.y,
-          label: item.label,
-          bounds: item.bounds,
-          raw: item.raw,
-        }),
-      )
+          new Map(locationResults.map(item => [
+            `${item.city}|${item.state}|${item.country}`,
+            item
+          ])).values()
+      );
 
       setResults(uniqueResults)
     } catch (err) {
@@ -127,13 +169,8 @@ export default function LocationSearchInput({
   }, [query, provider])
 
   const handleSelect = (item: LocationData) => {
-    const address = item.raw.address
-    const title = item.label.split(",")[0] // fallback only
-    const secondary = address?.country // since no `state` in schema
-    const label = [title, secondary].filter(Boolean).join(", ")
-
     hasSelectedRef.current = true
-    setQuery(label)
+    setQuery(getDisplayLabel(item))
     onSelect(item)
     setResults([])
 
@@ -153,14 +190,15 @@ export default function LocationSearchInput({
       {results.length > 0 && (
         <ul className="absolute z-10 bg-white border border-gray-200 mt-1 w-full rounded shadow-md lg:max-h-42 xl:max-h-[200px] overflow-auto">
           {results.map((item, idx) => {
+            const displayLabel = getDisplayLabel(item);
             return (
-              <li
-                key={`${item.raw.place_id}-${idx}`}
-                onClick={() => handleSelect(item)}
-                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-              >
-                <div className="font-semibold text-sm text-gray-800">{item.label}</div>
-              </li>
+                <li
+                    key={`${item.city}-${item.state}-${item.country}-${idx}`}
+                    onClick={() => handleSelect(item)}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  <div className="font-semibold text-sm text-gray-800">{displayLabel}</div>
+                </li>
             )
           })}
         </ul>

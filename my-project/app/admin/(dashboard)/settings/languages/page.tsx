@@ -9,7 +9,7 @@ import Link from "next/link"
 import { useLanguages } from "../_hooks/useLanguages";
 import AddLanguageForm from "./_components/addLanguageForm"
 import { usePatchLanguageStatus } from "./_hooks/usePatchLanguageStatus";
-import Preloader from "@/components/admin/ui/Preloader"
+import Preloader from "@/components/shared/Preloader"
 
 export default function LanguagesManagementPage() {
     const { languages, languagesLoading, error } = useLanguages();

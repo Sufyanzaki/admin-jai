@@ -29,7 +29,7 @@ import Link from "next/link"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar"
 import { usePackages } from "./_hooks/usePackages";
 import { usePatchPackage } from "./_hooks/usePatchPackage";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function PackagesPage() {
     const { packages, loading, error } = usePackages();

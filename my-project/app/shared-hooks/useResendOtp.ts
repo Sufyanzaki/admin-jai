@@ -1,7 +1,7 @@
 import useSWRMutation from 'swr/mutation';
 import { showError } from '@/shared-lib';
 import { showSuccess } from '@/shared-lib';
-import { resendOtp, ResendOtpProps } from '../_api/resendOtp';
+import { resendOtp, ResendOtpProps } from '../admin/auth/_api/resendOtp';
 
 export default function useResendOtp() {
   const { trigger, isMutating } = useSWRMutation(

@@ -7,7 +7,7 @@ import { Building } from "lucide-react";
 
 import { MultiSelectCombobox } from "@/components/admin/ui/combo-box";
 import { useDashboardFooterForm } from "../_hooks/useDashboardFooterForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 
 const pageOptions = [

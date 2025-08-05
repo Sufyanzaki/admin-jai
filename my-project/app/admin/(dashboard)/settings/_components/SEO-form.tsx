@@ -6,7 +6,7 @@ import { Input } from "@/components/admin/ui/input";
 import { Textarea } from "@/components/admin/ui/textarea";
 import { Label } from "@/components/admin/ui/label";
 import useSeoSettingsForm from "../_hooks/useSeoSettingsForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import { useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";

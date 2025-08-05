@@ -10,7 +10,7 @@ import useFaqCategories from "./_hooks/useFaqCategories";
 import CategoryModal from "./_components/category-modal";
 import useFaqCategoryDelete from "./_hooks/useFaqCategoryDelete";
 import { useRouter, useSearchParams } from "next/navigation";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function CategoryPage() {
     const [open, setOpen] = useState(false);

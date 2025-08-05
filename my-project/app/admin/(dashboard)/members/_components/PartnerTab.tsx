@@ -14,7 +14,7 @@ import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
 import { AlertTriangle } from "lucide-react";
 import LocationSearchInput, { LocationData } from "@/components/client/location-search";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function PartnerTab({ callback }: { callback: () => void }) {
 
@@ -103,7 +103,7 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
                     control={control}
                     name="drinking"
                     render={({ field }) => (
-                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value}>
+                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value? "a" : "b"}>
                         <SelectTrigger id="drinking">
                           <SelectValue placeholder="Nee" />
                         </SelectTrigger>
@@ -140,7 +140,7 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
                     control={control}
                     name="smoke"
                     render={({ field }) => (
-                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value}>
+                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value? "a" : "b"}>
                         <SelectTrigger id="smoke">
                           <SelectValue placeholder="Nee" />
                         </SelectTrigger>
@@ -159,7 +159,7 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
                     control={control}
                     name="goingOut"
                     render={({ field }) => (
-                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value}>
+                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value? "a" : "b"}>
                         <SelectTrigger id="goingOut">
                           <SelectValue placeholder="Nee" />
                         </SelectTrigger>

@@ -26,7 +26,7 @@ import { Switch } from "@/components/admin/ui/switch"
 import { use } from "react"
 import { Controller } from "react-hook-form"
 import useEditRoleForm from "../../_hook/useEditRoleForm"
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 const staffMenuItems = [
   { id: "dashboard", title: "Dashboard", icon: LayoutDashboard },

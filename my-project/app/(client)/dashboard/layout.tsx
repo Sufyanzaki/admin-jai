@@ -12,7 +12,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <SidebarProvider defaultOpen={true}>
       <DashboardSidebar />

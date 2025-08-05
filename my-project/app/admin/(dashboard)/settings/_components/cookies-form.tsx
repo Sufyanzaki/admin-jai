@@ -6,7 +6,7 @@ import { Label } from "@/components/admin/ui/label";
 import { Switch } from "@/components/admin/ui/switch";
 
 import useCookieSettingsForm from "../_hooks/useCookieSettingsForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import { SimpleEditor } from "@/components/admin/tiptap-templates/simple/simple-editor";
 
 export default function CookiesForm() {

@@ -1,5 +1,5 @@
-import { LoginResponse } from '../_types/login';
 import {postRequest} from "@/shared-lib";
+import {LoginResponse} from "@/app/shared-types/auth";
 
 type LoginProps = {
     email: string;

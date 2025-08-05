@@ -8,7 +8,7 @@ import { Switch } from "@/components/admin/ui/switch";
 import { Building } from "lucide-react";
 import { Controller } from "react-hook-form";
 import useCaptchaForm from "../_hooks/useCaptchaForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function CaptchaForm() {
   const {

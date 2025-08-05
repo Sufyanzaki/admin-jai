@@ -13,7 +13,7 @@ import {useEffect, useState} from "react";
 import useEmailTemplateForm from "../_hooks/useEmailTemplateForm";
 import { Controller } from "react-hook-form";
 import {useLanguages} from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function EditEmailTemplatePage() {
   const params = useParams();

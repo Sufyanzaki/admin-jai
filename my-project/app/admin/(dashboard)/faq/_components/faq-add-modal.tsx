@@ -9,7 +9,7 @@ import { Input } from "@/components/admin/ui/input";
 import useFaqForm from "../_hooks/useFaqForm";
 import { Controller } from "react-hook-form";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export function FaqAddModal({ isOpen, onClose }: { isOpen: boolean; onClose: (value: boolean) => void }) {
     const { data: categories, isLoading: categoriesLoading } = useFaqCategories();

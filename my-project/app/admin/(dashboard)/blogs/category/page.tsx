@@ -19,7 +19,7 @@ import AddCategoryForm from "./_components/addCategoryForm";
 import useDeleteBlogCategory from "./_hooks/useDeleteBlogCategory";
 import {useSWRConfig} from "swr";
 import EditCategoryModal from "./_components/EditCategoryModal";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function BlogCategoryManagement() {
     const [search, setSearch] = useState("")

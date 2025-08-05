@@ -8,7 +8,7 @@ import { Button } from "@/components/admin/ui/button";
 import { Save } from "lucide-react";
 import { Controller } from "react-hook-form";
 import useCurrencyEditForm from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useCurrencyEditForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 type CurrencyModalProps = {
     setOpenEditDialog: (open: boolean) => void;

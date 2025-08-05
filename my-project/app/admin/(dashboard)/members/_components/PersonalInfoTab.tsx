@@ -15,7 +15,7 @@ import { Controller } from "react-hook-form";
 import { useRef } from "react";
 import { getUserTrackingId } from "@/lib/access-token";
 import {useParams} from "next/navigation";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function PersonalInfoTab({ callback }: { callback: () => void }) {
 

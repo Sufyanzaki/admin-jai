@@ -14,6 +14,7 @@ type UserTrackingIdDto = {
 }
 
 const userKey = "userTrackingId";
+const userEmail = "userEmail";
 
 export function setUserTrackingId(value: UserTrackingIdDto): void {
   localStorage.setItem(userKey, JSON.stringify(value));
@@ -33,4 +34,16 @@ export function updateUserTrackingId(value: object): void {
 
 export function clearUserTrackingId(): void {
   localStorage.removeItem(userKey);
+}
+
+export function setUserEmail(value: string): void {
+  return localStorage.setItem(userEmail, value);
+}
+
+export function getUserEmail(): string | null {
+  return localStorage.getItem(userEmail);
+}
+
+export function removeUserEmail(): void {
+  return localStorage.removeItem(userEmail);
 }

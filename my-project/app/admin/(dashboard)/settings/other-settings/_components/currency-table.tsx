@@ -15,7 +15,7 @@ import { Switch } from "@/components/admin/ui/switch";
 import { Badge } from "@/components/admin/ui/badge";
 import { Settings, Settings2, Plus, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import { useCurrencies } from "../_hooks/useCurrencies";
 import { useDeleteCurrency } from "../_hooks/useDeleteCurrency";
 import CurrencyModal from "@/app/admin/(dashboard)/settings/other-settings/_components/currency-modal";

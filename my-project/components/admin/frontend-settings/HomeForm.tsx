@@ -9,7 +9,7 @@ import {Checkbox} from "@/components/admin/ui/checkbox"
 import {CustomImageUpload} from "./CustomImageInput"
 import Link from "next/link";
 import {ArrowLeft} from "lucide-react";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import useHomeForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useHomeForm";
 
 export default function HomeForm() {

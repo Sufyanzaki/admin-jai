@@ -1,0 +1,64 @@
+"use client"
+
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
+import {useRouter} from 'next/navigation';
+import {showError} from '@/shared-lib';
+import {signIn} from 'next-auth/react';
+import {getUserEmail} from "@/lib/access-token";
+
+const otpSchema = z.object({
+    otp: z.string()
+        .length(5, 'OTP must be exactly 5 digits')
+        .regex(/^\d{5}$/, 'OTP must contain only digits'),
+});
+
+export type OtpFormValues = z.infer<typeof otpSchema>;
+
+export default function useOTPForm() {
+    const email = getUserEmail()
+    const router = useRouter();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        control,
+        setValue,
+    } = useForm<OtpFormValues>({
+        resolver: zodResolver(otpSchema),
+        defaultValues: {
+            otp: '',
+        },
+        mode: 'onBlur',
+    });
+
+    const onSubmit = async (values: OtpFormValues) => {
+        const result = await signIn('user-login', {
+            redirect: false,
+            ...values,
+            email,
+            callbackUrl: '/dashboard',
+        });
+
+        if (result?.error) {
+            const errorMessage = result.error === 'CredentialsSignin'
+                ? 'Invalid OTP '
+                : 'Login failed. Please try again.';
+
+            showError({message: errorMessage});
+        }
+        else router.push('/dashboard');
+    };
+
+    return {
+        register,
+        handleSubmit,
+        onSubmit,
+        errors,
+        isSubmitting,
+        control,
+        setValue,
+    };
+}

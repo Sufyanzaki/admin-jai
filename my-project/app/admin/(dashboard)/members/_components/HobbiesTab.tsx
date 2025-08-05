@@ -11,7 +11,7 @@ import { Controller } from "react-hook-form";
 import { AlertTriangle } from "lucide-react";
 import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 const interestMap: { id: keyof HobbiesInterestsFormValues; label: string; options: string[] }[] = [
   { id: "sports", label: "Sports", options: [

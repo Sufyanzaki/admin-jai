@@ -10,7 +10,7 @@ import { Switch } from "@/components/admin/ui/switch";
 import { Building } from "lucide-react";
 import { Controller } from "react-hook-form";
 import usePushForm from "../_hooks/usePushForm";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 const firebaseInstructions = [
   "Log in to Google Firebase and Create a new app if you don’t have any.",

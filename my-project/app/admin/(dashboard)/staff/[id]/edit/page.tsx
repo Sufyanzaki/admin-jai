@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { useEditStaffForm } from "../../_hooks/useEditStaffForm";
 import { Controller } from "react-hook-form";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/admin/ui/badge";
 import { Separator } from "@/components/admin/ui/separator";

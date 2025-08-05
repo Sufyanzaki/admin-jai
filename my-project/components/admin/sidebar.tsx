@@ -167,7 +167,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
           <div className="flex items-center justify-between p-4 border-b h-16">
             {(!isCollapsed || isMobile) ? (
                 <>
-                  <Link href="/">
+                  <Link href="/admin/dashboard">
                     <Image
                         src={theme === "dark"
                             ? "https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png"
@@ -183,7 +183,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed = false }: SidebarProps
                       </Button>
                   )}
                 </>
-            ) : <Link href="/">
+            ) : <Link href="/admin/dashboard">
                 <Heart className="w-6 h-6" />
             </Link>}
           </div>

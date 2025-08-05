@@ -1,5 +1,5 @@
 import { postRequest } from "@/shared-lib";
-import { LoginResponse } from "../_types/auth";
+import {LoginResponse} from "@/app/shared-types/auth";
 
 export type OtpProps = {
   email: string;

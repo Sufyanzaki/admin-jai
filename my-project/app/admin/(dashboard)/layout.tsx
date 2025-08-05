@@ -8,9 +8,9 @@ import {useEffect} from "react";
 import {clearUserTrackingId, getUserTrackingId} from "@/lib/access-token";
 
 function AuthWrapper({ children }: { children: React.ReactNode }) {
-    const { status } = useSession();
+    const { status, data } = useSession();
 
-    if (status === "unauthenticated") {
+    if (status === "unauthenticated" || data?.user.role === "CLIENT") {
         return null;
     }
 

@@ -6,7 +6,7 @@ import { Input } from "@/components/admin/ui/input";
 import { Label } from "@/components/admin/ui/label";
 import { X } from "lucide-react";
 import { useState } from "react";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function AbusiveCard() {
   const {

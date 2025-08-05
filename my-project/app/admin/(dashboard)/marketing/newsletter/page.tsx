@@ -19,7 +19,7 @@ import Link from "next/link";
 import useNewsletters from "./_hooks/useNewsletters";
 import useDeleteNewsletter from "./_hooks/useDeleteNewsletter";
 import { unescapeHtml } from "@/lib/utils";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function NewsletterListPage() {
     const { data: newsletters, isLoading, error } = useNewsletters();

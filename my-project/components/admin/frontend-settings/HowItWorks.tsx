@@ -9,7 +9,7 @@ import {ArrowLeft, Upload, X, Loader2} from "lucide-react"
 import Link from "next/link";
 import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 import { Controller } from "react-hook-form";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import useHowWorkForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useHowWorkForm";
 
 export default function HowItWorks(){
@@ -46,7 +46,7 @@ export default function HowItWorks(){
             <div className="space-y-6 p-4 xl:p-6">
                 <div className="flex items-center gap-4">
                     <Button variant="outline" size="icon" asChild>
-                        <Link href="/frontend-settings">
+                        <Link href="/admin/frontend-settings">
                             <ArrowLeft className="h-4 w-4" />
                             <span className="sr-only">Back</span>
                         </Link>

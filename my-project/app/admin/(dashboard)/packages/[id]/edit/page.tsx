@@ -8,7 +8,7 @@ import {Input} from '@/components/admin/ui/input';
 import {Label} from '@/components/admin/ui/label';
 import {Switch} from '@/components/admin/ui/switch';
 import {Controller} from 'react-hook-form';
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import useEditPackage from "@/app/admin/(dashboard)/packages/_hooks/useEditPackage";
 
 export default function PackageEditPage() {

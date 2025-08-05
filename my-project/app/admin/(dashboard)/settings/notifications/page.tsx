@@ -19,7 +19,7 @@ import {
 import { Badge } from "@/components/admin/ui/badge"
 import { useEmailTemplates } from "./_hooks/useEmailTemplates";
 import { useState } from "react";
-import Preloader from "@/components/admin/ui/Preloader"
+import Preloader from "@/components/shared/Preloader"
 
 export default function NotificationsPage() {
   const { emailTemplates, loading, error } = useEmailTemplates();

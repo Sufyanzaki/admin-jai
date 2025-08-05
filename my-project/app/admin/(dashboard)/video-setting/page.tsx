@@ -9,7 +9,7 @@ import {Button} from "@/components/admin/ui/button";
 import { Controller } from "react-hook-form";
 import useChatSettingForm from "../settings/other-settings/_hooks/useChatSettingForm";
 import React from "react";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function ChatAndVideoSetting() {
     const { handleSubmit, onSubmit, errors, isLoading, control, register, loading } = useChatSettingForm();

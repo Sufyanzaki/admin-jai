@@ -10,7 +10,7 @@ import type { PersonalityBehaviorFormValues } from "../add/_hooks/usePersonality
 import { AlertTriangle } from "lucide-react";
 import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 const traitMap: { key: keyof PersonalityBehaviorFormValues; label: string }[] = [
   { key: "simple", label: "simpel" },

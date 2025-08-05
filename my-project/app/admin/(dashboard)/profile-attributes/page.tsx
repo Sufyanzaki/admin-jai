@@ -44,7 +44,7 @@ import {
 import {Badge} from "@/components/admin/ui/badge";
 import AttributeForm from "./_components/attribute-form";
 import { useProfileAttributes } from "./_hooks/useProfileAttributes";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 function getAttributeIcon(label: string) {
   const iconProps = { className: "h-4 w-4" };

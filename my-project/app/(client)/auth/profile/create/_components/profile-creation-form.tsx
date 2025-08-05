@@ -24,10 +24,7 @@ export function ProfileCreationForm() {
   const [lastName, setLastName] = useState("Liebert");
 
   const handleNext = () => {
-    router.push("/auth/profile/details");
-    console.log("Profile data:", {
-      displayName,
-    });
+
   };
 
   const handleBack = () => {

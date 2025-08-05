@@ -42,7 +42,7 @@ import {useState} from "react"
 import RoleForm from "./_components/roleForm"
 import useRoles from "./_hook/useRoles"
 import useDeleteRole from "./_hook/useDeleteRole";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 import {DeleteRoleModal} from "@/components/admin/roles/delete-role-modal";
 
 export default function RolesAndPermissionsPage() {

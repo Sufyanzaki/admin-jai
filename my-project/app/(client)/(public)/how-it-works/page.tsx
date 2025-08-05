@@ -6,11 +6,17 @@ import { Card } from "@/components/client/ux/card";
 import { Container } from "@/components/client/ux/container";
 import ImageWrapper from "@/components/client/image-wrapper";
 import useFaq from "./_hooks/useFaq";
+import Preloader from "@/components/shared/Preloader";
 
 export default function HowItWorksPage() {
   const { data: faqs, isLoading, error } = useFaq();
 
-  if(!faqs) return;
+  if(!faqs) return (
+      <div className="flex items-center flex-col justify-center h-64 my-28">
+        <Preloader/>
+        <p className="text-sm">Loading FAQ</p>
+      </div>
+  )
 
   return (
     <>

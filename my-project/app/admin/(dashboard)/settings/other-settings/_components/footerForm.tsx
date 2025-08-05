@@ -8,7 +8,7 @@ import { Textarea } from "@/components/admin/ui/textarea";
 import { Save, Upload, X } from "lucide-react";
 import { useFooterForm } from "../_hooks/useFooterForm";
 import { useState } from "react";
-import Preloader from "@/components/admin/ui/Preloader";
+import Preloader from "@/components/shared/Preloader";
 
 export default function FooterForm() {
   const {
