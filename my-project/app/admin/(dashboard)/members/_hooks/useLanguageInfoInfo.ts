@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getLanguageInfo } from "../_api/updateLanguageInfo";
+import { getLanguageInfo } from "../../../../shared-api/languageInfoApi";
 import { useParams } from "next/navigation";
 
 export const useLanguageInfoInfo = () => {

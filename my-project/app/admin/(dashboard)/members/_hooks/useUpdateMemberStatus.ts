@@ -1,6 +1,6 @@
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { patchUserStatus } from "@/app/admin/(dashboard)/members/add/_api/createUser";
+import { patchUserStatus } from "@/app/shared-api/createUser";
 import { showError, showSuccess } from "@/shared-lib";
 import { GetAllMembersResponse } from "@/app/admin/(dashboard)/members/_types/member";
 import { useState } from "react";

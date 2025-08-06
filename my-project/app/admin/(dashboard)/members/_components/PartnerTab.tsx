@@ -13,7 +13,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
 import { AlertTriangle } from "lucide-react";
-import LocationSearchInput, { LocationData } from "@/components/client/location-search";
+import LocationSearchInput, { LocationData } from "@/components/admin/location-search";
 import Preloader from "@/components/shared/Preloader";
 
 export default function PartnerTab({ callback }: { callback: () => void }) {

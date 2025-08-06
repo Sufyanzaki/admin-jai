@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postPhysicalAppearance, patchPhysicalAppearance } from "../../_api/updatePhysicalAppearance";
+import { postPhysicalAppearance, patchPhysicalAppearance } from "../../../../../shared-api/physicalAppearanceApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { usePhysicalAppearanceInfo } from "../../_hooks/usePhysicalAppearanceInfo";
 import { useEffect, useMemo } from "react";

@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/admin/ui/card";
 import { Label } from "@/components/admin/ui/label";
 import { TabsContent } from "@/components/admin/ui/tabs";
-import LocationSearchInput from "@/components/client/location-search";
+import LocationSearchInput from "@/components/admin/location-search";
 import useLivingLocationForm from "../add/_hooks/useLivingLocationForm";
 import { Button } from "@/components/admin/ui/button";
 import { useParams } from "next/navigation";

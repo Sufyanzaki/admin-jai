@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postHobbiesInterests, patchHobbiesInterests } from "../../_api/updateHobbiesInterests";
+import { postHobbiesInterests, patchHobbiesInterests } from "../../../../../shared-api/hobbiesInterestsApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useHobbiesInterestsInfo } from "../../_hooks/useHobbiesInterestsInfo";
 import { useEffect, useMemo } from "react";

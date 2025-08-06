@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getLifeStyle } from "../_api/updateLifeStyle";
+import { getLifeStyle } from "../../../../shared-api/lifeStyleApi";
 import { useParams } from "next/navigation";
 
 export const useLifeStyleInfo = () => {

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { patchUserLocation, postUserLocation } from "../../_api/updateLocation";
+import { patchUserLocation, postUserLocation } from "../../../../../shared-api/livingApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
 import {useEffect} from "react";

@@ -1,5 +1,5 @@
 import { useSWRFix } from "@/shared-lib";
-import { getEducationCareer } from "../_api/updateEducationCareer";
+import { getEducationCareer } from "../../../../shared-api/educationCareerApi";
 import { getUserTrackingId } from "@/lib/access-token";
 import { useParams } from "next/navigation";
 

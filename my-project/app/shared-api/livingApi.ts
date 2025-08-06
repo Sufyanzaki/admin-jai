@@ -1,4 +1,4 @@
-import { postRequest, patchRequest } from "@/shared-lib";
+import {postRequest, patchRequest, getRequest} from "@/shared-lib";
 import {MemberLocation} from "@/app/shared-types/member";
 
 export async function postUserLocation(id: string, payload: Partial<MemberLocation>) {
@@ -15,4 +15,11 @@ export async function patchUserLocation(id: string, payload: Partial<MemberLocat
     data: payload,
     useAuth: true,
   });
-} 
+}
+
+export async function getLiving(id: string): Promise<MemberLocation | undefined> {
+  return await getRequest({
+    url: `users/${id}/living`,
+    useAuth: true
+  })
+}

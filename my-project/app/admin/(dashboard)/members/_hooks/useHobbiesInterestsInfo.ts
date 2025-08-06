@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getHobbiesInterests } from "../_api/updateHobbiesInterests";
+import { getHobbiesInterests } from "../../../../shared-api/hobbiesInterestsApi";
 import { useParams } from "next/navigation";
 
 export const useHobbiesInterestsInfo = () => {

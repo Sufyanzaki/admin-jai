@@ -1,5 +1,5 @@
-import { getRequest } from "@/shared-lib";
-import { GetAllMembersResponse } from '../_types/member';
+import {deleteRequest, getRequest} from "@/shared-lib";
+import { GetAllMembersResponse } from '../admin/(dashboard)/members/_types/member';
 
 export type GetAllMembersParams = {
   page?: number;
@@ -10,7 +10,7 @@ export type GetAllMembersParams = {
   isPremium?: boolean;
 };
 
-export async function getAllMembers(params?: GetAllMembersParams): Promise<GetAllMembersResponse> {
+export async function memberApi(params?: GetAllMembersParams): Promise<GetAllMembersResponse> {
   const queryParams = new URLSearchParams();
   
   if (params?.page) queryParams.append('page', params.page.toString());
@@ -26,4 +26,12 @@ export async function getAllMembers(params?: GetAllMembersParams): Promise<GetAl
     url,
     useAuth: true,
   });
-} 
+}
+
+export async function deleteMember(id: string): Promise<{message: string}> {
+  const r = await deleteRequest({
+    url: `users/${id}`,
+    useAuth: true
+  });
+  return r.response
+}

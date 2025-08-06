@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { patchEducationCareer, postEducationCareer } from "../../_api/updateEducationCareer";
+import { patchEducationCareer, postEducationCareer } from "../../../../../shared-api/educationCareerApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useEducationCareerInfo } from "../../_hooks/useEducationCareerInfo";
 import { useEffect, useMemo } from "react";

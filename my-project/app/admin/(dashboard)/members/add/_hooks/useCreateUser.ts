@@ -3,7 +3,6 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {showError} from "@/shared-lib";
 import {showSuccess} from "@/shared-lib";
-import {patchUser, postUser} from "../_api/createUser";
 import useSWRMutation from "swr/mutation";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import {getUserTrackingId, setUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
@@ -13,6 +12,7 @@ import {useBasicInfo} from "../../_hooks/useBasicInfo";
 import {useParams} from "next/navigation";
 import { useSWRConfig } from "swr";
 import { GetAllMembersResponse, Member } from "../../_types/member";
+import {patchUser, postUser} from "@/app/shared-api/createUser";
 
 interface UserApiResponse {
   email?: string;
@@ -176,7 +176,6 @@ export default function useCreateUserForm() {
     const imageUrl =
         isFile(values.image) ? await imageUpload(values.image as File) : (values.image as string);
 
-    // Create a temporary user object for optimistic update
     const tempUser: Partial<Member> = {
       id: id || `temp-${Date.now()}`,
       email: values.email,
@@ -224,8 +223,7 @@ export default function useCreateUserForm() {
     }
 
     const result = await trigger({ ...values, image: imageUrl });
-
-    if (result?.status === 200 || result?.status === 201) {
+    if (result) {
       showSuccess("User updated successfully!");
 
       // Update the cache with the actual response data

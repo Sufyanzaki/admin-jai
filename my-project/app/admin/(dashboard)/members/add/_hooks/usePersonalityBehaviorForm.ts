@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { updatePersonalityBehavior, patchPersonalityBehavior, UpdatePersonalityBehaviorPayload } from "../../_api/updatePersonalityBehavior";
+import { personalityBehaviorApi, patchPersonalityBehavior, UpdatePersonalityBehaviorPayload } from "../../../../../shared-api/personalityBehaviorApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { usePersonalityBehaviorInfo } from "../../_hooks/usePersonalityBehaviorInfo";
 import { useEffect, useMemo } from "react";
@@ -136,7 +136,7 @@ export default function usePersonalityBehaviorForm() {
       if(!id) return showError({message : "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member"});
       
       if (id && allowEdit) return await patchPersonalityBehavior(id, payload);
-      else return await updatePersonalityBehavior(id, payload);
+      else return await personalityBehaviorApi(id, payload);
     
     },
     {

@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getPhysicalAppearance } from "../_api/updatePhysicalAppearance";
+import { getPhysicalAppearance } from "../../../../shared-api/physicalAppearanceApi";
 import { useParams } from "next/navigation";
 
 export const usePhysicalAppearanceInfo = () => {

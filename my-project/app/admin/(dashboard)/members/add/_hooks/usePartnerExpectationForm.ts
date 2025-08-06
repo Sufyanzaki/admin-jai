@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { patchPartnerExpectation, postPartnerExpectation } from "../../../../../shared-api/partnerExpectationApi";
+import { patchPartnerExpectation, postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useParams } from "next/navigation";
 import {useEffect, useMemo} from "react";

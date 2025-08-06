@@ -7,7 +7,7 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useBasicInfo } from './useBasicInfo';
-import { patchUserStatus } from '../add/_api/createUser';
+import { patchUserStatus } from '../../../../shared-api/createUser';
 import { useEffect } from 'react';
 
 const memberStatusSchema = z.object({

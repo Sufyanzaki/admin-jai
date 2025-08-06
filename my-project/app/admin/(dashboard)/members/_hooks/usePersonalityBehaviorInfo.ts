@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getPersonalityBehavior } from "../_api/updatePersonalityBehavior";
+import { getPersonalityBehavior } from "../../../../shared-api/personalityBehaviorApi";
 import { useParams } from "next/navigation";
 
 export const usePersonalityBehaviorInfo = () => {

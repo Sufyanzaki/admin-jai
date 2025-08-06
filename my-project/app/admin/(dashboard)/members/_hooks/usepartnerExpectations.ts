@@ -1,10 +1,10 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getUser } from "../add/_api/createUser";
+import { getUser } from "../../../../shared-api/createUser";
 import { getUserTrackingId } from "@/lib/access-token";
 import { useParams } from "next/navigation";
-import {getPartnerExpectations} from "@/app/admin/(dashboard)/members/_api/getPartnerExpectation";
+import {getPartnerExpectations} from "@/app/shared-api/partnerExpectationApi";
 
 export const usePartnerExpectations = () => {
     const params = useParams();
