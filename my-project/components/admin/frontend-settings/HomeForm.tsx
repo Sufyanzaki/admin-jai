@@ -20,7 +20,12 @@ export default function HomeForm() {
             setValue('bannerImage', file)
         } else {
             const imageNumber = type.replace('image', '')
-            setValue(`datingSiteImage${imageNumber}` as any, file)
+            const key = `datingSiteImage${imageNumber}` as
+                | 'datingSiteImage1'
+                | 'datingSiteImage2'
+                | 'datingSiteImage3'
+                | 'datingSiteImage4';
+            setValue(key, file)
         }
     }
 

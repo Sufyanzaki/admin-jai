@@ -1,4 +1,4 @@
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
@@ -77,8 +77,12 @@ export default function useRoleForm() {
         showSuccess("Role created successfully!");
         reset();
       }
-    } catch (error: any) {
-      showError({ message: error.message });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong";
+      showError({ message });
       console.error("Role creation error:", error);
     }
   };

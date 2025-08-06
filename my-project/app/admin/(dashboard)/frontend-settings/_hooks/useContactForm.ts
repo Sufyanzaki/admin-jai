@@ -67,7 +67,7 @@ export default function useContactForm() {
         return await patchContactPageSettings(arg);
       },
       {
-        onError: (error: any) => {
+        onError: (error: Error) => {
           showError({ message: error.message });
           console.error('Contact settings update error:', error);
         }

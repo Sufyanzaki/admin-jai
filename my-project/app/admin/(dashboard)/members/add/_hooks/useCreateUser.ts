@@ -164,7 +164,7 @@ export default function useCreateUserForm() {
         }
       },
       {
-        onError: (error: any) => {
+        onError: (error: Error) => {
           showError({ message: error?.message || "Failed to add user" });
         },
         revalidate: false,

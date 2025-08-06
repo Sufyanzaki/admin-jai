@@ -23,7 +23,7 @@ export default function useCreateBlogCategory() {
             return await createBlogCategory(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('Category creation error:', error);
             }

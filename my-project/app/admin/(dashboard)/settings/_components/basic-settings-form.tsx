@@ -1,26 +1,38 @@
-"use client"
+"use client";
 
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller } from "react-hook-form";
 import { useBasicSettingsForm } from "../other-settings/_hooks/useBasicSettingsForm";
 import { Button } from "@/components/admin/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/admin/ui/card";
 import { Input } from "@/components/admin/ui/input";
 import { Label } from "@/components/admin/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/admin/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/admin/ui/select";
 import { Textarea } from "@/components/admin/ui/textarea";
 import { Settings, Upload, X } from "lucide-react";
 import Preloader from "@/components/shared/Preloader";
+import Image from "next/image";
 
 export default function BasicSettingsForm() {
-  const { 
-    handleSubmit, 
-    control, 
-    register, 
-    errors, 
-    isLoading, 
-    onSubmit, 
-    loading, 
+  const {
+    handleSubmit,
+    control,
+    register,
+    errors,
+    isLoading,
+    onSubmit,
+    loading,
     systemLogoPreview,
     loginImagePreview,
     handleSystemLogoChange,
@@ -29,12 +41,13 @@ export default function BasicSettingsForm() {
     removeLoginImage,
   } = useBasicSettingsForm();
 
-  if (loading) return (
-    <div className="flex items-center flex-col justify-center h-64">
-        <Preloader/>
+  if (loading)
+    return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
         <p className="text-sm">Loading settings</p>
-    </div>
-  );
+      </div>
+    );
 
   return (
     <Card>
@@ -43,7 +56,9 @@ export default function BasicSettingsForm() {
           <Settings className="h-5 w-5" />
           System Configuration
         </CardTitle>
-        <CardDescription>Manage your system settings and appearance</CardDescription>
+        <CardDescription>
+          Manage your system settings and appearance
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
@@ -54,8 +69,16 @@ export default function BasicSettingsForm() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="system-name">System Name</Label>
-                    <Input id="system-name" placeholder="Your System Name" {...register("systemName")} />
-                    {errors.systemName && <p className="text-sm text-red-500">{errors.systemName.message}</p>}
+                    <Input
+                      id="system-name"
+                      placeholder="Your System Name"
+                      {...register("systemName")}
+                    />
+                    {errors.systemName && (
+                      <p className="text-sm text-red-500">
+                        {errors.systemName.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label>System Logo</Label>
@@ -63,7 +86,8 @@ export default function BasicSettingsForm() {
                       <div className="relative">
                         <div className="h-24 w-24 rounded-lg border flex items-center justify-center bg-muted/50 overflow-hidden">
                           {systemLogoPreview ? (
-                            <img
+                            <Image
+                              fill
                               src={systemLogoPreview}
                               alt="Logo"
                               className="h-20 w-20 object-contain"
@@ -90,7 +114,9 @@ export default function BasicSettingsForm() {
                             variant="outline"
                             size="sm"
                             type="button"
-                            onClick={() => document.getElementById('system-logo')?.click()}
+                            onClick={() =>
+                              document.getElementById("system-logo")?.click()
+                            }
                           >
                             Upload Logo
                           </Button>
@@ -101,7 +127,7 @@ export default function BasicSettingsForm() {
                         <Controller
                           name="systemLogo"
                           control={control}
-                          render={({ field }) => (
+                          render={() => (
                             <input
                               type="file"
                               id="system-logo"
@@ -131,24 +157,46 @@ export default function BasicSettingsForm() {
                       name="dateFormat"
                       control={control}
                       render={({ field }) => (
-                        <Select key={field.value} value={field.value} onValueChange={field.onChange}>
+                        <Select
+                          key={field.value}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select format" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="DD-MM-YYYY">DD-MM-YYYY</SelectItem>
-                            <SelectItem value="MM-DD-YYYY">MM-DD-YYYY</SelectItem>
-                            <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                            <SelectItem value="DD-MM-YYYY">
+                              DD-MM-YYYY
+                            </SelectItem>
+                            <SelectItem value="MM-DD-YYYY">
+                              MM-DD-YYYY
+                            </SelectItem>
+                            <SelectItem value="YYYY-MM-DD">
+                              YYYY-MM-DD
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       )}
                     />
-                    {errors.dateFormat && <p className="text-sm text-red-500">{errors.dateFormat.message}</p>}
+                    {errors.dateFormat && (
+                      <p className="text-sm text-red-500">
+                        {errors.dateFormat.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="admin-page-title">Admin Panel Title</Label>
-                    <Input id="admin-page-title" placeholder="Admin Dashboard" {...register("adminPanelTitle")} />
-                    {errors.adminPanelTitle && <p className="text-sm text-red-500">{errors.adminPanelTitle.message}</p>}
+                    <Input
+                      id="admin-page-title"
+                      placeholder="Admin Dashboard"
+                      {...register("adminPanelTitle")}
+                    />
+                    {errors.adminPanelTitle && (
+                      <p className="text-sm text-red-500">
+                        {errors.adminPanelTitle.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -161,16 +209,39 @@ export default function BasicSettingsForm() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="member-code-prefix">Member ID Prefix</Label>
-                    <Input id="member-code-prefix" placeholder="MEM-" {...register("memberPrefix")} />
-                    {errors.memberPrefix && <p className="text-sm text-red-500">{errors.memberPrefix.message}</p>}
+                    <Input
+                      id="member-code-prefix"
+                      placeholder="MEM-"
+                      {...register("memberPrefix")}
+                    />
+                    {errors.memberPrefix && (
+                      <p className="text-sm text-red-500">
+                        {errors.memberPrefix.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="member-minimum-age">Minimum Age Requirement</Label>
+                    <Label htmlFor="member-minimum-age">
+                      Minimum Age Requirement
+                    </Label>
                     <div className="flex items-center gap-2">
-                      <Input id="member-minimum-age" type="number" min="18" max="100" className="w-24" {...register("minimumAge", { valueAsNumber: true })} />
-                      <span className="text-sm text-muted-foreground">years</span>
+                      <Input
+                        id="member-minimum-age"
+                        type="number"
+                        min="18"
+                        max="100"
+                        className="w-24"
+                        {...register("minimumAge", { valueAsNumber: true })}
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        years
+                      </span>
                     </div>
-                    {errors.minimumAge && <p className="text-sm text-red-500">{errors.minimumAge.message}</p>}
+                    {errors.minimumAge && (
+                      <p className="text-sm text-red-500">
+                        {errors.minimumAge.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -184,9 +255,10 @@ export default function BasicSettingsForm() {
                       <div className="relative">
                         <div className="h-24 w-32 rounded-lg border flex items-center justify-center bg-muted/50 overflow-hidden">
                           {loginImagePreview ? (
-                            <img
+                            <Image
                               src={loginImagePreview}
                               alt="Login Background"
+                              fill
                               className="h-full w-full object-cover"
                             />
                           ) : (
@@ -211,7 +283,9 @@ export default function BasicSettingsForm() {
                             variant="outline"
                             size="sm"
                             type="button"
-                            onClick={() => document.getElementById('admin-bg')?.click()}
+                            onClick={() =>
+                              document.getElementById("admin-bg")?.click()
+                            }
                           >
                             Upload Background
                           </Button>
@@ -222,7 +296,7 @@ export default function BasicSettingsForm() {
                         <Controller
                           name="loginImage"
                           control={control}
-                          render={({ field }) => (
+                          render={() => (
                             <input
                               type="file"
                               id="admin-bg"
@@ -241,9 +315,20 @@ export default function BasicSettingsForm() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="admin-page-paragraph">Welcome Message</Label>
-                    <Textarea id="admin-page-paragraph" placeholder="Welcome to the admin panel..." rows={3} {...register("loginMessage")} />
-                    {errors.loginMessage && <p className="text-sm text-red-500">{errors.loginMessage.message}</p>}
+                    <Label htmlFor="admin-page-paragraph">
+                      Welcome Message
+                    </Label>
+                    <Textarea
+                      id="admin-page-paragraph"
+                      placeholder="Welcome to the admin panel..."
+                      rows={3}
+                      {...register("loginMessage")}
+                    />
+                    {errors.loginMessage && (
+                      <p className="text-sm text-red-500">
+                        {errors.loginMessage.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

@@ -19,7 +19,7 @@ export default function useEditBlogCategory(id: number, initialName: string) {
             return await editBlogCategory(id, arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
             }
         }

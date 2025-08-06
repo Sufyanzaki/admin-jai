@@ -64,7 +64,7 @@ export default function useTOSForm() {
             return await patchTermsConditionsSettings(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('TOS settings update error:', error);
             }

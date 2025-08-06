@@ -6,7 +6,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postChatSetting, ChatSettingPayload } from "../_api/postChatSetting";
+import { postChatSetting } from "../_api/postChatSetting";
 import useChatVideoSetting from "./useChatVideoSetting";
 import { useEffect } from "react";
 
@@ -45,7 +45,7 @@ export default function useChatSettingForm() {
 
   useEffect(() => {
     if (data) reset(data);
-  }, [data]);
+  });
 
   const {
     handleSubmit,

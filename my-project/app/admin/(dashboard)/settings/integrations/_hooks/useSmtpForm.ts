@@ -29,7 +29,7 @@ export default function useSmtpForm() {
       return await patchSmtp(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

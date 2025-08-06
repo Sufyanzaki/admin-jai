@@ -37,7 +37,7 @@ export default function usePasswordForm() {
             return await updatePassword(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({message: error.message});
                 console.error('Password update error:', error);
             }

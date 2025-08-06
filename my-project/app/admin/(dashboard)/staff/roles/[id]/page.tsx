@@ -3,9 +3,7 @@
 import { Button } from "@/components/admin/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card"
 import { Badge } from "@/components/admin/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/admin/ui/table"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar"
 import { Checkbox } from "@/components/admin/ui/checkbox"
 import { Separator } from "@/components/admin/ui/separator"
 import {
@@ -14,17 +12,6 @@ import {
   Edit,
   Download,
   Clock,
-  LayoutDashboard,
-  UserCog,
-  CreditCard,
-  Sliders,
-  HelpCircle,
-  NotebookText,
-  Package,
-  AlertCircle,
-  BarChart2,
-  Megaphone,
-  Settings, Video
 } from "lucide-react"
 import Link from "next/link"
 import { use } from "react"

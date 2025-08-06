@@ -27,7 +27,7 @@ export default function useLoginForm() {
             return await postLoginForm(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
             }
         }

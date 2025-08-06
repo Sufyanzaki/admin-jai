@@ -60,7 +60,7 @@ export default function useVeeForm() {
             return await patchVeeSettings(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('Vee settings update error:', error);
             }

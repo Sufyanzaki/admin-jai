@@ -77,7 +77,7 @@ export default function useBasicEditForm() {
             return await patchBasicPage({...arg, id})
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('Basic page update error:', error);
             }

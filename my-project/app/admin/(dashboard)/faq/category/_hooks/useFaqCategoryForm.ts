@@ -23,7 +23,7 @@ export default function useFaqCategoryForm() {
       return await postFaqCategory(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
         console.error("FAQ Category creation error:", error);
       },

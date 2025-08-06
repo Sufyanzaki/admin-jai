@@ -25,7 +25,7 @@ export default function useStripeForm() {
       return await patchStripe(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

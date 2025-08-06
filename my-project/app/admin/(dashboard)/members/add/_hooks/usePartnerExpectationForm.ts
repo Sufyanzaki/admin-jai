@@ -108,7 +108,7 @@ export default function usePartnerExpectationForm() {
         else return await postPartnerExpectation(id, arg);
       },
       {
-        onError: (error: any) => {
+        onError: (error: Error) => {
           showError({ message: error.message || "Failed to update partner expectation info" });
         },
         revalidate: false,

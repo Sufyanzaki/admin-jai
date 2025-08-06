@@ -1,11 +1,11 @@
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {useRouter} from 'next/navigation';
-import {showError} from "@/shared-lib";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useRouter } from 'next/navigation';
+import { showError } from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
 import { postLoginForm } from '../_api/postLoginForm';
-import {setUserEmail} from "@/lib/access-token";
+import { setUserEmail } from "@/lib/access-token";
 
 const loginSchema = z.object({
     email: z.string()
@@ -27,8 +27,12 @@ export default function useLoginForm() {
             return await postLoginForm(arg);
         },
         {
-            onError: (error: any) => {
-                showError({ message: error.message });
+            onError: (error: unknown) => {
+                if (error instanceof Error) {
+                    showError({ message: error.message });
+                } else {
+                    showError({ message: 'An unknown error occurred.' });
+                }
             }
         }
     );
@@ -54,8 +58,12 @@ export default function useLoginForm() {
             });
             setUserEmail(values.email);
             router.push('/admin/auth/otp');
-        } catch (error: any) {
-            showError({ message: error.message || 'An unexpected error occurred. Please try again.' });
+        } catch (error: unknown) {
+            const message =
+                typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string'
+                    ? (error as { message: string }).message
+                    : 'An unexpected error occurred. Please try again.';
+            showError({ message });
         }
     };
 

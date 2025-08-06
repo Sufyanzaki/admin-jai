@@ -25,7 +25,7 @@ export default function useFaqForm() {
       return await postFaq(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
         console.error("FAQ creation error:", error);
       },

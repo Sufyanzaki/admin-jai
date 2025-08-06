@@ -7,7 +7,7 @@ export default function useDeleteRole() {
     "deleteRole",
     async (_: string, { arg }: { arg: number | string }) => {
       await deleteRole(arg);
-      mutate("roles", (current: any[] = []) => current.filter(role => role.id !== arg), false);
+      mutate("roles", (current: { id: number | string }[] = []) => current.filter(role => role.id !== arg), false);
       mutate("roles");
       return arg;
     }

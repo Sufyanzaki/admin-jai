@@ -1,12 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import {Button} from "@/components/admin/ui/button";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/admin/ui/card";
-import {Input} from "@/components/admin/ui/input";
-import {Label} from "@/components/admin/ui/label";
+import {Card, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
-import {Switch} from "@/components/admin/ui/switch";
 import {
   Globe,
   Church,
@@ -39,9 +34,7 @@ import {
   GlassWater,
   PartyPopper,
   Circle,
-  X
 } from "lucide-react";
-import {Badge} from "@/components/admin/ui/badge";
 import AttributeForm from "./_components/attribute-form";
 import { useProfileAttributes } from "./_hooks/useProfileAttributes";
 import Preloader from "@/components/shared/Preloader";

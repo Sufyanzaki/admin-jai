@@ -75,7 +75,7 @@ export default function useHobbiesInterestsForm() {
       else return await postHobbiesInterests(id, arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update hobbies/interests info" });
       },
       revalidate: false,

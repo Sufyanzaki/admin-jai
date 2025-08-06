@@ -25,7 +25,7 @@ export default function useCaptchaForm() {
       return await patchCaptcha(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

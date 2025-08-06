@@ -71,7 +71,7 @@ export function useProfileAttributeForm(attribute: ProfileAttributeResponse) {
       return await patchProfileAttribute(attribute.id, { options, isVisible });
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
       revalidate: false,

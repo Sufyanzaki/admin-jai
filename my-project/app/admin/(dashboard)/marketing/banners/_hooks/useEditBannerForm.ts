@@ -61,7 +61,7 @@ export default function useEditBannerForm(id: string) {
             return await updateBanner(id, arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({message: error.message});
                 console.error('Banner update error:', error);
             }

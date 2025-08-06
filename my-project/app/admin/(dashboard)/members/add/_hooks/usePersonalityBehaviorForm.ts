@@ -140,7 +140,7 @@ export default function usePersonalityBehaviorForm() {
     
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update personality/behavior info" });
       },
       revalidate: false,

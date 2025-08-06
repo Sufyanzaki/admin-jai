@@ -53,7 +53,7 @@ export default function useBasicForm() {
             return await postBasicPage(arg)
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('Basic page update error:', error);
             }

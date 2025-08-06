@@ -68,12 +68,16 @@ export function useFooterForm() {
       try {
         const result = await patchFooterSettings(arg);
         return result;
-      } catch (err: any) {
-        throw err;
+      } catch (error: unknown) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Something went wrong";
+        throw new Error(message);
       }
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         setError(error?.message || "Failed to update footer settings");
         showError({ message: error?.message || "Failed to update footer settings" });
       },
@@ -84,7 +88,7 @@ export function useFooterForm() {
 
   const onSubmit = async (values: FooterFormValues, callback?: (data: any) => void) => {
     setError(null);
-    
+
     try {
       // Handle image upload if footerLogo is a File
       let footerLogoUrl = values.footerLogo;
@@ -103,17 +107,21 @@ export function useFooterForm() {
       // Update cache after successful update
       globalMutate(
         "footer-settings",
-        (current: any) => {
-          return result;
-        },
+        // (current: any) => {
+        //   return result;
+        // },
         false
       );
 
       showSuccess("Footer settings updated successfully!");
       callback?.(result);
-    } catch (error: any) {
-      setError(error?.message || "Failed to update footer settings");
-      showError({ message: error?.message || "Failed to update footer settings" });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong";
+      setError(message);
+      showError({ message });
     }
   };
 

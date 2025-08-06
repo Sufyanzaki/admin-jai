@@ -27,7 +27,7 @@ export default function useFacebookSettingsForm() {
       return await patchFacebookSettings(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

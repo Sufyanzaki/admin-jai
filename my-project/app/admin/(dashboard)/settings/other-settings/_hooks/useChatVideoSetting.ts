@@ -6,7 +6,7 @@ export default function useChatVideoSetting() {
   const { data, loading, error, mutate, refetch } = useSWRFix({
     key: "chat-video-setting",
     fetcher: getChatVideoSetting,
-    transform: (data: any): ChatSettingPayload => ({
+    transform: (data: ChatSettingPayload): ChatSettingPayload => ({
       messageLength: data.messageLength,
       displayName: data.displayName,
       enableImages: data.enableImages,

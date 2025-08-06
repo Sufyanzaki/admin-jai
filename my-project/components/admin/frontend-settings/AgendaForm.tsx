@@ -37,7 +37,7 @@ export default function AgendaForm() {
                     </Button>
                     <div className="flex flex-col space-y-2">
                         <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Agenda</h2>
-                        <p className="text-muted-foreground">Here's what's happening today.</p>
+                        <p className="text-muted-foreground">Here&apos;s what&apos;s happening today.</p>
                     </div>
                 </div>
 

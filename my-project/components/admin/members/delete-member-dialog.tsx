@@ -33,7 +33,7 @@ export default function DeleteMemberDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure you want to Delete this member?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete the member's record from the system.
+            This action will permanently delete the member&apos;s record from the system.
             This action cannot be undone and will remove all associated data including schedules, 
             permissions and attendance records.
           </AlertDialogDescription>

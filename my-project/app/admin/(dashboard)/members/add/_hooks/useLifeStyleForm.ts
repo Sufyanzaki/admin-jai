@@ -97,7 +97,7 @@ export default function useLifeStyleForm() {
       
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update lifestyle info" });
       },
       revalidate: false,

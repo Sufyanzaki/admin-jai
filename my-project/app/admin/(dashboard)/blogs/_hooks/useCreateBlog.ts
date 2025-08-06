@@ -36,7 +36,7 @@ export default function useCreateBlog() {
             return await createBlog(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
             }
         }

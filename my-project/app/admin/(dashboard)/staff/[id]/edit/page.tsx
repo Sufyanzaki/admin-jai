@@ -21,21 +21,18 @@ import { Button } from "@/components/admin/ui/button";
 import Link from "next/link";
 import {
   ArrowLeft,
-  Clock,
   Mail,
   Phone,
   Save,
   Upload,
-  Users,
   X,
 } from "lucide-react";
 import { useEditStaffForm } from "../../_hooks/useEditStaffForm";
 import { Controller } from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import { useEffect, useState } from "react";
-import { Badge } from "@/components/admin/ui/badge";
-import { Separator } from "@/components/admin/ui/separator";
 import useRoles from "@/app/admin/(dashboard)/staff/roles/_hook/useRoles";
+import Image from "next/image";
 
 export default function EditStaffPage() {
   const {
@@ -117,7 +114,7 @@ export default function EditStaffPage() {
             <CardHeader>
               <CardTitle>Personal Information</CardTitle>
               <CardDescription>
-                Enter the staff member's basic information
+                Enter the staff member&apos;s basic information
               </CardDescription>
             </CardHeader>
 
@@ -130,9 +127,10 @@ export default function EditStaffPage() {
                         className="flex flex-col items-center space-y-2 cursor-pointer"
                     >
                       {imagePreview ? (
-                          <img
+                          <Image
                               src={imagePreview}
                               alt="Preview"
+                              fill
                               className="h-full w-full object-cover rounded-md"
                               onError={() => setImagePreview(null)}
                           />

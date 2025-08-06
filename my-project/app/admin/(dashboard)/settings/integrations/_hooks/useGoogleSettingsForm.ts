@@ -27,7 +27,7 @@ export default function useGoogleSettingsForm() {
       return await patchGoogleSettings(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

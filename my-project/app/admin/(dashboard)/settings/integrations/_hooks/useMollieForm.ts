@@ -24,7 +24,7 @@ export default function useMollieForm() {
       return await patchMollie(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

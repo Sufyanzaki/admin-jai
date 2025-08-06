@@ -61,7 +61,7 @@ export default function useLivingLocationForm() {
       else await postUserLocation(id, arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update user location" });
       },
       revalidate: false,

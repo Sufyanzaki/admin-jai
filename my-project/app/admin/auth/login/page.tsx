@@ -7,6 +7,8 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {Input} from "@/components/admin/ui/input"
 import {Label} from "@/components/admin/ui/label"
 import useLoginForm from "@/app/admin/auth/_hooks/useLoginForm";
+import { LoginFormData } from "../_types/auth"
+import Image from "next/image"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -22,7 +24,7 @@ export default function LoginPage() {
       <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-12">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <img src="https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png" alt="Logo" className="mx-auto" />
+            <Image src="https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png" alt="Logo" fill className="mx-auto" />
           </div>
 
           <Card className="border-gray-800 bg-gray-900">
@@ -30,7 +32,7 @@ export default function LoginPage() {
               <CardTitle className="text-xl text-white">Sign in to your account</CardTitle>
               <CardDescription className="text-gray-400">Enter your credentials to access the dashboard</CardDescription>
             </CardHeader>
-            <form onSubmit={handleSubmit((data: any) => onSubmit(data))}>
+            <form onSubmit={handleSubmit((data: LoginFormData) => onSubmit(data))}>
               <CardContent className="space-y-4">
                 {errors.root && (
                     <div className="rounded-md bg-red-900/20 p-3 text-sm text-red-400">

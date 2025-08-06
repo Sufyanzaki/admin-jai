@@ -65,7 +65,7 @@ export default function useAgendaForm() {
             return await patchAgendaSettings(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('Agenda settings update error:', error);
             }

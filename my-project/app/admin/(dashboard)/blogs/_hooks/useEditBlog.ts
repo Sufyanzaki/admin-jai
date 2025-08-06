@@ -33,7 +33,7 @@ export default function useEditBlog(id: number | string) {
             return await editBlog(id, arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message || "Failed to update blog" });
             },
         }

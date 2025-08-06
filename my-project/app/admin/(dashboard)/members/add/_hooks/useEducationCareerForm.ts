@@ -86,7 +86,7 @@ export default function useEducationCareerForm() {
       }
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update education/career info" });
       },
       revalidate: false,

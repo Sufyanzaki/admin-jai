@@ -68,7 +68,7 @@ export default function useLanguageInfoForm() {
       else return await postLanguageInfo(id, arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update language info" });
       },
       revalidate: false,

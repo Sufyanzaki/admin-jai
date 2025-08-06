@@ -63,7 +63,6 @@ import {handleImageUpload, MAX_FILE_SIZE} from "@/lib/tiptap-utils"
 
 // --- Styles ---
 import "@/components/admin/tiptap-templates/simple/simple-editor.scss"
-import {useTheme} from "next-themes";
 import { unescapeHtml } from "@/lib/utils"
 
 

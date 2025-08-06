@@ -14,6 +14,6 @@ export function unescapeHtml(html: string): string {
   return html;
 }
 
-export function isFile(value: any) {
+export function isFile(value: unknown): value is File {
   return value instanceof File;
 }

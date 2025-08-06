@@ -94,7 +94,7 @@ export default function useRegistrationForm() {
             return await patchRegistrationPageSettings(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('Registration settings update error:', error);
             }

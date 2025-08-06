@@ -1,10 +1,10 @@
 "use client"
 
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useRoleById from "./useRoleById";
-import { RoleDto, Permission, RolePayload } from "../add/_types/roleTypes";
+import { RoleDto, Permission } from "../add/_types/roleTypes";
 import { useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import { patchRole } from "../_api/rolesApi";

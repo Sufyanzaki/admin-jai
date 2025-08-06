@@ -11,6 +11,7 @@ import { Controller } from "react-hook-form";
 import { useCreateStaffForm } from "../_hooks/useCreateStaff";
 import useRoles from "../roles/_hook/useRoles";
 import {useState} from "react";
+import Image from "next/image";
 
 export default function AddStaffPage() {
   const {
@@ -58,7 +59,7 @@ export default function AddStaffPage() {
         <Card>
           <CardHeader>
             <CardTitle>Personal Information</CardTitle>
-            <CardDescription>Enter the staff member's basic information</CardDescription>
+            <CardDescription>Enter the staff member&apos;s basic information</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
@@ -66,7 +67,7 @@ export default function AddStaffPage() {
                 <div className="flex h-32 w-32 items-center justify-center rounded-md border border-dashed">
                   <label htmlFor="photo" className="flex flex-col items-center space-y-2 cursor-pointer">
                     {imagePreview ? (
-                        <img src={imagePreview} alt="Preview" className="h-full w-full object-cover rounded-md" />
+                        <Image src={imagePreview} alt="Preview" fill className="h-full w-full object-cover rounded-md" />
                     ) : (
                         <Upload className="h-8 w-8 text-muted-foreground" />
                     )}

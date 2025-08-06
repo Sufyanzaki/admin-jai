@@ -44,7 +44,7 @@ export default function useProfileForm() {
             return await updateProfile(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({message: error.message});
                 console.error('Profile update error:', error);
             }

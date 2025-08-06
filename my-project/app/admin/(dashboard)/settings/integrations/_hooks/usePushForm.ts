@@ -32,7 +32,7 @@ export default function usePushForm() {
       return await patchPush(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
       },
     }

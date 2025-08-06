@@ -166,7 +166,7 @@ export default function LocationSearchInput({
       searchLocations(query)
     }
     return () => searchLocations.cancel()
-  }, [query, provider])
+  }, [query, provider, searchLocations])
 
   const handleSelect = (item: LocationData) => {
     hasSelectedRef.current = true

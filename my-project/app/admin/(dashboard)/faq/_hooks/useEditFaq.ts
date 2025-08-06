@@ -25,7 +25,7 @@ export default function useEditFaq(faq: any, categories: any[]) {
         return await patchFaq(faq.id, arg);
       },
       {
-        onError: (error: any) => {
+        onError: (error: Error) => {
           showError({ message: error?.message || "Failed to update FAQ" });
           console.error("FAQ update error:", error);
         },

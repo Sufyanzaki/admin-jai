@@ -16,12 +16,11 @@ import {
   LayoutDashboard, Megaphone, NotebookText, Package,
   Save, Settings,
   Sliders,
-  Undo,
   UserCog,
   Users, Video
 } from "lucide-react"
 import Link from "next/link"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/admin/ui/tooltip"
+import { Tooltip, TooltipProvider, TooltipTrigger } from "@/components/admin/ui/tooltip"
 import { Switch } from "@/components/admin/ui/switch"
 import { use } from "react"
 import { Controller } from "react-hook-form"

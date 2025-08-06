@@ -47,7 +47,7 @@ export default function useHomeForm() {
       return await patchHomePageSettings(arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
         console.error('Home settings update error:', error);
       }

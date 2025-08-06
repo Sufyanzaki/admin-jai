@@ -22,7 +22,7 @@ import {useDeleteStaff} from "@/app/admin/(dashboard)/staff/_hooks/useDeleteStaf
 export default function StaffPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState({key: '', value:false});
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const limit = 10;
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -227,7 +227,7 @@ export default function StaffPage() {
                                   </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={(id) => setDeleteDialogOpen({value: true, key: staff.id})} className="text-red-500">
+                                <DropdownMenuItem onClick={() => setDeleteDialogOpen({value: true, key: staff.id})} className="text-red-500">
                                   <Trash className="mr-2 h-4 w-4" />
                                   Delete
                                 </DropdownMenuItem>
@@ -343,7 +343,7 @@ export default function StaffPage() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to Delete this staff member?</AlertDialogTitle>
-            <AlertDialogDescription>This action will permanently delete the staff member's record from the system. This action cannot be undone and will remove all associated data including schedules, permissions and attendance records.</AlertDialogDescription>
+            <AlertDialogDescription>This action will permanently delete the staff member&apos;s record from the system. This action cannot be undone and will remove all associated data including schedules, permissions and attendance records.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>

@@ -10,7 +10,7 @@ export default function SupportPage() {
         <div className="flex flex-col space-y-2">
             <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Help & Support</h1>
             <p className="text-muted-foreground">
-                Need assistance with your account, matches, or subscriptions? We're here to help you find love smoothly.
+                Need assistance with your account, matches, or subscriptions? We&apos;re here to help you find love smoothly.
             </p>
         </div>
 

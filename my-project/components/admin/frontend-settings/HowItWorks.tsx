@@ -11,6 +11,7 @@ import { SimpleEditor } from "../tiptap-templates/simple/simple-editor"
 import { Controller } from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import useHowWorkForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useHowWorkForm";
+import Image from "next/image";
 
 export default function HowItWorks(){
     const {
@@ -110,10 +111,11 @@ export default function HowItWorks(){
                                 </div>
                                 {bannerImage && !isUploading && (
                                     <div className="w-20 h-20 border rounded-lg overflow-hidden">
-                                        <img
+                                        <Image
                                             src={bannerImage instanceof File ? URL.createObjectURL(bannerImage) : bannerImage}
                                             alt="Preview"
                                             className="w-full h-full object-cover"
+                                            fill
                                         />
                                     </div>
                                 )}

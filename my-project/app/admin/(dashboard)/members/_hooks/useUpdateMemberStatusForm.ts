@@ -28,7 +28,7 @@ export default function useUpdateMemberStatusForm() {
       return await patchUserStatus(arg.userId, arg.isActive);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message });
         console.error('Member status update error:', error);
       }

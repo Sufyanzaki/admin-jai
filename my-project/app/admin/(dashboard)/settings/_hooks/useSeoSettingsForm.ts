@@ -10,7 +10,7 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { patchSeoSettings } from "../_api/seoSettings";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import {useSeoSettings} from "@/app/admin/(dashboard)/settings/_hooks/useSeoSettings";
+import { useSeoSettings } from "@/app/admin/(dashboard)/settings/_hooks/useSeoSettings";
 
 export const seoSettingsSchema = z.object({
   metaTitle: z.string().min(1, "Meta title is required"),
@@ -28,7 +28,7 @@ export default function useSeoSettingsForm() {
     watch,
     formState: { errors, isSubmitting },
     reset,
-      register,
+    register,
     control,
   } = useForm<SeoSettingsFormValues>({
     resolver: zodResolver(seoSettingsSchema),
@@ -41,7 +41,7 @@ export default function useSeoSettingsForm() {
     mode: "onBlur",
   });
 
-  const { data, loading: isFetchingSeo,} = useSeoSettings();
+  const { data, loading: isFetchingSeo, } = useSeoSettings();
 
   useEffect(() => {
     if (data) {
@@ -55,40 +55,40 @@ export default function useSeoSettingsForm() {
   }, [data, reset]);
 
   const { trigger, isMutating } = useSWRMutation(
-      "seoSettings",
-      async (_: string, { arg }: { arg: SeoSettingsFormValues }) => {
-        let metaImageUrl: string | null = null;
+    "seoSettings",
+    async (_: string, { arg }: { arg: SeoSettingsFormValues }) => {
+      let metaImageUrl: string | null = null;
 
-        if (arg.metaImage instanceof File) {
-          try {
-            metaImageUrl = await imageUpload(arg.metaImage);
-          } catch (error: any) {
-            showError({ message: error.message });
-            throw error;
-          }
-        } else if (typeof arg.metaImage === "string") {
-          metaImageUrl = arg.metaImage;
-        } else {
-          metaImageUrl = null;
-        }
-
-        const apiPayload = {
-          metaTitle: arg.metaTitle,
-          metaDescription: arg.metaDescription,
-          metaKeywords: arg.metaKeywords,
-          metaImage: metaImageUrl,
-        };
-
-        return await patchSeoSettings(apiPayload);
-      },
-      {
-        onError: (error: Error) => {
+      if (arg.metaImage instanceof File) {
+        try {
+          metaImageUrl = await imageUpload(arg.metaImage);
+        } catch (error: any) {
           showError({ message: error.message });
-          console.error("SEO settings error:", error);
-        },
-        revalidate: false,
-        populateCache: false,
+          throw error;
+        }
+      } else if (typeof arg.metaImage === "string") {
+        metaImageUrl = arg.metaImage;
+      } else {
+        metaImageUrl = null;
       }
+
+      const apiPayload = {
+        metaTitle: arg.metaTitle,
+        metaDescription: arg.metaDescription,
+        metaKeywords: arg.metaKeywords,
+        metaImage: metaImageUrl,
+      };
+
+      return await patchSeoSettings(apiPayload);
+    },
+    {
+      onError: (error: Error) => {
+        showError({ message: error.message });
+        console.error("SEO settings error:", error);
+      },
+      revalidate: false,
+      populateCache: false,
+    }
   );
 
   const onSubmit = async (values: SeoSettingsFormValues) => {

@@ -61,7 +61,7 @@ export default function useHowWorkForm() {
             return await patchHowWorkSettings(arg);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('How It Works settings update error:', error);
             }

@@ -8,7 +8,6 @@ import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import { GetAllMembersResponse, Member } from "../../members/_types/member";
 import { StaffListResponse, StaffMember } from "../_types/staff";
 
 const createStaffSchema = z.object({
@@ -26,7 +25,7 @@ export type CreateStaffFormValues = z.infer<typeof createStaffSchema>;
 
 export function useCreateStaffForm() {
 
-  const { mutate:globalMutate } = useSWRConfig();
+  const { mutate: globalMutate } = useSWRConfig();
 
   const [error, setError] = useState<string | null>(null);
 
@@ -60,23 +59,30 @@ export function useCreateStaffForm() {
       try {
         const result = await createStaffMember(arg);
         return result;
-      } catch (err: any) {
-        throw err;
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          throw err;
+        }
+        throw new Error("Unknown error occurred");
       }
     },
     {
-      onError: (error: any) => {
-        setError(error?.message || "Failed to create staff member");
-        showError({ message: error?.message || "Failed to create staff member" });
+      onError: (error: unknown) => {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Failed to create staff member";
+        setError(message);
+        showError({ message });
       },
       revalidate: false,
       populateCache: false,
     }
   );
 
-  const onSubmit = async (values: CreateStaffFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: CreateStaffFormValues, callback?: (data: StaffMember) => void) => {
     setError(null);
-    
+
     try {
       // Handle image upload if image is a File
       let imageUrl = values.image;
@@ -117,11 +123,14 @@ export function useCreateStaffForm() {
       );
 
       showSuccess("Staff member created successfully!");
-      callback?.(result);
-      reset();
-    } catch (error: any) {
-      setError(error?.message || "Failed to create staff member");
-      showError({ message: error?.message || "Failed to create staff member" });
+      callback?.(result.response as StaffMember); reset();
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to create staff member";
+      setError(message);
+      showError({ message });
     }
   };
 

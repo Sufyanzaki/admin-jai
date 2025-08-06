@@ -10,8 +10,12 @@ export default function useResendOtp() {
       return await resendOtp(arg);
     },
     {
-      onError: (error: any) => {
-        showError({ message: error.message });
+      onError: (error: unknown) => {
+        if (error instanceof Error) {
+          showError({ message: error.message });
+        } else {
+          showError({ message: 'An unknown error occurred.' });
+        }
       },
     }
   );

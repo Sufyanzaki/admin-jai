@@ -15,6 +15,7 @@ import Link from "next/link";
 import type React from "react";
 import SidebarData from "@/app/(client)/dashboard/_components/sidebar-data";
 import ImageWrapper from "@/components/client/image-wrapper";
+import { signOut } from "next-auth/react";
 
 export function DashboardSidebar() {
   const { open } = useSidebar();
@@ -52,6 +53,7 @@ export function DashboardSidebar() {
           <Button
             variant="ghost"
             size="dashboard"
+             onClick={() => signOut({ callbackUrl: "/" })}
             className="border rounded-[5px] border-white/50 text-white hover:bg-transparent w-full group-data-[collapsible=icon]:hidden"
           >
             <LogOut className="w-4 h-4" />

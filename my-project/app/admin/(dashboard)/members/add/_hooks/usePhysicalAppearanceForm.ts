@@ -89,7 +89,7 @@ export default function usePhysicalAppearanceForm() {
       else return await postPhysicalAppearance(id, arg);
     },
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         showError({ message: error.message || "Failed to update physical appearance info" });
       },
       revalidate: false,

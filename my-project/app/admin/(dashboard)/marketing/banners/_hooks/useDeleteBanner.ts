@@ -17,7 +17,7 @@ export const useDeleteBanner = () => {
                 showSuccess("Banner deleted successfully!");
                 await mutate(); // Revalidate banners list
             },
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
             },
         }

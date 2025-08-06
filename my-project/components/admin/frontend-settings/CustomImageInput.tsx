@@ -3,6 +3,7 @@ import {FileText, Upload} from "lucide-react";
 import {Button} from "@/components/admin/ui/button";
 import { useRef } from "react";
 import React from "react";
+import Image from "next/image";
 
 // Add preview for selected image
 
@@ -14,7 +15,7 @@ type CustomImageUploadProps = {
     type?: string;
 };
 
-export const CustomImageUpload = ({ label, file, existingImage, onFileChange, type }: CustomImageUploadProps) => {
+export const CustomImageUpload = ({ label, file, existingImage, onFileChange }: CustomImageUploadProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = React.useState<string | null>(null);
 
@@ -41,9 +42,9 @@ export const CustomImageUpload = ({ label, file, existingImage, onFileChange, ty
             >
                 <div className="flex flex-col items-center space-y-4">
                     {preview ? (
-                        <img src={preview} alt="Preview" className="w-24 h-24 object-cover rounded-md mx-auto" />
+                        <Image src={preview} alt="Preview" width={96} height={96} className=" object-cover rounded-md mx-auto" />
                     ) : existingImage ? (
-                        <img src={existingImage} alt="Existing" className="w-24 h-24 object-cover rounded-md mx-auto" />
+                        <Image src={existingImage} alt="Existing" width={96} height={96}  className="object-cover rounded-md mx-auto" />
                     ) : (
                         <FileText className="w-12 h-12 text-gray-400 mx-auto" />
                     )}

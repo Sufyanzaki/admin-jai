@@ -8,6 +8,7 @@ import useOTPForm from "../_hooks/useOTPForm";
 import { Controller } from "react-hook-form";
 import useResendOtp from "@/app/shared-hooks/useResendOtp";
 import {getUserEmail} from "@/lib/access-token";
+import Image from "next/image";
 
 export default function OtpPage() {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -33,10 +34,11 @@ export default function OtpPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-12">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <img
+          <Image
             src="https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png"
             alt="Logo"
             className="mx-auto"
+            fill
           />
         </div>
 
@@ -104,7 +106,7 @@ export default function OtpPage() {
                 {isLoading ? "Verifying..." : "Verify"}
               </Button>
               <p className="text-center text-sm text-gray-400">
-                Didn't receive code?{" "}
+                Didn&apos;t receive code?{" "}
                 <button
                   type="button"
                   onClick={handleResend}

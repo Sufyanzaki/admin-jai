@@ -4,8 +4,10 @@ import { Controller } from "react-hook-form";
 import { useRef } from "react";
 import {Input} from "@/components/client/ux/input";
 
+import { Control, FieldValues } from "react-hook-form";
+
 interface OtpInputProps {
-    control: any;
+    control: Control<FieldValues>;
     name: string;
     length?: number;
 }

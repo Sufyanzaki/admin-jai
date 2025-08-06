@@ -42,7 +42,7 @@ function AuthGuard({ children, mounted }: { children: React.ReactNode; mounted: 
         if (mounted && (status === "unauthenticated" || data?.user.role !== "ADMIN")) {
             router.push("/admin/auth/login");
         }
-    }, [mounted, status, router]);
+    }, [mounted, status, router, data?.user.role]);
 
     if (!mounted || status === "loading") {
         return (

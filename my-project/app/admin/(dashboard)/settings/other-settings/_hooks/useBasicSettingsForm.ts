@@ -119,13 +119,13 @@ export function useBasicSettingsForm() {
   };
 
   const onSubmit = async (values: BasicSettingsFormValues) => {
-    if (values.systemLogo && isFile(values.systemLogo)) {
+    if (values.systemLogo && isFile({ value: values.systemLogo })) {
       const uploaded = await imageUpload(values.systemLogo);
       if (uploaded) {
         values.systemLogo = uploaded;
       }
     }
-    if (values.loginImage && isFile(values.loginImage)) {
+    if (values.loginImage && isFile({ value: values.loginImage })) {
       const uploaded = await imageUpload(values.loginImage);
       if (uploaded) {
         values.loginImage = uploaded;

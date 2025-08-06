@@ -10,7 +10,7 @@ export default function useDeleteBlogCategory() {
             return await deleteBlogCategory(id);
         },
         {
-            onError: (error: any) => {
+            onError: (error: Error) => {
                 showError({ message: error.message });
             },
             onSuccess: async (_, __, options) => {

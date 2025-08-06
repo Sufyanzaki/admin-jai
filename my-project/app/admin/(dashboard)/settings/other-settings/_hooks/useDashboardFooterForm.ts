@@ -16,6 +16,10 @@ const dashboardFooterFormSchema = z.object({
 });
 
 export type DashboardFooterFormValues = z.infer<typeof dashboardFooterFormSchema>;
+type DashboardFooterCache = {
+  success: boolean;
+  data: UserDashboardFooterFormData;
+};
 
 export function useDashboardFooterForm() {
   const { mutate: globalMutate } = useSWRConfig();
@@ -57,23 +61,31 @@ export function useDashboardFooterForm() {
       try {
         const result = await patchUserDashboardFooterSettings(arg);
         return result;
-      } catch (err: any) {
-        throw err;
+      } catch (error: unknown) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Something went wrong";
+        showError({ message });
       }
     },
     {
-      onError: (error: any) => {
-        setError(error?.message || "Failed to update dashboard footer settings");
-        showError({ message: error?.message || "Failed to update dashboard footer settings" });
+      onError: (error: unknown) => {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Failed to update dashboard footer settings";
+        setError(message);
+        showError({ message });
       },
       revalidate: false,
       populateCache: false,
     }
   );
 
-  const onSubmit = async (values: DashboardFooterFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: DashboardFooterFormValues, callback?: (data: UserDashboardFooterFormData) => void) => {
     setError(null);
-    
+
     try {
       // Convert array to comma-separated string for API
       const payload: UserDashboardFooterFormData = {
@@ -85,7 +97,7 @@ export function useDashboardFooterForm() {
       // Update cache after successful update
       globalMutate(
         "user-dashboard-footer-settings",
-        (current: any) => {
+        (current: DashboardFooterCache | undefined) => {
           return { success: true, data: result };
         },
         false
@@ -93,9 +105,12 @@ export function useDashboardFooterForm() {
 
       showSuccess("Dashboard footer settings updated successfully!");
       callback?.(result);
-    } catch (error: any) {
-      setError(error?.message || "Failed to update dashboard footer settings");
-      showError({ message: error?.message || "Failed to update dashboard footer settings" });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to update dashboard footer settings";
+      showError({ message });
     }
   };
 

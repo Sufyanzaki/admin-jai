@@ -16,7 +16,6 @@ import {
   LayoutDashboard, Megaphone, NotebookText, Package,
   Save, Settings,
   Sliders,
-  Undo,
   UserCog,
   Users, Video
 } from "lucide-react"
