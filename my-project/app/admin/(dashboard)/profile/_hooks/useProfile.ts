@@ -2,7 +2,7 @@
 
 import { useSWRFix } from "@/shared-lib";
 import { getProfile } from "@/app/admin/(dashboard)/profile/_api/getProfile";
-import { ProfileResponse } from "../_types/profile-types";
+import { ProfileResponse } from "@/app/shared-types/auth";
 
 export const useProfile = () => {
   

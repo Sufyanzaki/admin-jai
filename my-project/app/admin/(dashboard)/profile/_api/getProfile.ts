@@ -1,5 +1,5 @@
 import {getRequest} from "@/shared-lib";
-import {ProfileResponse} from "../_types/profile-types";
+import {ProfileResponse} from "@/app/shared-types/auth";
 
 
 export async function getProfile(): Promise<ProfileResponse | undefined> {

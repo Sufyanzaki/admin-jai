@@ -1,4 +1,4 @@
-import {UserDto} from "@/app/admin/(dashboard)/profile/_types/profile-types";
+import {UserDto} from "@/app/shared-types/auth";
 
 export type DashboardStats = {
     totalMembers: number;

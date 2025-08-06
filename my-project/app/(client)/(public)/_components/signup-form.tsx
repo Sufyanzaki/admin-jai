@@ -14,8 +14,10 @@ import { FacebookIcon, GoogleIcon } from "@/lib/icons";
 import Link from "next/link";
 import { Container } from "@/components/client/ux/container";
 import LocationSearchInput from "@/components/client/location-search";
+import { Input } from "@/components/client/ux/input";
 
 export function SignupForm() {
+
   return (
     <>
       <div className="lg:block hidden">
@@ -111,6 +113,34 @@ export function SignupForm() {
                     console.log("Selected location:", location);
                   }}
                 />
+              </div>
+
+              <div className="flex flex-row gap-4">
+                <div className="w-1/2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      required
+                  />
+                  {/*{errors.email && (*/}
+                  {/*    <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>*/}
+                  {/*)}*/}
+                </div>
+
+                <div className="w-1/2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      required
+                  />
+                  {/*{errors.password && (*/}
+                  {/*    <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>*/}
+                  {/*)}*/}
+                </div>
               </div>
 
               <Button variant="theme" size="lg" asChild className="w-full">

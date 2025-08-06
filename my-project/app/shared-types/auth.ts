@@ -3,8 +3,8 @@ export type ErrorResponse = {
     code: number;
 }
 
-type UserDto = {
-    id: number;
+export type UserDto = {
+    id: string;
     username: string;
     email: string;
     firstName: string;
@@ -44,4 +44,8 @@ export type LoginResponse = {
     status: 'success' | 'error';
     user: UserDto;
     tokens: Tokens;
+}
+
+export type ProfileResponse = {
+    user: UserDto;
 }

@@ -6,7 +6,7 @@ import { Button } from "@/components/admin/ui/button"
 import { Badge } from "@/components/admin/ui/badge"
 import { format } from "date-fns"
 import Link from "next/link"
-import {UserDto} from "@/app/admin/(dashboard)/profile/_types/profile-types";
+import {UserDto} from "@/app/shared-types/auth";
 
 export function NewMembers({ users }: { users: UserDto[] }) {
   return (

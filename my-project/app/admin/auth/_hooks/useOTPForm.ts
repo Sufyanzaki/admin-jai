@@ -3,9 +3,10 @@
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
-import {useRouter, useSearchParams} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import {showError} from '@/shared-lib';
 import {signIn} from 'next-auth/react';
+import {getUserEmail} from "@/lib/access-token";
 
 const otpSchema = z.object({
   otp: z.string()
@@ -16,8 +17,7 @@ const otpSchema = z.object({
 export type OtpFormValues = z.infer<typeof otpSchema>;
 
 export default function useOTPForm() {
-  const searchParams = useSearchParams();
-  const email = searchParams.get('email') || '';
+  const email = getUserEmail();
   const router = useRouter();
 
   const {

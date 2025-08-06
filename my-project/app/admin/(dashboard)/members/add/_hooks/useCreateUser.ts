@@ -202,12 +202,13 @@ export default function useCreateUserForm() {
     // Optimistic update - update the cache before the API call completes
     if (!id) {
       globalMutate(
-        (key) => typeof key === 'string' && key.startsWith('all-members'),
-        (current: GetAllMembersResponse | undefined) => {
+          (key) => typeof key === 'string' && key.startsWith('all-members'),
+          (current: GetAllMembersResponse | undefined) => {
           if (!current) return current;
+            const updatedUser = result.response as Member;
           return {
             ...current,
-            users: [tempUser, ...current.users],
+            users: [updatedUser, ...current.users],
             stats: {
               ...current.stats,
               total: current.stats.total + 1,

@@ -1,51 +1,33 @@
 import { postRequest, patchRequest, getRequest } from "@/shared-lib";
+import {ProfileResponse, UserDto} from "@/app/shared-types/auth";
 
-export interface UserPayloadBase {
-  email: string;
-  password?: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  dob: string;
-  image: string;
-  phone: string;
-  origin: string;
-  gender: string;
-  age: number;
-  relationshipStatus: string;
-  children: boolean;
-  religion: string;
-  shortDescription: string;
-  isActive?: boolean;
-}
+export type UserPayload = Partial<UserDto>;
 
-export type UserPayload = UserPayloadBase & Partial<{ department: string }>;
-
-export type UserResponse = Partial<{ id: string | number }> & Record<string, any>;
-
-export async function postUser(payload: UserPayload): Promise<UserResponse> {
-  return postRequest({
+export async function postUser(payload: UserPayload): Promise<ProfileResponse> {
+  const r = await postRequest<UserPayload>({
     url: "users",
     data: payload,
     useAuth: true,
   });
+  return r.response;
 } 
 
-export async function patchUser(userId: string, payload: UserPayload): Promise<UserResponse> {
-  return patchRequest({
+export async function patchUser(userId: string, payload: UserPayload): Promise<ProfileResponse> {
+  const r = await patchRequest<UserPayload>({
     url: `users/${userId}`,
     data: payload,
     useAuth: true,
   });
+  return r.response;
 }
 
-export async function patchUserStatus(userId: string, isActive: boolean): Promise<UserResponse> {
-  return patchRequest({
+export async function patchUserStatus(userId: string, isActive: boolean): Promise<ProfileResponse> {
+  const r = await patchRequest<UserPayload>({
     url: `users/${userId}`,
     data: { isActive },
     useAuth: true,
   });
+  return r.response;
 } 
 
 export async function getUser(userId: string) {

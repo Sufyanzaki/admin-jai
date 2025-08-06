@@ -1,7 +1,6 @@
-import { useSWRFix } from "@/shared-lib";
-import { getUserTrackingId } from "@/lib/access-token";
-import { getLifeStyle } from "../_api/updateLifeStyle";
-import { useParams } from "next/navigation";
+import {useSWRFix} from "@/shared-lib";
+import {getUserTrackingId} from "@/lib/access-token";
+import {useParams} from "next/navigation";
 import {getLiving} from "@/app/admin/(dashboard)/members/_api/getLiving";
 
 export const useLiving = () => {

@@ -1,13 +1,7 @@
 import { postRequest, patchRequest } from "@/shared-lib";
+import {MemberLocation} from "@/app/shared-types/member";
 
-export interface UserLocationPayload {
-  city?: string;
-  state?: string;
-  country?: string;
-  id?: string;
-}
-
-export async function postUserLocation(id: string, payload: UserLocationPayload) {
+export async function postUserLocation(id: string, payload: Partial<MemberLocation>) {
   return postRequest({
     url: `users/${id}/living`,
     data: payload,
@@ -15,7 +9,7 @@ export async function postUserLocation(id: string, payload: UserLocationPayload)
   });
 }
 
-export async function patchUserLocation(id: string, payload: UserLocationPayload) {
+export async function patchUserLocation(id: string, payload: Partial<MemberLocation>) {
   return patchRequest({
     url : `users/${id}/living`,
     data: payload,
