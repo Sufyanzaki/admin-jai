@@ -13,24 +13,24 @@ import {
     DropdownMenuTrigger
 } from "@/components/admin/ui/dropdown-menu";
 import {Badge} from "@/components/admin/ui/badge";
-import {useBlogCategories} from "./_hooks/useBlogCategories";
-import {BlogCategory} from "./_types/category-types";
+import {useBlogCategories} from "../../../../shared-hooks/useBlogCategories";
 import AddCategoryForm from "./_components/addCategoryForm";
 import useDeleteBlogCategory from "./_hooks/useDeleteBlogCategory";
 import {useSWRConfig} from "swr";
 import EditCategoryModal from "./_components/EditCategoryModal";
 import Preloader from "@/components/shared/Preloader";
+import {BlogCategoryDto} from "@/app/shared-types/blog";
 
 export default function BlogCategoryManagement() {
     const [search, setSearch] = useState("")
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
     const { categories = [], loading, error } = useBlogCategories();
-    const [deletingId, setDeletingId] = useState<number | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const { deleteCategoryById, isDeleting } = useDeleteBlogCategory();
 
     const { mutate: globalMutate } = useSWRConfig();
 
-    const filteredCategories = categories.filter((cat: BlogCategory) =>
+    const filteredCategories = categories.filter((cat: BlogCategoryDto) =>
         cat.name.toLowerCase().includes(search.toLowerCase())
     )
 
@@ -126,7 +126,7 @@ export default function BlogCategoryManagement() {
                                                                     onClick={async () => {
                                                                         setDeletingId(category.id);
                                                                         await deleteCategoryById(category.id);
-                                                                        await globalMutate('blog-categories', (current: any[] = []) => current.filter(cat => cat.id !== category.id), false);
+                                                                        await globalMutate('blog-categories', (current: BlogCategoryDto[] = []) => current.filter(cat => cat.id !== category.id), false);
                                                                         setDeletingId(null);
                                                                     }}
                                                                 >

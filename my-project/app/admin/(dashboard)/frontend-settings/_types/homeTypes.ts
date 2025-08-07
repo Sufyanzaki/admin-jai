@@ -1,5 +1,5 @@
 export type HomePageSettingsDto = {
-  id: number;
+  id: string;
   Title: string;
   Url: string;
   bannerTitle: string;

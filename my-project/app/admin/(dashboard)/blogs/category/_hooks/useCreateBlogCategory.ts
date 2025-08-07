@@ -5,9 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { createBlogCategory, CreateBlogCategoryProps } from "../_api/createBlogCategory";
 import useSWRMutation from "swr/mutation";
 import { useSWRConfig } from "swr";
+import {createBlogCategory} from "@/app/shared-api/blogCategoryApi";
+import {BlogCategoryDto} from "@/app/shared-types/blog";
+import {FaqDto} from "@/app/shared-types/faq";
 
 const createCategorySchema = z.object({
     name: z.string().min(1, "Category name is required")
@@ -19,7 +21,7 @@ export default function useCreateBlogCategory() {
     const { mutate: globalMutate } = useSWRConfig();
     const { trigger, isMutating } = useSWRMutation(
         'createBlogCategory',
-        async (_: string, { arg }: { arg: CreateBlogCategoryProps }) => {
+        async (_: string, { arg }: { arg: Partial<BlogCategoryDto> }) => {
             return await createBlogCategory(arg);
         },
         {
@@ -43,18 +45,18 @@ export default function useCreateBlogCategory() {
         mode: 'onBlur'
     });
 
-    const onSubmit = async (values: CreateCategoryFormValues, callback?: (data: { status: number } | undefined) => void) => {
+    const onSubmit = async (values: CreateCategoryFormValues, callback?: () => void) => {
         const result = await trigger({ name: values.name });
-        console.log('result', result);
-        if (result?.status === 201) {
+        if (result) {
             showSuccess('Category created successfully!');
             reset();
-            globalMutate('blog-categories', async (current: any) => {
-                if (!current) return undefined;
+            globalMutate(
+                'blog-categories',
+                (current: BlogCategoryDto[] = []) => {
                 return [
                     ...current,
                     {
-                        id: Date.now(),
+                        id: result.id ?? Date.now(),
                         name: values.name,
                         isActive: true,
                         createdAt: new Date().toISOString(),
@@ -62,8 +64,8 @@ export default function useCreateBlogCategory() {
                         blogs: []
                     }
                 ];
-            }, false);
-            callback?.(result);
+            }, false).finally();
+            callback?.();
         }
     };
 

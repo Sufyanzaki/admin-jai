@@ -1,5 +1,5 @@
 export type HowItWorksSettingsDto = {
-    id: number;
+    id: string;
     Title: string;
     Url: string;
     bannerImage: string;
@@ -13,7 +13,7 @@ export type HowItWorksSettingsDto = {
     faqProfileName: string;
     showOnHeader: boolean;
     isActive: boolean;
-    createdAt: string; // or Date
-    updatedAt: string; // or Date
+    createdAt: string;
+    updatedAt: string;
   };
   

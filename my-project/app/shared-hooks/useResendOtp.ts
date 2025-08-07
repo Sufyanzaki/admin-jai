@@ -1,12 +1,12 @@
 import useSWRMutation from 'swr/mutation';
 import { showError } from '@/shared-lib';
 import { showSuccess } from '@/shared-lib';
-import { resendOtp, ResendOtpProps } from '../admin/auth/_api/resendOtp';
+import {OtpProps, resendOtp} from "@/app/shared-api/auth";
 
 export default function useResendOtp() {
   const { trigger, isMutating } = useSWRMutation(
     'resendOtp',
-    async (_: string, { arg }: { arg: ResendOtpProps }) => {
+    async (_: string, { arg }: { arg: Partial<OtpProps> }) => {
       return await resendOtp(arg);
     },
     {

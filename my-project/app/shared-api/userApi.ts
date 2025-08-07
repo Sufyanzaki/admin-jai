@@ -1,7 +1,9 @@
 import {getRequest, patchRequest, postRequest} from "@/shared-lib";
 import {MemberProfile} from "@/app/shared-types/member";
 
-export type UserPayload = Partial<MemberProfile>;
+export type UserPayload = Partial<MemberProfile> & {
+  password?: string;
+}
 
 export async function postUser(payload: UserPayload): Promise<MemberProfile> {
   const r = await postRequest<UserPayload>({

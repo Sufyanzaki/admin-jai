@@ -65,8 +65,8 @@ export default function useStripeForm() {
       if (result) {
         showSuccess('Stripe settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message || 'Failed to update Stripe settings.' });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || 'Failed to update Stripe settings.' });
     }
   };
 

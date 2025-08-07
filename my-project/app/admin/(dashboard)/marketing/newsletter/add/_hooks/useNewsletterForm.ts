@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { postNewsletter, PostNewsletterProps } from "../_api/postNewsletter";
+import { postNewsletter } from "../_api/postNewsletter";
 import { useState } from "react";
 
 const newsletterSchema = z.object({
@@ -36,12 +36,12 @@ export default function useNewsletterForm() {
     setIsLoading(true);
     try {
       const result = await postNewsletter(values);
-      if (result?.status === 201 || result?.status === 200) {
+      if (result) {
         showSuccess("Newsletter created successfully!");
         reset();
       }
-    } catch (error: any) {
-      showError({ message: error.message || "Failed to create newsletter" });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || "Failed to create newsletter" });
     } finally {
       setIsLoading(false);
     }

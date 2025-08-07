@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { patchLanguageStatus, PatchLanguageStatusPayload } from "@/app/admin/(dashboard)/settings/_api/patchLanguageStatus";
 import { mutate as globalMutate } from "swr";
-import type { Language } from "@/app/admin/(dashboard)/settings/_api/getLanguages";
+import {patchLanguageStatus} from "@/app/admin/(dashboard)/settings/_api/languageApi";
+import {BasicLanguageDto} from "@/app/shared-types/basic-languages";
 
 export function usePatchLanguageStatus() {
   const [loading, setLoading] = useState(false);
@@ -16,16 +16,16 @@ export function usePatchLanguageStatus() {
       await patchLanguageStatus({ id, isActive });
       globalMutate(
         "languages-list",
-        (current: Language[] = []) =>
+        (current: BasicLanguageDto[] = []) =>
           current.map(lang =>
             lang.id === id
               ? { ...lang, isActive }
               : lang
           ),
         false
-      );
-    } catch (err: any) {
-      setError(err?.message || "Failed to update status");
+      ).finally();
+    } catch (err: unknown) {
+      if(err instanceof Error) setError(err.message || "Failed to update status");
     } finally {
       setLoading(false);
       setPatchingId(null);

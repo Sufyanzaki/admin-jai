@@ -16,8 +16,8 @@ export function usePatchEmailTemplate() {
       setSuccess(true);
       globalMutate("email-templates");
       globalMutate(`email-template-${id}`);
-    } catch (err: any) {
-      setError(err?.message || "Failed to update template");
+    } catch (err: unknown) {
+      if(err instanceof Error) setError(err.message || "Failed to update template");
     } finally {
       setLoading(false);
     }

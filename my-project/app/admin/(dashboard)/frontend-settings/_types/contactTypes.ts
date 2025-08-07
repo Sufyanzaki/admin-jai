@@ -1,5 +1,5 @@
 export type ContactSettingDto = {
-    id: number;
+    id: string;
     Title: string;
     Url: string;
     contactName: string;

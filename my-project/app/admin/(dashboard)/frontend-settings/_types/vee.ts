@@ -1,5 +1,5 @@
 export type VeeDto = {
-    id: number;
+    id: string;
     Title: string;
     Url: string;
     PageContentitle: string;
@@ -12,6 +12,6 @@ export type VeeDto = {
     pageType: string;
     pageName: string;
     isActive: boolean;
-    createdAt: string; // or Date if you'll parse it
-    updatedAt: string; // or Date if you'll parse it
+    createdAt: string;
+    updatedAt: string;
 }

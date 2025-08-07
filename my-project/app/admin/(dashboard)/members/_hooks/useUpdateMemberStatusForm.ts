@@ -7,8 +7,9 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useBasicInfo } from './useBasicInfo';
-import { patchUserStatus } from '../../../../shared-api/userApi';
+import { patchUserStatus } from '@/app/shared-api/userApi';
 import { useEffect } from 'react';
+import {MemberProfile} from "@/app/shared-types/member";
 
 const memberStatusSchema = z.object({
   isActive: z.boolean(),
@@ -17,10 +18,9 @@ const memberStatusSchema = z.object({
 export type MemberStatusFormValues = z.infer<typeof memberStatusSchema>;
 
 export default function useUpdateMemberStatusForm() {
-  // 1. useBasicInfo fetches user data
   const { user, mutate } = useBasicInfo();
   
-  const typedUser = user as any;
+  const typedUser = user as MemberProfile;
 
   const { trigger, isMutating } = useSWRMutation(
     'updateMemberStatus',
@@ -50,7 +50,6 @@ export default function useUpdateMemberStatusForm() {
     mode: 'onBlur'
   });
 
-  // 3. useEffect ensures form stays in sync
   useEffect(() => {
     if (typedUser?.isActive !== undefined) {
       setValue('isActive', typedUser.isActive);
@@ -70,13 +69,15 @@ export default function useUpdateMemberStatusForm() {
         isActive: values.isActive,
       });
 
-      if (result?.status === 200) {
+      if (result) {
         await mutate();
         showSuccess('Member status updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message });
-      console.error('Member status update error:', error);
+    } catch (error: unknown) {
+      if(error instanceof Error){
+        showError({ message: error.message });
+        console.error('Member status update error:', error);
+      }
     }
   };
 

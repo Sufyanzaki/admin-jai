@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/admin/ui/textarea";
 import Link from "next/link";
 import {ArrowLeft} from "lucide-react";
-import { useBlogCategories } from "../category/_hooks/useBlogCategories";
+import { useBlogCategories } from "../../../../shared-hooks/useBlogCategories";
 import useCreateBlog from "../_hooks/useCreateBlog";
 import { Controller } from "react-hook-form";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";

@@ -1,5 +1,5 @@
 import { useSWRFix } from '@/shared-lib';
-import { getNewsletterById } from '../_api/getNewsletterById';
+import {getNewsletterById} from "@/app/admin/(dashboard)/marketing/newsletter/_api/newsLetterApi";
 
 export default function useNewsletterById(id: string) {
   const { data, error, loading } = useSWRFix({

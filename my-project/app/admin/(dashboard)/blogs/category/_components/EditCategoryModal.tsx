@@ -3,10 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "@/components/admin/ui/input";
 import { Button } from "@/components/admin/ui/button";
 import useEditBlogCategory from "../_hooks/useEditBlogCategory";
-import { useBlogCategories } from "../_hooks/useBlogCategories";
-import { useMemo } from "react";
+import { useBlogCategories } from "../../../../../shared-hooks/useBlogCategories";
+import {useEffect, useMemo} from "react";
 import React from "react";
 import { useSWRConfig } from "swr";
+import {BlogCategoryDto} from "@/app/shared-types/blog";
 
 export default function EditCategoryModal() {
   const router = useRouter();
@@ -28,10 +29,9 @@ export default function EditCategoryModal() {
     isLoading,
     register,
     reset,
-  } = useEditBlogCategory(category?.id ?? 0, category?.name ?? "");
+  } = useEditBlogCategory(category?.id ?? '', category?.name ?? "");
 
-  // Reset form when category changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (category) {
       reset({ name: category.name });
     }
@@ -45,9 +45,8 @@ export default function EditCategoryModal() {
 
   const handleEditSubmit = async (values: { name: string }) => {
     await onSubmit(values, () => {
-      // Update the cache for blog-categories using editId
       if (editId) {
-        globalMutate('blog-categories', (current: any[] = []) =>
+        globalMutate('blog-categories', (current: BlogCategoryDto[] = []) =>
           current.map(cat => String(cat.id) === editId ? { ...cat, name: values.name } : cat), false
         );
       }

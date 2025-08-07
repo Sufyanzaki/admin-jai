@@ -1,5 +1,5 @@
 export type BasicPageDto = {
-    id: number;
+    id: string;
     Title: string;
     Url: string;
     content: string;

@@ -62,8 +62,8 @@ export default function useSeoSettingsForm() {
       if (arg.metaImage instanceof File) {
         try {
           metaImageUrl = await imageUpload(arg.metaImage);
-        } catch (error: any) {
-          showError({ message: error.message });
+        } catch (error: unknown) {
+          if(error instanceof Error) showError({ message: error.message });
           throw error;
         }
       } else if (typeof arg.metaImage === "string") {

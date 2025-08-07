@@ -82,8 +82,8 @@ export default function usePushForm() {
       if (result) {
         showSuccess('Push notification settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message || 'Failed to update push notification settings.' });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || 'Failed to update push notification settings.' });
     }
   };
 

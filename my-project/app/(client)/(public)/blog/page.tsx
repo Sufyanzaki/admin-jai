@@ -5,7 +5,7 @@ import { Container } from "@/components/client/ux/container";
 import { BlogCard } from "./_components/blog-card";
 import { Button } from "@/components/client/ux/button";
 import { CustomPagination } from "@/components/client/ux/custom-pagination";
-import { useBlogs } from "./_hooks/useBlogs";
+import {useBlogs} from "@/app/shared-hooks/useBlogs";
 
 export default function BlogPage() {
   const { blogs: blogPosts = [], loading, error } = useBlogs();

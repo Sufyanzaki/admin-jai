@@ -1,16 +1,15 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { patchFooterSettings, FooterFormData } from "../_api/footerApi";
-import { showError } from "@/shared-lib";
-import { showSuccess } from "@/shared-lib";
-import { imageUpload } from "@/admin-utils/utils/imageUpload";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {FooterFormData, patchFooterSettings} from "../_api/footerApi";
+import {showError, showSuccess} from "@/shared-lib";
+import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
-import { useState, useEffect } from "react";
-import { useSWRConfig } from "swr";
-import { useFooterSettings } from "./useFooterSettings";
+import {useEffect, useState} from "react";
+import {useSWRConfig} from "swr";
+import {useFooterSettings} from "./useFooterSettings";
 
 const footerFormSchema = z.object({
   footerLogo: z.any().optional(),
@@ -48,7 +47,6 @@ export function useFooterForm() {
     mode: "onBlur",
   });
 
-  // Reset form values when footer data is loaded
   useEffect(() => {
     if (footerData) {
       reset({
@@ -61,13 +59,11 @@ export function useFooterForm() {
     }
   }, [footerData, reset]);
 
-  // SWR mutation trigger for footer update
   const { trigger, isMutating } = useSWRMutation(
     "patchFooterSettings",
     async (_: string, { arg }: { arg: FooterFormData }) => {
       try {
-        const result = await patchFooterSettings(arg);
-        return result;
+        return await patchFooterSettings(arg);
       } catch (error: unknown) {
         const message =
           error instanceof Error
@@ -86,17 +82,15 @@ export function useFooterForm() {
     }
   );
 
-  const onSubmit = async (values: FooterFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: FooterFormValues, callback?: () => void) => {
     setError(null);
 
     try {
-      // Handle image upload if footerLogo is a File
       let footerLogoUrl = values.footerLogo;
       if (values.footerLogo instanceof File) {
         footerLogoUrl = await imageUpload(values.footerLogo);
       }
 
-      // Prepare payload for API
       const payload: FooterFormData = {
         ...values,
         footerLogo: footerLogoUrl || undefined,
@@ -104,17 +98,13 @@ export function useFooterForm() {
 
       const result = await trigger(payload);
 
-      // Update cache after successful update
       globalMutate(
         "footer-settings",
-        // (current: any) => {
-        //   return result;
-        // },
         false
-      );
+      ).finally();
 
       showSuccess("Footer settings updated successfully!");
-      callback?.(result);
+      callback?.();
     } catch (error: unknown) {
       const message =
         error instanceof Error
@@ -129,7 +119,7 @@ export function useFooterForm() {
     register,
     handleSubmit,
     errors,
-    isLoading: isSubmitting || isMutating || isLoadingFooterData,
+    isLoading: isSubmitting || isMutating,
     setValue,
     reset,
     control,

@@ -131,9 +131,8 @@ export default function useBannerForm() {
                 setImagePreview("");
                 callback?.(result);
             }
-        } catch (error: any) {
-            showError({message: error.message});
-            console.error('Banner creation error:', error);
+        } catch (error: unknown) {
+            if(error instanceof Error) showError({message: error.message});
         }
     };
 

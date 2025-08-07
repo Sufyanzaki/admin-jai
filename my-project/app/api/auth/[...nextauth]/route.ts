@@ -2,7 +2,7 @@ import {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import {z} from "zod";
-import { postOtp } from "@/app/admin/auth/_api/postOtp";
+import {postOtp} from "@/app/shared-api/auth";
 
 const otpSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -30,10 +30,12 @@ export const authOptions: NextAuthOptions = {
         if(!response) return null;
 
         return {
-          ...response.user,
+          id: response.user.id,
+          email: response.user.email,
+          name: `${response.user.firstName} ${response.user.lastName}`,
           token: response.tokens.access.token,
-          role: "ADMIN"
-        };
+          role: "ADMIN",
+        }
       }
     }),
 
@@ -56,10 +58,12 @@ export const authOptions: NextAuthOptions = {
         if(!response) return null;
 
         return {
-          ...response.user,
+          id: response.user.id,
+          email: response.user.email,
+          name: `${response.user.firstName} ${response.user.lastName}`,
           token: response.tokens.access.token,
-          role: "CLIENT"
-        };
+          role: "CLIENT",
+        }
       }
     })
   ],

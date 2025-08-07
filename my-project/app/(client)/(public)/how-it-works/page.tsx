@@ -5,8 +5,8 @@ import { FAQItem } from "./_components/faq-item";
 import { Card } from "@/components/client/ux/card";
 import { Container } from "@/components/client/ux/container";
 import ImageWrapper from "@/components/client/image-wrapper";
-import useFaq from "./_hooks/useFaq";
 import Preloader from "@/components/shared/Preloader";
+import useFaq from "@/app/shared-hooks/useFaq";
 
 export default function HowItWorksPage() {
   const { data: faqs, isLoading, error } = useFaq();

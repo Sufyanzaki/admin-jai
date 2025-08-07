@@ -41,7 +41,6 @@ export default function useOTPForm() {
         email,
         callbackUrl: '/admin/dashboard',
     });
-    console.log(result);
 
     if (result?.error) {
         const errorMessage = result.error === 'CredentialsSignin'

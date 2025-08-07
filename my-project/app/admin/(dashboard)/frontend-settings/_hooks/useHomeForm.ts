@@ -163,9 +163,8 @@ export default function useHomeForm() {
         await mutate();
         showSuccess('Home settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message });
-      console.error('Home settings update error:', error);
+    } catch (error: unknown) {
+      if(error instanceof  Error) showError({ message: error.message });
     }
   };
 

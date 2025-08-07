@@ -5,9 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { postFaqCategory, PostFaqCategoryProps } from "../_api/postFaqCategory";
 import useSWRMutation from "swr/mutation";
 import { useSWRConfig } from "swr";
+import {FaqCategoryDto} from "@/app/shared-types/faq";
+import {postFaqCategory} from "@/app/shared-api/faqApi";
 
 const createFaqCategorySchema = z.object({
   name: z.string().min(1, "Category name is required"),
@@ -19,7 +20,7 @@ export default function useFaqCategoryForm() {
   const { mutate: globalMutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation(
     "createFaqCategory",
-    async (_: string, { arg }: { arg: PostFaqCategoryProps }) => {
+    async (_: string, { arg }: { arg: Partial<FaqCategoryDto> }) => {
       return await postFaqCategory(arg);
     },
     {
@@ -53,10 +54,10 @@ export default function useFaqCategoryForm() {
       reset();
       globalMutate(
         "faq-categories",
-        (current: any[] = []) => [
+        (current: FaqCategoryDto[] = []) => [
           ...current,
           {
-            id: result.id || Date.now(),
+            id: result.id ?? Date.now(),
             name: values.name,
             isActive: true,
             createdAt: new Date().toISOString(),
@@ -65,7 +66,7 @@ export default function useFaqCategoryForm() {
           },
         ],
         false
-      );
+      ).finally();
       callback?.(false);
     }
   };

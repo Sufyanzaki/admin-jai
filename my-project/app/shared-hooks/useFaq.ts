@@ -1,8 +1,9 @@
 import { useSWRFix } from "@/shared-lib";
-import { getAllFaq, Faq } from "../_api/getFaq";
+import {FaqDto} from "@/app/shared-types/faq";
+import {getAllFaq} from "@/app/shared-api/faqApi";
 
 export default function useFaq() {
-  const { data, error, loading, mutate } = useSWRFix<Faq[]>({
+  const { data, error, loading, mutate } = useSWRFix<FaqDto[]>({
     key: "faqs",
     fetcher: getAllFaq,
   });

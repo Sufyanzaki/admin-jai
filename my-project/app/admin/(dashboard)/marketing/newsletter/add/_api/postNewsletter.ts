@@ -1,16 +1,13 @@
 import { postRequest } from "@/shared-lib";
+import {NewsletterDto} from "@/app/shared-types/newsletter";
 
-export type PostNewsletterProps = {
-  title: string;
-  content: string;
-  emails: string;
-};
+type Payload = Partial<NewsletterDto>;
 
-export async function postNewsletter(data: PostNewsletterProps): Promise<{ status: number } | undefined> {
-  const r = await postRequest<PostNewsletterProps>({
+export async function postNewsletter(data: Payload): Promise<NewsletterDto> {
+  const r = await postRequest<Payload>({
     url: "newsletter",
     data,
     useAuth: true,
   });
-  return { status: r.status };
-} 
+  return r.response;
+}

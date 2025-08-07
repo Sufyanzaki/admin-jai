@@ -1,5 +1,5 @@
 export type RegistrationSettingDto = {
-    id: number;
+    id: string;
     Title: string;
     Url: string;
     bannerImage: string;

@@ -8,7 +8,7 @@ import { BasicPageDto } from "@/app/admin/(dashboard)/frontend-settings/_types/b
 export const useDeleteBasicPage = () => {
     const { trigger, isMutating, error } = useSWRMutation(
         "deleteBasicPage",
-        async (key: string, { arg }: { arg: number }) => {
+        async (key: string, { arg }: { arg: string }) => {
             return await deleteBasicPage(arg);
         },
         {
@@ -18,19 +18,19 @@ export const useDeleteBasicPage = () => {
                 globalMutate(
                     "basic-pages-settings",
                     (current: BasicPageDto[] = []) =>
-                        current.filter(page => page.id !== id),
+                        current.filter(page => String(page.id) !== String(id)),
                     false
-                );
+                ).finally();
             },
             onError: (error: Error) => {
                 showError({ message: error.message });
-                globalMutate("basic-pages-settings");
+                globalMutate("basic-pages-settings").finally();
             },
         }
     );
 
-    const deletePageById = async (id: number) => {
-        await trigger(id);  // Make sure you're passing the id correctly here
+    const deletePageById = async (id: string) => {
+        await trigger(id);
     };
 
     return {

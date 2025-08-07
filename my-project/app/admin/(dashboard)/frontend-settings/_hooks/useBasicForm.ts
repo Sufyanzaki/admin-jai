@@ -4,7 +4,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import useSWRMutation from "swr/mutation";
-import { useState } from 'react'; // Add this import
+import { useState } from 'react';
 import {imageUpload} from '@/admin-utils/utils/imageUpload';
 import {showError, showSuccess} from "@/shared-lib";
 import {postBasicPage} from '../_api/basicPageApi';
@@ -80,10 +80,11 @@ export default function useBasicForm() {
             if (result) {
                 showSuccess(`Basic page added successfully!`);
             }
-        } catch (error: any) {
-            setIsUploading(false);
-            showError({ message: error.message });
-            console.error('Image upload error:', error);
+        } catch (error: unknown) {
+            if(error instanceof Error){
+                setIsUploading(false);
+                showError({ message: error.message });
+            }
         }
     };
 

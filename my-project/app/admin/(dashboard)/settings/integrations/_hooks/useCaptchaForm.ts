@@ -65,8 +65,8 @@ export default function useCaptchaForm() {
       if (result) {
         showSuccess('Captcha settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message || 'Failed to update captcha settings.' });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || 'Failed to update captcha settings.' });
     }
   };
 

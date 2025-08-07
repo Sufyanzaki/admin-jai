@@ -1,28 +1,28 @@
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { showError } from "@/shared-lib";
-import { showSuccess } from "@/shared-lib";
-import { patchFaq, PatchFaqProps } from "../_api/patchFaq";
-import { useSWRConfig } from "swr";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {showError, showSuccess} from "@/shared-lib";
+import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
-import { useEffect } from "react";
+import {useEffect} from "react";
+import {FaqCategoryDto, FaqDto} from "@/app/shared-types/faq";
+import {patchFaq} from "@/app/shared-api/faqApi";
 
 const editFaqSchema = z.object({
   question: z.string().min(1, "Question is required"),
   answer: z.string().min(1, "Answer is required"),
-  categoryId: z.number({ required_error: "Category is required" }),
+  categoryId: z.string({ required_error: "Category is required" }),
 });
 
 export type EditFaqFormValues = z.infer<typeof editFaqSchema>;
 
-export default function useEditFaq(faq: any, categories: any[]) {
+export default function useEditFaq(categories: FaqCategoryDto[], faq?: FaqDto,) {
   const { mutate: globalMutate } = useSWRConfig();
 
   const { trigger, isMutating } = useSWRMutation(
       faq?.id ? `editFaq-${faq.id}` : null,
-      async (_key, { arg }: { arg: PatchFaqProps }) => {
-        return await patchFaq(faq.id, arg);
+      async (_key, { arg }: { arg: Partial<FaqDto> }) => {
+        return await patchFaq(faq!.id, arg);
       },
       {
         onError: (error: Error) => {
@@ -45,7 +45,7 @@ export default function useEditFaq(faq: any, categories: any[]) {
     defaultValues: {
       question: faq?.question || "",
       answer: faq?.answer || "",
-      categoryId: faq?.categoryId || undefined,
+      categoryId: faq?.categoryId || '',
     },
     mode: "onBlur",
   });
@@ -54,7 +54,7 @@ export default function useEditFaq(faq: any, categories: any[]) {
     if (faq) {
       setValue("question", faq.question || "");
       setValue("answer", faq.answer || "");
-      setValue("categoryId", faq.categoryId || undefined);
+      setValue("categoryId", faq.categoryId || '');
     }
   }, [faq, setValue]);
 
@@ -67,11 +67,11 @@ export default function useEditFaq(faq: any, categories: any[]) {
       categoryId: values.categoryId,
     });
 
-    if (result?.status === 200) {
+    if (result) {
       showSuccess("FAQ updated successfully!");
       globalMutate(
           "faqs",
-          (current: any[] = []) =>
+          (current: FaqDto[] = []) =>
               current.map((item) =>
                   item.id === faq.id
                       ? {
@@ -85,7 +85,7 @@ export default function useEditFaq(faq: any, categories: any[]) {
                       : item
               ),
           false
-      );
+      ).finally();
       callback?.(false);
     }
   };

@@ -8,7 +8,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/
 import {Button} from "@/components/admin/ui/button";
 import Link from "next/link";
 import {FaqAddModal} from "@/app/admin/(dashboard)/faq/_components/faq-add-modal";
-import useFaq from "./_hooks/useFaq";
+import useFaq from "../../../shared-hooks/useFaq";
 import { useRouter, useSearchParams } from "next/navigation";
 import useDeleteFaq from "./_hooks/useDeleteFaq";
 import Preloader from "@/components/shared/Preloader";

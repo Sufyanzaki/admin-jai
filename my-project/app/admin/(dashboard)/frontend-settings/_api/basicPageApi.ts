@@ -1,21 +1,10 @@
 import {BasicPageDto} from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
 import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
 
-type BasicPagePropsDto = {
-    id?: string;
-    Title: string;
-    Url: string;
-    content: string;
-    metaTitle: string;
-    metaDescription: string;
-    keywords: string;
-    metaImage?: string;
-    pageType: string;
-    isActive: boolean;
-}
+type Payload = Partial<BasicPageDto>;
 
-export async function postBasicPage(data: Partial<BasicPagePropsDto>): Promise<BasicPageDto> {
-    const r = await postRequest<Partial<BasicPagePropsDto>>({
+export async function postBasicPage(data: Payload): Promise<BasicPageDto> {
+    const r = await postRequest<Payload>({
         url: 'setting/basic-pages',
         data,
         useAuth: true,
@@ -24,9 +13,9 @@ export async function postBasicPage(data: Partial<BasicPagePropsDto>): Promise<B
 }
 
 
-export async function patchBasicPage(data: Partial<BasicPagePropsDto>): Promise<BasicPageDto> {
+export async function patchBasicPage(data: Payload): Promise<BasicPageDto> {
     const {id, ...otherInfo} = data;
-    const r = await patchRequest<Partial<BasicPagePropsDto>>({
+    const r = await patchRequest<Payload>({
         url: `setting/basic-pages/${id}`,
         data: otherInfo,
         useAuth: true,

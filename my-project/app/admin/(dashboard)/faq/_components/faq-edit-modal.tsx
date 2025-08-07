@@ -9,7 +9,7 @@ import { Input } from "@/components/admin/ui/input";
 import { Controller } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import useEditFaq from "../_hooks/useEditFaq";
-import useFaq from "../_hooks/useFaq";
+import useFaq from "../../../../shared-hooks/useFaq";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
 import Preloader from "@/components/shared/Preloader";
 
@@ -18,9 +18,9 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
     const editId = searchParams.get("edit");
     const { data: faqs } = useFaq();
     const { data: categories, isLoading: categoriesLoading } = useFaqCategories();
-    const faqToEdit = editId && faqs ? faqs.find((faq) => String(faq.id) === String(editId)) : null;
+    const faqToEdit = editId && faqs ? faqs.find((faq) => String(faq.id) === editId) : undefined;
 
-    const { handleSubmit, onSubmit, register, control, errors, isLoading } = useEditFaq(faqToEdit, categories || []);
+    const { handleSubmit, onSubmit, register, control, errors, isLoading } = useEditFaq(categories || [], faqToEdit);
 
     const submitHandler = handleSubmit(async (data) => {
         await onSubmit(data, (result) => {

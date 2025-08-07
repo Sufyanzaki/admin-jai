@@ -102,9 +102,11 @@ export default function useProfileForm() {
                 showSuccess('Profile updated successfully!');
                 callback?.(result);
             }
-        } catch (error: any) {
-            showError({message: error.message});
-            console.error('Profile update error:', error);
+        } catch (error: unknown) {
+            if(error instanceof Error){
+                showError({message: error.message});
+                console.error('Profile update error:', error);
+            }
         }
     };
 

@@ -9,7 +9,7 @@ import {Textarea} from "@/components/admin/ui/textarea";
 import Link from "next/link";
 import {ArrowLeft} from "lucide-react";
 import {useParams} from "next/navigation";
-import {useBlogCategories} from "../../../category/_hooks/useBlogCategories";
+import {useBlogCategories} from "../../../../../../shared-hooks/useBlogCategories";
 import useEditBlog from "../../../_hooks/useEditBlog";
 import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";

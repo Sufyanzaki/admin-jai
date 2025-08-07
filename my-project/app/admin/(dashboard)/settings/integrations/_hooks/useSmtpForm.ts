@@ -77,8 +77,8 @@ export default function useSmtpForm() {
       if (result) {
         showSuccess('SMTP settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message || 'Failed to update SMTP settings.' });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || 'Failed to update SMTP settings.' });
     }
   };
 

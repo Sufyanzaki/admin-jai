@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { showError } from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
-import { postLoginForm } from '../_api/postLoginForm';
+import { postLoginForm } from '@/app/shared-api/auth';
 import { setUserEmail } from "@/lib/access-token";
 
 const loginSchema = z.object({

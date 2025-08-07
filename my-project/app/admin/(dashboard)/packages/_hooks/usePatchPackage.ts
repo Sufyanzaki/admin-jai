@@ -23,8 +23,8 @@ export function usePatchPackage() {
       globalMutate(`package-${id}`, (current: Package | undefined) =>
         current ? { ...current, isActive } : current, false
       );
-    } catch (err: any) {
-      setError(err?.message || "Failed to update status");
+    } catch (err: unknown) {
+      if(err instanceof Error) setError(err.message || "Failed to update status");
     } finally {
       setLoading(false);
     }

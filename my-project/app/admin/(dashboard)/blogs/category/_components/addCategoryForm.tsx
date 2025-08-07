@@ -19,9 +19,7 @@ export default function AddCategoryForm({ onSuccess }: AddCategoryFormProps) {
 
   return (
     <form
-      onSubmit={handleSubmit(async (values) => {
-        await onSubmit(values, onSuccess);
-      })}
+      onSubmit={handleSubmit(values => onSubmit(values, onSuccess))}
       className="space-y-4"
     >
       <div className="space-y-2">

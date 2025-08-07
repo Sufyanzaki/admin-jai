@@ -3,10 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { addLanguage } from "@/app/admin/(dashboard)/settings/_api/addLanguage";
 import useSWRMutation from "swr/mutation";
 import { mutate as globalMutate } from "swr";
-import type { Language } from "@/app/admin/(dashboard)/settings/_api/getLanguages";
+import {addLanguage} from "@/app/admin/(dashboard)/settings/_api/languageApi";
+import {BasicLanguageDto} from "@/app/shared-types/basic-languages";
 
 const languageSchema = z.object({
   name: z.string().min(1, "Language name is required"),
@@ -54,26 +54,27 @@ export default function useLanguageForm() {
     mode: "onBlur",
   });
 
-  const onSubmit = async (values: LanguageFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: LanguageFormValues, callback?: () => void) => {
     try {
       const result = await trigger(values);
       if (result) {
         showSuccess("Language added successfully!");
         reset();
-        // Optimistically update the languages-list cache by pushing the new language
-        globalMutate("languages-list", (current: Language[] = []) => [
+        globalMutate("languages-list", (current: BasicLanguageDto[] = []) => [
           ...current,
           {
+            id: result.id ?? Date.now(),
             name: values.name,
             code: values.code,
             status: values.status === "active" ? "Active" : "Inactive",
+            isActive: result.isActive,
+            image: result.image
           },
-        ], false);
-        callback?.(result);
+        ], false).finally();
+        callback?.();
       }
-    } catch (error: any) {
-      showError({ message: error.message });
-      console.error("Language creation error:", error);
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message });
     }
   };
 

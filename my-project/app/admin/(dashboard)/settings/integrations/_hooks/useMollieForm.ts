@@ -62,8 +62,8 @@ export default function useMollieForm() {
       if (result) {
         showSuccess('Mollie settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message || 'Failed to update Mollie settings.' });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || 'Failed to update Mollie settings.' });
     }
   };
 

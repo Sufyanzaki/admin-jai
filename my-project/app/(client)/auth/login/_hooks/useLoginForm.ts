@@ -4,7 +4,7 @@ import {z} from 'zod';
 import {useRouter} from 'next/navigation';
 import {showError} from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
-import { postLoginForm } from '../_api/postLoginForm';
+import { postLoginForm } from '@/app/shared-api/auth';
 import {setUserEmail} from "@/lib/access-token";
 
 const loginSchema = z.object({
@@ -54,8 +54,8 @@ export default function useLoginForm() {
             });
             setUserEmail(values.email);
             router.push('/auth/otp');
-        } catch (error: any) {
-            showError({ message: error.message || 'An unexpected error occurred. Please try again.' });
+        } catch (error: unknown) {
+            if(error instanceof Error) showError({ message: error.message || 'An unexpected error occurred. Please try again.' });
         }
     };
 

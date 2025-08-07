@@ -3,9 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { patchFaqCategory, PatchFaqCategoryProps } from "../_api/patchFaqCategory";
 import { useSWRConfig } from "swr";
 import { useEffect } from "react";
+import {patchFaqCategory} from "@/app/shared-api/faqApi";
+import {FaqCategoryDto} from "@/app/shared-types/faq";
 
 const editFaqCategorySchema = z.object({
   name: z.string().min(1, "Category name is required"),
@@ -13,7 +14,7 @@ const editFaqCategorySchema = z.object({
 
 export type EditFaqCategoryFormValues = z.infer<typeof editFaqCategorySchema>;
 
-export default function useEditFaqCategory(id: number | null, initialName: string) {
+export default function useEditFaqCategory(id: string | null, initialName: string) {
   const { mutate } = useSWRConfig();
   const {
     handleSubmit,
@@ -37,20 +38,20 @@ export default function useEditFaqCategory(id: number | null, initialName: strin
     if (!id) return;
     try {
       const result = await patchFaqCategory(id, { name: values.name });
-      if (result?.status === 200) {
+      if (result) {
         showSuccess("FAQ Category updated successfully!");
         mutate(
           "faq-categories",
-          (current: any[] = []) =>
+          (current: FaqCategoryDto[] = []) =>
             current.map((cat) =>
               cat.id === id ? { ...cat, name: values.name, updatedAt: new Date().toISOString() } : cat
             ),
           false
-        );
+        ).finally();
         callback?.(false);
       }
-    } catch (error: any) {
-      showError({ message: error.message || "Failed to update category" });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || "Failed to update category" });
     }
   };
 

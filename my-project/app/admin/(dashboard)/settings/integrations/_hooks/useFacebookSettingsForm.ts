@@ -72,8 +72,8 @@ export default function useFacebookSettingsForm() {
       if (result) {
         showSuccess('Facebook settings updated successfully!');
       }
-    } catch (error: any) {
-      showError({ message: error.message || 'Failed to update Facebook settings.' });
+    } catch (error: unknown) {
+      if(error instanceof Error) showError({ message: error.message || 'Failed to update Facebook settings.' });
     }
   };
 

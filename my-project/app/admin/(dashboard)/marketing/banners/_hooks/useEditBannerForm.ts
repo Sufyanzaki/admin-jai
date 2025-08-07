@@ -127,9 +127,8 @@ export default function useEditBannerForm(id: string) {
                 showSuccess('Banner updated successfully!');
                 callback?.(result);
             }
-        } catch (error: any) {
-            showError({message: error.message});
-            console.error('Banner update error:', error);
+        } catch (error: unknown) {
+            if(error instanceof Error) showError({message: error.message});
         }
     };
     return {

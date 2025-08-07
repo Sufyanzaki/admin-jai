@@ -3,15 +3,16 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {showError} from "@/shared-lib";
 import {showSuccess} from "@/shared-lib";
-import {postFaq, PostFaqProps} from "../_api/postFaq";
 import useSWRMutation from "swr/mutation";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
 import {useSWRConfig} from "swr";
+import {postFaq} from "@/app/shared-api/faqApi";
+import {FaqDto} from "@/app/shared-types/faq";
 
 const faqSchema = z.object({
   question: z.string().min(1, "Question is required"),
   answer: z.string().min(1, "Answer is required"),
-  categoryId: z.number({ required_error: "Category is required" }),
+  categoryId: z.string({ required_error: "Category is required" }),
 });
 
 export type FaqFormValues = z.infer<typeof faqSchema>;
@@ -21,7 +22,7 @@ export default function useFaqForm() {
   const { mutate: globalMutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation(
     "createFaq",
-    async (_: string, { arg }: { arg: PostFaqProps }) => {
+    async (_: string, { arg }: { arg: Partial<FaqDto> }) => {
       return await postFaq(arg);
     },
     {
@@ -60,7 +61,7 @@ export default function useFaqForm() {
       reset();
       globalMutate(
         "faqs",
-        (current: any[] = []) => [
+        (current: FaqDto[] = []) => [
           ...current,
           {
             id: result.id ?? Date.now(),
@@ -73,7 +74,7 @@ export default function useFaqForm() {
           },
         ],
         false
-      );
+      ).finally();
       callback?.(false);
     }
   };
