@@ -1,8 +1,7 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
+import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import {getUserTrackingId, setUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
@@ -10,36 +9,10 @@ import {isFile} from "@/lib/utils";
 import {useEffect, useMemo} from "react";
 import {useBasicInfo} from "../../_hooks/useBasicInfo";
 import {useParams} from "next/navigation";
-import { useSWRConfig } from "swr";
-import { GetAllMembersResponse, Member } from "../../_types/member";
-import {patchUser, postUser} from "@/app/shared-api/createUser";
-
-interface UserApiResponse {
-  email?: string;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  role?: string;
-  dob?: string;
-  image?: string;
-  phone?: string;
-  origin?: string;
-  gender?: string;
-  age?: number;
-  relationshipStatus?: string;
-  children?: boolean;
-  religion?: string;
-  shortDescription?: string;
-
-  educationCareer?: any;
-  personalityBehavior?: any;
-  partnerExpectation?: any;
-  lifestyle?: any;
-  hobbiesInterests?: any;
-  language?: any;
-  living?: any;
-  physicalAppearance?: any;
-}
+import {useSWRConfig} from "swr";
+import {GetAllMembersResponse} from "../../_types/member";
+import {patchUser, postUser} from "@/app/shared-api/userApi";
+import {MemberProfile} from "@/app/shared-types/member";
 
 const createUserSchema = (requirePassword: boolean) => z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
@@ -115,7 +88,7 @@ export default function useCreateUserForm() {
 
   useEffect(() => {
     if (id && user) {
-      const u = user as UserApiResponse;
+      const u = user as MemberProfile;
       reset({
         email: u.email || "",
         password: undefined,
@@ -172,11 +145,11 @@ export default function useCreateUserForm() {
       }
   );
 
-  const onSubmit = async (values: CreateUserFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: CreateUserFormValues, callback?: () => void) => {
     const imageUrl =
         isFile(values.image) ? await imageUpload(values.image as File) : (values.image as string);
 
-    const tempUser: Partial<Member> = {
+    const tempUser: Partial<MemberProfile> = {
       id: id || `temp-${Date.now()}`,
       email: values.email,
       username: values.username,
@@ -196,18 +169,16 @@ export default function useCreateUserForm() {
       isActive: true,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    } as Member;
+    };
 
-    // Optimistic update - update the cache before the API call completes
     if (!id) {
       globalMutate(
           (key) => typeof key === 'string' && key.startsWith('all-members'),
           (current: GetAllMembersResponse | undefined) => {
           if (!current) return current;
-            const updatedUser = result.response as Member;
-          return {
+            return {
             ...current,
-            users: [updatedUser, ...current.users],
+            users: [result, ...current.users],
             stats: {
               ...current.stats,
               total: current.stats.total + 1,
@@ -231,9 +202,8 @@ export default function useCreateUserForm() {
         (key) => typeof key === 'string' && key.startsWith('all-members'),
         (current: GetAllMembersResponse | undefined) => {
           if (!current) return current;
-          const updatedUser = result.response as Member;
-          let users: Member[];
-
+          const updatedUser = result;
+          let users: MemberProfile[];
           if (id) {
             users = current.users.map(u => u.id === updatedUser.id ? updatedUser : u);
           } else {
@@ -262,13 +232,13 @@ export default function useCreateUserForm() {
       globalMutate(
         (key) => typeof key === 'string' && key.startsWith('all-members'),
       );
-      callback?.(result.response);
+      callback?.();
       if (id) {
         updateUserTrackingId({ basicInformation: true });
       }
       else {
         setUserTrackingId({
-          id: result.response.id,
+          id: result.id,
           basicInformation: true,
           educationAndCareer: false,
           personalityAndBehavior: false,

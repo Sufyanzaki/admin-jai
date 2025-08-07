@@ -2,8 +2,8 @@ import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { showError, showSuccess } from "@/shared-lib";
 import { useState } from "react";
-import { deleteBlog } from "../_api/deleteBlog";
-import { BlogsResponse } from "../_api/getAllBlogs";
+import {BlogDto} from "@/app/shared-types/blog";
+import { deleteBlog } from "@/app/shared-api/blogsApi";
 
 export const useDeleteBlog = () => {
   const { mutate: globalMutate } = useSWRConfig();
@@ -17,7 +17,7 @@ export const useDeleteBlog = () => {
     {
       onSuccess: () => showSuccess("Blog deleted successfully!"),
       onError: (error) => {
-        globalMutate("blogs");
+        globalMutate("blogs").finally();
         showError({ message: error.message });
       }
     }
@@ -29,7 +29,7 @@ export const useDeleteBlog = () => {
       await trigger({ id });
       await globalMutate(
         "blogs",
-        (currentData: BlogsResponse | undefined) => {
+        (currentData: BlogDto[] | undefined) => {
           if (!currentData) return currentData;
           return currentData.filter(blog => String(blog.id) !== String(id));
         },

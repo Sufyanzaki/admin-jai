@@ -3,10 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { editBlog } from "../_api/editBlog";
+import { editBlog } from "@/app/shared-api/blogsApi";
 import useSWRMutation from "swr/mutation";
 import { useEffect } from "react";
-import useBlogById from "./useBlogById";
+import useBlogById from "../../../../shared-hooks/useBlogById";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 
 const editBlogSchema = z.object({
@@ -24,7 +24,7 @@ const editBlogSchema = z.object({
 
 export type EditBlogFormValues = z.infer<typeof editBlogSchema>;
 
-export default function useEditBlog(id: number | string) {
+export default function useEditBlog(id: string) {
     const { blog, loading: blogLoading, error: blogError } = useBlogById(id);
 
     const { trigger, isMutating } = useSWRMutation(
@@ -89,14 +89,12 @@ export default function useEditBlog(id: number | string) {
         let bannerImageUrl = "";
         let metaImageUrl = "";
 
-        // Upload bannerImage if it's a file
         if (values.bannerImage instanceof File) {
             bannerImageUrl = await imageUpload(values.bannerImage);
         } else if (typeof values.bannerImage === "string") {
             bannerImageUrl = values.bannerImage;
         }
 
-        // Upload metaImage if it's a file
         if (values.metaImage instanceof File) {
             metaImageUrl = await imageUpload(values.metaImage);
         } else if (typeof values.metaImage === "string") {

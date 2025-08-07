@@ -227,7 +227,7 @@ export default function PersonalInfoTab({ callback }: { callback: () => void }) 
                   control={control}
                   name="children"
                   render={({ field }) => (
-                    <Select value={field.value ? "ja" : "geen"} onValueChange={v => field.onChange(v === "ja") } key={field.value}>
+                    <Select value={field.value ? "ja" : "geen"} onValueChange={v => field.onChange(v === "ja") } key={field.value ? "true": "false"}>
                       <SelectTrigger id="children">
                         <SelectValue placeholder="Select option" />
                       </SelectTrigger>

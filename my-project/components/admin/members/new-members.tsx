@@ -1,14 +1,14 @@
 "use client"
 
-import { CalendarDays, Clock } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar"
-import { Button } from "@/components/admin/ui/button"
-import { Badge } from "@/components/admin/ui/badge"
-import { format } from "date-fns"
+import {CalendarDays, Clock} from "lucide-react"
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar"
+import {Button} from "@/components/admin/ui/button"
+import {Badge} from "@/components/admin/ui/badge"
+import {format} from "date-fns"
 import Link from "next/link"
-import {UserDto} from "@/app/shared-types/auth";
+import {MemberProfile} from "@/app/shared-types/member";
 
-export function NewMembers({ users }: { users: UserDto[] }) {
+export function NewMembers({ users }: { users: MemberProfile[] }) {
   return (
       <div className="space-y-4">
         {users.map((user) => (

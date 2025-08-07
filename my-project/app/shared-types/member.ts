@@ -130,13 +130,13 @@ export type MemberPhysicalAppearance = {
 
 
 export type MemberProfile = {
-    id: number;
+    id: string;
     username: string;
     email: string;
     firstName: string;
     lastName: string;
     dob: string;
-    role: string;
+    role: 'ADMIN' | 'CLIENT' | string;
     otp: string | null;
     otpExpiresAt: string | null;
     isActive: boolean;
@@ -146,9 +146,9 @@ export type MemberProfile = {
     department: string | null;
     location: string | null;
     origin: string;
-    gender: string;
+    gender: 'Male' | 'Female' | 'Other' | string;
     age: number;
-    relationshipStatus: string;
+    relationshipStatus: 'Single' | 'Married' | 'Divorced' | string;
     lookingFor: string | null;
     children: boolean;
     religion: string;
@@ -156,15 +156,15 @@ export type MemberProfile = {
     isPremium: boolean;
     createdAt: string;
     updatedAt: string;
-    roleId: number | null;
 
+    roleId: number | null;
     educationCareer: MemberEducation | null;
     personalityBehavior: MemberPersonalityBehavior | null;
     partnerExpectation: MemberPartnerExpectations | null;
 
-    lifestyle: unknown | null;
-    hobbiesInterests: unknown | null;
-    language: unknown | null;
-    living: unknown | null;
-    physicalAppearance: unknown | null;
+    lifestyle: MemberLifeStyle | null;
+    hobbiesInterests: MemberHobbiesInterests | null;
+    language: MemberLanguage | null;
+    living: MemberLocation | null;
+    physicalAppearance: MemberPhysicalAppearance | null;
 }

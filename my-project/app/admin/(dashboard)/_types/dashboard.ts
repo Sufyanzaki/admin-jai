@@ -1,4 +1,4 @@
-import {UserDto} from "@/app/shared-types/auth";
+import {MemberProfile} from "@/app/shared-types/member";
 
 export type DashboardStats = {
     totalMembers: number;
@@ -6,7 +6,7 @@ export type DashboardStats = {
     freeMembers: number;
     todayMembers: number;
     monthlyRegistrations: MonthlyRegistration[];
-    todayRegisteredUsers: UserDto[];
+    todayRegisteredUsers: MemberProfile[];
 }
 
 export type MonthlyRegistration = {

@@ -53,18 +53,14 @@ export default function AddBlogPage() {
                 <CardContent>
                     <form
                         className="grid grid-cols-2 gap-6"
-                        onSubmit={handleSubmit(async (values) => {
-                            await onSubmit(values);
-                        })}
+                        onSubmit={handleSubmit(values => onSubmit(values))}
                     >
-                        {/* Blog Title */}
                         <div className="flex-1 space-y-2">
                             <Label htmlFor="title">Blog Title *</Label>
                             <Input id="title" placeholder="Blog Title" required {...register('title')} />
                             {errors.title && <div className="text-red-500 text-sm">{errors.title.message}</div>}
                         </div>
 
-                        {/* Category */}
                         <div className="flex-1 space-y-2">
                             <Label htmlFor="category">Category *</Label>
                             <Controller
@@ -115,7 +111,6 @@ export default function AddBlogPage() {
                             />
                         </div>
 
-                        {/* Short Description */}
                         <div className="space-y-2 col-span-2">
                             <Label htmlFor="short-description">Short Description *</Label>
                             <Textarea id="short-description" placeholder="Short Description" rows={4} required {...register('shortDescription')} />
@@ -138,14 +133,12 @@ export default function AddBlogPage() {
                             {errors.description && <div className="text-red-500 text-sm">{errors.description.message}</div>}
                         </div>
 
-                        {/* Meta Title */}
                         <div className="flex-1 space-y-2">
                             <Label htmlFor="meta-title">Meta Title</Label>
                             <Input id="meta-title" placeholder="Meta Title" {...register('metaTitle')} />
                             {errors.metaTitle && <div className="text-red-500 text-sm">{errors.metaTitle.message}</div>}
                         </div>
 
-                        {/* Meta Image */}
                         <div className="flex-1 space-y-2">
                             <Label htmlFor="meta-image">Meta Image</Label>
                             <Controller
@@ -162,21 +155,18 @@ export default function AddBlogPage() {
                             />
                         </div>
 
-                        {/* Meta Description */}
                         <div className="col-span-2 space-y-2">
                             <Label htmlFor="meta-description">Meta Description</Label>
                             <Textarea id="meta-description" placeholder="Meta Description" rows={4} {...register('metaDescription')} />
                             {errors.metaDescription && <div className="text-red-500 text-sm">{errors.metaDescription.message}</div>}
                         </div>
 
-                        {/* Meta Keywords */}
                         <div className="col-span-2 space-y-2">
                             <Label htmlFor="meta-keywords">Meta Keywords</Label>
                             <Input id="meta-keywords" placeholder="Meta Keywords" {...register('metaKeywords')} />
                             {errors.metaKeywords && <div className="text-red-500 text-sm">{errors.metaKeywords.message}</div>}
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="col-span-2 flex justify-end space-x-4 pt-4">
                             <Button type="submit" disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</Button>
                         </div>

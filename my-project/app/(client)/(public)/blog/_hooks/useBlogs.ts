@@ -1,8 +1,9 @@
 import { useSWRFix } from "@/shared-lib";
-import { getAllBlogs, BlogsResponse } from "../_api/getAllBlogs";
+import { getAllBlogs } from "@/app/shared-api/blogsApi";
+import {BlogDto} from "@/app/shared-types/blog";
 
 export const useBlogs = () => {
-    const { data, loading, error, mutate } = useSWRFix<BlogsResponse>({
+    const { data, loading, error, mutate } = useSWRFix<BlogDto[]>({
         key: 'blogs',
         fetcher: getAllBlogs
     });

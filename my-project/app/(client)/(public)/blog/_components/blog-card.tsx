@@ -1,7 +1,7 @@
 "use client";
 import ImageCard from "@/components/client/ux/image-card";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { Blog } from "../_api/getAllBlogs";
+import {BlogDto} from "@/app/shared-types/blog";
 
 export function BlogCard({
   id,
@@ -11,7 +11,7 @@ export function BlogCard({
   metaTitle,
   createdAt,
   categoryId,
-}: Blog) {
+}: BlogDto) {
   return (
     <div className="p-0 overflow-hidden">
       <div className="relative hidden lg:block">

@@ -64,7 +64,7 @@ export function SignupForm() {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(data=>onSubmit(data))} className="space-y-5">
               <div className="border-b border-[#E5E7EB]">
                 <Controller
                   name="lookingFor"

@@ -4,7 +4,7 @@ import {z} from 'zod';
 import {showError, showSuccess} from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
 import {useCallback} from 'react';
-import {postUser} from "@/app/shared-api/createUser";
+import {postUser} from "@/app/shared-api/userApi";
 import {postUserLocation} from "@/app/shared-api/livingApi";
 import {postPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
 
@@ -74,9 +74,8 @@ export default function useRegisterForm() {
                     reset();
                     callback?.();
                 }
-            } catch (error: unknown) {
-                showError({ message: error.message });
-                console.error('User creation error:', error);
+            } catch (error) {
+                if (error instanceof Error) showError({ message: error.message });
             }
         },
         [trigger, reset]

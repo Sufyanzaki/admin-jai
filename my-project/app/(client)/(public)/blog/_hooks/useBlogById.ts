@@ -1,9 +1,9 @@
 import { useSWRFix } from "@/shared-lib";
-import { getBlogById } from "../_api/getBlogById";
-import { Blog } from "../_api/getAllBlogs";
+import {BlogDto} from "@/app/shared-types/blog";
+import {getBlogById} from "@/app/shared-api/blogsApi";
 
-const useBlogById = (id: number | string) => {
-    const { data, loading, error, mutate } = useSWRFix<Blog>({
+const useBlogById = (id: string) => {
+    const { data, loading, error, mutate } = useSWRFix<BlogDto>({
         key: id ? `blog-${id}` : '',
         fetcher: () => getBlogById(id)
     });

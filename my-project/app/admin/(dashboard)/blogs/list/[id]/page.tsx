@@ -7,7 +7,7 @@ import {ArrowLeft, Bookmark, Calendar, Edit, Share2} from "lucide-react"
 import Link from "next/link"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
 import {useParams} from "next/navigation";
-import useBlogById from "../../_hooks/useBlogById";
+import useBlogById from "../../../../../shared-hooks/useBlogById";
 import {unescapeHtml} from "@/lib/utils"
 import Preloader from "@/components/shared/Preloader";
 

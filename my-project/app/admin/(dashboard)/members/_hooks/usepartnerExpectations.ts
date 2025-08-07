@@ -1,7 +1,7 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getUser } from "../../../../shared-api/createUser";
+import { getUser } from "../../../../shared-api/userApi";
 import { getUserTrackingId } from "@/lib/access-token";
 import { useParams } from "next/navigation";
 import {getPartnerExpectations} from "@/app/shared-api/partnerExpectationApi";

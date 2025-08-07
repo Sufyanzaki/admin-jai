@@ -26,8 +26,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             return (
-                <div className='fixed inset-0 h-screen w-screen -z-10 w-100 font-montserrat'>
-                    <div className='p-6 text-black text-center rounded-xl shadow-wwlDefault h-full flex justify-center items-center flex-col'>
+                <div className='fixed inset-0 h-screen -z-10 w-100 font-montserrat'>
+                    <div className='p-6 text-black text-center rounded-xl h-full flex justify-center items-center flex-col'>
                         <div className='text-4xl font-bold pb-3'>Something went wrong!</div>
                         <p className='p-3 pb-6'>
                             Oops! There was an error.<br />

@@ -12,9 +12,9 @@ import {
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
 import {Ban, CheckCircle, Eye, MoreHorizontal, Notebook, Pencil, Plus, Trash} from "lucide-react";
 import Link from "next/link";
-import {useBlogs} from "../_hooks/useBlogs";
+import {useBlogs} from "../../../../shared-hooks/useBlogs";
 import Preloader from "@/components/shared/Preloader";
-import {useDeleteBlog} from "../_hooks/useDeleteBlog";
+import {useDeleteBlog} from "../../../../shared-hooks/useDeleteBlog";
 
 export default function BlogListPage() {
   const { blogs = [], loading, error } = useBlogs();

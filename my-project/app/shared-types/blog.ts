@@ -1,6 +1,4 @@
-import { getRequest } from "@/shared-lib";
-
-export type Blog = {
+export type BlogDto = {
     id: string;
     title: string;
     slug: string;
@@ -15,12 +13,3 @@ export type Blog = {
     createdAt: string;
     updatedAt: string;
 };
-
-export type BlogsResponse = Blog[];
-
-export async function getAllBlogs(): Promise<BlogsResponse> {
-    return await getRequest<BlogsResponse>({
-        url: 'blog',
-        useAuth: true
-    });
-} 

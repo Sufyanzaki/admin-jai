@@ -1,8 +1,8 @@
 import { getRequest } from "@/shared-lib";
-import { Blog } from "./getAllBlogs";
+import {BlogDto} from "@/app/shared-types/blog";
 
-export async function getBlogById(id: number | string): Promise<Blog> {
-    return await getRequest<Blog>({
+export async function getBlogById(id: string): Promise<BlogDto> {
+    return await getRequest<BlogDto>({
         url: `blog/${id}`,
         useAuth: true
     });

@@ -3,11 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { createBlog, CreateBlogProps } from "../_api/createBlog";
 import useSWRMutation from "swr/mutation";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
+import {createBlog} from "@/app/shared-api/blogsApi";
+import {BlogDto} from "@/app/shared-types/blog";
 
-// Define types for image fields
 type ImageField = File | string | undefined;
 
 const createBlogSchema = z.object({
@@ -32,7 +32,7 @@ export type CreateBlogFormValues = z.infer<typeof createBlogSchema>;
 export default function useCreateBlog() {
     const { trigger, isMutating } = useSWRMutation(
         'createBlog',
-        async (_: string, { arg }: { arg: CreateBlogProps }) => {
+        async (_: string, { arg }: { arg: Partial<BlogDto> }) => {
             return await createBlog(arg);
         },
         {
@@ -84,7 +84,7 @@ export default function useCreateBlog() {
         throw new Error('Image upload function not provided');
     };
 
-    const onSubmit = async (values: CreateBlogFormValues, callback?: (data: { status: number } | undefined) => void) => {
+    const onSubmit = async (values: CreateBlogFormValues, callback?: () => void) => {
         try {
             // Process images in parallel
             const [bannerImageUrl, metaImageUrl] = await Promise.all([
@@ -98,10 +98,10 @@ export default function useCreateBlog() {
                 metaImage: metaImageUrl,
             });
 
-            if (result?.status === 201) {
+            if (result) {
                 showSuccess('Blog created successfully!');
                 reset();
-                callback?.(result);
+                callback?.();
             }
         } catch (error) {
             showError({
