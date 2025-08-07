@@ -5,9 +5,13 @@ import { Card, CardContent } from "@/components/client/ux/card";
 import { Bell, MoveRight } from "lucide-react";
 import ProfileCard from "./_components/profile-card";
 import { cardData, matches, recentMembers } from "./_const/contant";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   return (
     <>
       <div className="p-4 lg:p-6 flex flex-col min-h-screen gap-8">
@@ -67,13 +71,56 @@ export default function Dashboard() {
             </div>
           </Card>
         </div>
-        <div className="py-6 space-y-8">
-          <div>
+        {/* if user data not added show complete profile button */}
+
+        {session?.user?.name === "null null" ? (
+          <Card className="border-[#dee2e6] rounded-[5px] p-5 shadow-none">
+            <div className="flex flex-col items-center gap-3">
+              <p className="text-black text-sm lg:text-base font-normal">
+                You haven't yet completed your full profile registration.
+                Complete your profile to continue finding a partner.
+              </p>
+
+              <Button
+                variant="theme"
+                size="lg"
+                onClick={() => router.push("auth/profile/create")}
+              >
+                Complete Profile
+              </Button>
+            </div>
+          </Card>
+        ) : (
+          <div className="py-6 space-y-8">
             <div>
+              <div>
+                <div className="flex items-center justify-between mb-4 space-y-3">
+                  <h2 className="font-semibold text-xl md:text-3xl">
+                    Here are Today&apos;s top Matches for you.
+                  </h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-app-pink text-xs sm:text-sm font-semibold"
+                  >
+                    Meer tonen <MoveRight />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
+                  {matches.slice(0, 6).map((match) => (
+                    <ProfileCard key={match.id} profile={match} />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="mb-4 space-y-3">
               <div className="flex items-center justify-between mb-4 space-y-3">
-                <h2 className="font-semibold text-xl md:text-3xl">
-                  Here are Today&apos;s top Matches for you.
-                </h2>
+                <div>
+                  <h2 className="font-semibold text-xl md:text-3xl">
+                    Members you may like
+                  </h2>
+                  <p>Members who match many of your prefrences</p>
+                </div>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -82,36 +129,14 @@ export default function Dashboard() {
                   Meer tonen <MoveRight />
                 </Button>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
-                {matches.slice(0, 6).map((match) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+                {recentMembers.map((match) => (
                   <ProfileCard key={match.id} profile={match} />
                 ))}
               </div>
             </div>
           </div>
-          <div className="mb-4 space-y-3">
-            <div className="flex items-center justify-between mb-4 space-y-3">
-              <div>
-                <h2 className="font-semibold text-xl md:text-3xl">
-                  Members you may like
-                </h2>
-                <p>Members who match many of your prefrences</p>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-app-pink text-xs sm:text-sm font-semibold"
-              >
-                Meer tonen <MoveRight />
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
-              {recentMembers.map((match) => (
-                <ProfileCard key={match.id} profile={match} />
-              ))}
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

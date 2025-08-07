@@ -8,8 +8,8 @@ import { postUser } from "@/app/shared-api/userApi";
 import { postUserLocation } from "@/app/shared-api/livingApi";
 import { postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
 import { postLoginForm } from "@/app/shared-api/auth";
-import {setUserEmail} from "@/lib/access-token";
-import {useRouter} from "next/navigation";
+import { setUserEmail } from "@/lib/access-token";
+import { useRouter } from "next/navigation";
 
 const userSchema = z.object({
     email: z.string().min(1, "Email is required").email("Invalid email"),
@@ -39,15 +39,15 @@ export default function useRegisterForm() {
             setCurrentStep("Creating user");
             const user = await postUser({ email, password });
 
-            setCurrentStep("Saving location");
-            await postUserLocation(user.id, location);
-
-            setCurrentStep("Saving preferences");
-            await postPartnerExpectation(user.id, {
-                lookingFor,
-                ageTo: parseInt(ageTo),
-                ageFrom: parseInt(ageFrom),
-            });
+            setCurrentStep("Saving location & preferences");
+            await Promise.all([
+                postUserLocation(user.id, location),
+                postPartnerExpectation(user.id, {
+                    lookingFor,
+                    ageTo: parseInt(ageTo),
+                    ageFrom: parseInt(ageFrom),
+                }),
+            ]);
             setCurrentStep("Verifying Account");
             await postLoginForm({ email, password });
 
@@ -98,6 +98,7 @@ export default function useRegisterForm() {
                 if (result) {
                     showSuccess('User created successfully!');
                     callback?.();
+                    router.push("/dashbaord")
                 }
             } catch (error) {
                 if (error instanceof Error) showError({ message: error.message });

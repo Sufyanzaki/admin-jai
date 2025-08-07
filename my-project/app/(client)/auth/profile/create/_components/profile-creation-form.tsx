@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/client/ux/button";
 import { Input } from "@/components/client/ux/input";
@@ -16,24 +15,45 @@ import {
   SelectValue,
 } from "@/components/client/ux/select";
 import LocationSearchInput from "@/components/client/location-search";
+import useProfileCreateForm from "../_hooks/useProfileCreate";
+import { MemberLocation } from "@/app/shared-types/member";
+import { Controller } from "react-hook-form";
 
 export function ProfileCreationForm() {
   const router = useRouter();
-  const [displayName, setDisplayName] = useState("John Doe");
-  const [firstName, setFirstName] = useState("Johan");
-  const [lastName, setLastName] = useState("Liebert");
 
-  const handleNext = () => {
-
-  };
+  const {
+    errors,
+    isLoading,
+    onSubmit,
+    handleSubmit,
+    control,
+    register,
+    setValue,
+    currentStep,
+    watch,
+  } = useProfileCreateForm();
 
   const handleBack = () => {
     router.push("/auth/profile/photos");
     console.log("Going back...");
   };
 
+  const city = watch("city");
+  const state = watch("state");
+  const country = watch("country");
+
+  const currentLocation =
+    city || state || country ? { city, state, country } : null;
+
+  const handleLocationSelect = (location: Partial<MemberLocation>) => {
+    setValue("city", location.city ?? "");
+    setValue("state", location.state ?? "");
+    setValue("country", location.country ?? "");
+  };
+
   return (
-    <div className="space-y-6">
+    <form className="space-y-6" onSubmit={handleSubmit(data=>onSubmit(data))}>
       <div className="text-start space-y-4">
         <div className="flex items-center justify-start space-x-3">
           <div className="min-w-8 w-8 min-h-8 h-8 lg:w-10 lg:h-10 bg-black text-white rounded-[5px] flex items-center justify-center font-bold text-base lg:text-xl">
@@ -47,52 +67,77 @@ export function ProfileCreationForm() {
 
       <div className="space-y-2 grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div>
-          <Label>I&apos;m a *</Label>
-          <Select defaultValue="man">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="man">Man</SelectItem>
-            </SelectContent>
-          </Select>
+          <Label>I'm a *</Label>
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Male">Man</SelectItem>
+                  <SelectItem value="Female">Woman</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.gender && (
+            <p className="text-sm text-red-500">{errors.gender.message}</p>
+          )}
         </div>
 
         <div>
           <Label>Origin *</Label>
-          <Select defaultValue="turks">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="turks">Turks</SelectItem>
-            </SelectContent>
-          </Select>
+          <Input
+            {...register("origin")}
+            className="h-12 border-gray-300"
+            placeholder="Enter your origin"
+            required
+          />
+          {errors.origin && (
+            <p className="text-sm text-red-500">{errors.origin.message}</p>
+          )}
         </div>
 
         <div>
-          <Label>I&apos;m looking for a *</Label>
-          <Select defaultValue="man">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="man">Man</SelectItem>
-            </SelectContent>
-          </Select>
+          <Label>I'm looking for a *</Label>
+          <Controller
+            name="lookingFor"
+            control={control}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Man">Man</SelectItem>
+                  <SelectItem value="Woman">Woman</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.lookingFor && (
+            <p className="text-sm text-red-500">{errors.lookingFor.message}</p>
+          )}
         </div>
         <div>
-          <Label htmlFor="displayName" required>
+          <Label htmlFor="username" required>
             Create a display name for your profile.
           </Label>
           <Input
-            id="displayName"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            id="username"
+            {...register("username")}
             className="h-12 border-gray-300"
             placeholder="Enter your display name"
             required
           />
+          {errors.username && (
+            <p className="text-sm text-red-500">{errors.username.message}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="firstName" required>
@@ -100,12 +145,14 @@ export function ProfileCreationForm() {
           </Label>
           <Input
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            {...register("firstName")}
             className="h-12 border-gray-300"
             placeholder="Enter your first name"
             required
           />
+          {errors.firstName && (
+            <p className="text-sm text-red-500">{errors.firstName.message}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="lastName" required>
@@ -113,82 +160,105 @@ export function ProfileCreationForm() {
           </Label>
           <Input
             id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            {...register("lastName")}
             className="h-12 border-gray-300"
             placeholder="Enter your last name"
             required
           />
+          {errors.lastName && (
+            <p className="text-sm text-red-500">{errors.lastName.message}</p>
+          )}
         </div>
 
         <div>
           <Label>Date of Birth *</Label>
-          <div className="flex gap-2">
-            <Select defaultValue="26">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="26">26</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select defaultValue="september">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="september">September</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select defaultValue="1993">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1993">1993</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Input
+            type="date"
+            {...register("dob")}
+            className="h-12 border-gray-300"
+            required
+          />
+          {errors.dob && (
+            <p className="text-sm text-red-500">{errors.dob.message}</p>
+          )}
         </div>
 
         <div>
           <Label>Age</Label>
-          <Input defaultValue="31" />
+          <Input
+            type="number"
+            {...register("age", { valueAsNumber: true })}
+            className="h-12 border-gray-300"
+            placeholder="Enter your age"
+            required
+          />
+          {errors.age && (
+            <p className="text-sm text-red-500">{errors.age.message}</p>
+          )}
         </div>
 
         <div>
           <Label>Relationship</Label>
-          <Select defaultValue="single">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="single">Single</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="relationshipStatus"
+            control={control}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Single">Single</SelectItem>
+                  <SelectItem value="Married">Married</SelectItem>
+                  <SelectItem value="Divorced">Divorced</SelectItem>
+                  <SelectItem value="Widowed">Widowed</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.relationshipStatus && (
+            <p className="text-sm text-red-500">
+              {errors.relationshipStatus.message}
+            </p>
+          )}
         </div>
 
         <div>
           <Label>Children *</Label>
-          <Select defaultValue="1">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">1</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="children"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value ? "true" : "false"}
+                onValueChange={(val) => field.onChange(val === "true")}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="true">Yes</SelectItem>
+                  <SelectItem value="false">No</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.children && (
+            <p className="text-sm text-red-500">{errors.children.message}</p>
+          )}
         </div>
         <div>
           <Label>Religion *</Label>
-          <Select defaultValue="jews">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="jews">Jewish</SelectItem>
-            </SelectContent>
-          </Select>
+          <Input
+            {...register("religion")}
+            className="h-12 border-gray-300"
+            placeholder="Enter your religion"
+            required
+          />
+          {errors.religion && (
+            <p className="text-sm text-red-500">{errors.religion.message}</p>
+          )}
         </div>
       </div>
 
@@ -201,15 +271,33 @@ export function ProfileCreationForm() {
       <div className="grid md:grid-cols-1 gap-4">
         <div className="border-b border-b-app-border">
           <LocationSearchInput
-            onSelect={(location) => {
-              console.log("Selected location:", location);
-            }}
+            value={currentLocation}
+            onSelect={handleLocationSelect}
+            placeholder="Search for your city, state, or country"
           />
+          {(errors.city || errors.state || errors.country) && (
+            <div className="space-y-1">
+              {errors.city && (
+                <p className="text-sm text-red-500">{errors.city.message}</p>
+              )}
+              {errors.state && (
+                <p className="text-sm text-red-500">{errors.state.message}</p>
+              )}
+              {errors.country && (
+                <p className="text-sm text-red-500">{errors.country.message}</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex justify-center gap-6 my-16 lg:my-26">
-        <Button variant="outline" onClick={handleBack} className="p-6">
+        <Button
+          variant="outline"
+          type="button"
+          onClick={handleBack}
+          className="p-6"
+        >
           <span className="mr-1">
             <ArrowLeft />
           </span>
@@ -217,9 +305,9 @@ export function ProfileCreationForm() {
         </Button>
         <Button
           variant={"theme"}
-          onClick={handleNext}
+          type="submit"
           className="p-6"
-          disabled={!displayName.trim()}
+          disabled={isLoading}
         >
           Next
           <span className="ml-1">
@@ -227,6 +315,6 @@ export function ProfileCreationForm() {
           </span>
         </Button>
       </div>
-    </div>
+    </form>
   );
 }
