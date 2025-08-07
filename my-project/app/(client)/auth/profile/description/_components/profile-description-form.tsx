@@ -7,39 +7,50 @@ import { Label } from "@/components/client/ux/label";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { MultiSelectCombobox } from "@/components/client/ux/combo-box";
+import useHobbiesInterestsForm from "../_hooks/useHobbiesInterestForm";
+import { useSession } from "next-auth/react";
+import { Controller } from "react-hook-form";
 
 export function ProfileDescriptionForm() {
   const router = useRouter();
-  const [description, setDescription] = useState("");
-  const [hobbySport, setHobbySport] = useState(["Autospel", "Boksen"]);
-  const [hobbyMuziek, setHobbyMuziek] = useState(["R&B", "Rock"]);
-  const [hobbyKeuken, setHobbyKeuken] = useState(["Italiaans"]);
-  const [hobbyLezen, setHobbyLezen] = useState(["Psychologie"]);
-  const [hobbyTv, setHobbyTv] = useState(["Drama"]);
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
 
+  if (status === "loading") return <div>Loading...</div>;
+  const {
+    errors,
+    isLoading,
+    onSubmit,
+    handleSubmit,
+    control,
+    register,
+    setValue,
+    currentStep,
+    watch,
+  } = useHobbiesInterestsForm(userId);
+console.log(errors)
   const maxCharacters = 100;
+
+  // Watch form fields for controlled components
+  const description = watch("description") || "";
+
 
   const handleDescriptionChange = (value: string) => {
     if (value.length <= maxCharacters) {
-      setDescription(value);
+      setValue("description", value);
     }
   };
 
- 
-  const handleNext = () => {
-    router.push("/auth/profile/personality");
-    console.log("Description:", description);
-    // Navigate to next step
-  };
+  const handleNext = handleSubmit((data) => {
+    onSubmit(data);
+  });
 
   const handleBack = () => {
     router.push("/auth/profile/details");
-    console.log("Going back...");
-    // Navigate to previous step
   };
 
   return (
-    <div className="space-y-8">
+    <form className="space-y-8" onSubmit={handleNext}>
       {/* Header */}
       <div className="text-start space-y-4">
         <div className="flex items-center justify-start space-x-3">
@@ -63,17 +74,26 @@ export function ProfileDescriptionForm() {
               (Minimum 100 required)
             </p>
           </div>
-          <Textarea
-            id="description"
-            value={description}
-            onChange={(e) => handleDescriptionChange(e.target.value)}
-            placeholder="Tell us about yourself..."
-            className="min-h-[120px] border-gray-300 resize-none"
-            required
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <Textarea
+                id="description"
+                value={field.value || ""}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
+                placeholder="Tell us about yourself..."
+                className="min-h-[120px] border-gray-300 resize-none"
+                required
+              />
+            )}
           />
+          {errors.description && (
+            <p className="text-sm text-red-500">{errors.description.message}</p>
+          )}
         </div>
 
-        {/* What do I look like Section */}
+        {/* What do I like Section */}
         <div className="space-y-4">
           <div className="flex flex-row gap-4 w-full items-center">
             <h4 className="text-xl font-semibold text-gray-900 w-fit text-nowrap">
@@ -84,47 +104,92 @@ export function ProfileDescriptionForm() {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label>Sports *</Label>
-              <MultiSelectCombobox
-                selected={hobbySport}
-                options={["Car racing", "Boxing", "Football"]}
-                onChange={setHobbySport}
+              <Controller
+                name="sports"
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectCombobox
+                    selected={field.value || []}
+                    options={["Car racing", "Boxing", "Football"]}
+                    onChange={field.onChange}
+                  />
+                )}
               />
+              {errors.sports && (
+                <p className="text-sm text-red-500">{errors.sports.message}</p>
+              )}
             </div>
 
             <div>
               <Label>Music *</Label>
-              <MultiSelectCombobox
-                selected={hobbyMuziek}
-                options={["R&B", "Rock", "Jazz", "House"]}
-                onChange={setHobbyMuziek}
+              <Controller
+                name="music"
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectCombobox
+                    selected={field.value || []}
+                    options={["R&B", "Rock", "Jazz", "House"]}
+                    onChange={field.onChange}
+                  />
+                )}
               />
+              {errors.music && (
+                <p className="text-sm text-red-500">{errors.music.message}</p>
+              )}
             </div>
 
             <div>
               <Label>Cooking *</Label>
-              <MultiSelectCombobox
-                selected={hobbyKeuken}
-                options={["Italian", "Greek", "Indian"]}
-                onChange={setHobbyKeuken}
+              <Controller
+                name="kitchen"
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectCombobox
+                    selected={field.value || []}
+                    options={["Italian", "Greek", "Indian"]}
+                    onChange={field.onChange}
+                  />
+                )}
               />
+              {errors.kitchen && (
+                <p className="text-sm text-red-500">{errors.kitchen.message}</p>
+              )}
             </div>
 
             <div>
               <Label>Reading *</Label>
-              <MultiSelectCombobox
-                selected={hobbyLezen}
-                options={["Psychology", "Romance"]}
-                onChange={setHobbyLezen}
+              <Controller
+                name="reading"
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectCombobox
+                    selected={field.value || []}
+                    options={["Psychology", "Romance"]}
+                    onChange={field.onChange}
+                  />
+                )}
               />
+              {errors.reading && (
+                <p className="text-sm text-red-500">{errors.reading.message}</p>
+              )}
             </div>
 
             <div>
               <Label>TV Shows *</Label>
-              <MultiSelectCombobox
-                selected={hobbyTv}
-                options={["Drama", "Documentary"]}
-                onChange={setHobbyTv}
+              <Controller
+                name="tvShows"
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectCombobox
+                    selected={field.value || []}
+                    options={["Drama", "Documentary"]}
+                    onChange={field.onChange}
+                  />
+                )}
               />
+              {errors.tvShows && (
+                <p className="text-sm text-red-500">{errors.tvShows.message}</p>
+              )}
             </div>
           </div>
         </div>
@@ -132,19 +197,24 @@ export function ProfileDescriptionForm() {
 
       {/* Navigation Buttons */}
       <div className="flex justify-center gap-6 my-16 lg:my-26">
-        <Button variant="outline" onClick={handleBack} size={"lg"}>
+        <Button variant="outline" onClick={handleBack} size={"lg"} type="button">
           <span className="mr-1">
-            <ArrowLeft />{" "}
-          </span>{" "}
+            <ArrowLeft />
+          </span>
           Back
         </Button>
-        <Button variant={"theme"} size={"lg"} onClick={handleNext}>
-          Next{" "}
+        <Button
+          variant={"theme"}
+          size={"lg"}
+          type="submit"
+          disabled={isLoading}
+        >
+          Next
           <span className="ml-1">
-            <ArrowRight />{" "}
+            <ArrowRight />
           </span>
         </Button>
       </div>
-    </div>
+    </form>
   );
 }

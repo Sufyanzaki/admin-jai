@@ -30,17 +30,14 @@ export const userProfileCreateSchema = z.object({
 
 export type UserProfile = z.infer<typeof userProfileCreateSchema>;
 
-export default function useProfileCreateForm() {
-    const { data: session } = useSession();
-    const userId = session?.user?.id;
+export default function useProfileCreateForm(userId: string) {
     const router = useRouter();
-
     const [currentStep, setCurrentStep] = useState<string | null>(null);
 
     const { trigger, isMutating } = useSWRMutation(
-        'clientCreateUser',
+        'clientCreateUserProfile',
         async (_: string, { arg }: { arg: UserProfile }) => {
-            const { lookingFor, ...userFields } = arg;
+            const { lookingFor, city, country, state, ...userFields } = arg;
 
             setCurrentStep("Updating user & Saving preferences");
 
@@ -53,10 +50,10 @@ export default function useProfileCreateForm() {
         {
             onError: (error: Error) => {
                 showError({ message: error.message });
-                console.error('User creation error:', error);
+                console.error('User profile creation error:', error);
             },
             onSuccess: () => {
-                router.push('/auth/otp');
+                router.push('/auth/profile/details');
                 setCurrentStep(null);
             },
             revalidate: false,

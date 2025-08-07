@@ -18,10 +18,16 @@ import LocationSearchInput from "@/components/client/location-search";
 import useProfileCreateForm from "../_hooks/useProfileCreate";
 import { MemberLocation } from "@/app/shared-types/member";
 import { Controller } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 export function ProfileCreationForm() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
 
+  console.log(session);
+
+  if (status === "loading") return <div>Loading...</div>;
   const {
     errors,
     isLoading,
@@ -32,7 +38,7 @@ export function ProfileCreationForm() {
     setValue,
     currentStep,
     watch,
-  } = useProfileCreateForm();
+  } = useProfileCreateForm(userId);
 
   const handleBack = () => {
     router.push("/auth/profile/photos");
@@ -47,13 +53,30 @@ export function ProfileCreationForm() {
     city || state || country ? { city, state, country } : null;
 
   const handleLocationSelect = (location: Partial<MemberLocation>) => {
-    setValue("city", location.city ?? "");
-    setValue("state", location.state ?? "");
-    setValue("country", location.country ?? "");
+    const city = location.city ?? "";
+    const state = location.state ?? "";
+    const country = location.country ?? "";
+
+    // Set individual values for UI
+    setValue("city", city);
+    setValue("state", state);
+    setValue("country", country);
+
+    // Combine into a single location string
+    const combined = [city, state, country].filter(Boolean).join(", ");
+    setValue("location", combined);
   };
 
+  console.log("Errors object:", errors);
+
   return (
-    <form className="space-y-6" onSubmit={handleSubmit(data=>onSubmit(data))}>
+    <form
+      className="space-y-6"
+      onSubmit={handleSubmit((data) => {
+        console.log("Form submit triggered with data:", data);
+        onSubmit(data);
+      })}
+    >
       <div className="text-start space-y-4">
         <div className="flex items-center justify-start space-x-3">
           <div className="min-w-8 w-8 min-h-8 h-8 lg:w-10 lg:h-10 bg-black text-white rounded-[5px] flex items-center justify-center font-bold text-base lg:text-xl">
@@ -91,11 +114,28 @@ export function ProfileCreationForm() {
 
         <div>
           <Label>Origin *</Label>
-          <Input
-            {...register("origin")}
-            className="h-12 border-gray-300"
-            placeholder="Enter your origin"
-            required
+          <Controller
+            name="origin"
+            control={control}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Origin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Turks">Turks</SelectItem>
+                  <SelectItem value="Hindustans">Hindustans</SelectItem>
+                  <SelectItem value="Dutch">Dutch</SelectItem>
+                  <SelectItem value="Creols">Creols</SelectItem>
+                  <SelectItem value="Japanese">Japanese</SelectItem>
+                  <SelectItem value="Chinese">Chinese</SelectItem>
+                  <SelectItem value="Mix">Mix</SelectItem>
+                  <SelectItem value="Indians">Indians</SelectItem>
+                  <SelectItem value="Kamla">Kamla</SelectItem>
+                  <SelectItem value="Moroccan">Moroccan</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           />
           {errors.origin && (
             <p className="text-sm text-red-500">{errors.origin.message}</p>
@@ -208,11 +248,13 @@ export function ProfileCreationForm() {
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Single">Single</SelectItem>
-                  <SelectItem value="Married">Married</SelectItem>
-                  <SelectItem value="Divorced">Divorced</SelectItem>
-                  <SelectItem value="Widowed">Widowed</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="Single - never married">Single - never married</SelectItem>
+                  <SelectItem value="Single - widower/widow">Single - widower/widow</SelectItem>
+                  <SelectItem value="Single - divorced">Single - divorced</SelectItem>
+                  <SelectItem value="Married - free marriage">Married - free marriage</SelectItem>
+                  <SelectItem value="With permanent partner - LAT">With permanent partner - LAT</SelectItem>
+                  <SelectItem value="With permanent partner - open relationship">With permanent partner - open relationship</SelectItem>
+                  <SelectItem value="free one">free one</SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -250,11 +292,28 @@ export function ProfileCreationForm() {
         </div>
         <div>
           <Label>Religion *</Label>
-          <Input
-            {...register("religion")}
-            className="h-12 border-gray-300"
-            placeholder="Enter your religion"
-            required
+          <Controller
+            name="religion"
+            control={control}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Religion" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Buddhist">Buddhist</SelectItem>
+                  <SelectItem value="Muslim">Muslim</SelectItem>
+                  <SelectItem value="Hindu">Hindu</SelectItem>
+                  <SelectItem value="Roman">Roman Catholic</SelectItem>
+                  <SelectItem value="Jew">Jew</SelectItem>
+                  <SelectItem value="Protestant">Protestant</SelectItem>
+                  <SelectItem value="Christian">Christian</SelectItem>
+                  <SelectItem value="New-age">New-age</SelectItem>
+                  <SelectItem value="Kamla">Kamla</SelectItem>
+                  <SelectItem value="Marokkanns">Marokkanns</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           />
           {errors.religion && (
             <p className="text-sm text-red-500">{errors.religion.message}</p>
@@ -309,7 +368,7 @@ export function ProfileCreationForm() {
           className="p-6"
           disabled={isLoading}
         >
-          Next
+          {isLoading ? "Loading..." : "Next"}
           <span className="ml-1">
             <ArrowRight />
           </span>
