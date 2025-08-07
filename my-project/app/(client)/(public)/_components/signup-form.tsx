@@ -28,6 +28,7 @@ export function SignupForm() {
     register,
     setValue,
     watch,
+    currentStep
   } = useRegisterForm();
 
   const city = watch("city");
@@ -177,62 +178,60 @@ export function SignupForm() {
 
               {/* Location */}
               <div className="space-y-2 border-b border-[#E5E7EB]">
-                <Controller
-                  name="city"
-                  control={control}
-                  render={({ field }) => (
-                    <LocationSearchInput
-                      key="location-desktop"
-                      value={{
-                        city: field.value,
-                        state: watch("state"),
-                        country: watch("country"),
-                      }}
-                      onSelect={(location: Partial<MemberLocation>) => {
-                        field.onChange(location.city ?? "");
-                        setValue("state", location.state ?? "");
-                        setValue("country", location.country ?? "");
-                      }}
-                      placeholder="Search for your city, state, or country"
-                    />
-                  )}
+                <LocationSearchInput
+                    value={currentLocation}
+                    onSelect={handleLocationSelect}
+                    placeholder="Search for your city, state, or country"
                 />
-                {errors.city && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {errors.city.message}
-                  </p>
+                {(errors.city || errors.state || errors.country) && (
+                    <div className="space-y-1">
+                      {errors.city && (
+                          <p className="text-sm text-red-500">
+                            {errors.city.message}
+                          </p>
+                      )}
+                      {errors.state && (
+                          <p className="text-sm text-red-500">
+                            {errors.state.message}
+                          </p>
+                      )}
+                      {errors.country && (
+                          <p className="text-sm text-red-500">
+                            {errors.country.message}
+                          </p>
+                      )}
+                    </div>
                 )}
               </div>
 
-              {/* Email & Password */}
               <div className="flex flex-row gap-4">
                 <div className="w-1/2">
                   <Label htmlFor="email">Email</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    {...register("email")}
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      {...register("email")}
                   />
                   {errors.email && (
-                    <p className="text-sm text-red-500 mt-1">
-                      {errors.email.message}
-                    </p>
+                      <p className="text-sm text-red-500 mt-1">
+                        {errors.email.message}
+                      </p>
                   )}
                 </div>
 
                 <div className="w-1/2">
                   <Label htmlFor="password">Password</Label>
                   <Input
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    {...register("password")}
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      {...register("password")}
                   />
                   {errors.password && (
-                    <p className="text-sm text-red-500 mt-1">
-                      {errors.password.message}
-                    </p>
+                      <p className="text-sm text-red-500 mt-1">
+                        {errors.password.message}
+                      </p>
                   )}
                 </div>
               </div>
@@ -446,7 +445,7 @@ export function SignupForm() {
                   className="w-full"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Registering..." : "Register"}
+                  {isLoading ? currentStep : "Register"}
                 </Button>
               </form>
               <p className="w-full text-[#919ba4] text-[12px] font-light leading-[20px]">

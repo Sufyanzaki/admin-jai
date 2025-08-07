@@ -1,12 +1,15 @@
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {showError, showSuccess} from '@/shared-lib';
+import { useState, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { showError, showSuccess } from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
-import {useCallback} from 'react';
-import {postUser} from "@/app/shared-api/userApi";
-import {postUserLocation} from "@/app/shared-api/livingApi";
-import {postPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
+import { postUser } from "@/app/shared-api/userApi";
+import { postUserLocation } from "@/app/shared-api/livingApi";
+import { postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
+import { postLoginForm } from "@/app/shared-api/auth";
+import {setUserEmail} from "@/lib/access-token";
+import {useRouter} from "next/navigation";
 
 const userSchema = z.object({
     email: z.string().min(1, "Email is required").email("Invalid email"),
@@ -17,26 +20,49 @@ const userSchema = z.object({
     ageFrom: z.string().min(1, "Age is required"),
     ageTo: z.string().min(1, "Age is required"),
     lookingFor: z.string().min(1, "Looking for is required"),
-
     dummyKey: z.string().optional(),
 });
 
 export type UserFormValues = z.infer<typeof userSchema>;
 
 export default function useRegisterForm() {
+
+    const router = useRouter();
+
+    const [currentStep, setCurrentStep] = useState<string | null>(null);
+
     const { trigger, isMutating } = useSWRMutation(
         'clientCreateUser',
         async (_, { arg }: { arg: UserFormValues }) => {
-            const {email, password, ageTo, ageFrom, lookingFor, ...location} = arg
-            const user = await postUser({email, password});
+            const { email, password, ageTo, ageFrom, lookingFor, ...location } = arg;
+
+            setCurrentStep("Creating user");
+            const user = await postUser({ email, password });
+
+            setCurrentStep("Saving location");
             await postUserLocation(user.id, location);
-            await postPartnerExpectation(user.id, {lookingFor, ageTo: parseInt(ageTo), ageFrom: parseInt(ageFrom)})
+
+            setCurrentStep("Saving preferences");
+            await postPartnerExpectation(user.id, {
+                lookingFor,
+                ageTo: parseInt(ageTo),
+                ageFrom: parseInt(ageFrom),
+            });
+            setCurrentStep("Verifying Account");
+            await postLoginForm({ email, password });
+
+            setUserEmail(email);
+
             return user;
         },
         {
             onError: (error: Error) => {
                 showError({ message: error.message });
                 console.error('User creation error:', error);
+            },
+            onSuccess: () => {
+                router.push('/auth/otp');
+                setCurrentStep(null)
             },
             revalidate: false,
             populateCache: false,
@@ -71,11 +97,12 @@ export default function useRegisterForm() {
                 const result = await trigger(values);
                 if (result) {
                     showSuccess('User created successfully!');
-                    reset();
                     callback?.();
                 }
             } catch (error) {
                 if (error instanceof Error) showError({ message: error.message });
+            } finally {
+                setCurrentStep(null); // reset step in case of error
             }
         },
         [trigger, reset]
@@ -86,9 +113,10 @@ export default function useRegisterForm() {
         onSubmit,
         errors,
         isLoading: isSubmitting || isMutating,
+        currentStep,
         register,
         setValue,
         control,
-        watch
+        watch,
     };
 }

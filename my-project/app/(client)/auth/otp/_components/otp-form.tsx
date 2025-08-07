@@ -5,6 +5,7 @@ import useOTPForm from "@/app/(client)/auth/otp/_hooks/useOtpForm";
 import {Button} from "@/components/client/ux/button";
 import useResendOtp from "@/app/shared-hooks/useResendOtp";
 import {getUserEmail} from "@/lib/access-token";
+import {Controller} from "react-hook-form";
 
 export default function OtpForm(){
 
@@ -18,7 +19,14 @@ export default function OtpForm(){
 
     return (
         <form onSubmit={handleSubmit(data=>onSubmit(data))} className="space-y-6">
-            <OtpInput name="otp" control={control} />
+            <Controller
+                name="otp"
+                control={control}
+                render={({ field }) => (
+                    <OtpInput value={field.value} onChange={field.onChange} />
+                )}
+            />
+
             <div className="flex gap-4 mt-4">
                 <Button type="submit"  disabled={isSubmitting}>
                     {isSubmitting ? 'Processing...' : 'Submit'}
