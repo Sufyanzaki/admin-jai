@@ -1,9 +1,9 @@
 import { useSWRFix } from "@/shared-lib";
-import { getEmailTemplates } from "../_api/getEmailTemplates";
-import type { EmailTemplate } from "../_types/emailTemplateTypes";
+import { getEmailTemplates } from "../_api/emailTemplateApi";
+import { EmailTemplateDto } from "../_types/emailTemplateTypes";
 
 export function useEmailTemplates() {
-  const { data, loading, error, mutate } = useSWRFix<EmailTemplate[]>({
+  const { data, loading, error, mutate } = useSWRFix<EmailTemplateDto[]>({
     key: "email-templates",
     fetcher: getEmailTemplates,
   });

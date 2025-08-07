@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { patchBasicSettings } from "../_api/patchBasicSettings";
+import { patchBasicSettings } from "../_api/basicSettingApi";
 import { useBasicSettings } from "./useBasicSettings";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { isFile } from "@/lib/utils";

@@ -1,12 +1,14 @@
 import { useSWRFix } from "@/shared-lib";
-import { getChatVideoSetting } from "../_api/getChatVideoSetting";
-import { ChatSettingPayload } from "../_api/postChatSetting";
+import {getChatVideoSetting} from "../_api/chatSettingApi";
+import {ChatSettingDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
+
+type Payload = Partial<ChatSettingDto>;
 
 export default function useChatVideoSetting() {
   const { data, loading, error, mutate, refetch } = useSWRFix({
     key: "chat-video-setting",
     fetcher: getChatVideoSetting,
-    transform: (data: ChatSettingPayload): ChatSettingPayload => ({
+    transform: (data: Payload): Payload => ({
       messageLength: data.messageLength,
       displayName: data.displayName,
       enableImages: data.enableImages,

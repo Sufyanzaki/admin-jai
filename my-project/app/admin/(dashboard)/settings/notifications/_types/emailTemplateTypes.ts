@@ -1,17 +1,15 @@
-export interface EmailTemplateTranslation {
-  id: number;
-  emailTemplateId: number;
+export interface EmailTemplateTranslationDto {
   language: string;
   subject: string;
   content: string;
 }
 
-export interface EmailTemplate {
-  id: number;
+export interface EmailTemplateDto {
+  id: string;
   key: string;
   isActive: boolean;
   status: string | null;
   createdAt: string;
   updatedAt: string;
-  translations: EmailTemplateTranslation[];
+  translations: EmailTemplateTranslationDto[];
 } 

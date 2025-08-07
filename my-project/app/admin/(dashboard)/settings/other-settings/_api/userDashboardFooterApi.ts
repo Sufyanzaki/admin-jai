@@ -1,20 +1,7 @@
 import { patchRequest, getRequest } from "@/shared-lib";
+import {DashboardFooterResponse} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
-export interface UserDashboardFooterFormData {
-  sectionPage: string;
-}
-
-export interface UserDashboardFooterResponse {
-  id: number;
-  sectionPage: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface UserDashboardFooterApiResponse {
-  success: boolean;
-  data: UserDashboardFooterResponse;
-}
+type UserDashboardFooterFormData = Partial<DashboardFooterResponse>;
 
 export async function patchUserDashboardFooterSettings(data: UserDashboardFooterFormData) {
   const r = await patchRequest<UserDashboardFooterFormData>({
@@ -25,8 +12,8 @@ export async function patchUserDashboardFooterSettings(data: UserDashboardFooter
   return r.response;
 }
 
-export async function getUserDashboardFooterSettings() {
-  return await getRequest<UserDashboardFooterApiResponse>({
+export async function getUserDashboardFooterSettings(): Promise<DashboardFooterResponse> {
+  return await getRequest({
     url: "setting/user-dashboard",
     useAuth: true,
   });

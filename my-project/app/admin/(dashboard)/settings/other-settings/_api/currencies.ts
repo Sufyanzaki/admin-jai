@@ -1,31 +1,18 @@
 import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
+import {CurrencyDto, CurrencyFormatDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
-export interface Currency {
-  id: string;
-  currencyName: string;
-  currencyCode: string;
-  symbol?: string;
-  textDirection: string;
-}
+type Payload = Partial<CurrencyDto>;
+type FormatPayload = Partial<CurrencyFormatDto>;
 
-export interface CurrencyFormat {
-  defaultCurrencyId: number;
-  symbolFormat: string;
-  decimalSeparator: string;
-  decimalPlaces: number;
-}
-
-type CurrencyPayload = Omit<Currency, "id">;
-
-export async function getCurrencies(): Promise<Currency[]> {
-  return getRequest<Currency[]>({
+export async function getCurrencies(): Promise<CurrencyDto[]> {
+  return getRequest({
     url: "setting/currency",
     useAuth: true,
   });
 }
 
-export async function postCurrency(payload: CurrencyPayload): Promise<Currency> {
-  const r = await postRequest<CurrencyPayload>({
+export async function postCurrency(payload: Payload): Promise<CurrencyDto> {
+  const r = await postRequest<Payload>({
     url: "setting/currency",
     data: payload,
     useAuth: true,
@@ -34,8 +21,8 @@ export async function postCurrency(payload: CurrencyPayload): Promise<Currency> 
   return r.response
 }
 
-export async function patchCurrency(id: string, payload: CurrencyPayload): Promise<Currency> {
-  const r = await patchRequest<CurrencyPayload>({
+export async function patchCurrency(id: string, payload: Payload): Promise<CurrencyDto> {
+  const r = await patchRequest<Payload>({
     url: `setting/currency/${id}`,
     data: payload,
     useAuth: true,
@@ -50,23 +37,23 @@ export async function deleteCurrency(id: string) {
   });
 }
 
-export async function getCurrencyById(id: string): Promise<Currency> {
-  return await getRequest<Currency>({
+export async function getCurrencyById(id: string): Promise<CurrencyDto> {
+  return await getRequest({
     url: `setting/currency/${id}`,
     useAuth: true,
   });
 }
 
 
-export async function getCurrencyFormat(): Promise<CurrencyFormat> {
-  return await getRequest<CurrencyFormat>({
+export async function getCurrencyFormat(): Promise<CurrencyFormatDto> {
+  return await getRequest({
     url: `setting/currency-setting`,
     useAuth: true,
   });
 }
 
-export async function patchCurrencyFormat(payload: CurrencyFormat): Promise<CurrencyFormat> {
-  const r = await patchRequest<CurrencyFormat>({
+export async function patchCurrencyFormat(payload: FormatPayload): Promise<CurrencyFormatDto> {
+  const r = await patchRequest<FormatPayload>({
     url: `setting/currency-setting`,
     data: payload,
     useAuth: true,

@@ -1,4 +1,4 @@
-import { deleteBanner } from "@/app/admin/(dashboard)/marketing/banners/_api/deleteBanner";
+import { deleteBanner } from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
@@ -23,7 +23,6 @@ export const useDeleteBanner = () => {
         }
     );
 
-    // deleteBannerById returns a promise so UI can await it
     const deleteBannerById = async (id: string) => {
         await trigger(id);
     };

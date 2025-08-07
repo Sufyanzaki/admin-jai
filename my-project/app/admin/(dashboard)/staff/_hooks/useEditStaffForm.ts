@@ -3,15 +3,13 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {editStaffMember, EditStaffPayload} from "../_api/editStaff";
-import {getStaffMember} from "../_api/getStaff";
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
+import {editStaffMember, getStaffMember} from "../_api/staffApi";
+import {showError, showSuccess} from "@/shared-lib";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
 import useSWR, {useSWRConfig} from "swr";
 import {useEffect} from "react";
-import {StaffListResponse, StaffMember} from "../_types/staff";
+import {StaffListResponse, StaffMemberDto} from "../_types/staff";
 import {useParams} from "next/navigation";
 
 const editStaffSchema = z.object({
@@ -56,7 +54,6 @@ export function useEditStaffForm() {
     mode: "onBlur",
   });
 
-  // Reset form when staff member data is loaded
   useEffect(() => {
     if (!staffMember) return;
 
@@ -69,12 +66,10 @@ export function useEditStaffForm() {
     });
   }, [staffMember, reset]);
 
-  // SWR mutation trigger for edit
   const { trigger, isMutating } = useSWRMutation(
       "editStaffMember",
-      async (_: string, { arg }: { arg: EditStaffPayload }) => {
-        const result = await editStaffMember(arg);
-        return result;
+      async (_: string, { arg }: { arg: Partial<StaffMemberDto> }) => {
+        return await editStaffMember(arg);
       },
       {
         onError: (error: Error) => {
@@ -87,13 +82,12 @@ export function useEditStaffForm() {
 
   const onSubmit = async (values: EditStaffFormValues) => {
     try {
-      // Handle image upload if image is a File
       let imageUrl = values.image;
       if (values.image instanceof File) {
         imageUrl = await imageUpload(values.image);
       }
 
-      const payload: EditStaffPayload = {
+      const payload = {
         id,
         email: values.email,
         firstName: values.firstName,
@@ -105,7 +99,6 @@ export function useEditStaffForm() {
 
       const result = await trigger(payload);
 
-      // Update cache
       globalMutate(
           "staff-members",
           (current: StaffListResponse | undefined) => {
@@ -113,14 +106,14 @@ export function useEditStaffForm() {
             return {
               ...current,
               staffMembers: current.staffMembers.map(member =>
-                  member.id === id ? result as StaffMember : member
+                  member.id === id ? result as StaffMemberDto : member
               ),
             };
           },
           false
-      );
+      ).finally();
 
-      globalMutate(`staff-member-${id}`, result, false);
+      globalMutate(`staff-member-${id}`, result, false).finally();
       showSuccess("Staff member updated successfully!");
     } catch (error) {
       console.error("Error updating staff:", error);

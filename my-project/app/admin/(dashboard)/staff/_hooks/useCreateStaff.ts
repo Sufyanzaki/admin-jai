@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createStaffMember, CreateStaffPayload } from "../_api/createStaff";
+import { createStaffMember } from "../_api/staffApi";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import { StaffListResponse, StaffMember } from "../_types/staff";
+import { StaffListResponse, StaffMemberDto } from "../_types/staff";
 
 const createStaffSchema = z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
@@ -55,7 +55,7 @@ export function useCreateStaffForm() {
   // SWR mutation trigger for create
   const { trigger, isMutating } = useSWRMutation(
     "createStaffMember",
-    async (_: string, { arg }: { arg: CreateStaffPayload }) => {
+    async (_: string, { arg }: { arg: Partial<StaffMemberDto> }) => {
       try {
         const result = await createStaffMember(arg);
         return result;
@@ -80,18 +80,16 @@ export function useCreateStaffForm() {
     }
   );
 
-  const onSubmit = async (values: CreateStaffFormValues, callback?: (data: StaffMember) => void) => {
+  const onSubmit = async (values: CreateStaffFormValues, callback?: () => void) => {
     setError(null);
 
     try {
-      // Handle image upload if image is a File
       let imageUrl = values.image;
       if (values.image instanceof File) {
         imageUrl = await imageUpload(values.image);
       }
 
-      // Prepare payload for API
-      const payload: CreateStaffPayload = {
+      const payload = {
         ...values,
         image: imageUrl || undefined,
         phone: values.phone || undefined,
@@ -99,13 +97,12 @@ export function useCreateStaffForm() {
 
       const result = await trigger(payload);
 
-      // Update cache after successful creation
       globalMutate(
         "staff-members",
         (current: StaffListResponse | undefined) => {
           if (!current) return current;
 
-          const updatedUser = result.response as StaffMember;
+          const updatedUser = result.response as StaffMemberDto;
           const staffMembers = [updatedUser, ...current.staffMembers];
 
           return {
@@ -120,10 +117,11 @@ export function useCreateStaffForm() {
           };
         },
         false
-      );
+      ).finally();
 
       showSuccess("Staff member created successfully!");
-      callback?.(result.response as StaffMember); reset();
+      callback?.();
+      reset();
     } catch (error: unknown) {
       const message =
         error instanceof Error

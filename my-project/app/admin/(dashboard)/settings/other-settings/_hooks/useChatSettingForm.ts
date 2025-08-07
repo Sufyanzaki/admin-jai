@@ -6,7 +6,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postChatSetting } from "../_api/postChatSetting";
+import { postChatSetting } from "../_api/chatSettingApi";
 import useChatVideoSetting from "./useChatVideoSetting";
 import { useEffect } from "react";
 

@@ -5,7 +5,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {showError} from "@/shared-lib";
 import {showSuccess} from "@/shared-lib";
-import {updateBanner} from "@/app/admin/(dashboard)/marketing/banners/_api/updateBanner";
+import {updateBanner} from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import useSWRMutation from "swr/mutation";
 import { useEffect } from "react";
 import { useBannerDetails } from "./useBannerDetails";
@@ -107,7 +107,7 @@ export default function useEditBannerForm(id: string) {
             }
         });
     }, [banner, reset]);
-    const onSubmit = async (values: EditBannerFormValues, bannerImageFile: File | null, callback?: (data: {status: number} | undefined) => void) => {
+    const onSubmit = async (values: EditBannerFormValues, bannerImageFile: File | null, callback?: () => void) => {
         try {
             let bannerImageUrl = typeof values.bannerImage === 'string' ? values.bannerImage : '';
             if (values.bannerImage instanceof File) {
@@ -123,9 +123,9 @@ export default function useEditBannerForm(id: string) {
                 page: values.page,
                 isActive: values.isActive,
             });
-            if (result?.status === 200) {
+            if (result) {
                 showSuccess('Banner updated successfully!');
-                callback?.(result);
+                callback?.();
             }
         } catch (error: unknown) {
             if(error instanceof Error) showError({message: error.message});

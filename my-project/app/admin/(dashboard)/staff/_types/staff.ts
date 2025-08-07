@@ -1,6 +1,6 @@
 export type StaffRole = "ADMIN" | "MODERATOR" | string;
 
-export interface StaffAllow {
+export interface StaffAllowDto {
   id: string;
   name: string;
   description: string | null;
@@ -9,7 +9,7 @@ export interface StaffAllow {
   catagory: string | null;
 }
 
-export interface StaffMember {
+export interface StaffMemberDto {
   id: string;
   username: string | null;
   email: string;
@@ -37,7 +37,7 @@ export interface StaffMember {
   createdAt: string;
   updatedAt: string;
   roleId: string;
-  allow: StaffAllow;
+  allow: StaffAllowDto;
 }
 
 export interface StaffListResponse {
@@ -47,5 +47,5 @@ export interface StaffListResponse {
   activeStaffCount: number;
   inactiveStaffCount: number;
   countByRoles: Record<string, number>;
-  staffMembers: StaffMember[];
+  staffMembers: StaffMemberDto[];
 }

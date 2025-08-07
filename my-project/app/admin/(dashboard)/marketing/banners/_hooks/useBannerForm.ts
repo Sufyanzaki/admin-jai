@@ -3,7 +3,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {showError} from "@/shared-lib";
 import {showSuccess} from "@/shared-lib";
-import {createBanner} from "@/app/admin/(dashboard)/marketing/banners/_api/createBanner";
+import {createBanner} from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
 import { useState, useCallback } from "react";
@@ -106,7 +106,7 @@ export default function useBannerForm() {
         }
     }, [setValue]);
 
-    const onSubmit = async (values: BannerFormValues, callback?: (data: {status: number} | undefined) => void) => {
+    const onSubmit = async (values: BannerFormValues, callback?: () => void) => {
         try {
             let bannerImageUrl = values.bannerImage;
             if (selectedFile instanceof File) {
@@ -129,7 +129,7 @@ export default function useBannerForm() {
                 reset();
                 setSelectedFile(null);
                 setImagePreview("");
-                callback?.(result);
+                callback?.();
             }
         } catch (error: unknown) {
             if(error instanceof Error) showError({message: error.message});

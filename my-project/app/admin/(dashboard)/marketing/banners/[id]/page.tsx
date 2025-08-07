@@ -21,7 +21,6 @@ export default function BannerInformationCard() {
     const id = params.id as string;
     const { banner, bannerLoading, error } = useBannerDetails(id);
 
-    // Format date for display
     const formatDate = (dateString: string) => {
         try {
             return format(new Date(dateString), 'dd-MM-yyyy HH:mm');
@@ -30,7 +29,6 @@ export default function BannerInformationCard() {
         }
     };
 
-    // Show loading state
     if (bannerLoading) {
         return (
             <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -44,7 +42,6 @@ export default function BannerInformationCard() {
         );
     }
 
-    // Show error state
     if (error) {
         return (
             <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -58,7 +55,6 @@ export default function BannerInformationCard() {
         );
     }
 
-    // Show not found state
     if (!banner) {
         return (
             <div className="flex flex-col gap-6 p-4 xl:p-6">

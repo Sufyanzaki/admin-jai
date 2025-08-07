@@ -1,6 +1,6 @@
 import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
-import {deleteStaff} from "@/app/admin/(dashboard)/staff/_api/deleteStaff";
+import {deleteStaff} from "@/app/admin/(dashboard)/staff/_api/staffApi";
 import {showError, showSuccess} from "@/shared-lib";
 import {StaffListResponse} from "@/app/admin/(dashboard)/staff/_types/staff";
 import { useState } from "react";
@@ -17,8 +17,7 @@ export const useDeleteStaff = () => {
         {
             onSuccess: () => showSuccess("Staff member deleted successfully!"),
             onError: (error) => {
-                // Revalidate all staff-members keys on error
-                globalMutate((key) => Array.isArray(key) && key[0] === "staff-members");
+                globalMutate((key) => Array.isArray(key) && key[0] === "staff-members").finally();
                 showError({ message: error.message });
             }
         }

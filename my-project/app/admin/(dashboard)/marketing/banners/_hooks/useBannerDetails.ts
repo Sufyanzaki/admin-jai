@@ -1,11 +1,12 @@
 import { useSWRFix } from "@/shared-lib";
-import { getBannerDetails, BannerDetails } from "@/app/admin/(dashboard)/marketing/banners/_api/getBannerDetails";
+import { getBannerDetails } from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import { useSession } from "next-auth/react";
+import {BannerDto} from "@/app/admin/(dashboard)/marketing/banners/_types/bannerTypes";
 
 export const useBannerDetails = (id: string) => {
   const { data: session } = useSession();
   
-  const { data, loading, error, mutate } = useSWRFix<BannerDetails>({
+  const { data, loading, error, mutate } = useSWRFix<BannerDto>({
     key: session?.token && id ? `banner-details-${id}` : '',
     fetcher: async () => {
       const response = await getBannerDetails(id);

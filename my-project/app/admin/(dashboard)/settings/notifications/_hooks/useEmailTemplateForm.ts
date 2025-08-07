@@ -4,10 +4,10 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { patchEmailTemplate, PatchEmailTemplatePayload } from "../_api/patchEmailTemplate";
 import { useEmailTemplateById } from "./useEmailTemplateById";
 import { useEffect, useMemo } from "react";
-import { Language } from "@/app/admin/(dashboard)/settings/_api/getLanguages";
+import {patchEmailTemplate} from "@/app/admin/(dashboard)/settings/notifications/_api/emailTemplateApi";
+import {BasicLanguageDto} from "@/app/shared-types/basic-languages";
 
 const translationSchema = z.object({
   language: z.string().min(1, "Language is required"),
@@ -25,7 +25,7 @@ export type EmailTemplateFormValues = z.infer<typeof emailTemplateSchema>;
 
 type Props = {
   id: string;
-  languages?: Language[];
+  languages?: BasicLanguageDto[];
 };
 
 export default function useEmailTemplateForm({ id, languages = [] }: Props) {
@@ -89,11 +89,11 @@ export default function useEmailTemplateForm({ id, languages = [] }: Props) {
     }
   }, [emailTemplate, languages, reset]);
 
-  const onSubmit = async (values: EmailTemplateFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: EmailTemplateFormValues, callback?: () => void) => {
     const result = await trigger(values);
     if (result) {
       showSuccess("Email template updated successfully!");
-      callback?.(result);
+      callback?.();
     }
   };
 

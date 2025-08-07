@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { getStaffMembers } from "../_api/getStaff";
+import { getStaffMembers } from "../_api/staffApi";
 import type { StaffListResponse } from "../_types/staff";
 
 export function useStaffMembers(params?: { page?: number; limit?: number; search?: string; role?: string; isActive?: boolean }) {

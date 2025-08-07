@@ -4,7 +4,7 @@ import {z} from "zod";
 import useSWRMutation from "swr/mutation";
 import {showError} from "@/shared-lib";
 import {showSuccess} from "@/shared-lib";
-import {patchAbusiveWords} from "../_api/postAbusiveWords";
+import {patchAbusiveWords} from "../_api/abusiveWordsApi";
 import {useEffect} from "react";
 import {useAbusiveWords} from "./useAbusiveWords";
 
