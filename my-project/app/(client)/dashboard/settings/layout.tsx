@@ -6,52 +6,28 @@ import {
   SettingsSidebar,
 } from "../_components/settings-sidebar";
 import { Button } from "@/components/client/ux/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const renderPageHeader = (pathname: string) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // // ✅ Ensure ?view is present on first render
+  // useEffect(() => {
+  //   if (
+  //     !searchParams.has("view") &&
+  //     pathname.includes("/dashboard/settings/account")
+  //   ) {
+  //     const params = new URLSearchParams(searchParams.toString());
+  //     params.set("view", "true");
+  //     router.replace(`?${params.toString()}`, { scroll: false });
+  //   }
+  // }, [searchParams, pathname, router]);
+
   switch (true) {
-    case pathname.includes("expectation"):
-      return (
-        <div className="flex items-center justify-between py-4 mb-12 border-b">
-          <h1 className="text-2xl sm:text-4xl font-semibold">
-            Partner Expectations
-          </h1>
-        </div>
-      );
-
-    case pathname.includes("blocked"):
-      return (
-        <div className="flex flex-col items-start justify-start mb-9 space-y-2">
-          <h1 className="text-4xl font-semibold">Blocked Profiles</h1>
-          <p className="text-sm sm:text-base">
-            Here are the profiles you have blocked
-          </p>
-        </div>
-      );
-
-    case pathname.includes("photo"):
-      return (
-        <div className="flex flex-col items-start justify-start mb-9 space-y-2">
-          <h1 className="text-2xl sm:text-4xl font-semibold">Photo Settings</h1>
-          <p className="text-sm sm:text-base">
-            Manage your profile photos and visibility settings
-          </p>
-        </div>
-      );
-
-    case pathname.includes("support"):
-      return (
-        <div className="flex flex-col items-start justify-start mb-9 space-y-2">
-          <h1 className="text-2xl sm:text-4xl font-semibold">
-            Support Tickets
-          </h1>
-          <p className="text-sm sm:text-base">
-            Get help with any issues or questions you may have
-          </p>
-        </div>
-      );
-
+    // ... your other cases ...
     default:
       return (
         <div className="flex flex-col sm:flex-row items-center justify-between mb-12 w-full gap-4">
@@ -63,16 +39,29 @@ const renderPageHeader = (pathname: string) => {
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
             <Button
-              variant="outline"
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.delete("view"); // remove view mode
+                params.set("edit", "true"); // set edit mode
+                router.push(`?${params.toString()}`, { scroll: false });
+              }}
+              variant={searchParams.has("edit") ? "theme" : "outline"}
               size="lg"
-              className="text-sm sm:text-xs shadow-none bg-[#EEF0F5] grow sm:grow-0"
+              className="text-sm sm:text-xs shadow-none grow sm:grow-0"
             >
               Edit Profile
             </Button>
+
             <Button
-              variant="outline"
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.delete("edit"); // remove edit mode
+                params.set("view", "true"); // set view mode
+                router.push(`?${params.toString()}`, { scroll: false });
+              }}
+              variant={searchParams.has("view") ? "theme" : "outline"}
               size="lg"
-              className="text-sm sm:text-xs shadow-none bg-[#EEF0F5] grow sm:grow-0"
+              className="text-sm sm:text-xs shadow-none grow sm:grow-0"
             >
               View Profile
             </Button>

@@ -19,6 +19,8 @@ import { Slider } from "@/components/client/ux/slider";
 import LocationSearchInput from "@/components/client/location-search";
 import ImageWrapper from "@/components/client/image-wrapper";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useBasicInfo } from "@/app/admin/(dashboard)/members/_hooks/useBasicInfo";
 
 const tabs = [
   { id: "account-details", label: "Account Details" },
@@ -40,7 +42,21 @@ const languages = [
 export function AccountSettings() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState("account-details");
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  const { user, userLoading } = useBasicInfo(userId);
+  console.log(user);
+  const defaultTab = "account-details";
+  const initialTab = searchParams.get("activeTab") || defaultTab;
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  useEffect(() => {
+    if (!searchParams.get("activeTab")) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("activeTab", defaultTab);
+      router.replace(`?${params.toString()}`, { scroll: false });
+    }
+  }, [searchParams, router]);
   const [selectedLanguage, setSelectedLanguage] = useState("english");
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -755,9 +771,9 @@ export function AccountSettings() {
           <div className="flex lg:flex-row flex-col gap-8">
             <div className="flex flex-col items-center">
               <div className="w-56 h-56 rounded-[5px] overflow-hidden mb-4">
-                {pfp ? (
+                {user?.image ? (
                   <ImageWrapper
-                    src={pfp}
+                    src={user?.image}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
@@ -820,7 +836,7 @@ export function AccountSettings() {
                     <Label htmlFor="firstName">First name</Label>
                     <Input
                       id="firstName"
-                      value={formData.firstName}
+                      value={user?.firstName}
                       onChange={(e) =>
                         handleInputChange("firstName", e.target.value)
                       }
@@ -831,7 +847,7 @@ export function AccountSettings() {
                     <Label htmlFor="userName">User Name</Label>
                     <Input
                       id="userName"
-                      value={formData.userName}
+                      value={user?.username}
                       onChange={(e) =>
                         handleInputChange("userName", e.target.value)
                       }
@@ -842,7 +858,7 @@ export function AccountSettings() {
                     <Label htmlFor="birthDate">Date of Birth</Label>
                     <Input
                       id="birthDate"
-                      value={formData.birthDate}
+                      value={user?.dob}
                       onChange={(e) =>
                         handleInputChange("birthDate", e.target.value)
                       }
@@ -855,7 +871,7 @@ export function AccountSettings() {
                     <Label htmlFor="lastName">Last name</Label>
                     <Input
                       id="lastName"
-                      value={formData.lastName}
+                      value={user?.lastName}
                       onChange={(e) =>
                         handleInputChange("lastName", e.target.value)
                       }
@@ -865,7 +881,7 @@ export function AccountSettings() {
                   <div>
                     <Label htmlFor="gender">Gender</Label>
                     <Select
-                      value={formData.gender}
+                      value={user?.gender}
                       onValueChange={(value) =>
                         handleInputChange("gender", value)
                       }
@@ -886,7 +902,7 @@ export function AccountSettings() {
                     <Input
                       id="email"
                       type="email"
-                      value={formData.email}
+                      value={user?.email}
                       onChange={(e) =>
                         handleInputChange("email", e.target.value)
                       }

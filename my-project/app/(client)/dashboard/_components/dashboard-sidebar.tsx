@@ -49,24 +49,26 @@ export function DashboardSidebar() {
           </div>
         </SidebarHeader>
         <SidebarData />
-        <SidebarFooter className="p-4 flex flex-col items-center gap-2">
-          <Button
-            variant="ghost"
-            size="dashboard"
-             onClick={() => signOut({ callbackUrl: "/" })}
-            className="border rounded-[5px] border-white/50 text-white hover:bg-transparent w-full group-data-[collapsible=icon]:hidden"
-          >
-            <LogOut className="w-4 h-4" />
-            <span className="ml-2 text-sm">Logout</span>
-          </Button>
+        <div className="flex-1 flex flex-col justify-end">
+          <SidebarFooter className="p-4 flex flex-col items-center gap-2">
+            <Button
+              variant="ghost"
+              size="dashboard"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="border rounded-[5px] border-white/50 text-white hover:bg-transparent w-full group-data-[collapsible=icon]:hidden"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="ml-2 text-sm">Logout</span>
+            </Button>
 
-          <SidebarMenuButton
-            tooltip="Logout"
-            className="hidden group-data-[collapsible=icon]:flex text-white hover:bg-transparent h-10 w-10 p-0 rounded-[5px]"
-          >
-            <LogOut className="w-4 h-4" />
-          </SidebarMenuButton>
-        </SidebarFooter>
+            <SidebarMenuButton
+              tooltip="Logout"
+              className="hidden group-data-[collapsible=icon]:flex text-white hover:bg-transparent h-10 w-10 p-0 rounded-[5px]"
+            >
+              <LogOut className="w-4 h-4" />
+            </SidebarMenuButton>
+          </SidebarFooter>
+        </div>
         <SidebarRail />
       </Sidebar>
     </div>
