@@ -24,8 +24,8 @@ const partnerExpectationSchema = z.object({
   ageFrom: z.coerce.number().min(0, "From age is required"),
   ageTo: z.coerce.number().min(0, "To age is required"),
   city: z.string().optional(),
-  state: z.string().optional(),
-  country: z.string().optional(),
+  state: z.string().min(1, "State is Required"),
+  country: z.string().min(1, "Country is Required"),
 });
 
 export type PartnerExpectationFormValues = z.infer<typeof partnerExpectationSchema>;

@@ -1,25 +1,18 @@
 "use client";
 
-import { Controller } from "react-hook-form";
-import { Label } from "@/components/admin/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/admin/ui/select";
-import { Input } from "@/components/admin/ui/input";
-import { Button } from "@/components/admin/ui/button";
-
-import { Currency } from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
+import {Controller} from "react-hook-form";
+import {Label} from "@/components/admin/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/admin/ui/select";
+import {Input} from "@/components/admin/ui/input";
+import {Button} from "@/components/admin/ui/button";
 import useFormatForm from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFormatForm";
 import Preloader from "@/components/shared/Preloader";
 import {Save} from "lucide-react";
 import {DialogFooter} from "@/components/admin/ui/dialog";
+import {CurrencyDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
 type Props = {
-    currencies?: Currency[];
+    currencies?: CurrencyDto[];
     setOpenFormatDialog: (open: boolean) => void;
 };
 

@@ -73,11 +73,11 @@ export default function Dashboard() {
         </div>
         {/* if user data not added show complete profile button */}
 
-        {session?.user?.name === "null null" ? (
-          <Card className="border-[#dee2e6] rounded-[5px] p-5 shadow-none">
-            <div className="flex flex-col items-center gap-3">
+        {session?.user?.firstName === null ? (
+          <Card className="border-[#dee2e6] rounded-[5px] py-12 px-5 shadow-none">
+            <div className="flex flex-col items-center gap-6">
               <p className="text-black text-sm lg:text-base font-normal">
-                You haven't yet completed your full profile registration.
+                You haven&#39;t yet completed your full profile registration.
                 Complete your profile to continue finding a partner.
               </p>
 

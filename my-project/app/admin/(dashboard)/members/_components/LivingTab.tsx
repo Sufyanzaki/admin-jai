@@ -66,9 +66,8 @@ export default function LivingTab({callback}: { callback: () => void}) {
                     onSelect={handleLocationSelect}
                     placeholder="Search for your city, state, or country"
                 />
-                {(errors.city || errors.state || errors.country) && (
+                {(errors.state || errors.country) && (
                     <div className="space-y-1">
-                      {errors.city && <p className="text-sm text-red-500">{errors.city.message}</p>}
                       {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
                       {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
                     </div>

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postHobbiesInterests, patchHobbiesInterests } from "../../../../../shared-api/hobbiesInterestsApi";
+import { postHobbiesInterests, patchHobbiesInterests } from "@/app/shared-api/hobbiesInterestsApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useHobbiesInterestsInfo } from "../../_hooks/useHobbiesInterestsInfo";
 import { useEffect, useMemo } from "react";
@@ -83,11 +83,11 @@ export default function useHobbiesInterestsForm() {
     }
   );
 
-  const onSubmit = async (values: HobbiesInterestsFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: HobbiesInterestsFormValues, callback?: () => void) => {
     const result = await trigger(values);
-    if (result?.status === 201 || result?.status === 200) {
+    if (result) {
       showSuccess("Hobbies & Interests updated successfully!");
-      callback?.(result);
+      callback?.();
       updateUserTrackingId({ hobbiesAndInterest: true });
     }
   };

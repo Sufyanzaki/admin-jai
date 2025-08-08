@@ -1,0 +1,126 @@
+"use client";
+
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {useSession} from "next-auth/react";
+import {showError, showSuccess} from "@/shared-lib";
+import useSWRMutation from "swr/mutation";
+import {patchPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
+import {updateUserTrackingId} from "@/lib/access-token";
+
+export const partnerFormSchema = z.object({
+    origin: z.string().min(1, "Origin is required"),
+    lookingFor: z.string().min(1, "Looking for is required"),
+    relationshipStatus: z.string().min(1, "Relationship status is required"),
+    religion: z.string().min(1, "Religion is required"),
+    ageFrom: z.number().min(18).max(100),
+    ageTo: z.number().min(18).max(100),
+    weight: z.string().min(1, "Weight is required"),
+    education: z.string().min(1, "Education is required"),
+    smoke: z.boolean(),
+    drinking: z.boolean(),
+    goingOut: z.boolean(),
+    children: z.number().min(0),
+    searchWithIn: z.number().min(1),
+    length: z.string().min(1, "Height is required"),
+    country: z.string().min(1, "Country is required"),
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(1, "State is required")
+});
+
+export type PartnerFormValues = z.infer<typeof partnerFormSchema>;
+
+export default function usePartnerForm() {
+    const { data: session } = useSession();
+    const userId = session?.user.id ? String(session.user.id) : undefined;
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        setValue,
+        watch,
+        trigger,
+    } = useForm<PartnerFormValues>({
+        resolver: zodResolver(partnerFormSchema),
+        defaultValues: {
+            origin: "",
+            lookingFor: "Long-term relationship",
+            relationshipStatus: "Single",
+            religion: "",
+            ageFrom: 25,
+            ageTo: 35,
+            weight: "Average",
+            education: "",
+            smoke: false,
+            drinking: false,
+            goingOut: true,
+            children: 0,
+            searchWithIn: 1,
+            length: "Permanent",
+            country: "",
+            city: "",
+            state: ""
+        },
+        mode: "onBlur"
+    });
+
+    const { trigger: mutate, isMutating } = useSWRMutation(
+        "updatePartnerPreferences",
+        async (_, { arg }: { arg: PartnerFormValues }) => {
+            if (!userId) {
+                throw new Error("User not authenticated");
+            }
+
+            const payload = {
+                origin: arg.origin,
+                lookingFor: arg.lookingFor,
+                relationshipStatus: arg.relationshipStatus,
+                religion: arg.religion,
+                ageFrom: arg.ageFrom,
+                ageTo: arg.ageTo,
+                weight: arg.weight,
+                education: arg.education,
+                smoke: arg.smoke,
+                drinking: arg.drinking,
+                goingOut: arg.goingOut,
+                children: arg.children,
+                searchWithIn: arg.searchWithIn,
+                length: arg.length,
+                country: arg.country,
+                city: arg.city,
+                state: arg.state
+            };
+
+            return await patchPartnerExpectation(userId, payload);
+        },
+        {
+            onError: (error: Error) => {
+                showError({ message: error.message || "Failed to update partner preferences" });
+            },
+            onSuccess: () => {
+                showSuccess("Partner preferences updated successfully!");
+            },
+            revalidate: false
+        }
+    );
+
+    const onSubmit = async (values: PartnerFormValues) => {
+        const isValid = await trigger();
+        if (!isValid) return;
+        await mutate(values);
+        updateUserTrackingId({ step6: true })
+    };
+
+    return {
+        control,
+        handleSubmit,
+        errors,
+        isLoading: isSubmitting || isMutating,
+        setValue,
+        watch,
+        onSubmit,
+        trigger
+    };
+}

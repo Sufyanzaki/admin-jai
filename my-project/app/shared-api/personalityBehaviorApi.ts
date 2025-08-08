@@ -3,7 +3,7 @@ import {MemberPersonalityBehavior} from "@/app/shared-types/member";
 
 type Payload = Partial<MemberPersonalityBehavior>;
 
-export async function personalityBehaviorApi(userId: string, payload: Payload):Promise<MemberPersonalityBehavior> {
+export async function postPersonalityBehavior(userId: string, payload: Payload):Promise<MemberPersonalityBehavior> {
   const r = await postRequest<Payload>({
     url: `users/${userId}/personality-behavior`,
     data: payload,

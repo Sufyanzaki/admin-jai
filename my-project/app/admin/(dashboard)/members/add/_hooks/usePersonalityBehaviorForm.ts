@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { personalityBehaviorApi, patchPersonalityBehavior, UpdatePersonalityBehaviorPayload } from "../../../../../shared-api/personalityBehaviorApi";
+import { postPersonalityBehavior, patchPersonalityBehavior } from "@/app/shared-api/personalityBehaviorApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { usePersonalityBehaviorInfo } from "../../_hooks/usePersonalityBehaviorInfo";
 import { useEffect, useMemo } from "react";
@@ -126,7 +126,7 @@ export default function usePersonalityBehaviorForm() {
         ...personalityBehavior
       });
     }
-  }, [tracker?.id, personalityBehavior, reset]);
+  }, [personalityBehavior, reset, id]);
 
   const { trigger, isMutating } = useSWRMutation(
     "updatePersonalityBehavior",
@@ -136,7 +136,7 @@ export default function usePersonalityBehaviorForm() {
       if(!id) return showError({message : "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member"});
       
       if (id && allowEdit) return await patchPersonalityBehavior(id, payload);
-      else return await personalityBehaviorApi(id, payload);
+      else return await postPersonalityBehavior(id, payload);
     
     },
     {
@@ -148,11 +148,11 @@ export default function usePersonalityBehaviorForm() {
     }
   );
 
-  const onSubmit = async (values: PersonalityBehaviorFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: PersonalityBehaviorFormValues, callback?: () => void) => {
     const result = await trigger(values);
-      if (result?.status === 201 || result?.status === 200) {
+      if (result) {
         showSuccess("Personality & Behavior updated successfully!");
-        callback?.(result);
+        callback?.();
         updateUserTrackingId({ personalityAndBehavior: true });
       }
   };

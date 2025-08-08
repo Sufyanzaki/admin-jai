@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postLanguageInfo, patchLanguageInfo } from "../../../../../shared-api/languageInfoApi";
+import { postLanguageInfo, patchLanguageInfo } from "@/app/shared-api/languageInfoApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useLanguageInfoInfo } from "../../_hooks/useLanguageInfoInfo";
 import { useEffect, useMemo } from "react";

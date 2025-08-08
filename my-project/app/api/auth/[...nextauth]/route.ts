@@ -26,13 +26,14 @@ export const authOptions: NextAuthOptions = {
 
         const { email, otp } = parsedCredentials.data;
         const response = await postOtp({ email, otp });
-
+        console.log(response);
         if(!response) return null;
 
         return {
           id: response.user.id,
           email: response.user.email,
-          name: `${response.user.firstName} ${response.user.lastName}`,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
           token: response.tokens.access.token,
           role: "ADMIN",
         }
@@ -54,13 +55,14 @@ export const authOptions: NextAuthOptions = {
 
         const { email, otp } = parsedCredentials.data;
         const response = await postOtp({ email, otp });
-
+        console.log(response);
         if(!response) return null;
 
         return {
           id: response.user.id,
           email: response.user.email,
-          name: `${response.user.firstName} ${response.user.lastName}`,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
           token: response.tokens.access.token,
           role: "CLIENT",
         }

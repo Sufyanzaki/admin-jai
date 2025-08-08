@@ -32,7 +32,7 @@ export async function patchUserStatus(userId: string, isActive: boolean): Promis
   return r.response;
 } 
 
-export async function getUser(userId: string) {
+export async function getUser(userId: string): Promise<MemberProfile> {
   return getRequest({
     url: `users/${userId}`,
     useAuth: true,

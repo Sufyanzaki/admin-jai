@@ -49,9 +49,9 @@ interface GeosearchResult {
 }
 
 export interface LocationData {
-  country?: string
+  country: string
   city?: string
-  state?: string
+  state: string
 }
 
 interface LocationSearchInputProps {

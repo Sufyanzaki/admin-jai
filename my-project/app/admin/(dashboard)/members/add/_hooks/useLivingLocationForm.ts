@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { patchUserLocation, postUserLocation } from "../../../../../shared-api/livingApi";
+import { patchUserLocation, postUserLocation } from "@/app/shared-api/livingApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
 import {useEffect} from "react";
@@ -12,8 +12,8 @@ import {useEffect} from "react";
 const livingLocationSchema = z.object({
   id: z.string().optional(),
   city: z.string().optional(),
-  state: z.string().optional(),
-  country: z.string().optional(),
+  state: z.string().min(1, "State is Required"),
+  country: z.string().min(1, "Country is Required"),
 });
 
 export type UpdateUserLocationFormValues = z.infer<typeof livingLocationSchema>;

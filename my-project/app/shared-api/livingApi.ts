@@ -17,7 +17,7 @@ export async function patchUserLocation(id: string, payload: Partial<MemberLocat
   });
 }
 
-export async function getLiving(id: string): Promise<MemberLocation | undefined> {
+export async function getUserLocation(id: string): Promise<MemberLocation | undefined> {
   return await getRequest({
     url: `users/${id}/living`,
     useAuth: true

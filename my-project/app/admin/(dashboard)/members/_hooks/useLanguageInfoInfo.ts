@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getLanguageInfo } from "../../../../shared-api/languageInfoApi";
+import { getLanguageInfo } from "@/app/shared-api/languageInfoApi";
 import { useParams } from "next/navigation";
 
 export const useLanguageInfoInfo = () => {
@@ -9,8 +9,8 @@ export const useLanguageInfoInfo = () => {
   const id = typeof params.id === 'string' ? params.id : params.id?.[0];
 
   const tracker = getUserTrackingId();
-  const allowThisTab = tracker?.languages;
-  const userId = allowThisTab ? (tracker?.id ?? id) : null;
+  const allowThisTab = tracker?.languages || tracker?.step2;
+  const userId = allowThisTab ? (tracker?.id ?? id) : null
 
   const { data, loading, error, mutate } = useSWRFix({
     key: userId ? `language-info-${userId}` : '',

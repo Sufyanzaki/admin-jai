@@ -68,8 +68,8 @@ export default function LanguagesTab({ callback }: { callback: () => void}) {
                   control={control}
                   name="motherTongue"
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                      <SelectTrigger id="mother-tongue" className="w-full">
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger id="mother-tongue" className="w-full" key={field.value}>
                         <SelectValue placeholder="Select your mother tongue" />
                       </SelectTrigger>
                       <SelectContent>

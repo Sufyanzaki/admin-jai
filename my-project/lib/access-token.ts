@@ -11,12 +11,22 @@ type UserTrackingIdDto = {
   languages: boolean;
   living: boolean;
   aboutMe: boolean;
+
+  //for the client side
+
+  step1: boolean;
+  step2: boolean;
+  step3: boolean;
+  step4: boolean;
+  step5: boolean;
+  step6: boolean;
+  step7: boolean;
 }
 
 const userKey = "userTrackingId";
 const userEmail = "userEmail";
 
-export function setUserTrackingId(value: UserTrackingIdDto): void {
+export function setUserTrackingId(value: Partial<UserTrackingIdDto>): void {
   localStorage.setItem(userKey, JSON.stringify(value));
 }
 

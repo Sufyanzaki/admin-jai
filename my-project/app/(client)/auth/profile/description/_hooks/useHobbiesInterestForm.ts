@@ -1,32 +1,39 @@
-import { useState, useCallback } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import {useCallback, useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {useRouter} from "next/navigation";
+import {showError, showSuccess} from "@/shared-lib";
+import {patchUser} from "@/app/shared-api/userApi";
+import {postHobbiesInterests} from "@/app/shared-api/hobbiesInterestsApi";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { showError, showSuccess } from "@/shared-lib";
-import { patchUser } from "@/app/shared-api/userApi";
-import { postHobbiesInterests } from "@/app/shared-api/hobbiesInterestsApi";
+import {updateUserTrackingId} from "@/lib/access-token";
+import {useHobbiesInterestsInfo} from "@/app/admin/(dashboard)/members/_hooks/useHobbiesInterestsInfo";
+import {useBasicInfo} from "@/app/admin/(dashboard)/members/_hooks/useBasicInfo";
 
-// Zod schema
 const hobbiesInterestsSchema = z.object({
     sports: z.array(z.string()).min(1, "Select at least one sport"),
     music: z.array(z.string()).min(1, "Select at least one music genre"),
     kitchen: z.array(z.string()).min(1, "Select at least one kitchen hobby"),
     reading: z.array(z.string()).min(1, "Select at least one reading category"),
     tvShows: z.array(z.string()).min(1, "Select at least one TV show type"),
-    description: z.string().min(10, "Description is required"),
+    shortDescription: z.string().min(10, "Description is required"),
 });
 
 export type HobbiesInterestsForm = z.infer<typeof hobbiesInterestsSchema>;
 
-export default function useHobbiesInterestsForm(userId: string) {
+export default function useHobbiesInterestsForm() {
+
+    const { data:session } = useSession();
+
+    const {hobbiesInterests, hobbiesInterestsLoading} = useHobbiesInterestsInfo();
+    const {user, userLoading} = useBasicInfo();
+
+    const userId = session?.user.id ? String(session.user.id) : undefined;
+
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState<string | null>(null);
 
-    // --------------------
-    // React Hook Form
-    // --------------------
     const {
         handleSubmit,
         formState: { errors, isSubmitting },
@@ -43,19 +50,30 @@ export default function useHobbiesInterestsForm(userId: string) {
             kitchen: [],
             reading: [],
             tvShows: [],
-            description: "",
+            shortDescription: "",
         },
         mode: "onBlur",
     });
+
+    useEffect(() => {
+        if(!user || !hobbiesInterests) return;
+
+        reset({
+            sports: [],
+            music: [],
+            kitchen: [],
+            reading: [],
+            tvShows: [],
+            shortDescription: user.shortDescription ? user.shortDescription : "",
+        })
+    }, [userLoading, hobbiesInterests]);
 
     const onSubmit = useCallback(
         async (values: HobbiesInterestsForm) => {
             try {
                 if (!userId) throw new Error("User ID missing");
-
                 setCurrentStep("Saving hobbies & description");
 
-                // Separate API payloads
                 const hobbiesPayload = {
                     sports: values.sports.join(", "),
                     music: values.music.join(", "),
@@ -65,15 +83,16 @@ export default function useHobbiesInterestsForm(userId: string) {
                 };
 
                 await Promise.all([
-                    patchUser(userId, { shortDescription: values.description }),
+                    patchUser(userId, { shortDescription: values.shortDescription }),
                     postHobbiesInterests(userId, hobbiesPayload),
                 ]);
+
+                updateUserTrackingId({ step3: true })
 
                 showSuccess("Hobbies & description saved!");
                 router.push("/auth/profile/personality");
             } catch (err) {
                 if (err instanceof Error) showError({ message: err.message });
-                console.error(err);
             } finally {
                 setCurrentStep(null);
             }
@@ -85,12 +104,13 @@ export default function useHobbiesInterestsForm(userId: string) {
        handleSubmit,
         onSubmit,
         errors,
-        isLoading: isSubmitting,
+        isSubmitting,
         currentStep,
         register,
         setValue,
         control,
         watch,
         reset,
+        isFetching: hobbiesInterestsLoading || userLoading
     };
 }

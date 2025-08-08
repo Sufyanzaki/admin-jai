@@ -14,8 +14,8 @@ import { useRouter } from "next/navigation";
 const userSchema = z.object({
     email: z.string().min(1, "Email is required").email("Invalid email"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    country: z.string().optional(),
-    state: z.string().optional(),
+    country: z.string().min(1, "Country is Required"),
+    state: z.string().min(1, "State is Required"),
     city: z.string().optional(),
     ageFrom: z.string().min(1, "Age is required"),
     ageTo: z.string().min(1, "Age is required"),
@@ -47,9 +47,8 @@ export default function useRegisterForm() {
                     ageTo: parseInt(ageTo),
                     ageFrom: parseInt(ageFrom),
                 }),
+                postLoginForm({ email, password })
             ]);
-            setCurrentStep("Verifying Account");
-            await postLoginForm({ email, password });
 
             setUserEmail(email);
 
@@ -98,12 +97,12 @@ export default function useRegisterForm() {
                 if (result) {
                     showSuccess('User created successfully!');
                     callback?.();
-                    router.push("/dashbaord")
+                    router.push("/auth/otp")
                 }
             } catch (error) {
                 if (error instanceof Error) showError({ message: error.message });
             } finally {
-                setCurrentStep(null); // reset step in case of error
+                setCurrentStep(null);
             }
         },
         [trigger, reset]
@@ -113,11 +112,11 @@ export default function useRegisterForm() {
         handleSubmit,
         onSubmit,
         errors,
-        isLoading: isSubmitting || isMutating,
-        currentStep,
+        isLoading: isMutating || isSubmitting,
         register,
         setValue,
         control,
         watch,
+        currentStep
     };
 }

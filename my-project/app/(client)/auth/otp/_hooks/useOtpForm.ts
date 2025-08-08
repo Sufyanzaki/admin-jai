@@ -57,7 +57,7 @@ export default function useOTPForm() {
         handleSubmit,
         onSubmit,
         errors,
-        isSubmitting,
+        isSubmitting: isSubmitting,
         control,
         setValue,
     };

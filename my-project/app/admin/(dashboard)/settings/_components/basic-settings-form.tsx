@@ -158,11 +158,10 @@ export default function BasicSettingsForm() {
                       control={control}
                       render={({ field }) => (
                         <Select
-                          key={field.value}
                           value={field.value}
                           onValueChange={field.onChange}
                         >
-                          <SelectTrigger>
+                          <SelectTrigger key={field.value}>
                             <SelectValue placeholder="Select format" />
                           </SelectTrigger>
                           <SelectContent>

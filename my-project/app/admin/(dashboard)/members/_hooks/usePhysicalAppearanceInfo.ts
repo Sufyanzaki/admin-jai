@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getPhysicalAppearance } from "../../../../shared-api/physicalAppearanceApi";
+import { getPhysicalAppearance } from "@/app/shared-api/physicalAppearanceApi";
 import { useParams } from "next/navigation";
 
 export const usePhysicalAppearanceInfo = () => {
@@ -9,7 +9,7 @@ export const usePhysicalAppearanceInfo = () => {
   const id = typeof params.id === 'string' ? params.id : params.id?.[0];
 
   const tracker = getUserTrackingId();
-  const allowThisTab = tracker?.aboutMe;
+  const allowThisTab = (tracker?.aboutMe || tracker?.step2);
   const userId = allowThisTab ? (tracker?.id ?? id) : null;
 
   const { data, loading, error, mutate } = useSWRFix({

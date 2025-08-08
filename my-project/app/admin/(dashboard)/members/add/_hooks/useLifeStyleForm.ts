@@ -4,7 +4,7 @@ import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postLifeStyle, patchLifeStyle } from "../../../../../shared-api/lifeStyleApi";
+import { postLifeStyle, patchLifeStyle } from "@/app/shared-api/lifeStyleApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useLifeStyleInfo } from "../../_hooks/useLifeStyleInfo";
 import { useEffect, useMemo } from "react";
