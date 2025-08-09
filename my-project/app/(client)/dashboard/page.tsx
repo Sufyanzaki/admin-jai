@@ -4,14 +4,20 @@ import { Button } from "@/components/client/ux/button";
 import { Card, CardContent } from "@/components/client/ux/card";
 import { Bell, MoveRight } from "lucide-react";
 import ProfileCard from "./_components/profile-card";
-import { cardData, matches, recentMembers } from "./_const/contant";
+import { cardData } from "./_const/contant";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTodaysMatches } from "./_hooks/useTodaysMatches";
+import { Skeleton } from "@/components/admin/ui/skeleton";
+import { MemberProfile } from "@/app/shared-types/member";
+import { useMayLike } from "./_hooks/useMayLike";
 
 export default function Dashboard() {
   const router = useRouter();
   const { data: session } = useSession();
-
+  const { matches, matchesLoading, error } = useTodaysMatches();
+  const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
+  
   return (
     <>
       <div className="p-4 lg:p-6 flex flex-col min-h-screen gap-8">
@@ -99,6 +105,7 @@ export default function Dashboard() {
                     Here are Today&apos;s top Matches for you.
                   </h2>
                   <Button
+                  onClick={()=> router.push("/dashboard/matches")}
                     variant="ghost"
                     size="sm"
                     className="text-app-pink text-xs sm:text-sm font-semibold"
@@ -106,10 +113,29 @@ export default function Dashboard() {
                     Meer tonen <MoveRight />
                   </Button>
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
-                  {matches.slice(0, 6).map((match) => (
-                    <ProfileCard key={match.id} profile={match} />
-                  ))}
+                  {error ? (
+                    <div className="flex items-center justify-center h-screen">
+                      <div className="text-center">
+                        <h2 className="text-2xl font-bold text-red-600">
+                          Error loading Todays Matches
+                        </h2>
+                        <p className="text-muted-foreground">{error.message}</p>
+                      </div>
+                    </div>
+                  ) : matchesLoading ? (
+                    Array.from({ length: 6 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        className="h-[210px] w-full rounded-lg bg-app-gray/10"
+                      />
+                    ))
+                  ) : Array.isArray(matches) ? (
+                    matches.slice(0,6).map((match: MemberProfile) => (
+                      <ProfileCard key={match.id} profile={match} />
+                    ))
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -129,10 +155,28 @@ export default function Dashboard() {
                   Meer tonen <MoveRight />
                 </Button>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
-                {recentMembers.map((match) => (
-                  <ProfileCard key={match.id} profile={match} />
-                ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
+                {mayLikeError ? (
+                  <div className="flex items-center justify-center h-screen">
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-red-600">
+                        Error loading Todays Matches
+                      </h2>
+                      <p className="text-muted-foreground">{error.message}</p>
+                    </div>
+                  </div>
+                ) : mayLikeLoading ? (
+                  Array.from({ length: 6 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        className="h-[210px] w-full rounded-lg bg-app-gray/10"
+                      />
+                    ))
+                ) : Array.isArray(mayLike) ? (
+                  mayLike.slice(0,6).map((match) => (
+                    <ProfileCard key={match.id} profile={match} />
+                  ))
+                ) : null}
               </div>
             </div>
           </div>

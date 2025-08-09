@@ -6,6 +6,10 @@ import { Grid3X3, List } from "lucide-react";
 import { useState } from "react";
 import ProfileCard from "../../_components/profile-card";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
+import useSearchForm from "../../_hooks/useSearchForm";
+import { useSearchParams } from "next/navigation";
+import useSWR from "swr";
+import { getSearch, paramsToSearchForm, SearchResponse, useSearch } from "../../_api/getSearch";
 
 const searchResults = [
   {
@@ -124,7 +128,13 @@ const searchResults = [
 export function SearchResults() {
   const [online, setOnline] = useState(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const searchParams = useSearchParams();
+  const formValues = paramsToSearchForm(searchParams);
 
+  const { data, error, isLoading } = useSearch(formValues)
+  console.log(data)
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
   const filteredResults = online
     ? searchResults.filter((profile) => profile.status === "online")
     : searchResults;

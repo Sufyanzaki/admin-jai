@@ -38,6 +38,7 @@ import {
 } from "@/components/client/ux/collapsible";
 import LocationSearchInput from "@/components/client/location-search";
 import useSearchForm from "../_hooks/useSearchForm";
+import { MemberLocation } from "@/app/shared-types/member";
 
 export default function SidebarData() {
   const { open } = useSidebar();
@@ -51,10 +52,22 @@ export default function SidebarData() {
     control,
     setValue,
     watch,
-    isSubmitting,
     register,
   } = useSearchForm();
 
+  const city = watch("city");
+  const state = watch("state");
+  const country = watch("country");
+
+  const currentLocation =
+    city || state || country ? { city, state, country } : null;
+
+  const handleLocationSelect = (location: Partial<MemberLocation>) => {
+    setValue("city", location.city);
+    location.state && setValue("state", location.state);
+    location.country && setValue("country", location.country);
+  };
+console.log(errors)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SidebarContent className={open ? "px-6" : "px-3"}>
@@ -83,7 +96,7 @@ export default function SidebarData() {
             {/* Looking For */}
             <Controller
               control={control}
-              name="lookingFor"
+              name="gender"
               render={({ field }) => (
                 <div className="relative group-data-[collapsible=icon]:hidden">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
@@ -92,8 +105,8 @@ export default function SidebarData() {
                       <SelectValue placeholder="Am Looking for" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="man">Man</SelectItem>
-                      <SelectItem value="woman">Woman</SelectItem>
+                      <SelectItem value="male">Man</SelectItem>
+                      <SelectItem value="female">Woman</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -103,7 +116,7 @@ export default function SidebarData() {
             {/* Relation Status */}
             <Controller
               control={control}
-              name="relationStatus"
+              name="relationshipStatus"
               render={({ field }) => (
                 <div className="relative group-data-[collapsible=icon]:hidden">
                   <HeartHandshake className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
@@ -130,23 +143,34 @@ export default function SidebarData() {
             />
 
             {/* Location */}
-            <Controller
-              control={control}
-              name="location"
-              render={({ field }) => (
-                <div className="flex items-center justify-center w-full bg-white border-white/20 pl-4 h-12 rounded-[5px] group-data-[collapsible=icon]:hidden">
-                  <MapPin className="w-5 h-5 text-gray-500 z-10" />
-                  <LocationSearchInput
-                    onSelect={(loc) => field.onChange(loc)}
-                    className="text-black placeholder:text-gray-500 w-full"
-                    placeholder="Enter Location"
-                  />
+            <div className="space-y-2 border-b border-[#E5E7EB]">
+              <div className="flex items-center justify-center w-full bg-white border-white/20 pl-4 h-12 rounded-[5px] group-data-[collapsible=icon]:hidden">
+                <MapPin className="w-5 h-5 text-gray-500 z-10" />
+                <LocationSearchInput
+                  value={currentLocation}
+                  onSelect={handleLocationSelect}
+                  className="text-black placeholder:text-gray-500 w-full"
+                  placeholder="Enter Location"
+                />
+              </div>
+              {(errors.state || errors.country) && (
+                <div className="space-y-1">
+                  {errors.state && (
+                    <p className="text-sm text-red-500">
+                      {errors.state.message}
+                    </p>
+                  )}
+                  {errors.country && (
+                    <p className="text-sm text-red-500">
+                      {errors.country.message}
+                    </p>
+                  )}
                 </div>
               )}
-            />
+            </div>
 
             {/* Age */}
-            <div className="relative group-data-[collapsible=icon]:hidden">
+            {/* <div className="relative group-data-[collapsible=icon]:hidden">
               <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <div className="flex bg-white rounded-[5px] border border-white/20">
                 <Input
@@ -163,7 +187,7 @@ export default function SidebarData() {
                   className="border-0 text-black placeholder:text-gray-500 h-12 text-sm pl-4 rounded-l-none rounded-r-[5px]"
                 />
               </div>
-            </div>
+            </div> */}
             <div className="hidden group-data-[collapsible=icon]:flex flex-col gap-2 items-center">
               <SidebarMenuButton
                 className="text-white cursor-pointer p-0 rounded-[5px] bg-white"
@@ -244,7 +268,7 @@ export default function SidebarData() {
             {/* Children */}
             <Controller
               control={control}
-              name="children"
+              name="hasChildren"
               render={({ field }) => (
                 <div className="relative">
                   <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
@@ -253,12 +277,8 @@ export default function SidebarData() {
                       <SelectValue placeholder="Children" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">All</SelectItem>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="4+">4+</SelectItem>
+                      <SelectItem value="false">None</SelectItem>
+                      <SelectItem value="true">1 or more</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

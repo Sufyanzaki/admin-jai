@@ -3,34 +3,28 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useSWRMutation from "swr/mutation";
-import { postSearch } from "../_api/postSearch";
 import { showError, showSuccess } from "@/shared-lib";
+import { getSearch, SearchResponse } from "../_api/getSearch";
+import { useState } from "react";
 
-// ✅ Zod schema for form fields
-const searchSchema = z.object({
-  quickSearch: z.string().optional(),
-  lookingFor: z.enum(["man", "woman"]).optional(),
-  relationStatus: z
-    .enum(["none", "single", "widow", "married", "divorced"])
-    .optional(),
-  location: z.string().optional(),
-  ageFrom: z.coerce.number().optional(),
-  ageTo: z.coerce.number().optional(),
-  religion: z
-    .enum(["none", "buddhist", "muslim", "hindu", "catholic"])
-    .optional(),
-  children: z.string().optional(),
-  education: z
-    .enum(["none", "primary", "secondary", "mbo", "hbo", "university"])
-    .optional(),
+// ✅ Schema matches allowed API params
+export const searchSchema = z.object({
+  gender: z.string().optional(),
+  relationshipStatus: z.enum(["single", "married", "widow", "divorced", "none"]).optional(),
+  country: z.string().optional(),
+  state: z.string().optional(),
+  city: z.string().optional(),
+  religion: z.string().optional(),
+  education: z.string().optional(),
+  hasChildren: z.coerce.boolean().optional(),
+  ageFrom: z.number().optional(),
+  ageTo: z.number().optional(),
+  page: z.coerce.number().default(1),
+  limit: z.coerce.number().max(30).default(30),
+
 });
 
 export type SearchFormValues = z.infer<typeof searchSchema>;
-
-// SWR mutation fetcher
-async function searchFetcher(_: string, { arg }: { arg: SearchFormValues }) {
-  return await postSearch(arg);
-}
 
 export default function useSearchForm() {
   const router = useRouter();
@@ -46,42 +40,32 @@ export default function useSearchForm() {
   } = useForm<SearchFormValues>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      quickSearch: "",
-      lookingFor: undefined,
-      relationStatus: undefined,
-      location: "",
-      ageFrom: undefined,
-      ageTo: undefined,
-      religion: undefined,
-      children: undefined,
-      education: undefined,
+      gender: "",
+      relationshipStatus: undefined,
+      country: "",
+      state: "",
+      city: "",
+      religion: "",
+      education: "",
+      hasChildren: false,
+      page: 1,
+      limit: 30,
     },
   });
 
-  const { trigger, isMutating } = useSWRMutation(
-    "searchProfiles", // cache key
-    searchFetcher,
-    {
-      onSuccess: (data) => {
-        showSuccess("Search completed!");
-        router.push("/dashboard/search");
-      },
-      onError: (error: Error) => {
-        showError({ message: error.message || "Search failed" });
-        console.error(error);
-      },
-    }
-  );
-
-  const onSubmit = (values: SearchFormValues) => {
-    trigger(values);
+  const onSubmit = async (values: SearchFormValues) => {
+    const params = new URLSearchParams(
+      Object.entries(watch())
+        .filter(([_, v]) => v !== undefined && v !== "" && v !== null)
+        .map(([k, v]) => [k, String(v)])
+    );
+    router.push(`/dashboard/search?${params.toString()}`);
   };
 
   return {
     handleSubmit,
     onSubmit,
     errors,
-    isSubmitting: isSubmitting || isMutating,
     register,
     setValue,
     control,
