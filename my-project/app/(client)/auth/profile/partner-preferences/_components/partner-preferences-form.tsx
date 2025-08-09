@@ -16,6 +16,7 @@ import { RangeSlider } from "@/components/client/ux/range-slider";
 import LocationSearchInput from "@/components/client/location-search";
 import { Controller } from "react-hook-form";
 import usePartnerForm from "@/app/(client)/auth/profile/partner-preferences/_hooks/usePartnerForm";
+import {MemberLocation} from "@/app/shared-types/member";
 
 export default function PartnerPreferencesForm() {
     const router = useRouter();
@@ -25,7 +26,6 @@ export default function PartnerPreferencesForm() {
         errors,
         isLoading,
         setValue,
-        trigger,
         onSubmit,
         watch
     } = usePartnerForm();
@@ -37,12 +37,16 @@ export default function PartnerPreferencesForm() {
     const weight = watch("weight");
     const searchWithIn = watch("searchWithIn");
 
-    const handleNext = async () => {
-        const isValid = await trigger();
-        if (isValid) {
-            await handleSubmit(onSubmit)();
-            router.push("/auth/profile/account");
-        }
+    const city = watch("city");
+    const state = watch("state");
+    const country = watch("country");
+
+    const currentLocation = city || state || country ? { city, state, country } : null;
+
+    const handleLocationSelect = (location: Partial<MemberLocation>) => {
+        setValue("city", location.city);
+        location.state && setValue("state", location.state);
+        location.country && setValue("country", location.country);
     };
 
     const handleBack = () => {
@@ -62,7 +66,7 @@ export default function PartnerPreferencesForm() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(v=>onSubmit(v))} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label>I&apos;m looking for a *</Label>
@@ -201,7 +205,7 @@ export default function PartnerPreferencesForm() {
                   name="education"
                   control={control}
                   render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
+                      <Select value={field.value || undefined} key={field.value || "empty"} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select education level" />
                         </SelectTrigger>
@@ -223,7 +227,7 @@ export default function PartnerPreferencesForm() {
                   name="children"
                   control={control}
                   render={({ field }) => (
-                      <Select value={field.value.toString()} onValueChange={(val) => field.onChange(Number(val))}>
+                      <Select value={field.value.toString() || undefined} key={field.value || "empty"} onValueChange={(val) => field.onChange(Number(val))}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select number of children" />
                         </SelectTrigger>
@@ -325,23 +329,17 @@ export default function PartnerPreferencesForm() {
 
           <div className="space-y-2 grid lg:grid-cols-2 gap-5 items-end">
             <div className="border border-app-border rounded-[5px]">
-              <Controller
-                  name="city"
-                  control={control}
-                  render={({ field }) => (
-                      <LocationSearchInput
-                          onSelect={(location) => {
-                            field.onChange(location.city);
-                            setValue("country", location.country);
-                            setValue("state", location.state);
-                          }}
-                          placeholder="Search for city or address"
-                      />
-                  )}
-              />
-              {errors.city && <p className="text-sm text-red-500">{errors.city.message}</p>}
-              {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-              {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
+                <LocationSearchInput
+                    value={currentLocation}
+                    onSelect={handleLocationSelect}
+                    placeholder="Search for your city, state, or country"
+                />
+                {(errors.state || errors.country) && (
+                    <div className="space-y-1">
+                        {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
+                        {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
+                    </div>
+                )}
             </div>
 
             <div className="relative w-full">
@@ -365,7 +363,7 @@ export default function PartnerPreferencesForm() {
             </span>
               Back
             </Button>
-            <Button variant="theme" type="submit" size={"lg"} disabled={isLoading} onClick={handleNext}>
+            <Button variant="theme" type="submit" size={"lg"} disabled={isLoading}>
               {isLoading ? "Saving..." : "Next"}
               <span className="ml-1">
               <ArrowRight />

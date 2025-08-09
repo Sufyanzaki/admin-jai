@@ -28,7 +28,6 @@ export const useDeleteStaff = () => {
         try {
             await trigger({ id });
             
-            // Mutate all staff-members keys (with different params)
             await globalMutate(
                 (key) => Array.isArray(key) && key[0] === "staff-members",
                 (currentData: StaffListResponse | undefined) => {

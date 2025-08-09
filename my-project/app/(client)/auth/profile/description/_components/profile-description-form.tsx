@@ -8,6 +8,7 @@ import {ArrowLeft, ArrowRight} from "lucide-react";
 import {MultiSelectCombobox} from "@/components/client/ux/combo-box";
 import useHobbiesInterestsForm from "../_hooks/useHobbiesInterestForm";
 import {Controller} from "react-hook-form";
+import Preloader from "@/components/shared/Preloader";
 
 export function ProfileDescriptionForm() {
   const router = useRouter();
@@ -18,24 +19,29 @@ export function ProfileDescriptionForm() {
     handleSubmit,
     control,
     setValue,
-    currentStep,
     watch,
-    isSubmitting
+    isSubmitting,
+    isFetching
   } = useHobbiesInterestsForm();
-
-  const maxCharacters = 100;
 
   const shortDescription = watch("shortDescription") || "";
 
   const handleDescriptionChange = (value: string) => {
-    if (value.length <= maxCharacters) {
-      setValue("shortDescription", value);
-    }
+    setValue("shortDescription", value);
   };
 
   const handleBack = () => {
     router.push("/auth/profile/details");
   };
+
+  if(isFetching){
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader/>
+          <p className="text-sm">Loading Profile</p>
+        </div>
+    )
+  }
 
   return (
     <form className="space-y-8" onSubmit={handleSubmit(data => onSubmit(data))}>
@@ -192,7 +198,7 @@ export function ProfileDescriptionForm() {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? currentStep : "Next"}
+          {isSubmitting ? "Processing.." : "Next"}
           <span className="ml-1">
             <ArrowRight />
           </span>

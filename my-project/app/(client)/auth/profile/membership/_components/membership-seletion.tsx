@@ -46,7 +46,6 @@ export function MembershipSelection() {
 
   const handleSelectPlan = (planId: string) => {
     console.log("Selected plan:", planId);
-    // Navigate to payment or dashboard
   };
 
   const handleCompareFeatures = () => {
@@ -54,13 +53,11 @@ export function MembershipSelection() {
   };
 
   const handleNext = () => {
-    router.push("/auth/login");
+    router.push("/dashboard");
   };
 
   const handleBack = () => {
     router.push("/auth/profile/account");
-    // Handle navigation to previous step
-    console.log("Going back...");
   };
 
   return (

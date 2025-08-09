@@ -43,7 +43,7 @@ function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolea
         }
     }, [mounted, status, router, isProtectedPath]);
 
-    if (!mounted || status === "loading") {
+    if (!mounted) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <Preloader />

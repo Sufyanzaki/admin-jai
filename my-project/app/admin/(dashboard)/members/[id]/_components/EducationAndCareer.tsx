@@ -2,7 +2,7 @@
 
 import { CardContent } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
-import { useEducationCareerInfo } from "../../_hooks/useEducationCareerInfo";
+import { useEducationCareerInfo } from "../../../../../shared-hooks/useEducationCareerInfo";
 
 interface EducationAndCareerProps {
   memberId: string | number;

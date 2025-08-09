@@ -6,7 +6,7 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postLanguageInfo, patchLanguageInfo } from "@/app/shared-api/languageInfoApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { useLanguageInfoInfo } from "../../_hooks/useLanguageInfoInfo";
+import { useLanguageInfoInfo } from "../../../../../shared-hooks/useLanguageInfoInfo";
 import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 

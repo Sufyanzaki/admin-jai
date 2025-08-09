@@ -21,7 +21,7 @@ export async function patchPersonalityBehavior(userId: string, payload: Payload)
   return r.response
 }
 
-export async function getPersonalityBehavior(userId: string) {
+export async function getPersonalityBehavior(userId: string): Promise<MemberPersonalityBehavior> {
   return getRequest({
     url: `users/${userId}/personality-behavior`,
     useAuth: true,

@@ -6,14 +6,14 @@ import useSWRMutation from 'swr/mutation';
 import { showError, showSuccess } from '@/shared-lib';
 import { useRouter } from 'next/navigation';
 
-import { postPhysicalAppearance } from '@/app/shared-api/physicalAppearanceApi';
-import { postEducationCareer } from '@/app/shared-api/educationCareerApi';
-import { postLanguageInfo } from '@/app/shared-api/languageInfoApi';
+import {patchPhysicalAppearance, postPhysicalAppearance} from '@/app/shared-api/physicalAppearanceApi';
+import {patchEducationCareer, postEducationCareer} from '@/app/shared-api/educationCareerApi';
+import {patchLanguageInfo, postLanguageInfo} from '@/app/shared-api/languageInfoApi';
 import {useSession} from "next-auth/react";
-import {usePhysicalAppearanceInfo} from "@/app/admin/(dashboard)/members/_hooks/usePhysicalAppearanceInfo";
-import {useEducationCareerInfo} from "@/app/admin/(dashboard)/members/_hooks/useEducationCareerInfo";
-import {useLanguageInfoInfo} from "@/app/admin/(dashboard)/members/_hooks/useLanguageInfoInfo";
-import {updateUserTrackingId} from "@/lib/access-token";
+import {usePhysicalAppearanceInfo} from "@/app/shared-hooks/usePhysicalAppearanceInfo";
+import {useEducationCareerInfo} from "@/app/shared-hooks/useEducationCareerInfo";
+import {useLanguageInfoInfo} from "@/app/shared-hooks/useLanguageInfoInfo";
+import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
 
 export const appearanceCareerSchema = z.object({
     height: z.string().min(1, {
@@ -77,6 +77,11 @@ export default function useAppearanceAndCareerForm() {
         'clientCreateAppearanceCareer',
         async (_: string, { arg }: { arg: AppearanceCareerForm }) => {
             if (!userId) throw new Error('User ID is missing or invalid.');
+            const tracker = getUserTrackingId();
+
+            const physicalApi = tracker?.step2 ? patchPhysicalAppearance : postPhysicalAppearance
+            const languageApi = tracker?.step2 ? patchLanguageInfo : postLanguageInfo
+            const appearanceApi = tracker?.step2 ? patchEducationCareer : postEducationCareer
 
             const {
                 height,
@@ -96,7 +101,7 @@ export default function useAppearanceAndCareerForm() {
             setCurrentStep('Saving physical appearance & education');
 
             await Promise.all([
-                postPhysicalAppearance(userId, {
+                physicalApi(userId, {
                     height,
                     eyeColor,
                     hairColor,
@@ -107,13 +112,14 @@ export default function useAppearanceAndCareerForm() {
                     intelligence,
                     language: motherTongue,
                 }),
-                postLanguageInfo(userId, {
+                languageApi(userId, {
                     motherTongue,
                     knownLanguages: knownLanguages.join(", "),
                 }),
-                postEducationCareer(userId, {
+                appearanceApi(userId, {
                     education,
                     department,
+                    primarySpecialization: "dummy"
                 }),
             ]);
 

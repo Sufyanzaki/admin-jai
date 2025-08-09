@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { useBasicInfo } from './useBasicInfo';
+import { useBasicInfo } from '../../../../shared-hooks/useBasicInfo';
 import { patchUserStatus } from '@/app/shared-api/userApi';
 import { useEffect } from 'react';
 import {MemberProfile} from "@/app/shared-types/member";

@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/client/ux/checkbox";
 import { Controller } from "react-hook-form";
 import usePersonalityStyleForm from "@/app/(client)/auth/profile/personality/_hooks/usePersonalityStyleForm";
 import {PersonalityBehaviorFormValues} from "@/app/admin/(dashboard)/members/add/_hooks/usePersonalityBehaviorForm";
+import Preloader from "@/components/shared/Preloader";
 
 interface PersonalityTrait {
   value: keyof PersonalityBehaviorFormValues;
@@ -84,22 +85,24 @@ export function PersonalityForm() {
   const {
     handleSubmit,
     errors,
-    isLoading,
+    isSubmitting,
     control,
     onSubmit,
+    isFetching,
   } = usePersonalityStyleForm();
-
-  const handleNext = () => {
-    handleSubmit((values) => {
-      onSubmit(values, () => {
-        router.push("/auth/profile/photos");
-      });
-    })();
-  };
 
   const handleBack = () => {
     router.push("/auth/profile/description");
   };
+
+  if(isFetching){
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader/>
+          <p className="text-sm">Loading...</p>
+        </div>
+    )
+  }
 
   return (
       <div className="space-y-8 py-3">
@@ -255,12 +258,11 @@ export function PersonalityForm() {
             </Button>
             <Button
                 variant="theme"
-                onClick={handleNext}
                 size={"lg"}
                 type="submit"
-                disabled={isLoading}
+                disabled={isSubmitting}
             >
-              {isLoading ? "Saving..." : "Next"}
+              {isSubmitting ? "Saving..." : "Next"}
               <span className="ml-1">
               <ArrowRight />
             </span>

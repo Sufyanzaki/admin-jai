@@ -2,7 +2,7 @@
 
 import { CardContent } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
-import { useBasicInfo } from "../../_hooks/useBasicInfo";
+import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
 
 interface LivingProps {
   memberId: string | number;

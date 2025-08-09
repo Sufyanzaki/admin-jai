@@ -1,6 +1,6 @@
 import { useSWRFix } from "@/shared-lib";
 import { getUserTrackingId } from "@/lib/access-token";
-import { getLifeStyle } from "../../../../shared-api/lifeStyleApi";
+import { getLifeStyle } from "@/app/shared-api/lifeStyleApi";
 import { useParams } from "next/navigation";
 
 export const useLifeStyleInfo = () => {
@@ -9,7 +9,7 @@ export const useLifeStyleInfo = () => {
   const id = typeof params.id === 'string' ? params.id : params.id?.[0];
 
   const tracker = getUserTrackingId();
-  const allowThisTab = tracker?.lifeStyle;
+  const allowThisTab = tracker?.lifeStyle || tracker?.step4;
   const userId = allowThisTab ? (tracker?.id ?? id) : null;
 
   const { data, loading, error, mutate } = useSWRFix({

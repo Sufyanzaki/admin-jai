@@ -2,8 +2,8 @@
 
 import { CardContent } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
-import { usePhysicalAppearanceInfo } from "../../_hooks/usePhysicalAppearanceInfo";
-import { useBasicInfo } from "../../_hooks/useBasicInfo";
+import { usePhysicalAppearanceInfo } from "../../../../../shared-hooks/usePhysicalAppearanceInfo";
+import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
 
 interface AboutMeProps {
   memberId: string | number;

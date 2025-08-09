@@ -7,7 +7,7 @@ import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import {getUserTrackingId, setUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
 import {isFile} from "@/lib/utils";
 import {useEffect, useMemo} from "react";
-import {useBasicInfo} from "../../_hooks/useBasicInfo";
+import {useBasicInfo} from "../../../../../shared-hooks/useBasicInfo";
 import {useParams} from "next/navigation";
 import {useSWRConfig} from "swr";
 import {GetAllMembersResponse} from "../../_types/member";

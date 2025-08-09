@@ -11,7 +11,7 @@ import {patchUserLocation} from "@/app/shared-api/livingApi";
 import {useSession} from "next-auth/react";
 import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
 import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
-import {useBasicInfo} from "@/app/admin/(dashboard)/members/_hooks/useBasicInfo";
+import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
 import {setUserTrackingId} from "@/lib/access-token";
 
 export const userProfileCreateSchema = z.object({

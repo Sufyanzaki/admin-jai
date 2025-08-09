@@ -6,7 +6,7 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { patchEducationCareer, postEducationCareer } from "@/app/shared-api/educationCareerApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { useEducationCareerInfo } from "../../_hooks/useEducationCareerInfo";
+import { useEducationCareerInfo } from "../../../../../shared-hooks/useEducationCareerInfo";
 import { useEffect, useMemo } from "react";
 import {useParams} from "next/navigation";
 

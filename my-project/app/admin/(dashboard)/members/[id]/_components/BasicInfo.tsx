@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar";
 import { Briefcase, Calendar, Mail, MapPin, Phone, Stethoscope } from "lucide-react";
 import { Badge } from "@/components/admin/ui/badge";
-import { useBasicInfo } from "../../_hooks/useBasicInfo";
+import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
 
 export default function BasicInfo() {
   const { user: basicInfo, userLoading: loading, error } = useBasicInfo();

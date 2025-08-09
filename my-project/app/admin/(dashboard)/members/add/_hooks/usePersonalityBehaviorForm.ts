@@ -6,7 +6,7 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postPersonalityBehavior, patchPersonalityBehavior } from "@/app/shared-api/personalityBehaviorApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { usePersonalityBehaviorInfo } from "../../_hooks/usePersonalityBehaviorInfo";
+import { usePersonalityBehaviorInfo } from "@/app/shared-hooks/usePersonalityBehaviorInfo";
 import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 

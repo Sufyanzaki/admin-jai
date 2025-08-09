@@ -8,6 +8,9 @@ import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import {patchPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
 import {updateUserTrackingId} from "@/lib/access-token";
+import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
 
 export const partnerFormSchema = z.object({
     origin: z.string().min(1, "Origin is required"),
@@ -21,19 +24,25 @@ export const partnerFormSchema = z.object({
     smoke: z.boolean(),
     drinking: z.boolean(),
     goingOut: z.boolean(),
-    children: z.number().min(0),
-    searchWithIn: z.number().min(1),
+    children: z.number().optional(),
+    searchWithIn: z.number().optional(),
     length: z.string().min(1, "Height is required"),
     country: z.string().min(1, "Country is required"),
-    city: z.string().min(1, "City is required"),
+    city: z.string().optional(),
     state: z.string().min(1, "State is required")
 });
 
 export type PartnerFormValues = z.infer<typeof partnerFormSchema>;
 
 export default function usePartnerForm() {
+
+    const router = useRouter();
+
     const { data: session } = useSession();
     const userId = session?.user.id ? String(session.user.id) : undefined;
+    const userIdProp = userId;
+
+    const {expectations, expectationLoading} = usePartnerExpectations(userIdProp);
 
     const {
         control,
@@ -41,12 +50,13 @@ export default function usePartnerForm() {
         formState: { errors, isSubmitting },
         setValue,
         watch,
+        reset,
         trigger,
     } = useForm<PartnerFormValues>({
         resolver: zodResolver(partnerFormSchema),
         defaultValues: {
             origin: "",
-            lookingFor: "Long-term relationship",
+            lookingFor: "",
             relationshipStatus: "Single",
             religion: "",
             ageFrom: 25,
@@ -65,6 +75,33 @@ export default function usePartnerForm() {
         },
         mode: "onBlur"
     });
+
+    useEffect(() => {
+        if(!expectations) return;
+
+        const { lookingFor, origin, relationshipStatus, religion, ageTo, ageFrom, length, weight, education, smoke, drinking, goingOut, city, state, country } = expectations;
+
+        reset({
+            origin,
+            lookingFor,
+            relationshipStatus,
+            religion,
+            ageFrom,
+            ageTo,
+            weight,
+            education,
+            smoke,
+            drinking,
+            goingOut,
+            // children,
+            // searchWithIn,
+            length,
+            country,
+            city,
+            state
+        })
+
+    }, [expectations, reset]);
 
     const { trigger: mutate, isMutating } = useSWRMutation(
         "updatePartnerPreferences",
@@ -85,8 +122,8 @@ export default function usePartnerForm() {
                 smoke: arg.smoke,
                 drinking: arg.drinking,
                 goingOut: arg.goingOut,
-                children: arg.children,
-                searchWithIn: arg.searchWithIn,
+                // children: arg.children,
+                // searchWithIn: arg.searchWithIn,
                 length: arg.length,
                 country: arg.country,
                 city: arg.city,
@@ -111,6 +148,7 @@ export default function usePartnerForm() {
         if (!isValid) return;
         await mutate(values);
         updateUserTrackingId({ step6: true })
+        router.push("/auth/profile/membership");
     };
 
     return {
@@ -121,6 +159,7 @@ export default function usePartnerForm() {
         setValue,
         watch,
         onSubmit,
-        trigger
+        trigger,
+        isFetching: expectationLoading,
     };
 }

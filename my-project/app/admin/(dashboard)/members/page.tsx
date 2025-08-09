@@ -11,7 +11,7 @@ import useAllMembers from "./_hooks/useAllMembers";
 import { useDebounce } from "@/hooks/useDebounce";
 
 // Import new components
-import {useDeleteMember} from "@/app/admin/(dashboard)/members/_hooks/useDeleteMember";
+import {useDeleteMember} from "@/app/shared-hooks/useDeleteMember";
 import {useUpdateMemberStatus} from "@/app/admin/(dashboard)/members/_hooks/useUpdateMemberStatus";
 import MembersFilters from "@/components/admin/members/members-filters";
 import MembersTable from "@/components/admin/members/members-table";

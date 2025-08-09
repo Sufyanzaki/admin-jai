@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Button } from "@/components/client/ux/button";
 import { Card } from "@/components/client/ux/card";
 import { ArrowLeft, ArrowRight, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ImageWrapper from "@/components/client/image-wrapper";
 import usePhotoForm from "@/app/(client)/auth/profile/photos/_hooks/usePhotoForm";
+import Preloader from "@/components/shared/Preloader";
 
 interface PhotoSlot {
   id: number;
@@ -21,12 +22,35 @@ export function PhotoUploadForm() {
     isLoading,
     onSubmit,
     setValue,
-    watch
+    images,
+    isFetching
   } = usePhotoForm();
 
   const [photoSlots, setPhotoSlots] = useState<PhotoSlot[]>([
-    { id: 1, file: null, preview: null }
+    { id: 1, file: null, preview: null },
   ]);
+
+  useEffect(() => {
+    if (!images || images.length === 0) return;
+
+    const hasLocalPreviews = photoSlots.some((slot) => slot.preview);
+    if (hasLocalPreviews) return;
+
+    setPhotoSlots(
+        images.map((img, index) => ({
+          id: Date.now() + index,
+          file: img instanceof File ? img : null,
+          preview: typeof img === "string" ? img : URL.createObjectURL(img),
+        }))
+    );
+  }, [images, photoSlots]);
+
+  useEffect(() => {
+    const files = photoSlots
+        .filter((slot) => slot.file || slot.preview)
+        .map((slot) => slot.file ?? (slot.preview as unknown as File | string));
+    setValue("images", files, { shouldValidate: true });
+  }, [photoSlots, setValue]);
 
   const handleFileUpload = (slotId: number, files: FileList) => {
     const file = files[0];
@@ -34,36 +58,27 @@ export function PhotoUploadForm() {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      setPhotoSlots(prev => prev.map(slot =>
-          slot.id === slotId
-              ? { ...slot, file, preview: e.target?.result as string }
-              : slot
-      ));
-
-      const currentImages = watch("images") || [];
-      setValue("images", [...currentImages, file], { shouldValidate: true });
+      setPhotoSlots((prev) =>
+          prev.map((slot) =>
+              slot.id === slotId
+                  ? { ...slot, file, preview: e.target?.result as string }
+                  : slot
+          )
+      );
     };
     reader.readAsDataURL(file);
   };
 
   const handleAddNewSlot = () => {
-    const newSlot = {
-      id: Date.now(),
-      file: null,
-      preview: null
-    };
-    setPhotoSlots(prev => [...prev, newSlot]);
+    setPhotoSlots((prev) => [
+      ...prev,
+      { id: Date.now(), file: null, preview: null },
+    ]);
   };
 
   const handleRemoveSlot = (slotId: number) => {
     if (slotId === 1) return;
-
-    setPhotoSlots(prev => prev.filter(slot => slot.id !== slotId));
-
-    const currentImages = watch("images") || [];
-    setValue("images", currentImages.filter((_, index) => {
-      return index !== photoSlots.findIndex(s => s.id === slotId);
-    }), { shouldValidate: true });
+    setPhotoSlots((prev) => prev.filter((slot) => slot.id !== slotId));
   };
 
   const handleTriggerFileInput = (slotId: number) => {
@@ -79,20 +94,24 @@ export function PhotoUploadForm() {
     input.click();
   };
 
-  const handleNext = async () => {
-    await handleSubmit(v=>onSubmit(v))();
-    router.push("/auth/profile/partner-preferences");
-  };
-
   const handleBack = () => {
     router.push("/auth/profile/personality");
   };
+
+  if(isFetching){
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader/>
+          <p className="text-sm">Loading...</p>
+        </div>
+    )
+  }
 
   return (
       <div className="space-y-8 py-3 text-start">
         <h4 className="text-2xl font-bold text-gray-900">Upload your photo</h4>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit((v) => onSubmit(v))} className="space-y-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
             {photoSlots.map((slot) => (
                 <PhotoSlot
@@ -116,20 +135,32 @@ export function PhotoUploadForm() {
           </div>
 
           <div className="flex justify-center gap-4 my-16 lg:my-26">
-            <Button variant="outline" onClick={handleBack} size="lg" type="button">
+            <Button
+                variant="outline"
+                onClick={handleBack}
+                size="lg"
+                type="button"
+            >
               <ArrowLeft className="mr-1 w-4 h-4" /> Back
             </Button>
-            <Button variant="outline" onClick={handleNext} size="lg" type="button">
+            <Button
+                variant="outline"
+                onClick={() =>
+                    router.push("/auth/profile/partner-preferences")
+                }
+                size="lg"
+                type="button"
+            >
               Skip
             </Button>
             <Button
                 variant="default"
-                onClick={handleNext}
                 size="lg"
                 type="submit"
                 disabled={isLoading}
             >
-              {isLoading ? "Saving..." : "Next"} <ArrowRight className="ml-1 w-4 h-4" />
+              {isLoading ? "Saving..." : "Next"}{" "}
+              <ArrowRight className="ml-1 w-4 h-4" />
             </Button>
           </div>
         </form>
@@ -149,8 +180,14 @@ interface PhotoSlotProps {
   onTriggerUpload: () => void;
 }
 
-function PhotoSlot({ slot, onFileUpload, onRemove, canRemove, onTriggerUpload }: PhotoSlotProps) {
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+function PhotoSlot({
+                     slot,
+                     onFileUpload,
+                     onRemove,
+                     canRemove,
+                     onTriggerUpload,
+                   }: PhotoSlotProps) {
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       onFileUpload(files);

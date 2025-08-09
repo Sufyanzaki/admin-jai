@@ -3,11 +3,14 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {updateUserTrackingId} from "@/lib/access-token";
+import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
 import {useSession} from "next-auth/react";
-import {postPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
-import {postLifeStyle} from "@/app/shared-api/lifeStyleApi";
+import {patchPersonalityBehavior, postPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
+import {patchLifeStyle, postLifeStyle} from "@/app/shared-api/lifeStyleApi";
 import {useRouter} from "next/navigation";
+import {useLifeStyleInfo} from "@/app/admin/(dashboard)/members/_hooks/useLifeStyleInfo";
+import {usePersonalityBehaviorInfo} from "@/app/shared-hooks/usePersonalityBehaviorInfo";
+import {useEffect} from "react";
 
 const personalityBehaviorSchema = z.object({
     simple: z.boolean(),
@@ -60,6 +63,9 @@ export default function usePersonalityStyleForm() {
     const { data:session } = useSession();
 
     const userId = session?.user.id ? String(session.user.id) : undefined;
+
+    const { lifeStyle, lifeStyleLoading } = useLifeStyleInfo();
+    const { personalityBehavior, personalityBehaviorLoading } = usePersonalityBehaviorInfo();
 
     const {
         handleSubmit,
@@ -116,16 +122,41 @@ export default function usePersonalityStyleForm() {
         mode: "onBlur",
     });
 
+    useEffect(() => {
+        if(!personalityBehavior || !lifeStyle) return;
+
+        const { goingOut = "", drinking = "", smoke = "" } = lifeStyle;
+        const {id, userId, ...other} = personalityBehavior;
+
+        reset({
+            ...other,
+            goingOut: goingOut,
+            drinking: drinking,
+            smoke: smoke,
+        })
+
+        console.warn(id, userId)
+
+    }, [lifeStyle, personalityBehavior, reset]);
+
     const { trigger, isMutating } = useSWRMutation(
         "updatePersonalityStyle",
         async (_: string, { arg }: { arg: PersonalityBehaviorFormValues }) => {
             const {smoke, drinking, goingOut, ...other} = arg;
-            if(!userId) return showError({message : "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member"});
+            if(!userId) return showError({message : "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialize a member"});
+
+            const tracker = getUserTrackingId();
+
+            const personalityApi = tracker?.step4 ? patchPersonalityBehavior : postPersonalityBehavior;
+            const lifeApi = tracker?.step4 ? patchLifeStyle : postLifeStyle;
+
             await Promise.all([
-                postPersonalityBehavior(userId, other),
-                postLifeStyle(userId, {smoke, drinking, goingOut}),
+                personalityApi(userId, other),
+                lifeApi(userId, {smoke, drinking, goingOut}),
             ]);
+
             showSuccess("Hobbies & description saved!");
+
             return true;
             },
         {
@@ -151,11 +182,12 @@ export default function usePersonalityStyleForm() {
         register,
         handleSubmit,
         errors,
-        isLoading: isSubmitting || isMutating,
+        isSubmitting: isSubmitting || isMutating,
         setValue,
         reset,
         control,
         watch,
         onSubmit,
+        isFetching: lifeStyleLoading || personalityBehaviorLoading,
     };
 }

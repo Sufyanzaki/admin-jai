@@ -1,15 +1,19 @@
-import {useCallback, useEffect, useState} from "react";
+"use client"
+
+import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {useRouter} from "next/navigation";
 import {showError, showSuccess} from "@/shared-lib";
 import {patchUser} from "@/app/shared-api/userApi";
-import {postHobbiesInterests} from "@/app/shared-api/hobbiesInterestsApi";
-import { useSession } from "next-auth/react";
-import {updateUserTrackingId} from "@/lib/access-token";
-import {useHobbiesInterestsInfo} from "@/app/admin/(dashboard)/members/_hooks/useHobbiesInterestsInfo";
-import {useBasicInfo} from "@/app/admin/(dashboard)/members/_hooks/useBasicInfo";
+import {patchHobbiesInterests, postHobbiesInterests,} from "@/app/shared-api/hobbiesInterestsApi";
+import {useSession} from "next-auth/react";
+import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
+import {useHobbiesInterestsInfo} from "@/app/shared-hooks/useHobbiesInterestsInfo";
+import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
+import useSWRMutation from "swr/mutation";
+import {toArray} from "@/lib/utils";
 
 const hobbiesInterestsSchema = z.object({
     sports: z.array(z.string()).min(1, "Select at least one sport"),
@@ -17,22 +21,18 @@ const hobbiesInterestsSchema = z.object({
     kitchen: z.array(z.string()).min(1, "Select at least one kitchen hobby"),
     reading: z.array(z.string()).min(1, "Select at least one reading category"),
     tvShows: z.array(z.string()).min(1, "Select at least one TV show type"),
-    shortDescription: z.string().min(10, "Description is required"),
+    shortDescription: z.string().min(100, "At least 100 characters long"),
 });
 
 export type HobbiesInterestsForm = z.infer<typeof hobbiesInterestsSchema>;
 
 export default function useHobbiesInterestsForm() {
-
-    const { data:session } = useSession();
-
-    const {hobbiesInterests, hobbiesInterestsLoading} = useHobbiesInterestsInfo();
-    const {user, userLoading} = useBasicInfo();
+    const { data: session } = useSession();
+    const { hobbiesInterests, hobbiesInterestsLoading } = useHobbiesInterestsInfo();
+    const { user, userLoading } = useBasicInfo();
+    const router = useRouter();
 
     const userId = session?.user.id ? String(session.user.id) : undefined;
-
-    const router = useRouter();
-    const [currentStep, setCurrentStep] = useState<string | null>(null);
 
     const {
         handleSubmit,
@@ -56,61 +56,81 @@ export default function useHobbiesInterestsForm() {
     });
 
     useEffect(() => {
-        if(!user || !hobbiesInterests) return;
+        console.log(user, hobbiesInterests)
+        if (!user || !hobbiesInterests) return;
 
+        const { shortDescription = "" } = user;
+        const { sports, kitchen, reading, tvShows, music } = hobbiesInterests;
         reset({
-            sports: [],
-            music: [],
-            kitchen: [],
-            reading: [],
-            tvShows: [],
-            shortDescription: user.shortDescription ? user.shortDescription : "",
-        })
-    }, [userLoading, hobbiesInterests]);
+            sports: toArray(sports),
+            music: toArray(music),
+            kitchen: toArray(kitchen),
+            reading: toArray(reading),
+            tvShows: toArray(tvShows),
+            shortDescription: shortDescription,
+        });
+    }, [userLoading, hobbiesInterests, reset, user]);
 
-    const onSubmit = useCallback(
-        async (values: HobbiesInterestsForm) => {
-            try {
-                if (!userId) throw new Error("User ID missing");
-                setCurrentStep("Saving hobbies & description");
-
-                const hobbiesPayload = {
-                    sports: values.sports.join(", "),
-                    music: values.music.join(", "),
-                    kitchen: values.kitchen.join(", "),
-                    reading: values.reading.join(", "),
-                    tvShows: values.tvShows.join(", "),
-                };
-
-                await Promise.all([
-                    patchUser(userId, { shortDescription: values.shortDescription }),
-                    postHobbiesInterests(userId, hobbiesPayload),
-                ]);
-
-                updateUserTrackingId({ step3: true })
-
-                showSuccess("Hobbies & description saved!");
-                router.push("/auth/profile/personality");
-            } catch (err) {
-                if (err instanceof Error) showError({ message: err.message });
-            } finally {
-                setCurrentStep(null);
+    const { trigger, isMutating } = useSWRMutation(
+        "updateHobbiesInterests",
+        async (_: string, { arg }: { arg: HobbiesInterestsForm }) => {
+            if (!userId) {
+                return showError({
+                    message:
+                        "You need to initialize a new member profile before you can add hobbies. Go back to Basic Information to initialize a member.",
+                });
             }
+
+            const tracker = getUserTrackingId();
+            const api = tracker?.step3 ? patchHobbiesInterests : postHobbiesInterests;
+
+            const hobbiesPayload = {
+                sports: arg.sports.join(", "),
+                music: arg.music.join(", "),
+                kitchen: arg.kitchen.join(", "),
+                reading: arg.reading.join(", "),
+                tvShows: arg.tvShows.join(", "),
+            };
+
+            await Promise.all([
+                patchUser(userId, { shortDescription: arg.shortDescription }),
+                api(userId, hobbiesPayload),
+            ]);
+
+            showSuccess("Hobbies & description saved!");
+            return true;
         },
-        [userId, router]
+        {
+            onError: (error: Error) => {
+                showError({
+                    message:
+                        error.message || "Failed to update hobbies and description",
+                });
+            },
+            revalidate: false,
+            populateCache: false,
+        }
     );
 
+    const onSubmit = async (values: HobbiesInterestsForm, callback?: () => void) => {
+        const result = await trigger(values);
+        if (result) {
+            callback?.();
+            updateUserTrackingId({ step3: true });
+            router.push("/auth/profile/personality");
+        }
+    };
+
     return {
-       handleSubmit,
-        onSubmit,
-        errors,
-        isSubmitting,
-        currentStep,
         register,
+        handleSubmit,
+        errors,
+        isSubmitting: isSubmitting || isMutating,
         setValue,
+        reset,
         control,
         watch,
-        reset,
-        isFetching: hobbiesInterestsLoading || userLoading
+        onSubmit,
+        isFetching: hobbiesInterestsLoading || userLoading,
     };
 }

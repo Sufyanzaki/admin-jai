@@ -2,7 +2,7 @@
 
 import { CardContent } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
-import { useHobbiesInterestsInfo } from "../../_hooks/useHobbiesInterestsInfo";
+import { useHobbiesInterestsInfo } from "../../../../../shared-hooks/useHobbiesInterestsInfo";
 
 interface HobbiesAndInterestProps {
   memberId: string | number;

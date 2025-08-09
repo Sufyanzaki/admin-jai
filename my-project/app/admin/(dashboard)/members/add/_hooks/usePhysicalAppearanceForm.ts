@@ -6,7 +6,7 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postPhysicalAppearance, patchPhysicalAppearance } from "@/app/shared-api/physicalAppearanceApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { usePhysicalAppearanceInfo } from "../../_hooks/usePhysicalAppearanceInfo";
+import { usePhysicalAppearanceInfo } from "../../../../../shared-hooks/usePhysicalAppearanceInfo";
 import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 

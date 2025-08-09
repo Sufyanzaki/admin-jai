@@ -3,7 +3,7 @@
 import { Input } from "@/components/admin/ui/input";
 import { Label } from "@/components/admin/ui/label";
 import { Button } from "@/components/admin/ui/button";
-import usePasswordForm from "@/app/admin/(dashboard)/profile/_hooks/usePasswordForm";
+import usePasswordForm from "@/app/shared-hooks/usePasswordForm";
 
 export default function PasswordForm() {
   const {

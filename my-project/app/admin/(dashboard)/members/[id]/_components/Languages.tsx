@@ -2,7 +2,7 @@
 
 import { CardContent } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
-import { useLanguageInfoInfo } from "../../_hooks/useLanguageInfoInfo";
+import { useLanguageInfoInfo } from "../../../../../shared-hooks/useLanguageInfoInfo";
 
 interface LanguagesProps {
   memberId: string | number;

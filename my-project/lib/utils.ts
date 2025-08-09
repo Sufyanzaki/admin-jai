@@ -17,3 +17,5 @@ export function unescapeHtml(html: string): string {
 export function isFile(value: unknown): value is File {
   return value instanceof File;
 }
+
+export const toArray = (str?: string) => str?.split(",").map(s => s.trim()).filter(Boolean) ?? [];

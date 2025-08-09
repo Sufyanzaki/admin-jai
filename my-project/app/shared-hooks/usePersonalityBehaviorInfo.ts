@@ -1,16 +1,16 @@
-import { useSWRFix } from "@/shared-lib";
-import { getUserTrackingId } from "@/lib/access-token";
-import { getPersonalityBehavior } from "../../../../shared-api/personalityBehaviorApi";
-import { useParams } from "next/navigation";
+import {useSWRFix} from "@/shared-lib";
+import {getUserTrackingId} from "@/lib/access-token";
+import {getPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
+import {useParams} from "next/navigation";
 
-export const usePersonalityBehaviorInfo = () => {
+export const usePersonalityBehaviorInfo = (userIdProps?:string) => {
   
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : params.id?.[0];
 
   const tracker = getUserTrackingId();
-  const allowThisTab = tracker?.personalityAndBehavior;
-  const userId = allowThisTab ? (tracker?.id ?? id) : null;
+  const allowThisTab = tracker?.personalityAndBehavior || tracker?.step4;
+  const userId = userIdProps ??  (allowThisTab ? (tracker?.id ?? id) : null);
 
   const { data, loading, error, mutate } = useSWRFix({
     key: userId ? `personality-behavior-${userId}` : '',

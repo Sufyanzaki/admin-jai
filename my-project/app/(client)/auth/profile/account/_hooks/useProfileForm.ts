@@ -36,6 +36,7 @@ export default function useProfileForm() {
         reset,
         watch,
         trigger,
+        register
     } = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
         defaultValues: {
@@ -84,6 +85,7 @@ export default function useProfileForm() {
         isLoading: isSubmitting || isMutating,
         setValue,
         watch,
+        register,
         reset,
         onSubmit,
         trigger,

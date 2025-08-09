@@ -8,6 +8,7 @@ import { Button } from "@/components/admin/ui/button";
 import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
 import { AlertTriangle } from "lucide-react";
+import {MemberLocation} from "@/app/shared-types/member";
 
 export default function LivingTab({callback}: { callback: () => void}) {
   const params = useParams();
@@ -31,10 +32,10 @@ export default function LivingTab({callback}: { callback: () => void}) {
 
   const currentLocation = city || state || country ? { city, state, country } : null;
 
-  const handleLocationSelect = (location: { city?: string; state?: string; country?: string }) => {
+  const handleLocationSelect = (location: Partial<MemberLocation>) => {
     setValue("city", location.city);
-    setValue("state", location.state);
-    setValue("country", location.country);
+    location.state && setValue("state", location.state);
+    location.country && setValue("country", location.country);
   };
 
   return (
