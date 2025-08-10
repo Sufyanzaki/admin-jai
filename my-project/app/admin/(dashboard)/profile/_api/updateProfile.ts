@@ -1,16 +1,15 @@
 import {patchRequest} from "@/shared-lib";
 
 type UpdateProfileProps = {
-    username: string;
+    firstName: string;
+    lastName: string;
     email: string;
-    location: string;
-    phone?: string;
     image?: string;
 }
 
-export async function updateProfile(props: UpdateProfileProps): Promise<{status: number} | undefined> {
+export async function updateProfile(id: string, props: UpdateProfileProps): Promise<{status: number} | undefined> {
     const r = await patchRequest<UpdateProfileProps>({
-        url: 'auth/update-admin/1',
+        url: `auth/update-admin/${id}`,
         data: props,
         useAuth: true
     });

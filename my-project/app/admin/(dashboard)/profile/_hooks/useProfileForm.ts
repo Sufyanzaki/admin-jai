@@ -9,6 +9,7 @@ import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { isFile } from "@/lib/utils";
 import { useProfile } from './useProfile';
 import { useEffect } from 'react';
+import {patchUserLocation} from "@/app/shared-api/livingApi";
 
 const profileSchema = z.object({
     firstName: z.string()
@@ -20,28 +21,24 @@ const profileSchema = z.object({
     email: z.string()
         .min(1, "Email is required")
         .email("Please enter a valid email address"),
-    location: z.string()
-        .min(1, "Location is required")
-        .min(2, "Location must be at least 2 characters"),
+    city: z.string().optional(),
+    state: z.string().min(1, "State is Required"),
+    country: z.string().min(1, "Country is Required"),
     image: z.any().optional(), 
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;
 
-type UpdateProfileProps = {
-    username: string;
-    email: string;
-    location: string;
-    image?: string;
-}
-
 export default function useProfileForm() {
     const { user, mutate } = useProfile();
-    
+
     const { trigger, isMutating } = useSWRMutation(
         'updateProfile',
-        async (url: string, { arg }: { arg: UpdateProfileProps }) => {
-            return await updateProfile(arg);
+        async (url: string, { arg }: { arg: ProfileFormValues }) => {
+            if(!user) throw new Error( 'User not found. Please refresh the page and try again.' )
+            const {country, city, state, image, email, lastName, firstName} = arg;
+            await patchUserLocation(user.id, {country, city, state})
+            return await updateProfile(user.id, {image, email, lastName, firstName});
         },
         {
             onError: (error: Error) => {
@@ -64,21 +61,25 @@ export default function useProfileForm() {
             firstName: "",
             lastName: "",
             email: "",
-            location: "",
+            city: "",
+            state: "",
+            country: ""
         },
         mode: 'onBlur'
     });
 
-    useEffect(()=>{
-        if(!user) return;
+    useEffect(() => {
+        if (!user) return;
 
         reset({
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            location: user.location,
-        })
-    }, [])
+            firstName: user.firstName ?? "",
+            lastName: user.lastName ?? "",
+            email: user.email ?? "",
+            city: user.living?.city ?? "",
+            state: user.living?.state ?? "",
+            country: user.living?.country ?? "",
+        });
+    }, [user, reset]);
 
     const onSubmit = async (values: ProfileFormValues, callback?: (data: {status: number} | undefined) => void) => {
         try {
@@ -88,13 +89,14 @@ export default function useProfileForm() {
                 imageUrl = await imageUpload(values.image);
             }
 
-            const fullName = `${values.firstName} ${values.lastName}`.trim();
-
             const result = await trigger({
-                username: fullName,
+                firstName: values.firstName,
+                lastName: values.lastName,
                 email: values.email,
-                location: values.location,
                 image: imageUrl,
+                city: values.city,
+                state: values.state,
+                country: values.country,
             });
 
             if (result?.status === 200) {

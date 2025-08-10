@@ -144,7 +144,6 @@ export type MemberProfile = {
     image: string;
     phone: string;
     department: string | null;
-    location: string | null;
     origin: string;
     gender: 'Male' | 'Female' | 'Other' | string;
     age: number;
