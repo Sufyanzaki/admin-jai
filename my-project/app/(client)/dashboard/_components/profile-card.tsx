@@ -6,6 +6,7 @@ import { Lock } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useSendLike } from "../_hooks/useSendLike";
+import { useUnblockUser } from "../settings/blocked/_hooks/useUnblockProfile";
 
 export default function ProfileCard({
   profile,
@@ -16,6 +17,7 @@ export default function ProfileCard({
 }) {
   const [loaded, setIsLoaded] = useState(false);
   const { trigger: sendLike, loading } = useSendLike();
+  const { trigger, loading: unblockLoading, error: unblockError } = useUnblockUser();
 
   return (
     <div className="relative rounded-t-[5px] overflow-hidden hover:shadow-lg transition-shadow">

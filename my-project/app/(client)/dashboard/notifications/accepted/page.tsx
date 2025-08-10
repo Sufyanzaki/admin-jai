@@ -1,31 +1,36 @@
-import {NotificationCard} from "@/app/(client)/dashboard/notifications/_components/notification-card";
+"use client";
+
+import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
+import { useLikesAccepted } from "../_hooks/useLikesAccepted";
 
 const sampleNotification = {
-    id: "1",
-    type: "like" as const,
-    from: {
-        name: "Dora M",
-        age: 39,
-        height: "5.5",
-        languages: ["Hindi"],
-        religion: "Hindu",
-        profession: "Finance Professional",
-        image: "https://picsum.photos/seed/dora/200",
-        isVerified: true,
-        isOnline: true,
-        lastSeen: "1d ago",
-    },
-    message: "Hi, it is nice connecting with you. I liked your profile and would like to take this forward.",
-    timestamp: "Dec 30, 04:22 PM",
-    isStarred: true,
-}
-
+  id: "1",
+  type: "like" as const,
+  from: {
+    name: "Dora M",
+    age: 39,
+    height: "5.5",
+    languages: ["Hindi"],
+    religion: "Hindu",
+    profession: "Finance Professional",
+    image: "https://picsum.photos/seed/dora/200",
+    isVerified: true,
+    isOnline: true,
+    lastSeen: "1d ago",
+  },
+  message:
+    "Hi, it is nice connecting with you. I liked your profile and would like to take this forward.",
+  timestamp: "Dec 30, 04:22 PM",
+  isStarred: true,
+};
 
 export default function NotificationsPage() {
-    return (
-        <div className="space-y-8">
-            <NotificationCard notification={sampleNotification} />
-            <NotificationCard notification={sampleNotification} />
-        </div>
-    )
+  const { likesAccepted, likesAcceptedLoading, error } = useLikesAccepted();
+
+  return (
+    <div className="space-y-8">
+      <NotificationCard notification={sampleNotification} />
+      <NotificationCard notification={sampleNotification} />
+    </div>
+  );
 }

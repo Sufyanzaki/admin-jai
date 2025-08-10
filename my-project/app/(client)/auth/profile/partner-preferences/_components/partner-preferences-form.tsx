@@ -189,7 +189,7 @@ export default function PartnerPreferencesForm() {
               <Label>Weight *</Label>
                 <Slider
                     value={Number(weight)}
-                    onValueChange={(val) => setValue("weight", val.toString())}
+                    onValueChange={(val) => setValue("weight", val?.toString())}
                     min={30}
                     max={150}
                     step={1}
@@ -227,13 +227,13 @@ export default function PartnerPreferencesForm() {
                   name="children"
                   control={control}
                   render={({ field }) => (
-                      <Select value={field.value.toString() || undefined} key={field.value || "empty"} onValueChange={(val) => field.onChange(Number(val))}>
+                      <Select value={field.value?.toString() || undefined} key={field.value || "empty"} onValueChange={(val) => field.onChange(Number(val))}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select number of children" />
                         </SelectTrigger>
                         <SelectContent>
                           {[0, 1, 2, 3, 4, 5].map(num => (
-                              <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
+                              <SelectItem key={num} value={num?.toString()}>{num}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -249,7 +249,7 @@ export default function PartnerPreferencesForm() {
                       control={control}
                       render={({ field }) => (
                           <Select
-                              value={field.value.toString()}
+                              value={field.value?.toString()}
                               onValueChange={(val) => field.onChange(val === "true")}
                           >
                               <SelectTrigger>
@@ -274,7 +274,7 @@ export default function PartnerPreferencesForm() {
                       control={control}
                       render={({ field }) => (
                           <Select
-                              value={field.value.toString()}
+                              value={field.value?.toString()}
                               onValueChange={(val) => field.onChange(val === "true")}
                           >
                               <SelectTrigger>
@@ -299,8 +299,8 @@ export default function PartnerPreferencesForm() {
                       control={control}
                       render={({ field }) => (
                           <Select
-                              value={field.value.toString()}
-                              key={field.value.toString()}
+                              value={field.value?.toString()}
+                              key={field.value?.toString()}
                               onValueChange={(val) => field.onChange(val === "true")}
                           >
                               <SelectTrigger>

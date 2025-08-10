@@ -7,7 +7,7 @@ export type accpetedLikesResponse = {
     data: MemberProfile;
 }
 
-export async function getLikesRecieved(): Promise<accpetedLikesResponse> {
+export async function getLikesAccepted(): Promise<accpetedLikesResponse> {
     return await getRequest<accpetedLikesResponse>({
         url: "/users/like/accepted",
         useAuth: true,

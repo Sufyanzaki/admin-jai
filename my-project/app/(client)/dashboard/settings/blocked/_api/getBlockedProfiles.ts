@@ -8,7 +8,7 @@ export type blockedProfilesResponse = {
 
 export async function getBlockedProfiles(): Promise<blockedProfilesResponse> {
     return await getRequest<blockedProfilesResponse>({
-        url: "/users/blocked",
+        url: "users/blocked",
         useAuth: true,
     });
 }
