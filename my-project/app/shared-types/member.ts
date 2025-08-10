@@ -81,9 +81,9 @@ export type MemberPartnerExpectations = {
     relationshipStatus: string;
     education: string;
     weight: string;
-    smoke: boolean;
-    drinking: boolean;
-    goingOut: boolean;
+    smoke: string;
+    drinking: string;
+    goingOut: string;
     ageFrom: number;
     ageTo: number;
     country: string;

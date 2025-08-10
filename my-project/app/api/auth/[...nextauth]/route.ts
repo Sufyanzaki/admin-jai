@@ -30,6 +30,7 @@ export const authOptions: NextAuthOptions = {
         if(!response) return null;
 
         return {
+          username: response.user.username,
           id: response.user.id,
           email: response.user.email,
           firstName: response.user.firstName,
@@ -60,6 +61,7 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: response.user.id,
+          username: response.user.username,
           email: response.user.email,
           firstName: response.user.firstName,
           lastName: response.user.lastName,

@@ -6,44 +6,52 @@ import {Button} from "@/components/client/ux/button";
 import {Controller} from "react-hook-form";
 import useBehaviorForm from "@/app/(client)/dashboard/settings/account/_hooks/useBehaviorForm";
 
-const personalityTraits = [
-    { key: "simple", label: "simpel" },
-    { key: "calm", label: "rustig" },
-    { key: "subdued", label: "ingetogen" },
-    { key: "eccentric", label: "excentriek" },
-    { key: "prettySmart", label: "redelijk slim" },
-    { key: "stubborn", label: "koppig" },
-    { key: "modest", label: "bescheiden" },
-    { key: "serious", label: "serieus" },
-    { key: "spontaneously", label: "spontaan" },
-    { key: "sensual", label: "sensueel" },
-    { key: "embarrassed", label: "verlegen" },
-    { key: "artistic", label: "artistiek" },
-    { key: "relaxed", label: "relaxed" },
-    { key: "musical", label: "muzikaal" },
-    { key: "pragmatic", label: "pragmatisch" },
-    { key: "demanding", label: "veel eisend" },
-    { key: "spiritual", label: "spiritueel" },
-    { key: "undemanding", label: "niet-veel eisend" },
-    { key: "selfish", label: "egoïstisch" },
-    { key: "humorous", label: "humoristisch" },
-    { key: "sharp", label: "scherp" },
-    { key: "freethinking", label: "vrijdenkend" },
-    { key: "straightForward", label: "recht-door-zee" },
-    { key: "exuberant", label: "uitbundig" },
-    { key: "sluggish", label: "sloom" },
-    { key: "conservative", label: "conservatief" },
-    { key: "streetSmart", label: "street smart" },
-    { key: "narcissistic", label: "narcistisch" },
-    { key: "talkative", label: "praatgraag" },
-    { key: "altruistic", label: "altruïstisch" },
-    { key: "sporty", label: "sportief" },
-    { key: "romantic", label: "romantisch" },
-    { key: "caring", label: "verzorgend" },
-    { key: "adventurous", label: "avontuurlijk" },
-    { key: "intellectual", label: "intellectueel" },
-    { key: "worldly", label: "werelds" },
-    { key: "compulsive", label: "dwangmatig" },
+// Define a type for the personality traits keys
+type PersonalityTraitKey = keyof ReturnType<typeof useBehaviorForm>['control']['_defaultValues'];
+
+interface PersonalityTrait {
+    key: PersonalityTraitKey;
+    label: string;
+}
+
+const personalityTraits: PersonalityTrait[] = [
+    { key: "simple", label: "Simple" },
+    { key: "musical", label: "Musical" },
+    { key: "conservative", label: "Conservative" },
+    { key: "calm", label: "Calm" },
+    { key: "pragmatic", label: "Pragmatic" },
+    { key: "streetSmart", label: "Street smart" },
+    { key: "subdued", label: "Subdued" },
+    { key: "demanding", label: "Demanding" },
+    { key: "narcissistic", label: "Narcissistic" },
+    { key: "eccentric", label: "Eccentric" },
+    { key: "spiritual", label: "Spiritual" },
+    { key: "talkative", label: "Talkative" },
+    { key: "prettySmart", label: "Pretty smart" },
+    { key: "undemanding", label: "Undemanding" },
+    { key: "altruistic", label: "Altruistic" },
+    { key: "stubborn", label: "Stubborn" },
+    { key: "selfish", label: "Selfish" },
+    { key: "sporty", label: "Sporty" },
+    { key: "modest", label: "Modest" },
+    { key: "humorous", label: "Humorous" },
+    { key: "romantic", label: "Romantic" },
+    { key: "serious", label: "Serious" },
+    { key: "sharp", label: "Sharp" },
+    { key: "caring", label: "Caring" },
+    { key: "spontaneously", label: "Spontaneous" },
+    { key: "freethinking", label: "Freethinking" },
+    { key: "adventurous", label: "Adventurous" },
+    { key: "sensual", label: "Sensual" },
+    { key: "straightForward", label: "Straightforward" },
+    { key: "intellectual", label: "Intellectual" },
+    { key: "embarrassed", label: "Embarrassed" },
+    { key: "exuberant", label: "Exuberant" },
+    { key: "worldly", label: "Worldly" },
+    { key: "artistic", label: "Artistic" },
+    { key: "sluggish", label: "Sluggish" },
+    { key: "compulsive", label: "Compulsive" },
+    { key: "relaxed", label: "Relaxed" }
 ];
 
 export function Behavior() {
@@ -68,7 +76,7 @@ export function Behavior() {
                     {personalityTraits.map((trait) => (
                         <Controller
                             key={trait.key}
-                            name={trait.key as keyof typeof personalityTraits}
+                            name={trait.key}
                             control={control}
                             render={({ field }) => (
                                 <div className="flex items-start gap-2">

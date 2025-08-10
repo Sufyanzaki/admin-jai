@@ -11,6 +11,7 @@ import type React from "react";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import {DashboardList} from "./dashboard-list";
 import ImageWrapper from "@/components/client/image-wrapper";
+import { signOut } from "next-auth/react";
 
 const menuItems = [
   { label: "Dashboard", href: "/dashboard" },
@@ -56,6 +57,7 @@ export function DashboardHeader() {
                             variant="dashboard"
                             size="dashboard"
                             className="border border-white/50 text-white hover:bg-transparent w-full"
+                            onClick={() => signOut({ callbackUrl: "/auth/login" })}
                         >
                           <LogOut className="w-4 h-4" />
                           <span className="group-data-[collapsible=icon]:hidden ml-2 text-sm">Logout</span>

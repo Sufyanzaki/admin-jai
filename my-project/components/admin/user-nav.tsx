@@ -88,13 +88,13 @@ export function UserNav() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/support" className="flex items-center gap-2">
+              <Link href="/admin/support" className="flex items-center gap-2">
                 <HelpCircle className="mr-2 h-4 w-4" />
                 <span>Support</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/settings" className="flex items-center gap-2">
+              <Link href="/admin/settings" className="flex items-center gap-2">
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </Link>

@@ -1,11 +1,11 @@
 import {useSWRFix} from "@/shared-lib";
-import { getTodaysMatches, TodayMatchesResponse } from "../_api/getTodaysMatches";
+import { getTodayMatches, TodayMatchesResponse } from "../_api/getTodaysMatches";
 
-export const useTodaysMatches = () => {
+export const useTodayMatches = () => {
     const { data, loading, error, mutate } = useSWRFix<TodayMatchesResponse>({
-        key: 'todays-matches',
+        key: 'today-matches',
         fetcher: async () => {
-            const response = await getTodaysMatches();
+            const response = await getTodayMatches();
             if (!response) {
                 throw new Error('Failed to fetch dashboard statistics');
             }

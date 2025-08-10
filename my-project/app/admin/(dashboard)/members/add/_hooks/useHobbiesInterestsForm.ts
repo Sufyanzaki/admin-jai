@@ -6,7 +6,7 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postHobbiesInterests, patchHobbiesInterests } from "@/app/shared-api/hobbiesInterestsApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { useHobbiesInterestsInfo } from "../../../../../shared-hooks/useHobbiesInterestsInfo";
+import { useHobbiesInterestsInfo } from "@/app/shared-hooks/useHobbiesInterestsInfo";
 import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 

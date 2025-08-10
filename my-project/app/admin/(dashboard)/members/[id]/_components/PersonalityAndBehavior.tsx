@@ -2,7 +2,7 @@
 
 import { CardContent } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
-import { usePersonalityBehaviorInfo } from "../../../../../shared-hooks/usePersonalityBehaviorInfo";
+import { usePersonalityBehaviorInfo } from "@/app/shared-hooks/usePersonalityBehaviorInfo";
 
 interface PersonalityAndBehaviorProps {
   memberId: string | number;

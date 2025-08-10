@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
-import {patchPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
+import {patchPersonalityBehavior, postPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
 import {showError, showSuccess} from "@/shared-lib";
-
+import { mutate } from "swr";
 
 const personalityBehaviorSchema = z.object({
     simple: z.boolean(),
@@ -54,7 +54,6 @@ const personalityBehaviorSchema = z.object({
 export type PersonalityBehaviorFormValues = z.infer<typeof personalityBehaviorSchema>;
 
 export default function useBehaviorForm() {
-
     const {data:session} = useSession();
     const userIdProps = session?.user?.id ? String(session.user.id) : undefined;
 
@@ -115,9 +114,7 @@ export default function useBehaviorForm() {
     useEffect(() => {
         if(!personalityBehavior) return;
         const {id, userId, ...other} = personalityBehavior;
-        reset({ other });
-        console.warn(id, userId)
-
+        reset(other);
     }, [personalityBehavior, reset]);
 
     const { trigger, isMutating } = useSWRMutation(
@@ -125,21 +122,32 @@ export default function useBehaviorForm() {
         async (_: string, { arg }: { arg: PersonalityBehaviorFormValues }) => {
             const { ...payload } = arg;
             if(!userIdProps) throw new Error("User ID is undefined. Please log in again");
-            return await patchPersonalityBehavior(userIdProps, payload);
 
+            if(personalityBehavior) {
+                return await patchPersonalityBehavior(userIdProps, payload);
+            }
+            return await postPersonalityBehavior(userIdProps, payload);
         },
         {
-            onError: (error: Error) => showError({ message: error.message || "Failed to update personality/behavior info" }),
+            onSuccess: () => {
+                showSuccess("Personality & Behavior updated successfully!");
+            },
+            onError: (error: Error) => {
+                showError({ message: error.message || "Failed to update personality/behavior info" });
+            },
             revalidate: false,
             populateCache: false,
         }
     );
 
     const onSubmit = async (values: PersonalityBehaviorFormValues, callback?: () => void) => {
-        const result = await trigger(values);
-        if (result) {
-            showSuccess("Personality & Behavior updated successfully!");
-            callback?.();
+        try {
+            const result = await trigger(values);
+            if (result) {
+                callback?.();
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
         }
     };
 

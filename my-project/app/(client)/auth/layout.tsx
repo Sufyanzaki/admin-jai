@@ -26,7 +26,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           <div className="scrollbar-hide flex-1 overflow-y-auto">
             <div className="flex justify-between items-center px-4 py-6 lg:px-14 lg:py-7">
               <div className="text-2xl font-bold">
-                <Link href={"/public"}>
+                <Link href={"/"}>
                   <ImageWrapper
                     width={200}
                     height={200}
@@ -68,7 +68,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <div className="min-h-screen w-full flex lg:hidden flex-col ">
         {/* Left Image Side */}
         <div className="text-2xl font-bold h-[78px] flex items-center justify-start px-4">
-          <Link href={"/public"}>
+          <Link href={"/"}>
             <ImageWrapper
               width={170}
               height={170}

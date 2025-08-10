@@ -1,26 +1,68 @@
 import LocationSearchInput from "@/components/client/location-search";
 import {Button} from "@/components/client/ux/button";
+import usePlaceForm from "@/app/(client)/dashboard/settings/account/_hooks/usePlaceForm";
+import Preloader from "@/components/shared/Preloader";
+import {MemberLocation} from "@/app/shared-types/member";
 
 export function Place(){
+
+    const {
+        errors,
+        handleSubmit,
+        onSubmit,
+        isLoading,
+        isFetching,
+        watch,
+        setValue
+    } = usePlaceForm();
+
+    const city = watch("city");
+    const state = watch("state");
+    const country = watch("country");
+
+    const currentLocation =
+        city || state || country ? { city, state, country } : null;
+
+    const handleLocationSelect = (location: Partial<MemberLocation>) => {
+        setValue("city", location.city);
+        location.state && setValue("state", location.state);
+        location.country && setValue("country", location.country);
+    };
+
+    if(isFetching){
+        return (
+            <div className="flex items-center flex-col justify-center h-64 my-28">
+                <Preloader/>
+                <p className="text-sm">Loading</p>
+            </div>
+        )
+    }
+
     return (
-        <div>
+        <form onSubmit={handleSubmit(v=>onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
                 Place
             </h3>
             <div className="grid md:grid-cols-1 gap-4">
                 <div className="border border-app-border rounded-[5px]">
                     <LocationSearchInput
-                        onSelect={(location) => {
-                            console.log("Selected location:", location);
-                        }}
+                        value={currentLocation}
+                        onSelect={handleLocationSelect}
+                        placeholder="Search for your city, state, or country"
                     />
+                    {(errors.state || errors.country) && (
+                        <div className="space-y-1">
+                            {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
+                            {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="flex justify-end mt-4">
-                <Button size="lg" variant="theme">
-                    Update
+                <Button size="lg" variant="theme" type="submit" disabled={isLoading}>
+                    {isLoading ? "Processing..." : "Update"}
                 </Button>
             </div>
-        </div>
+        </form>
     )
 }

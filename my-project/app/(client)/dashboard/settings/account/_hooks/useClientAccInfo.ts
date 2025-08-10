@@ -54,7 +54,7 @@ export default function useClientAccInfo() {
         reset({
             origin,
             gender,
-            dob,
+            dob: dob.split("T")[0],
             age,
             relationshipStatus,
             lookingFor: partnerExpectation?.lookingFor,

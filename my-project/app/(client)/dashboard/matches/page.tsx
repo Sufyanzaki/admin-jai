@@ -6,7 +6,7 @@ import { Grid3X3, List } from "lucide-react";
 import { useState } from "react";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
-import { useTodaysMatches } from "../_hooks/useTodaysMatches";
+import { useTodayMatches } from "../_hooks/useTodayMatches";
 import { Skeleton } from "@/components/admin/ui/skeleton";
 import { MemberProfile } from "@/app/shared-types/member";
 
@@ -124,7 +124,7 @@ const matchResults = [
 export default function MatchesPage() {
   const [online, setOnline] = useState(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const { matches, matchesLoading, error } = useTodaysMatches();
+  const { matches, matchesLoading, error } = useTodayMatches();
 
   const filteredResults = online
     ? matchResults.filter((profile) => profile.status === "online")
