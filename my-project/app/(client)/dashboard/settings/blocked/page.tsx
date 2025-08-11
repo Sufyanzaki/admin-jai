@@ -1,6 +1,10 @@
 "use client";
 import { Button } from "@/components/client/ux/button";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
+import { getBlockedProfiles } from "./_api/getBlockedProfiles";
+import { useBlockedProfiles } from "./_hooks/useBlockedProfiles";
+import { MemberProfile } from "@/app/shared-types/member";
+import { useUnblockUser } from "./_hooks/useUnblockProfile";
 
 const matchResults = [
   {
@@ -102,17 +106,17 @@ const matchResults = [
     status: "online",
     description: "Like to Profiel",
   },
-
 ];
 
 export default function BlockedPage() {
- 
+  const { blockedProfiles, blockedLoading, error } = useBlockedProfiles();
+  
   return (
     <div className="flex min-h-screen">
       <div className="flex-1 flex flex-col">
         <main className="flex-1 space-y-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-            {matchResults.map((profile) => (
+            {blockedProfiles?.map((profile: MemberProfile) => (
               <ProfileCard key={profile.id} profile={profile} blocked />
             ))}
           </div>
