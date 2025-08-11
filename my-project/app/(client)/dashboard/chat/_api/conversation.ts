@@ -1,0 +1,53 @@
+import {getRequest, patchRequest, postRequest} from "@/shared-lib";
+import {BannerDto} from "@/app/admin/(dashboard)/marketing/banners/_types/bannerTypes";
+import {ChatResponse} from "@/app/(client)/dashboard/chat/_types/conversation";
+
+type Payload = {
+    userId: string;
+}
+
+type MessageProps = {
+    chatId: string;
+    content: string;
+}
+
+export async function createChat(props: Payload): Promise<ChatResponse | undefined> {
+    const r = await postRequest<Payload>({
+        url: 'chat',
+        data: props,
+        useAuth: true
+    });
+    return r.response;
+}
+
+export async function sendMessage(props: MessageProps): Promise<undefined> {
+    const r = await postRequest<MessageProps>({
+        url: `message`,
+        data: props,
+        useAuth: true
+    });
+    return r.response
+}
+
+export async function getAllChats(): Promise<BannerDto[] | undefined> {
+    return await getRequest({
+        url: 'banner',
+        useAuth: true
+    });
+}
+
+export async function getChatDetails(id: string): Promise<ChatResponse> {
+    return await getRequest({
+        url: `message/${id}`,
+        useAuth: true
+    })
+}
+
+export async function updateChat(id: string, props: Payload): Promise<BannerDto | undefined> {
+    const r = await patchRequest<Payload>({
+        url: `banner/${id}`,
+        data: props,
+        useAuth: true
+    });
+    return r.response;
+}

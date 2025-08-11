@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/client/ux/button";
 import { Controller } from "react-hook-form";
 import useLifeStyleForm from "@/app/(client)/dashboard/settings/account/_hooks/useLifeStyleForm";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export function LifeStyle() {
     const {
@@ -34,22 +36,12 @@ export function LifeStyle() {
                         name="smoke"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                                key={field.value}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select smoking preference" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Never">Never</SelectItem>
-                                    <SelectItem value="Occasionally">Occasionally</SelectItem>
-                                    <SelectItem value="Regularly">Regularly</SelectItem>
-                                    <SelectItem value="Yes">Yes</SelectItem>
-                                    <SelectItem value="No">No</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="smoke"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="Select smoking preference"
+                            />
                         )}
                     />
                     {errors.smoke && (
@@ -63,22 +55,12 @@ export function LifeStyle() {
                         name="drinking"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                                key={field.value}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select drinking preference" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Never">Never</SelectItem>
-                                    <SelectItem value="Occasionally">Occasionally</SelectItem>
-                                    <SelectItem value="Regularly">Regularly</SelectItem>
-                                    <SelectItem value="Yes">Yes</SelectItem>
-                                    <SelectItem value="No">No</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="drinking"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="Select drinking preference"
+                            />
                         )}
                     />
                     {errors.drinking && (
@@ -92,23 +74,12 @@ export function LifeStyle() {
                         name="goingOut"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                                key={field.value}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select going out preference" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Never">Never</SelectItem>
-                                    <SelectItem value="Occasionally">Occasionally</SelectItem>
-                                    <SelectItem value="Weekends">Weekends</SelectItem>
-                                    <SelectItem value="Frequently">Frequently</SelectItem>
-                                    <SelectItem value="Yes">Yes</SelectItem>
-                                    <SelectItem value="No">No</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="goingOut"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="Select goingOut preference"
+                            />
                         )}
                     />
                     {errors.goingOut && (

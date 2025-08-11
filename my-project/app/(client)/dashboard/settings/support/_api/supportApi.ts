@@ -3,7 +3,7 @@ import { SupportTicketDto } from "../_types/support";
 
 export async function createSupportTicket(payload: Omit<SupportTicketDto, "id">) {
     const r = await postRequest({
-        url: "suport-tickets",
+        url: "user/suport-tickets",
         data: payload,
         useAuth: true,
     });
@@ -12,7 +12,7 @@ export async function createSupportTicket(payload: Omit<SupportTicketDto, "id">)
 
 export async function updateSupportTicket(id: string, payload: Partial<SupportTicketDto>) {
     const r = await patchRequest({
-        url: `suport-tickets/${id}`,
+        url: `user/suport-tickets/${id}`,
         data: payload,
         useAuth: true,
     });
@@ -21,21 +21,21 @@ export async function updateSupportTicket(id: string, payload: Partial<SupportTi
 
 export async function getSupportTicket(id: string): Promise<SupportTicketDto | undefined> {
     return getRequest({
-        url: `suport-tickets/${id}`,
+        url: `user/suport-tickets/${id}`,
         useAuth: true,
     });
 }
 
 export async function getAllSupportTickets(): Promise<SupportTicketDto[]> {
     return getRequest({
-        url: "suport-tickets",
+        url: "user/suport-tickets",
         useAuth: true,
     });
 }
 
 export async function deleteSupportTicket(id: string) {
     return deleteRequest({
-        url: `suport-tickets/${id}`,
+        url: `user/suport-tickets/${id}`,
         useAuth: true,
     });
 }

@@ -1,22 +1,15 @@
 "use client";
 
-import { Label } from "@/components/client/ux/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/client/ux/select";
-import { MultiSelectCombobox } from "@/components/client/ux/combo-box";
-import { Button } from "@/components/client/ux/button";
+import {Label} from "@/components/client/ux/label";
+import {Button} from "@/components/client/ux/button";
 import useMoreInfoForm from "@/app/(client)/dashboard/settings/account/_hooks/useMoreInfoForm";
-import { Controller } from "react-hook-form";
+import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeMultiSelect, AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export function MoreInfo() {
     const {
-        register,
         handleSubmit,
         onSubmit,
         control,
@@ -46,20 +39,12 @@ export function MoreInfo() {
                         name="education"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                                key={field.value}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select education" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="middelbaar">Secondary School</SelectItem>
-                                    <SelectItem value="hoger">Higher Education</SelectItem>
-                                    <SelectItem value="universitair">University</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="education"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. University degree"
+                            />
                         )}
                     />
                     {errors.education && (
@@ -68,10 +53,17 @@ export function MoreInfo() {
                 </div>
                 <div>
                     <Label>Department *</Label>
-                    <input
-                        {...register("department")}
-                        className="w-full px-3 py-2 border rounded-md"
-                        placeholder="Enter your department"
+                    <Controller
+                        name="department"
+                        control={control}
+                        render={({ field }) => (
+                            <AttributeSelect
+                                attributeKey="department"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="Select Department"
+                            />
+                        )}
                     />
                     {errors.department && (
                         <p className="text-red-500 text-xs mt-1">{errors.department.message}</p>
@@ -79,10 +71,17 @@ export function MoreInfo() {
                 </div>
                 <div>
                     <Label>Primary Specialization *</Label>
-                    <input
-                        {...register("primarySpecialization")}
-                        className="w-full px-3 py-2 border rounded-md"
-                        placeholder="Enter your specialization"
+                    <Controller
+                        name="primarySpecialization"
+                        control={control}
+                        render={({ field }) => (
+                            <AttributeSelect
+                                attributeKey="primarySpecialization"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="Select Specialization"
+                            />
+                        )}
                     />
                     {errors.primarySpecialization && (
                         <p className="text-red-500 text-xs mt-1">{errors.primarySpecialization.message}</p>
@@ -94,22 +93,12 @@ export function MoreInfo() {
                         name="motherTongue"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                                key={field.value}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select language" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="english">English</SelectItem>
-                                    <SelectItem value="spanish">Spanish</SelectItem>
-                                    <SelectItem value="french">French</SelectItem>
-                                    <SelectItem value="german">German</SelectItem>
-                                    <SelectItem value="dutch">Dutch</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="motherTongue"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="Select Language"
+                            />
                         )}
                     />
                     {errors.motherTongue && (
@@ -119,15 +108,16 @@ export function MoreInfo() {
                     )}
                 </div>
                 <div className="md:col-span-2">
-                    <Label>Known Languages *</Label>
                     <Controller
                         name="knownLanguages"
                         control={control}
                         render={({ field }) => (
-                            <MultiSelectCombobox
-                                selected={field.value || []}
-                                options={["English", "Spanish", "French", "German", "Dutch"]}
+                            <AttributeMultiSelect
+                                label="Known Languages *"
+                                attributeKey="knownLanguages"
+                                value={field.value || []}
                                 onChange={field.onChange}
+                                placeholder="Select languages"
                             />
                         )}
                     />

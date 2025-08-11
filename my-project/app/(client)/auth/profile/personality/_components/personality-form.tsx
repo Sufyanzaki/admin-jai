@@ -1,21 +1,16 @@
 "use client";
 
-import { Button } from "@/components/client/ux/button";
-import { Label } from "@/components/client/ux/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/client/ux/select";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Checkbox } from "@/components/client/ux/checkbox";
-import { Controller } from "react-hook-form";
+import {Button} from "@/components/client/ux/button";
+import {Label} from "@/components/client/ux/label";
+import {useRouter} from "next/navigation";
+import {ArrowLeft, ArrowRight} from "lucide-react";
+import {Checkbox} from "@/components/client/ux/checkbox";
+import {Controller} from "react-hook-form";
 import usePersonalityStyleForm from "@/app/(client)/auth/profile/personality/_hooks/usePersonalityStyleForm";
 import {PersonalityBehaviorFormValues} from "@/app/admin/(dashboard)/members/add/_hooks/usePersonalityBehaviorForm";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 interface PersonalityTrait {
   value: keyof PersonalityBehaviorFormValues;
@@ -61,24 +56,6 @@ const personalityTraits: PersonalityTrait[] = [
   { value: "compulsive", label: "Compulsive" },
   { value: "relaxed", label: "Relaxed" },
 ];
-
-const lifestyleOptions = {
-  smoke: [
-    { value: "yes", label: "Yes" },
-    { value: "no", label: "No" },
-    { value: "occasionally", label: "Occasionally" },
-  ],
-  drinking: [
-    { value: "yes", label: "Yes" },
-    { value: "no", label: "No" },
-    { value: "socially", label: "Socially" },
-  ],
-  goingOut: [
-    { value: "frequently", label: "Frequently" },
-    { value: "sometimes", label: "Sometimes" },
-    { value: "rarely", label: "Rarely" },
-  ],
-};
 
 export function PersonalityForm() {
   const router = useRouter();
@@ -161,22 +138,12 @@ export function PersonalityForm() {
                     name="smoke"
                     control={control}
                     render={({ field }) => (
-                        <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            key={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select smoking habit" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {lifestyleOptions.smoke.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <AttributeSelect
+                            attributeKey="smoke"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select smoking habit"
+                        />
                     )}
                 />
                 {errors.smoke && (
@@ -190,22 +157,12 @@ export function PersonalityForm() {
                     name="drinking"
                     control={control}
                     render={({ field }) => (
-                        <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            key={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select drinking habit" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {lifestyleOptions.drinking.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <AttributeSelect
+                            attributeKey="drinking"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select drinking habit"
+                        />
                     )}
                 />
                 {errors.drinking && (
@@ -219,22 +176,12 @@ export function PersonalityForm() {
                     name="goingOut"
                     control={control}
                     render={({ field }) => (
-                        <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            key={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select going out frequency" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {lifestyleOptions.goingOut.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <AttributeSelect
+                            attributeKey="goingOut"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select goingOut habit"
+                        />
                     )}
                 />
                 {errors.goingOut && (

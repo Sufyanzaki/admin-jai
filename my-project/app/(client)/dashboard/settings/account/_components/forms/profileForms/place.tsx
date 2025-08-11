@@ -3,6 +3,7 @@ import {Button} from "@/components/client/ux/button";
 import usePlaceForm from "@/app/(client)/dashboard/settings/account/_hooks/usePlaceForm";
 import Preloader from "@/components/shared/Preloader";
 import {MemberLocation} from "@/app/shared-types/member";
+import type React from "react";
 
 export function Place(){
 
@@ -50,12 +51,7 @@ export function Place(){
                         onSelect={handleLocationSelect}
                         placeholder="Search for your city, state, or country"
                     />
-                    {(errors.state || errors.country) && (
-                        <div className="space-y-1">
-                            {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
-                            {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                        </div>
-                    )}
+                    {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
                 </div>
             </div>
             <div className="flex justify-end mt-4">

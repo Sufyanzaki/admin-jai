@@ -16,7 +16,7 @@ export const useTodayMatches = () => {
     return {
         matches: data?.data,
         matchesLoading: loading,
-        error,
+        matchesError : error,
         mutate
     };
 };

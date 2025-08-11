@@ -1,12 +1,13 @@
 "use client";
 
-import { Label } from "@/components/client/ux/label";
-import { Slider } from "@/components/client/ux/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
-import { Button } from "@/components/client/ux/button";
-import { Controller } from "react-hook-form";
+import {Label} from "@/components/client/ux/label";
+import {Slider} from "@/components/client/ux/slider";
+import {Button} from "@/components/client/ux/button";
+import {Controller} from "react-hook-form";
 import useAboutMe2Form from "@/app/(client)/dashboard/settings/account/_hooks/useAboutMe2Form";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export function AboutMe2() {
     const {
@@ -80,16 +81,12 @@ export function AboutMe2() {
                         name="eyeColor"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select eye color" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="blue">Blue</SelectItem>
-                                    <SelectItem value="brown">Brown</SelectItem>
-                                    <SelectItem value="green">Green</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="eyeColor"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. Chestnut Brown"
+                            />
                         )}
                     />
                     {errors.eyeColor && <p className="text-red-500 text-sm">{errors.eyeColor.message}</p>}
@@ -101,16 +98,12 @@ export function AboutMe2() {
                         name="hairColor"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select hair color" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="black">Black</SelectItem>
-                                    <SelectItem value="brown">Brown</SelectItem>
-                                    <SelectItem value="blonde">Blonde</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="hairColor"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. Chestnut Brown"
+                            />
                         )}
                     />
                     {errors.hairColor && <p className="text-red-500 text-sm">{errors.hairColor.message}</p>}
@@ -122,16 +115,12 @@ export function AboutMe2() {
                         name="bodyType"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select body type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="slim">Slim</SelectItem>
-                                    <SelectItem value="athletic">Athletic</SelectItem>
-                                    <SelectItem value="average">Average</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="bodyType"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. Chestnut Brown"
+                            />
                         )}
                     />
                     {errors.bodyType && <p className="text-red-500 text-sm">{errors.bodyType.message}</p>}
@@ -143,16 +132,12 @@ export function AboutMe2() {
                         name="appearance"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onValueChange={field.onChange}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select appearance" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="confident">Confident</SelectItem>
-                                    <SelectItem value="attractive">Attractive</SelectItem>
-                                    <SelectItem value="friendly">Friendly</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="appearance"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. Chestnut Brown"
+                            />
                         )}
                     />
                     {errors.appearance && <p className="text-red-500 text-sm">{errors.appearance.message}</p>}
@@ -164,16 +149,12 @@ export function AboutMe2() {
                         name="clothing"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select clothing style" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="casual">Casual</SelectItem>
-                                    <SelectItem value="formal">Formal</SelectItem>
-                                    <SelectItem value="sporty">Sporty</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="clothingStyles"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. Casual"
+                            />
                         )}
                     />
                     {errors.clothing && <p className="text-red-500 text-sm">{errors.clothing.message}</p>}
@@ -185,16 +166,12 @@ export function AboutMe2() {
                         name="intelligence"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select intelligence level" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="top-priority">Top priority</SelectItem>
-                                    <SelectItem value="high">High</SelectItem>
-                                    <SelectItem value="average">Average</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <AttributeSelect
+                                attributeKey="intelligence"
+                                value={field.value || undefined}
+                                onChange={field.onChange}
+                                placeholder="e.g. High"
+                            />
                         )}
                     />
                     {errors.intelligence && <p className="text-red-500 text-sm">{errors.intelligence.message}</p>}

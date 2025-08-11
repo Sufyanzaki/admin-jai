@@ -5,10 +5,11 @@ import {Textarea} from "@/components/client/ux/textarea";
 import {Label} from "@/components/client/ux/label";
 import {useRouter} from "next/navigation";
 import {ArrowLeft, ArrowRight} from "lucide-react";
-import {MultiSelectCombobox} from "@/components/client/ux/combo-box";
 import useHobbiesInterestsForm from "../_hooks/useHobbiesInterestForm";
 import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeMultiSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export function ProfileDescriptionForm() {
   const router = useRouter();
@@ -93,17 +94,18 @@ export function ProfileDescriptionForm() {
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label>Sports *</Label>
               <Controller
-                name="sports"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectCombobox
-                    selected={field.value || []}
-                    options={["Car racing", "Boxing", "Football"]}
-                    onChange={field.onChange}
-                  />
-                )}
+                  name="sports"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeMultiSelect
+                          label="Sports *"
+                          attributeKey="sports"
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select Sports"
+                      />
+                  )}
               />
               {errors.sports && (
                 <p className="text-sm text-red-500">{errors.sports.message}</p>
@@ -111,35 +113,37 @@ export function ProfileDescriptionForm() {
             </div>
 
             <div>
-              <Label>Music *</Label>
               <Controller
-                name="music"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectCombobox
-                    selected={field.value || []}
-                    options={["R&B", "Rock", "Jazz", "House"]}
-                    onChange={field.onChange}
-                  />
-                )}
+                  name="music"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeMultiSelect
+                          label="Music *"
+                          attributeKey="music"
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select Music"
+                      />
+                  )}
               />
               {errors.music && (
-                <p className="text-sm text-red-500">{errors.music.message}</p>
+                  <p className="text-sm text-red-500">{errors.music.message}</p>
               )}
             </div>
 
             <div>
-              <Label>Cooking *</Label>
               <Controller
-                name="kitchen"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectCombobox
-                    selected={field.value || []}
-                    options={["Italian", "Greek", "Indian"]}
-                    onChange={field.onChange}
-                  />
-                )}
+                  name="kitchen"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeMultiSelect
+                          label="Cooking *"
+                          attributeKey="kitchen"
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select Kitchen"
+                      />
+                  )}
               />
               {errors.kitchen && (
                 <p className="text-sm text-red-500">{errors.kitchen.message}</p>
@@ -147,17 +151,18 @@ export function ProfileDescriptionForm() {
             </div>
 
             <div>
-              <Label>Reading *</Label>
               <Controller
-                name="reading"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectCombobox
-                    selected={field.value || []}
-                    options={["Psychology", "Romance"]}
-                    onChange={field.onChange}
-                  />
-                )}
+                  name="reading"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeMultiSelect
+                          label="Reading *"
+                          attributeKey="reading"
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select"
+                      />
+                  )}
               />
               {errors.reading && (
                 <p className="text-sm text-red-500">{errors.reading.message}</p>
@@ -165,17 +170,18 @@ export function ProfileDescriptionForm() {
             </div>
 
             <div>
-              <Label>TV Shows *</Label>
               <Controller
-                name="tvShows"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectCombobox
-                    selected={field.value || []}
-                    options={["Drama", "Documentary"]}
-                    onChange={field.onChange}
-                  />
-                )}
+                  name="tvShows"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeMultiSelect
+                          label="TV Shows *"
+                          attributeKey="tvShows"
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select"
+                      />
+                  )}
               />
               {errors.tvShows && (
                 <p className="text-sm text-red-500">{errors.tvShows.message}</p>

@@ -6,11 +6,11 @@ import { z } from "zod";
 import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { addPackage } from "../_api/addPackage";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import usePackageById from "@/app/admin/(dashboard)/packages/_hooks/usePackageById";
 import {useParams} from "next/navigation";
 import {useEffect} from "react";
+import {editPackage} from "@/app/shared-api/packageApi";
 
 const packageSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -61,7 +61,7 @@ export default function useEditPackage() {
       validity: Number(pkg.validity),
       image: pkg.image ?? null,
       isActive: pkg.isActive,
-      features: pkg.features.split(","),
+      features: pkg.features?.split(",") ?? [],
     })
   }, [pkg, reset]);
 
@@ -77,10 +77,10 @@ export default function useEditPackage() {
           imageUrl = "";
         }
         const featuresString = arg.features.join(", ");
-        return await addPackage({
+        return await editPackage({
           ...arg,
           image: imageUrl,
-          features: featuresString as any,
+          features: featuresString,
         });
       },
       {

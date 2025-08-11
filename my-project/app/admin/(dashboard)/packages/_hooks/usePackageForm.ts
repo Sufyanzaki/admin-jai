@@ -4,8 +4,8 @@ import { z } from "zod";
 import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { addPackage } from "../_api/addPackage";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
+import {addPackage} from "@/app/admin/(dashboard)/packages/_api/packageApi";
 
 const packageSchema = z.object({
   name: z.string().min(1, "Name is required"),

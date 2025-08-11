@@ -35,27 +35,6 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                   />
                 </Link>
               </div>
-              {pathname === "/auth/login" ? (
-                <div className=" text-black text-md">
-                  Don&apos;t have an account?
-                  <a
-                    href="/auth/profile/create"
-                    className="ml-1 hover:underline font-medium"
-                  >
-                    Register
-                  </a>
-                </div>
-              ) : (
-                <div className=" text-black text-md">
-                  Do you have an account?
-                  <a
-                    href="/auth/login"
-                    className="ml-1 hover:underline font-medium"
-                  >
-                    Login
-                  </a>
-                </div>
-              )}
             </div>
             <div className="w-full mx-auto mt-10 overflow-auto ">
               <Container size={"default"} className="">

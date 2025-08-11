@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {useRouter} from "next/navigation";
-import {showError, showSuccess} from "@/shared-lib";
+import {showError} from "@/shared-lib";
 import {patchUser} from "@/app/shared-api/userApi";
 import {patchHobbiesInterests, postHobbiesInterests,} from "@/app/shared-api/hobbiesInterestsApi";
 import {useSession} from "next-auth/react";
@@ -56,7 +56,6 @@ export default function useHobbiesInterestsForm() {
     });
 
     useEffect(() => {
-        console.log(user, hobbiesInterests)
         if (!user || !hobbiesInterests) return;
 
         const { shortDescription = "" } = user;
@@ -93,11 +92,10 @@ export default function useHobbiesInterestsForm() {
             };
 
             await Promise.all([
+                patchUser(userId, {route: "auth/profile/description"}),
                 patchUser(userId, { shortDescription: arg.shortDescription }),
                 api(userId, hobbiesPayload),
             ]);
-
-            showSuccess("Hobbies & description saved!");
             return true;
         },
         {

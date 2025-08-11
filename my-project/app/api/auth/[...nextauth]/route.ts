@@ -9,6 +9,7 @@ const otpSchema = z.object({
   otp: z.string().min(5, { message: "otp must be at least 5 characters" }),
 });
 
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -56,7 +57,6 @@ export const authOptions: NextAuthOptions = {
 
         const { email, otp } = parsedCredentials.data;
         const response = await postOtp({ email, otp });
-        console.log(response);
         if(!response) return null;
 
         return {
@@ -67,6 +67,7 @@ export const authOptions: NextAuthOptions = {
           lastName: response.user.lastName,
           token: response.tokens.access.token,
           role: "CLIENT",
+          route: response.user.route
         }
       }
     })

@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { getUserTrackingId } from "@/lib/access-token";
 import { AlertTriangle } from "lucide-react";
 import {MemberLocation} from "@/app/shared-types/member";
+import type React from "react";
 
 export default function LivingTab({callback}: { callback: () => void}) {
   const params = useParams();
@@ -67,12 +68,7 @@ export default function LivingTab({callback}: { callback: () => void}) {
                     onSelect={handleLocationSelect}
                     placeholder="Search for your city, state, or country"
                 />
-                {(errors.state || errors.country) && (
-                    <div className="space-y-1">
-                      {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
-                      {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                    </div>
-                )}
+                {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
               </div>
               <div className="flex justify-end">
                 <Button type="submit" disabled={isLoading || !userId}>

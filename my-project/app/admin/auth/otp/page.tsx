@@ -34,7 +34,7 @@ export default function OtpPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-12">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <Image
+          <image
             src="https://ticketprijs.nl/admin/logoImages/1730182765_logo%20(1).png"
             alt="Logo"
             className="mx-auto"

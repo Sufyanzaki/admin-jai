@@ -7,11 +7,13 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ProfileSidebar } from "../_components/profile-sidebar";
 import ImageWrapper from "@/components/client/image-wrapper";
 import {EmojiPopover} from "@/components/client/emoji-popover";
 import FileUploadClip from "@/components/client/file-upload-clip";
+import {useChatDetails} from "@/app/(client)/dashboard/chat/_hooks/useChatDetails";
+import Preloader from "@/components/shared/Preloader";
 
 interface Chat {
   id: number;
@@ -101,6 +103,9 @@ const selectedChat: Chat = {
   },
 };
 export default function ChatBoxPage() {
+
+  const { chat, chatLoading } = useChatDetails();
+
   const router = useRouter();
   const [messageInput, setMessageInput] = useState("");
   const [showProfile, setShowProfile] = useState(false);
@@ -124,6 +129,17 @@ export default function ChatBoxPage() {
   const handleCloseProfile = () => {
     setShowProfile(false);
   };
+
+  if(chatLoading){
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader/>
+          <p className="text-sm">Loading...</p>
+        </div>
+    )
+  }
+
+  console.log(chat);
 
   return (
     <div className="relative">

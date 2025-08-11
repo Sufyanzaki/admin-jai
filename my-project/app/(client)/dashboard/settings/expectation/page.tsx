@@ -1,36 +1,26 @@
 "use client";
-import React, { Suspense } from "react";
-import { Label } from "@/components/client/ux/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/client/ux/select";
-import { Button } from "@/components/client/ux/button";
-import { Slider } from "@/components/client/ux/slider";
-import { RangeSlider } from "@/components/client/ux/range-slider";
+
+import React, {Suspense} from "react";
+import {Label} from "@/components/client/ux/label";
+import {Select,} from "@/components/client/ux/select";
+import {Button} from "@/components/client/ux/button";
+import {Slider} from "@/components/client/ux/slider";
+import {RangeSlider} from "@/components/client/ux/range-slider";
 import LocationSearchInput from "@/components/client/location-search";
 import {
   ExpectationsFormValues,
   useClientExpectationsForm
 } from "@/app/(client)/dashboard/settings/expectation/_hooks/useClientExpectationsForm";
-import { MemberLocation } from "@/app/shared-types/member";
-import { Controller } from "react-hook-form";
+import {MemberLocation} from "@/app/shared-types/member";
+import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
-import { cn } from "@/lib/utils";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 
 type SelectField = {
   name: keyof ExpectationsFormValues;
   label: string;
   placeholder: string;
-  options: { value: string; label: string }[];
-};
-
-type BooleanField = {
-  name: 'smoke' | 'drinking' | 'goingOut';
-  label: string;
+  key: string;
 };
 
 export default function ExpectationPage() {
@@ -68,55 +58,50 @@ export default function ExpectationPage() {
       name: "origin",
       label: "Ethnicity",
       placeholder: "Select",
-      options: [
-        { value: "indian", label: "Indian" },
-        { value: "other", label: "Other" },
-      ],
+      key: "origin"
     },
     {
       name: "lookingFor",
       label: "I'm looking for *",
       placeholder: "Man",
-      options: [
-        { value: "man", label: "Man" },
-        { value: "woman", label: "Woman" },
-      ],
+      key:"amLookingFor"
     },
     {
       name: "religion",
       label: "Religion",
       placeholder: "Muslim",
-      options: [
-        { value: "muslim", label: "Muslim" },
-        { value: "hindu", label: "Hindu" },
-        { value: "christian", label: "Christian" },
-      ],
+      key:"religion"
     },
     {
       name: "relationshipStatus",
       label: "Relationship Status",
       placeholder: "Single",
-      options: [
-        { value: "single", label: "Single" },
-        { value: "divorced", label: "Divorced" },
-      ],
+      key:"relationStatus"
     },
     {
       name: "education",
       label: "Education",
       placeholder: "Vocational",
-      options: [
-        { value: "vocational", label: "Vocational" },
-        { value: "college", label: "College" },
-        { value: "university", label: "University" },
-      ],
+      key:"education"
     },
-  ];
-
-  const booleanFields: BooleanField[] = [
-    { name: "smoke", label: "Smoke" },
-    { name: "drinking", label: "Drink" },
-    { name: "goingOut", label: "Goes Out" },
+    {
+      name: "smoke",
+      label: "Smoke",
+      placeholder: "Vocational",
+      key:"smoke"
+    },
+    {
+      name: "drinking",
+      label: "Drinking",
+      placeholder: "Vocational",
+      key:"drinking"
+    },
+    {
+      name: "goingOut",
+      label: "Going Out",
+      placeholder: "Vocational",
+      key:"goingOut"
+    },
   ];
 
   return (
@@ -125,32 +110,19 @@ export default function ExpectationPage() {
             onSubmit={handleSubmit((v) => onSubmit(v))}
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {selectFields.map(({ name, label, placeholder, options }) => (
+          {selectFields.map(({ name, label, placeholder, key }) => (
               <div key={name}>
                 <Label>{label}</Label>
                 <Controller
                     name={name}
                     control={control}
                     render={({ field }) => (
-                        <Select
-                            value={field.value as string}
-                            onValueChange={(value) =>
-                                setValue(name, value, {
-                                  shouldDirty: true,
-                                })
-                            }
-                        >
-                          <SelectTrigger className={cn(errors[name] && "border-red-500")}>
-                            <SelectValue placeholder={placeholder} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {options.map((opt) => (
-                                <SelectItem key={opt.value} value={opt.value}>
-                                  {opt.label}
-                                </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <AttributeSelect
+                            attributeKey={key}
+                            value={field.value as string || undefined}
+                            onChange={(value) => setValue(name, value, { shouldDirty: true })}
+                            placeholder={placeholder}
+                        />
                     )}
                 />
                 {errors[name] && (
@@ -201,44 +173,12 @@ export default function ExpectationPage() {
             )}
           </div>
 
-          {booleanFields.map(({ name, label }) => (
-              <div key={name}>
-                <Label>{label}</Label>
-                <Controller
-                    name={name}
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            value={field.value}
-                            key={field.value}
-                            onValueChange={val => field.onChange(val)}
-                        >
-                          <SelectTrigger className={cn(errors[name] && "border-red-500")}>
-                            <SelectValue placeholder="No" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="yes">Yes</SelectItem>
-                            <SelectItem value="no">No</SelectItem>
-                          </SelectContent>
-                        </Select>
-                    )}
-                />
-                {errors[name] && (
-                    <p className="text-sm text-red-400">{errors[name]?.message as string}</p>
-                )}
-              </div>
-          ))}
-
           <div>
             <Label>Location</Label>
             <div className="border border-app-border rounded-[5px] !h-13 py-1">
               <LocationSearchInput onSelect={handleLocationSelect} />
-              {(errors.state || errors.country) && (
-                  <div className="space-y-1">
-                    {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
-                    {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                  </div>
-              )}
+              {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
+
             </div>
           </div>
 

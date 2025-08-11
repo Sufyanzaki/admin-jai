@@ -87,7 +87,7 @@ export default function useClientAccount() {
             username,
             lastName,
             gender,
-            dob,
+            dob: dob ? dob.split("T")[0] : "",
             email,
         })
     }, [user, reset])

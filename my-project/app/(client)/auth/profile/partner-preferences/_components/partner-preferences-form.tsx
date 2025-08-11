@@ -1,22 +1,17 @@
 "use client";
 
-import { Button } from "@/components/client/ux/button";
-import { Label } from "@/components/client/ux/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/client/ux/select";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Slider } from "@/components/client/ux/slider";
-import { RangeSlider } from "@/components/client/ux/range-slider";
+import {Button} from "@/components/client/ux/button";
+import {Label} from "@/components/client/ux/label";
+import {useRouter} from "next/navigation";
+import {ArrowLeft, ArrowRight} from "lucide-react";
+import {Slider} from "@/components/client/ux/slider";
+import {RangeSlider} from "@/components/client/ux/range-slider";
 import LocationSearchInput from "@/components/client/location-search";
-import { Controller } from "react-hook-form";
+import {Controller} from "react-hook-form";
 import usePartnerForm from "@/app/(client)/auth/profile/partner-preferences/_hooks/usePartnerForm";
 import {MemberLocation} from "@/app/shared-types/member";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export default function PartnerPreferencesForm() {
     const router = useRouter();
@@ -52,7 +47,6 @@ export default function PartnerPreferencesForm() {
     const handleBack = () => {
         router.push("/auth/profile/photos");
     };
-
   return (
       <div className="space-y-8 py-3">
         <div className="text-start space-y-4">
@@ -70,88 +64,69 @@ export default function PartnerPreferencesForm() {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label>I&apos;m looking for a *</Label>
-              <Controller
-                  name="lookingFor"
-                  control={control}
-                  render={({ field }) => (
-                      <Select value={field.value || undefined} onValueChange={field.onChange} key={field.value || "empty"}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select preferred gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Man">Man</SelectItem>
-                          <SelectItem value="Woman">Woman</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                  )}
-              />
+                <Controller
+                    name="lookingFor"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="amLookingFor"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select gender"
+                        />
+                    )}
+                />
               {errors.lookingFor && <p className="text-sm text-red-500">{errors.lookingFor.message}</p>}
             </div>
 
             <div>
               <Label>Origin *</Label>
-              <Controller
-                  name="origin"
-                  control={control}
-                  render={({ field }) => (
-                      <Select value={field.value || undefined} onValueChange={field.onChange} key={field.value || "empty"}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select ethnic origin" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Turks">Turks</SelectItem>
-                          <SelectItem value="Hindustans">Hindustans</SelectItem>
-                          <SelectItem value="Dutch">Dutch</SelectItem>
-                          <SelectItem value="Creols">Creols</SelectItem>
-                        </SelectContent>
-                      </Select>
-                  )}
-              />
+                <Controller
+                    name="origin"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="origin"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select Origin"
+                        />
+                    )}
+                />
               {errors.origin && <p className="text-sm text-red-500">{errors.origin.message}</p>}
             </div>
 
             <div>
               <Label>Relationship *</Label>
-              <Controller
-                  name="relationshipStatus"
-                  control={control}
-                  render={({ field }) => (
-                      <Select value={field.value || undefined} onValueChange={field.onChange} key={field.value || "empty"}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select relationship status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Single">Single</SelectItem>
-                          <SelectItem value="Married">Married</SelectItem>
-                          <SelectItem value="Divorced">Divorced</SelectItem>
-                          <SelectItem value="Widowed">Widowed</SelectItem>
-                        </SelectContent>
-                      </Select>
-                  )}
-              />
+                <Controller
+                    name="relationshipStatus"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="relationStatus"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select relationship status"
+                        />
+                    )}
+                />
               {errors.relationshipStatus && <p className="text-sm text-red-500">{errors.relationshipStatus.message}</p>}
             </div>
 
             <div>
               <Label>Religion *</Label>
-              <Controller
-                  name="religion"
-                  control={control}
-                  render={({ field }) => (
-                      <Select value={field.value || undefined} onValueChange={field.onChange} key={field.value || "empty"}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select religion" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Christian">Christian</SelectItem>
-                          <SelectItem value="Muslim">Muslim</SelectItem>
-                          <SelectItem value="Jewish">Jewish</SelectItem>
-                          <SelectItem value="Hindu">Hindu</SelectItem>
-                        </SelectContent>
-                      </Select>
-                  )}
-              />
+                <Controller
+                    name="religion"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="religion"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select religion"
+                        />
+                    )}
+                />
               {errors.religion && <p className="text-sm text-red-500">{errors.religion.message}</p>}
             </div>
 
@@ -176,7 +151,7 @@ export default function PartnerPreferencesForm() {
                 <Slider
                     value={Number(length)}
                     onValueChange={(val) => setValue("length", String(val))}
-                    min={100}
+                    min={0}
                     max={250}
                     step={1}
                     unit="cm"
@@ -200,45 +175,40 @@ export default function PartnerPreferencesForm() {
             </div>
 
             <div>
-              <Label>Education *</Label>
-              <Controller
-                  name="education"
-                  control={control}
-                  render={({ field }) => (
-                      <Select value={field.value || undefined} key={field.value || "empty"} onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select education level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Bachelor's degree or higher">Bachelor&#39;s degree or higher</SelectItem>
-                          <SelectItem value="Associate degree">Associate degree</SelectItem>
-                          <SelectItem value="High school">High school</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                  )}
-              />
-              {errors.education && <p className="text-sm text-red-500">{errors.education.message}</p>}
+                <Label>Education</Label>
+                <Controller
+                    name="education"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="education"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="e.g. University degree"
+                        />
+                    )}
+                />
+                {errors.education && (
+                    <p className="text-sm text-red-500">
+                        {errors.education.message}
+                    </p>
+                )}
             </div>
 
             <div>
               <Label>Children *</Label>
-              <Controller
-                  name="children"
-                  control={control}
-                  render={({ field }) => (
-                      <Select value={field.value.toString() || undefined} key={field.value || "empty"} onValueChange={(val) => field.onChange(Number(val))}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select number of children" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[0, 1, 2, 3, 4, 5].map(num => (
-                              <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                  )}
-              />
+                <Controller
+                    name="children"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="children"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select number of children"
+                        />
+                    )}
+                />
               {errors.children && <p className="text-sm text-red-500">{errors.children.message}</p>}
             </div>
 
@@ -248,18 +218,12 @@ export default function PartnerPreferencesForm() {
                       name="smoke"
                       control={control}
                       render={({ field }) => (
-                          <Select
-                              value={field.value.toString()}
-                              onValueChange={(val) => field.onChange(val === "true")}
-                          >
-                              <SelectTrigger>
-                                  <SelectValue placeholder="Select smoking preference" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                  <SelectItem value="true">Yes</SelectItem>
-                                  <SelectItem value="false">No</SelectItem>
-                              </SelectContent>
-                          </Select>
+                          <AttributeSelect
+                              attributeKey="smoke"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select smoking preference"
+                          />
                       )}
                   />
                   {errors.smoke && (
@@ -273,18 +237,12 @@ export default function PartnerPreferencesForm() {
                       name="drinking"
                       control={control}
                       render={({ field }) => (
-                          <Select
-                              value={field.value.toString()}
-                              onValueChange={(val) => field.onChange(val === "true")}
-                          >
-                              <SelectTrigger>
-                                  <SelectValue placeholder="Select drinking preference" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                  <SelectItem value="true">Yes</SelectItem>
-                                  <SelectItem value="false">No</SelectItem>
-                              </SelectContent>
-                          </Select>
+                          <AttributeSelect
+                              attributeKey="drinking"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select drinking preference"
+                          />
                       )}
                   />
                   {errors.drinking && (
@@ -298,19 +256,12 @@ export default function PartnerPreferencesForm() {
                       name="goingOut"
                       control={control}
                       render={({ field }) => (
-                          <Select
-                              value={field.value.toString()}
-                              key={field.value.toString()}
-                              onValueChange={(val) => field.onChange(val === "true")}
-                          >
-                              <SelectTrigger>
-                                  <SelectValue placeholder="Select going out frequency" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                  <SelectItem value="true">Frequently</SelectItem>
-                                  <SelectItem value="false">Rarely</SelectItem>
-                              </SelectContent>
-                          </Select>
+                          <AttributeSelect
+                              attributeKey="goingOut"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select goingOut preference"
+                          />
                       )}
                   />
                   {errors.goingOut && (
@@ -327,25 +278,23 @@ export default function PartnerPreferencesForm() {
             <div className="w-full h-[0.7px] rounded-full bg-gray-200"></div>
           </div>
 
-          <div className="space-y-2 grid lg:grid-cols-2 gap-5 items-end">
-            <div className="border border-app-border rounded-[5px]">
-                <LocationSearchInput
-                    value={currentLocation}
-                    onSelect={handleLocationSelect}
-                    placeholder="Search for your city, state, or country"
-                />
-                {(errors.state || errors.country) && (
-                    <div className="space-y-1">
-                        {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
-                        {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                    </div>
-                )}
+          <div className="space-y-2 grid lg:grid-cols-2 gap-5 items-center">
+            <div>
+                <Label>Location *</Label>
+                <div className="border border-app-border rounded-[5px]">
+                    <LocationSearchInput
+                        value={currentLocation}
+                        onSelect={handleLocationSelect}
+                        placeholder="Search for your city, state, or country"
+                    />
+                </div>
+                {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
             </div>
 
             <div className="relative w-full">
               <Label>Search within *</Label>
                 <Slider
-                    value={searchWithIn}
+                    value={searchWithIn || 0}
                     onValueChange={(val) => setValue("searchWithIn", val)}
                     max={100}
                     step={1}

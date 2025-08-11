@@ -8,13 +8,14 @@ import { updateUserTrackingId } from "@/lib/access-token";
 import { useHobbiesInterestsInfo } from "@/app/shared-hooks/useHobbiesInterestsInfo";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import {toArray} from "@/lib/utils";
 
 const hobbiesInterestsSchema = z.object({
-    sports: z.string().min(1, "Sports is required"),
-    music: z.string().min(1, "Music is required"),
-    kitchen: z.string().min(1, "Kitchen is required"),
-    reading: z.string().min(1, "Reading is required"),
-    tvShows: z.string().min(1, "TV Shows is required"),
+    sports: z.array(z.string()).min(1, "Select at least one sport"),
+    music: z.array(z.string()).min(1, "Select at least one music genre"),
+    kitchen: z.array(z.string()).min(1, "Select at least one kitchen hobby"),
+    reading: z.array(z.string()).min(1, "Select at least one reading category"),
+    tvShows: z.array(z.string()).min(1, "Select at least one TV show type"),
 });
 
 type HobbiesInterestsFormValues = z.infer<typeof hobbiesInterestsSchema>;
@@ -32,11 +33,11 @@ export default function useHobbiesForm() {
     } = useForm<HobbiesInterestsFormValues>({
         resolver: zodResolver(hobbiesInterestsSchema),
         defaultValues: {
-            sports: "",
-            music: "",
-            kitchen: "",
-            reading: "",
-            tvShows: "",
+            sports: [],
+            music: [],
+            kitchen: [],
+            reading: [],
+            tvShows: [],
         },
         mode: "onBlur",
     });
@@ -44,15 +45,15 @@ export default function useHobbiesForm() {
     const { hobbiesInterests, hobbiesInterestsLoading } = useHobbiesInterestsInfo();
 
     useEffect(() => {
-        if (!hobbiesInterestsLoading && hobbiesInterests) {
-            reset({
-                sports: hobbiesInterests.sports || "",
-                music: hobbiesInterests.music || "",
-                kitchen: hobbiesInterests.kitchen || "",
-                reading: hobbiesInterests.reading || "",
-                tvShows: hobbiesInterests.tvShows || "",
-            });
-        }
+        if (!hobbiesInterests) return;
+        const { sports, kitchen, reading, tvShows, music } = hobbiesInterests;
+        reset({
+            sports: toArray(sports),
+            music: toArray(music),
+            kitchen: toArray(kitchen),
+            reading: toArray(reading),
+            tvShows: toArray(tvShows),
+        });
     }, [hobbiesInterests, hobbiesInterestsLoading, reset]);
 
     const { trigger, isMutating } = useSWRMutation(
@@ -64,7 +65,14 @@ export default function useHobbiesForm() {
                         "You need to initialize a new member profile before you can add other details. Go back to Basic Information to initialize a member.",
                 });
             }
-            await patchHobbiesInterests(userId, arg);
+            const hobbiesPayload = {
+                sports: arg.sports.join(", "),
+                music: arg.music.join(", "),
+                kitchen: arg.kitchen.join(", "),
+                reading: arg.reading.join(", "),
+                tvShows: arg.tvShows.join(", "),
+            };
+            await patchHobbiesInterests(userId, hobbiesPayload);
             return true;
         },
         {

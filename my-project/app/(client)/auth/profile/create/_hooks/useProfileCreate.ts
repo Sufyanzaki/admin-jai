@@ -27,7 +27,7 @@ export const userProfileCreateSchema = z.object({
         .string({ required_error: "Date of birth is required" })
         .regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in the format YYYY-MM-DD"),
     relationshipStatus: z.string().min(1, "Relationship status is required"),
-    children: z.boolean({ required_error: "Children status is required" }),
+    children: z.string().min(1, "Children is required"),
     religion: z.string().min(1, "Religion is required"),
     origin: z.string().min(1, "Country of origin is required"),
     lookingFor: z.string().min(1, "Looking for field is required"),
@@ -57,12 +57,11 @@ export default function useProfileCreateForm() {
         async (_: string, { arg }: { arg: UserProfile }) => {
 
             if(!userId) return;
-
             const { lookingFor, city, country, state, ...userFields } = arg;
             setCurrentStep("Updating user & Saving preferences");
             await Promise.all([
                 patchUserLocation(userId, {city, country, state}),
-                patchUser(userId, userFields),
+                patchUser(userId, {...userFields, route: "/auth/profile/create"}),
                 patchPartnerExpectation(userId, { lookingFor }),
             ]);
             return true;
@@ -93,7 +92,7 @@ export default function useProfileCreateForm() {
             age: 18,
             dob: "",
             relationshipStatus: "Single",
-            children: false,
+            children: "yes",
             religion: "",
             origin: "",
             lookingFor: "",
@@ -144,7 +143,6 @@ export default function useProfileCreateForm() {
                         step5: false,
                         step6: false,
                     });
-                    showSuccess('User created successfully!');
                     callback?.();
                     router.push("/auth/profile/details");
                 }

@@ -14,6 +14,10 @@ const otpSchema = z.object({
         .regex(/^\d{5}$/, 'OTP must contain only digits'),
 });
 
+type CustomSignInResponse = Awaited<ReturnType<typeof signIn>> & {
+    route?: string;
+};
+
 export type OtpFormValues = z.infer<typeof otpSchema>;
 
 export default function useOTPForm() {
@@ -35,12 +39,14 @@ export default function useOTPForm() {
     });
 
     const onSubmit = async (values: OtpFormValues) => {
-        const result = await signIn('user-login', {
+        const result = (await signIn('user-login', {
             redirect: false,
             ...values,
             email,
             callbackUrl: '/dashboard',
-        });
+        })) as CustomSignInResponse;
+
+        const navigation = result?.route ?? '/auth/profile/create';
 
         if (result?.error) {
             const errorMessage = result.error === 'CredentialsSignin'
@@ -49,7 +55,7 @@ export default function useOTPForm() {
 
             showError({message: errorMessage});
         }
-        else router.push('/dashboard');
+        else router.push(navigation === "/auth/profile/partner-preferences" ? "/dashboard" : navigation);
     };
 
     return {

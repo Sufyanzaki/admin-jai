@@ -12,6 +12,8 @@ import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import {DashboardList} from "./dashboard-list";
 import ImageWrapper from "@/components/client/image-wrapper";
 import { signOut } from "next-auth/react";
+import {useProfile} from "@/app/shared-hooks/useProfile";
+import Preloader from "@/components/shared/Preloader";
 
 const menuItems = [
   { label: "Dashboard", href: "/dashboard" },
@@ -24,6 +26,12 @@ const menuItems = [
 ];
 
 export function DashboardHeader() {
+
+  const {user, userLoading} = useProfile();
+
+  if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
+
+  const allowedItems = user?.route !== "/auth/profile/partner-preferences" ? menuItems.filter(item => item.label === "My Profile") : menuItems;
 
   return (
       <>
@@ -87,7 +95,7 @@ export function DashboardHeader() {
             </div>
 
             <nav className="hidden xl:flex justify-end w-full items-center gap-6 font-poppins font-semibold text-[16px] tracking-normal">
-              {menuItems.map(({ label, href, badge, badgeColor }) => (
+              {allowedItems.map(({ label, href, badge, badgeColor }) => (
                   <div key={label} className="relative">
                     <a
                         href={href}

@@ -9,7 +9,7 @@ export type mayLikeResponse = {
 
 export async function getMembersYouMayLike(): Promise<mayLikeResponse> {
     return await getRequest<mayLikeResponse>({
-        url: "/users/may-like",
+        url: "users/may-like",
         useAuth: true,
     });
 }

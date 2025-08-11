@@ -60,7 +60,7 @@ export function Header() {
               <div className="flex flex-row items-center space-x-10">
                 <Link href={"/auth/login"}>
                   <button className="hidden md:flex text-xl text-white hover:text-app-pink transition-colors">
-                    Inloggen
+                    Log In
                   </button>
                 </Link>
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>

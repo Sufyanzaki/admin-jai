@@ -7,9 +7,9 @@ import {updateProfile} from "@/app/admin/(dashboard)/profile/_api/updateProfile"
 import useSWRMutation from "swr/mutation";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { isFile } from "@/lib/utils";
-import { useProfile } from './useProfile';
 import { useEffect } from 'react';
 import {patchUserLocation} from "@/app/shared-api/livingApi";
+import {useProfile} from "@/app/shared-hooks/useProfile";
 
 const profileSchema = z.object({
     firstName: z.string()

@@ -30,6 +30,7 @@ export default async function RootLayout({
 }>) {
 
     const session = await getServerSession(authOptions);
+    console.error(session);
 
   return (
       <html lang="en" className={`${poppins.variable} ${montserrat.variable}`}>

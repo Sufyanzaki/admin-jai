@@ -1,17 +1,31 @@
 "use client";
 
-import { useState } from 'react'
-import { Separator } from '@/components/admin/ui/separator'
-import { Card, CardContent, CardHeader } from '@/components/admin/ui/card'
-import { Button } from '@/components/admin/ui/button'
-import { Badge } from '@/components/admin/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/admin/ui/tabs'
-import { Activity, Bell, Key, Lock, Shield, User, Mail, Phone, MapPin, Clock, Building, FileText, Settings, Save, Calendar, Users } from 'lucide-react'
-import { Switch } from '@/components/admin/ui/switch'
+import {useState} from 'react'
+import {Separator} from '@/components/admin/ui/separator'
+import {Card, CardContent, CardHeader} from '@/components/admin/ui/card'
+import {Button} from '@/components/admin/ui/button'
+import {Badge} from '@/components/admin/ui/badge'
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/admin/ui/tabs'
+import {
+  Activity,
+  Bell,
+  Calendar,
+  Clock,
+  FileText,
+  Key,
+  Lock,
+  Mail,
+  MapPin,
+  Save,
+  Settings,
+  Shield,
+  User
+} from 'lucide-react'
+import {Switch} from '@/components/admin/ui/switch'
 import PasswordForm from './_components/PasswordForm';
 import ProfileEditForm from './_components/ProfileEditForm';
-import { useSession } from 'next-auth/react';
-import { useProfile } from './_hooks/useProfile';
+import {useSession} from 'next-auth/react';
+import {useProfile} from "@/app/shared-hooks/useProfile";
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)

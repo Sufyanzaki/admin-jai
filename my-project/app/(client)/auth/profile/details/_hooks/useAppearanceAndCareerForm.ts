@@ -1,10 +1,10 @@
-import {useState, useCallback, useEffect} from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import {useCallback, useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
 import useSWRMutation from 'swr/mutation';
-import { showError, showSuccess } from '@/shared-lib';
-import { useRouter } from 'next/navigation';
+import {showError} from '@/shared-lib';
+import {useRouter} from 'next/navigation';
 
 import {patchPhysicalAppearance, postPhysicalAppearance} from '@/app/shared-api/physicalAppearanceApi';
 import {patchEducationCareer, postEducationCareer} from '@/app/shared-api/educationCareerApi';
@@ -14,6 +14,7 @@ import {usePhysicalAppearanceInfo} from "@/app/shared-hooks/usePhysicalAppearanc
 import {useEducationCareerInfo} from "@/app/shared-hooks/useEducationCareerInfo";
 import {useLanguageInfoInfo} from "@/app/shared-hooks/useLanguageInfoInfo";
 import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
+import {patchUser} from "@/app/shared-api/userApi";
 
 export const appearanceCareerSchema = z.object({
     height: z.string().min(1, {
@@ -53,6 +54,9 @@ export const appearanceCareerSchema = z.object({
         })),
     education: z.string().min(1, {
         message: "Please select your education level"
+    }),
+    primarySpecialization: z.string().min(1, {
+        message: "Please select Specialization"
     }),
     department: z.string().min(1, {
         message: "Please enter your work experience"
@@ -95,12 +99,14 @@ export default function useAppearanceAndCareerForm() {
                 knownLanguages,
                 motherTongue,
                 education,
+                primarySpecialization,
                 department,
             } = arg;
 
             setCurrentStep('Saving physical appearance & education');
 
             await Promise.all([
+                patchUser(userId, { route: "/auth/profile/details" }),
                 physicalApi(userId, {
                     height,
                     eyeColor,
@@ -117,9 +123,9 @@ export default function useAppearanceAndCareerForm() {
                     knownLanguages: knownLanguages.join(", "),
                 }),
                 appearanceApi(userId, {
+                    primarySpecialization,
                     education,
                     department,
-                    primarySpecialization: "dummy"
                 }),
             ]);
 
@@ -131,7 +137,6 @@ export default function useAppearanceAndCareerForm() {
                 console.error('Appearance/Career creation error:', error);
             },
             onSuccess: () => {
-                showSuccess('Profile details updated successfully!');
                 router.push("/auth/profile/description");
                 setCurrentStep(null);
             },
@@ -162,6 +167,7 @@ export default function useAppearanceAndCareerForm() {
             motherTongue: "",
             knownLanguages: [],
             education: "",
+            primarySpecialization: "",
             department: "",
         },
         mode: 'onBlur',
@@ -208,7 +214,6 @@ export default function useAppearanceAndCareerForm() {
                 const result = await trigger(values);
                 if (result) {
                     updateUserTrackingId({ step2: true })
-                    showSuccess('Profile details updated successfully!');
                     callback?.();
                 }
             } catch (error) {

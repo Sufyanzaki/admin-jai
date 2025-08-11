@@ -153,20 +153,8 @@ console.log(errors)
                   placeholder="Enter Location"
                 />
               </div>
-              {(errors.state || errors.country) && (
-                <div className="space-y-1">
-                  {errors.state && (
-                    <p className="text-sm text-red-500">
-                      {errors.state.message}
-                    </p>
-                  )}
-                  {errors.country && (
-                    <p className="text-sm text-red-500">
-                      {errors.country.message}
-                    </p>
-                  )}
-                </div>
-              )}
+              {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
+
             </div>
 
             {/* Age */}

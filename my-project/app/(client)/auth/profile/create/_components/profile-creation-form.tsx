@@ -4,17 +4,15 @@ import type React from "react";
 import {Button} from "@/components/client/ux/button";
 import {Input} from "@/components/client/ux/input";
 import {Label} from "@/components/client/ux/label";
-import {ArrowLeft, ArrowRight} from "lucide-react";
-import {useRouter} from "next/navigation";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/client/ux/select";
+import {ArrowRight} from "lucide-react";
 import LocationSearchInput from "@/components/client/location-search";
 import useProfileCreateForm from "../_hooks/useProfileCreate";
 import {MemberLocation} from "@/app/shared-types/member";
 import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 
 export function ProfileCreationForm() {
-  const router = useRouter();
 
   const {
     errors,
@@ -27,11 +25,7 @@ export function ProfileCreationForm() {
     watch,
     isFetching
   } = useProfileCreateForm();
-
-  const handleBack = () => {
-    router.push("/auth/profile/photos");
-  };
-
+  
   const city = watch("city");
   const state = watch("state");
   const country = watch("country");
@@ -79,16 +73,12 @@ export function ProfileCreationForm() {
                 name="gender"
                 control={control}
                 render={({ field }) => (
-                    <Select value={field.value || undefined} key={field.value || "empty"} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Male">Man</SelectItem>
-                        <SelectItem value="Female">Woman</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="iAmA"
+                        value={field.value || undefined}
+                        onChange={field.onChange}
+                        placeholder="Select gender"
+                    />
                 )}
             />
             {errors.gender && (
@@ -102,23 +92,12 @@ export function ProfileCreationForm() {
                 name="origin"
                 control={control}
                 render={({ field }) => (
-                    <Select value={field.value || undefined} key={field.value || "empty"} onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select ethnic origin" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Turks">Turks</SelectItem>
-                        <SelectItem value="Hindustans">Hindustans</SelectItem>
-                        <SelectItem value="Dutch">Dutch</SelectItem>
-                        <SelectItem value="Creols">Creols</SelectItem>
-                        <SelectItem value="Japanese">Japanese</SelectItem>
-                        <SelectItem value="Chinese">Chinese</SelectItem>
-                        <SelectItem value="Mix">Mix</SelectItem>
-                        <SelectItem value="Indians">Indians</SelectItem>
-                        <SelectItem value="Kamla">Kamla</SelectItem>
-                        <SelectItem value="Moroccan">Moroccan</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="origin"
+                        value={field.value || undefined}
+                        onChange={field.onChange}
+                        placeholder="Select Origin"
+                    />
                 )}
             />
             {errors.origin && (
@@ -132,16 +111,12 @@ export function ProfileCreationForm() {
                 name="lookingFor"
                 control={control}
                 render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select partner's gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Man">Man</SelectItem>
-                        <SelectItem value="Woman">Woman</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="amLookingFor"
+                        value={field.value || undefined}
+                        onChange={field.onChange}
+                        placeholder="Select Partner's Gender"
+                    />
                 )}
             />
             {errors.lookingFor && (
@@ -228,18 +203,12 @@ export function ProfileCreationForm() {
                 name="relationshipStatus"
                 control={control}
                 render={({ field }) => (
-                    <Select value={field.value || undefined} key={field.value || "empty"} onValueChange={field.onChange}>
-                      <SelectTrigger >
-                        <SelectValue placeholder="Select relationship status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Single">Single - never married</SelectItem>
-                        <SelectItem value="Married">Married - free marriage</SelectItem>
-                        <SelectItem value="Divorced">Single - Divorced</SelectItem>
-                        <SelectItem value="Widowed">Widowed - free marriage</SelectItem>
-                        <SelectItem value="Other">free one</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="relationStatus"
+                        value={field.value || undefined}
+                        onChange={field.onChange}
+                        placeholder="Select relationship status"
+                    />
                 )}
             />
             {errors.relationshipStatus && (
@@ -255,18 +224,12 @@ export function ProfileCreationForm() {
                 name="children"
                 control={control}
                 render={({ field }) => (
-                    <Select
-                        value={field.value ? "true" : "false"}
-                        onValueChange={(val) => field.onChange(val === "true")}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Do you have children?" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="true">Yes</SelectItem>
-                        <SelectItem value="false">No</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="children"
+                        value={field.value || undefined}
+                        onChange={field.onChange}
+                        placeholder="Do you have children?"
+                    />
                 )}
             />
             {errors.children && (
@@ -275,27 +238,17 @@ export function ProfileCreationForm() {
           </div>
           <div>
             <Label>Religion *</Label>
+
             <Controller
                 name="religion"
                 control={control}
                 render={({ field }) => (
-                    <Select value={field.value || undefined} key={field.value || "empty"} onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your religion" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Buddhist">Buddhist</SelectItem>
-                        <SelectItem value="Muslim">Muslim</SelectItem>
-                        <SelectItem value="Hindu">Hindu</SelectItem>
-                        <SelectItem value="Roman">Roman Catholic</SelectItem>
-                        <SelectItem value="Jew">Jew</SelectItem>
-                        <SelectItem value="Protestant">Protestant</SelectItem>
-                        <SelectItem value="Christian">Christian</SelectItem>
-                        <SelectItem value="New-age">New-age</SelectItem>
-                        <SelectItem value="Kamla">Kamla</SelectItem>
-                        <SelectItem value="Marokkanns">Marokkanns</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="religion"
+                        value={field.value || undefined}
+                        onChange={field.onChange}
+                        placeholder="Select your religion"
+                    />
                 )}
             />
             {errors.religion && (
@@ -317,27 +270,11 @@ export function ProfileCreationForm() {
                 onSelect={handleLocationSelect}
                 placeholder="Start typing your city or address"
             />
-            {(errors.state || errors.country) && (
-                <div className="space-y-1">
-                  {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
-                  {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                </div>
-            )}
+            {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
           </div>
         </div>
 
         <div className="flex justify-center gap-6 my-16 lg:my-26">
-          <Button
-              variant="outline"
-              type="button"
-              onClick={handleBack}
-              className="p-6"
-          >
-          <span className="mr-1">
-            <ArrowLeft />
-          </span>
-            Back to photos
-          </Button>
           <Button
               variant={"theme"}
               type="submit"

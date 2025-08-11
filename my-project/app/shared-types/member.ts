@@ -149,12 +149,14 @@ export type MemberProfile = {
     age: number;
     relationshipStatus: 'Single' | 'Married' | 'Divorced' | string;
     lookingFor: string | null;
-    children: boolean;
+    children: string;
     religion: string;
     shortDescription: string;
     isPremium: boolean;
     createdAt: string;
     updatedAt: string;
+
+    route: null | string;
 
     roleId: number | null;
     educationCareer: MemberEducation | null;

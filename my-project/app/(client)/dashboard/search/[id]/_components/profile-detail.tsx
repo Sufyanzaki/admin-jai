@@ -1,43 +1,37 @@
 "use client";
 
-import { Button } from "@/components/client/ux/button";
-import { Badge } from "@/components/client/ux/badge";
-import { ArrowLeft, Shield, Star } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/client/ux/tabs";
-import { useState } from "react";
+import {Button} from "@/components/client/ux/button";
+import {Badge} from "@/components/client/ux/badge";
+import {ArrowLeft, Shield, Star} from "lucide-react";
+import {useParams, useRouter} from "next/navigation";
+import {Tabs, TabsContent, TabsList, TabsTrigger,} from "@/components/client/ux/tabs";
+import {useState} from "react";
 import ImageWrapper from "@/components/client/image-wrapper";
 import ComplainModal from "@/components/client/complain-modal";
-import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
-import { useSendLike } from "../../../_hooks/useSendLike";
+import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
+import {useSendLike} from "../../../_hooks/useSendLike";
+import {useCreateChat} from "@/app/(client)/dashboard/chat/_hooks/useCreateChat";
 
 export function ProfileDetail() {
   const router = useRouter();
   const params = useParams();
-  const { user, userLoading } = useBasicInfo(params?.id);
+  const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
+  const { user, userLoading } = useBasicInfo(id);
   const [openComplain, setOpenComplain] = useState(false);
   const { trigger: sendLike, loading } = useSendLike();
+  const { sendMessageRefetch, messageLoading } = useCreateChat();
 
   const handleBack = () => {
     router.back();
   };
 
-  const handleSendMessage = () => {
-    if (user) {
-      console.log("Send message to", user.firstName);
-    }
+  const handleSendMessage = async () => {
+    if(!id) return;
+    sendMessageRefetch(id).then(res=>router.push(`/dashboard/chat/${res?.data.fullChat.id}`));
   };
 
   const handleSendWink = () => {
-    sendLike(Number(params?.id));
-    if (user) {
-      console.log("Send wink to", user.firstName);
-    }
+    sendLike(Number(params?.id)).finally();
   };
 
   const handleReportProfile = () => {
@@ -89,8 +83,8 @@ export function ProfileDetail() {
                 {user.firstName} {user.lastName}
               </h1>
               <p className="text-sm font-medium">
-                {user.gender}, {user.age} • {user.origin} •{" "}
-                {user.city || user.location} • {user.lastOnline || ""}
+                {user.gender}, {user.age} • {user.origin} •
+                {user.living?.city || user.living?.location} • {user.lastOnline || ""}
               </p>
             </div>
           </div>
@@ -124,14 +118,16 @@ export function ProfileDetail() {
                   onClick={handleSendMessage}
                   variant="theme"
                   size="lg"
+                  disabled={messageLoading}
                   className="w-full"
                 >
-                  Send Message
+                  {messageLoading ? "Processing" : "Send Message"}
                 </Button>
                 <Button
                   onClick={handleSendWink}
                   variant="theme"
                   size="lg"
+                  disabled={loading}
                   className="w-full"
                 >
                   {loading ? "Sending Wink..." : "Send Wink"}
@@ -424,11 +420,12 @@ export function ProfileDetail() {
           <div className="flex gap-2 mb-6">
             <Button
               onClick={handleSendMessage}
+              disabled={messageLoading}
               className="flex-1"
               size="sm"
               variant="theme"
             >
-              Send Message
+              {messageLoading ? "Processing" : "Send Message"}
             </Button>
             <Button
               onClick={handleSendWink}

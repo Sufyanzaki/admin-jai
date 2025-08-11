@@ -1,8 +1,8 @@
-import { Label } from "@/components/client/ux/label";
-import { MultiSelectCombobox } from "@/components/client/ux/combo-box";
-import { Button } from "@/components/client/ux/button";
-import { Controller } from "react-hook-form";
+import {Button} from "@/components/client/ux/button";
+import {Controller} from "react-hook-form";
 import useHobbiesForm from "@/app/(client)/dashboard/settings/account/_hooks/useHobbiesForm";
+import {AttributeMultiSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export function HobbyInterest() {
     const {
@@ -10,6 +10,7 @@ export function HobbyInterest() {
         handleSubmit,
         onSubmit,
         isLoading,
+        errors
     } = useHobbiesForm();
 
     return (
@@ -19,74 +20,91 @@ export function HobbyInterest() {
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                    <Label>Sports *</Label>
                     <Controller
                         name="sports"
                         control={control}
                         render={({ field }) => (
-                            <MultiSelectCombobox
-                                selected={field.value ? field.value.split(",") : []}
-                                options={["Car Racing", "Boxing", "Football"]}
-                                onChange={(val) => field.onChange(val.join(","))}
+                            <AttributeMultiSelect
+                                label="Sports *"
+                                attributeKey="sports"
+                                value={field.value || []}
+                                onChange={field.onChange}
+                                placeholder="Select Sports"
                             />
                         )}
                     />
+                    {errors.sports && (
+                        <p className="text-sm text-red-500">{errors.sports.message}</p>
+                    )}
                 </div>
                 <div>
-                    <Label>Music *</Label>
                     <Controller
                         name="music"
                         control={control}
                         render={({ field }) => (
-                            <MultiSelectCombobox
-                                selected={field.value ? field.value.split(",") : []}
-                                options={["R&B", "Rock", "Jazz", "House"]}
-                                onChange={(val) => field.onChange(val.join(","))}
+                            <AttributeMultiSelect
+                                label="Music *"
+                                attributeKey="music"
+                                value={field.value || []}
+                                onChange={field.onChange}
+                                placeholder="Select Music"
                             />
                         )}
                     />
                 </div>
                 <div>
-                    <Label>Cuisine *</Label>
                     <Controller
                         name="kitchen"
                         control={control}
                         render={({ field }) => (
-                            <MultiSelectCombobox
-                                selected={field.value ? field.value.split(",") : []}
-                                options={["Italian", "Greek", "Indian"]}
-                                onChange={(val) => field.onChange(val.join(","))}
+                            <AttributeMultiSelect
+                                label="Cooking *"
+                                attributeKey="kitchen"
+                                value={field.value || []}
+                                onChange={field.onChange}
+                                placeholder="Select Kitchen"
                             />
                         )}
                     />
+                    {errors.kitchen && (
+                        <p className="text-sm text-red-500">{errors.kitchen.message}</p>
+                    )}
                 </div>
                 <div>
-                    <Label>Reading *</Label>
                     <Controller
                         name="reading"
                         control={control}
                         render={({ field }) => (
-                            <MultiSelectCombobox
-                                selected={field.value ? field.value.split(",") : []}
-                                options={["Psychology", "Novels"]}
-                                onChange={(val) => field.onChange(val.join(","))}
+                            <AttributeMultiSelect
+                                label="Reading *"
+                                attributeKey="reading"
+                                value={field.value || []}
+                                onChange={field.onChange}
+                                placeholder="Select"
                             />
                         )}
                     />
+                    {errors.reading && (
+                        <p className="text-sm text-red-500">{errors.reading.message}</p>
+                    )}
                 </div>
                 <div>
-                    <Label>TV Shows *</Label>
                     <Controller
                         name="tvShows"
                         control={control}
                         render={({ field }) => (
-                            <MultiSelectCombobox
-                                selected={field.value ? field.value.split(",") : []}
-                                options={["Drama", "Documentary"]}
-                                onChange={(val) => field.onChange(val.join(","))}
+                            <AttributeMultiSelect
+                                label="TV Shows *"
+                                attributeKey="tvShows"
+                                value={field.value || []}
+                                onChange={field.onChange}
+                                placeholder="Select"
                             />
                         )}
                     />
+                    {errors.tvShows && (
+                        <p className="text-sm text-red-500">{errors.tvShows.message}</p>
+                    )}
                 </div>
             </div>
             <div className="flex justify-end mt-4">

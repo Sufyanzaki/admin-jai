@@ -1,12 +1,13 @@
 "use client";
 
-import { Label } from "@/components/client/ux/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
-import { Input } from "@/components/client/ux/input";
-import { Button } from "@/components/client/ux/button";
-import { Controller } from "react-hook-form";
+import {Label} from "@/components/client/ux/label";
+import {Input} from "@/components/client/ux/input";
+import {Button} from "@/components/client/ux/button";
+import {Controller} from "react-hook-form";
 import useClientAccInfo from "@/app/(client)/dashboard/settings/account/_hooks/useClientAccInfo";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export function BasicInfo() {
     const {
@@ -41,20 +42,12 @@ export function BasicInfo() {
                         name="origin"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                key={field.value || "empty"}
+                            <AttributeSelect
+                                attributeKey="origin"
                                 value={field.value || undefined}
-                                onValueChange={field.onChange}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select origin" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="turkish">Turkish</SelectItem>
-                                    <SelectItem value="dutch">Dutch</SelectItem>
-                                    <SelectItem value="Moroccan">Moroccan</SelectItem>
-                                </SelectContent>
-                            </Select>
+                                onChange={field.onChange}
+                                placeholder="Select Origin"
+                            />
                         )}
                     />
                     {errors.origin && (
@@ -68,19 +61,12 @@ export function BasicInfo() {
                         name="gender"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                key={field.value || "empty"}
+                            <AttributeSelect
+                                attributeKey="iAmA"
                                 value={field.value || undefined}
-                                onValueChange={field.onChange}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select gender" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Male">Male</SelectItem>
-                                    <SelectItem value="Female">Female</SelectItem>
-                                </SelectContent>
-                            </Select>
+                                onChange={field.onChange}
+                                placeholder="Select gender"
+                            />
                         )}
                     />
                     {errors.gender && (
@@ -118,19 +104,12 @@ export function BasicInfo() {
                         name="relationshipStatus"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                key={field.value || "empty"}
+                            <AttributeSelect
+                                attributeKey="relationStatus"
                                 value={field.value || undefined}
-                                onValueChange={field.onChange}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select relationship status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Single">Single</SelectItem>
-                                    <SelectItem value="Married">Married</SelectItem>
-                                </SelectContent>
-                            </Select>
+                                onChange={field.onChange}
+                                placeholder="Select relationship status"
+                            />
                         )}
                     />
                     {errors.relationshipStatus && (
@@ -144,20 +123,12 @@ export function BasicInfo() {
                         name="lookingFor"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                key={field.value || "empty"}
+                            <AttributeSelect
+                                attributeKey="amLookingFor"
                                 value={field.value || undefined}
-                                onValueChange={field.onChange}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select preference" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Man">Man</SelectItem>
-                                    <SelectItem value="Woman">Woman</SelectItem>
-                                    <SelectItem value="Other">Other</SelectItem>
-                                </SelectContent>
-                            </Select>
+                                onChange={field.onChange}
+                                placeholder="Select Partner's Gender"
+                            />
                         )}
                     />
                     {errors.lookingFor && (
@@ -171,20 +142,12 @@ export function BasicInfo() {
                         name="children"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                key={field.value || "empty"}
+                            <AttributeSelect
+                                attributeKey="children"
                                 value={field.value || undefined}
-                                onValueChange={field.onChange}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select number of children" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="0">0</SelectItem>
-                                    <SelectItem value="1">1</SelectItem>
-                                    <SelectItem value="2">2</SelectItem>
-                                </SelectContent>
-                            </Select>
+                                onChange={field.onChange}
+                                placeholder="Do you have children?"
+                            />
                         )}
                     />
                     {errors.children && (

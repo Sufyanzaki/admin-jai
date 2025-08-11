@@ -1,17 +1,20 @@
 "use client";
+
 import type React from "react";
-import { SidebarProvider } from "@/components/client/ux/sidebar";
-import { DashboardSidebar } from "./_components/dashboard-sidebar";
-import { DashboardFooter } from "./_components/dashboard-footer";
-import { DashboardHeader } from "@/app/(client)/dashboard/_components/dashboard-header";
-import { usePathname } from "next/navigation";
+import {SidebarProvider} from "@/components/client/ux/sidebar";
+import {DashboardSidebar} from "./_components/dashboard-sidebar";
+import {DashboardFooter} from "./_components/dashboard-footer";
+import {DashboardHeader} from "@/app/(client)/dashboard/_components/dashboard-header";
+import {usePathname} from "next/navigation";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
   const pathname = usePathname();
+
   return (
     <SidebarProvider defaultOpen={true}>
       <DashboardSidebar />

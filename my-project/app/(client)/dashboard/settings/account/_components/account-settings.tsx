@@ -25,19 +25,18 @@ export function AccountSettings() {
   const [activeTab, setActiveTab] = useState(initialTab);
 
   useEffect(() => {
-    if (!searchParams.get("activeTab")) {
+    const tabFromUrl = searchParams.get("activeTab");
+    const isValidTab = tabFromUrl && tabs.some(tab => tab.id === tabFromUrl);
+
+    if (isValidTab) {
+      setActiveTab(tabFromUrl);
+    } else {
+      setActiveTab(defaultTab);
       const params = new URLSearchParams(searchParams.toString());
       params.set("activeTab", defaultTab);
       router.replace(`?${params.toString()}`, { scroll: false });
     }
-  }, [searchParams, router]);
-
-  useEffect(() => {
-    const tabFromUrl = searchParams.get("activeTab");
-    if (tabFromUrl && tabs.some((tab) => tab.id === tabFromUrl)) {
-      setActiveTab(tabFromUrl);
-    }
-  }, [searchParams]);
+  }, [searchParams, router, defaultTab]);
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);

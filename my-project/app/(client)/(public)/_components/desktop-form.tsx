@@ -8,6 +8,8 @@ import {Input} from "@/components/client/ux/input";
 import {Button} from "@/components/client/ux/button";
 import useRegisterForm from "@/app/(client)/auth/profile/_hooks/useRegisterForm";
 import {MemberLocation} from "@/app/shared-types/member";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import type React from "react";
 
 export default function DesktopForm(){
 
@@ -43,25 +45,13 @@ export default function DesktopForm(){
                     name="lookingFor"
                     control={control}
                     render={({ field }) => (
-                        <Select
-                            key="lookingFor"
-                            onValueChange={field.onChange}
-                            value={field.value}
-                        >
-                            <SelectTrigger
-                                id="looking-for"
-                                className="border-none h-12 pl-0 items-end"
-                            >
-                                <SelectValue placeholder="What are you looking for?" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Man">
-                                    Man
-                                </SelectItem>
-                                <SelectItem value="Woman">Woman</SelectItem>
-                                <SelectItem value="Other">Other</SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <AttributeSelect
+                            attributeKey="amLookingFor"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            triggerClasses="border-none h-12 pl-0 items-end"
+                            placeholder="Select Partner's Gender"
+                        />
                     )}
                 />
                 {errors.lookingFor && (
@@ -155,12 +145,8 @@ export default function DesktopForm(){
                     onSelect={handleLocationSelect}
                     placeholder="Search for your city, state, or country"
                 />
-                {(errors.state || errors.country) && (
-                    <div className="space-y-1">
-                        {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
-                        {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                    </div>
-                )}
+                {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
+
             </div>
 
             <div className="flex flex-row gap-4">

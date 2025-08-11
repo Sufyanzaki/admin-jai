@@ -29,7 +29,7 @@ export default function usePhotoForm() {
 
     const router = useRouter();
 
-    const { data: session, update: updateSession} = useSession();
+    const { data: session} = useSession();
     const userId = session?.user.id ? String(session.user.id) : undefined;
     const userIdProp = userId;
 
@@ -80,7 +80,8 @@ export default function usePhotoForm() {
             const strImages = validImageUrls.join(",");
 
             await patchUser(userId, {
-                image: strImages
+                image: strImages,
+                route: "/auth/profile/photos"
             });
 
             return strImages
@@ -99,18 +100,7 @@ export default function usePhotoForm() {
     const onSubmit = async (values: PhotoFormValues) => {
         const isValid = await trigger();
         if (!isValid) return;
-        const images = await mutate(values);
-        if(user){
-            updateSession({
-                ...session,
-                user: {
-                    ...session?.user,
-                    firstName: user.firstName,
-                    lastName : user.lastName,
-                    image: images
-                }
-            }).finally();
-        }
+        await mutate(values);
         updateUserTrackingId({ step5: true })
         router.push("/auth/profile/partner-preferences");
     };

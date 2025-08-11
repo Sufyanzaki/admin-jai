@@ -5,10 +5,10 @@ import {CloudUpload, Upload} from "lucide-react";
 import {Button} from "@/components/client/ux/button";
 import {Label} from "@/components/client/ux/label";
 import {Input} from "@/components/client/ux/input";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
 import {Controller} from "react-hook-form";
-import {useState} from "react";
+import React, {useState} from "react";
 import useClientAccount from "@/app/(client)/dashboard/settings/account/_hooks/useAccountForm";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 
 export default function AccountSettingForm() {
 
@@ -28,12 +28,12 @@ export default function AccountSettingForm() {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v))} className="flex lg:flex-row flex-col gap-8">
             <div className="flex flex-col items-center">
-                <div className="w-56 h-56 rounded-[5px] overflow-hidden mb-4">
+                <div className="w-56 h-56 rounded-[5px] overflow-hidden mb-4 border border-gray-200">
                     {preview ? (
                         <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
                         <ImageWrapper
-                            src={imageStr ?? "https://via.placeholder.com/150" }
+                            src={imageStr || "https://placehold.co/400" }
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
@@ -113,19 +113,16 @@ export default function AccountSettingForm() {
                         <div>
                             <Label htmlFor="gender">Gender</Label>
                             <Controller
-                                control={control}
                                 name="gender"
+                                control={control}
                                 render={({ field }) => (
-                                    <Select {...field} onValueChange={field.onChange} key={field.value}>
-                                        <SelectTrigger id="gender" className="mt-1" size="sm">
-                                            <SelectValue placeholder="Select gender" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="Male">Male</SelectItem>
-                                            <SelectItem value="Female">Female</SelectItem>
-                                            <SelectItem value="Other">Other</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <AttributeSelect
+                                        attributeKey="iAmA"
+                                        size="sm"
+                                        value={field.value || undefined}
+                                        onChange={field.onChange}
+                                        placeholder="Select gender"
+                                    />
                                 )}
                             />
                             {errors.gender && <p className="text-red-500 text-sm">{errors.gender.message}</p>}

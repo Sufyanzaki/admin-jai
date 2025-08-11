@@ -18,9 +18,9 @@ const partnerExpectationSchema = z.object({
   relationshipStatus: z.string().min(1, "Relationship status is required"),
   education: z.string().min(1, "Education is required"),
   weight: z.string().min(1, "Weight is required"),
-  smoke: z.boolean(),
-  drinking: z.boolean(),
-  goingOut: z.boolean(),
+  smoke: z.string().min(1, "Required"),
+  drinking: z.string().min(1, "Required"),
+  goingOut: z.string().min(1, "Required"),
   ageFrom: z.coerce.number().min(0, "From age is required"),
   ageTo: z.coerce.number().min(0, "To age is required"),
   city: z.string().optional(),
@@ -64,9 +64,9 @@ export default function usePartnerExpectationForm() {
       relationshipStatus: "",
       education: "",
       weight: "",
-      smoke: false,
-      drinking: false,
-      goingOut: false,
+      smoke: "",
+      drinking: "",
+      goingOut: "",
       ageFrom: 0,
       ageTo: 0,
       // Updated location defaults
@@ -88,9 +88,9 @@ export default function usePartnerExpectationForm() {
       relationshipStatus: expectations.relationshipStatus || "",
       education: expectations.education || "",
       weight: expectations.weight || "",
-      smoke: expectations.smoke || false,
-      drinking: expectations.drinking || false,
-      goingOut: expectations.goingOut || false,
+      smoke: expectations.smoke || "",
+      drinking: expectations.drinking || "",
+      goingOut: expectations.goingOut || "",
       ageFrom: expectations.ageFrom || 0,
       ageTo: expectations.ageTo || 0,
       city: expectations.city || "",
@@ -116,11 +116,11 @@ export default function usePartnerExpectationForm() {
       }
   );
 
-  const onSubmit = async (values: PartnerExpectationFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: PartnerExpectationFormValues, callback?: () => void) => {
     const result = await trigger(values);
-    if (result?.status === 201 || result?.status === 200) {
+    if (result) {
       showSuccess("Partner expectation updated successfully!");
-      callback?.(result);
+      callback?.();
       updateUserTrackingId({ partnerExpectation: true });
     }
   };

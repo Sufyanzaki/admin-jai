@@ -11,6 +11,7 @@ import {useRouter} from "next/navigation";
 import {useLifeStyleInfo} from "@/app/admin/(dashboard)/members/_hooks/useLifeStyleInfo";
 import {usePersonalityBehaviorInfo} from "@/app/shared-hooks/usePersonalityBehaviorInfo";
 import {useEffect} from "react";
+import { patchUser } from "@/app/shared-api/userApi";
 
 const personalityBehaviorSchema = z.object({
     simple: z.boolean(),
@@ -151,6 +152,7 @@ export default function usePersonalityStyleForm() {
             const lifeApi = tracker?.step4 ? patchLifeStyle : postLifeStyle;
 
             await Promise.all([
+                patchUser(userId, {route: "auth/profile/personality"}),
                 personalityApi(userId, other),
                 lifeApi(userId, {smoke, drinking, goingOut}),
             ]);

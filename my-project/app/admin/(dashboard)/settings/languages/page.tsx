@@ -13,7 +13,7 @@ import Preloader from "@/components/shared/Preloader"
 
 export default function LanguagesManagementPage() {
     const { languages, languagesLoading, error } = useLanguages();
-    const { mutate: patchStatus, loading: patching, patchingId } = usePatchLanguageStatus();
+    const { mutate: patchStatus, loading: patchingId } = usePatchLanguageStatus();
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">

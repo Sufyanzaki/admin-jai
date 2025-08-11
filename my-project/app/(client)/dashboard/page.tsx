@@ -11,12 +11,37 @@ import { useTodayMatches } from "./_hooks/useTodayMatches";
 import { Skeleton } from "@/components/admin/ui/skeleton";
 import { MemberProfile } from "@/app/shared-types/member";
 import { useMayLike } from "./_hooks/useMayLike";
+import {useProfile} from "@/app/shared-hooks/useProfile";
+import Preloader from "@/components/shared/Preloader";
+import type React from "react";
 
 export default function Dashboard() {
   const router = useRouter();
-  const { data: session } = useSession();
-  const { matches, matchesLoading, error } = useTodayMatches();
+  const { user, userLoading, error } = useProfile();
+  const { matches, matchesLoading, matchesError } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
+
+  if(userLoading){
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader/>
+          <p className="text-sm">Loading your profile information...</p>
+        </div>
+    )
+  }
+
+  if(error || matchesError){
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <h2 className="text-2xl font-bold text-red-600">
+            Error loading your profile information
+          </h2>
+          <p className="text-muted-foreground">{error.message || matchesError.message}</p>
+        </div>
+    )
+  }
+
+  console.log(user)
 
   return (
       <>
@@ -79,24 +104,7 @@ export default function Dashboard() {
           </div>
 
           {/* if user data not added show complete profile button */}
-          {session?.user?.firstName === null ? (
-              <Card className="border-[#dee2e6] rounded-[5px] py-12 px-5 shadow-none">
-                <div className="flex flex-col items-center gap-6">
-                  <p className="text-black text-sm lg:text-base font-normal">
-                    You haven&apos;t yet completed your full profile registration.
-                    Complete your profile to continue finding a partner.
-                  </p>
-
-                  <Button
-                      variant="theme"
-                      size="lg"
-                      onClick={() => router.push("auth/profile/create")}
-                  >
-                    Complete Profile
-                  </Button>
-                </div>
-              </Card>
-          ) : (
+          {user?.route === "/auth/profile/partner-preferences" ? (
               <div className="py-6 space-y-8">
                 <div>
                   <div>
@@ -182,6 +190,23 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+          ) : (
+              <Card className="border-[#dee2e6] rounded-[5px] py-12 px-5 shadow-none">
+                <div className="flex flex-col items-center gap-6">
+                  <p className="text-black text-sm lg:text-base font-normal">
+                    You haven&apos;t yet completed your full profile registration.
+                    Complete your profile to continue finding a partner.
+                  </p>
+
+                  <Button
+                      variant="theme"
+                      size="lg"
+                      onClick={() => router.push("auth/profile/create")}
+                  >
+                    Complete Profile
+                  </Button>
+                </div>
+              </Card>
           )}
         </div>
       </>

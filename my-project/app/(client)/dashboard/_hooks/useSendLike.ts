@@ -1,6 +1,6 @@
-import { showError, showSuccess } from '@/shared-lib';
-import { postLike, sendLike } from './../_api/postLike';
-import { useState } from "react";
+import {showError, showSuccess} from '@/shared-lib';
+import {postLike} from './../_api/postLike';
+import {useState} from "react";
 
 export const useSendLike = () => {
     const [loading, setLoading] = useState(false);
