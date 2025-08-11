@@ -27,18 +27,19 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/ta
 import {Box, DollarSign, MoreHorizontal, Plus, Search, Users} from "lucide-react"
 import Link from "next/link"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar"
-import { usePackages } from "./_hooks/usePackages";
 import { usePatchPackage } from "./_hooks/usePatchPackage";
 import Preloader from "@/components/shared/Preloader";
+import {usePackages} from "@/app/shared-hooks/usePackages";
+import {PackageDto} from "@/app/shared-types/packages";
 
 export default function PackagesPage() {
     const { packages, loading, error } = usePackages();
     const { mutate: patchPackageStatus, loading: patching } = usePatchPackage();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [currentPackage, setCurrentPackage] = useState<any>(null)
+    const [currentPackage, setCurrentPackage] = useState<null | PackageDto>(null)
     const [search, setSearch] = useState("");
 
-    const openDeleteDialog = (pkg: any) => {
+    const openDeleteDialog = (pkg: PackageDto) => {
         setCurrentPackage(pkg)
         setDeleteDialogOpen(true)
     }

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avata
 import { Button } from "@/components/admin/ui/button"
 import { Badge } from "@/components/admin/ui/badge"
 import Link from "next/link";
-import { usePackages } from "@/app/admin/(dashboard)/packages/_hooks/usePackages";
+import {usePackages} from "@/app/shared-hooks/usePackages";
 
 export function BestSelling() {
   const { packages, loading } = usePackages()

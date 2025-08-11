@@ -5,7 +5,7 @@ import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import {addPackage} from "@/app/admin/(dashboard)/packages/_api/packageApi";
+import {addPackage} from "@/app/shared-api/packageApi";
 
 const packageSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -56,7 +56,7 @@ export default function usePackageForm() {
       return await addPackage({
         ...arg,
         image: imageUrl,
-        features: featuresString as any,
+        features: featuresString,
       });
     },
     {
