@@ -95,7 +95,14 @@ export default function ProfileCard({
         </Button>
 
         {blocked ? (
-          <Button variant="theme" size="sm" className="w-full">
+          <Button
+            onClick={(e) => {
+            console.log("click");
+            e.stopPropagation();
+            e.preventDefault(); // <-- stops Link navigation
+            trigger(Number(profile.id)); // cast to number here
+          }}
+           variant="theme" size="sm" className="w-full">
             Unblock Member
           </Button>
         ) : (

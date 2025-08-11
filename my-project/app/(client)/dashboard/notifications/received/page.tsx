@@ -1,7 +1,9 @@
 "use client";
 
 import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import { useLikesRecieved } from "../_hooks/useLikesRecieved";
+import { LikeStatus, useLikesRecieved } from "../_hooks/useLikesRecieved";
+import { MemberProfile } from "@/app/shared-types/member";
+import { likesRecievedResponseData } from "../_api/getLikesRecived";
 
 const sampleNotification = {
   id: "1",
@@ -25,11 +27,18 @@ const sampleNotification = {
 };
 
 export default function ReceivedPage() {
-  const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved();
+  const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
+    LikeStatus.PENDING
+  );
+    if (likesRecievedLoading) {
+    return <p>Loading...</p>;
+  }
+  console.log(likesRecieved);
   return (
     <div className="space-y-8">
-      <NotificationCard notification={sampleNotification} />
-      <NotificationCard notification={sampleNotification} />
+      {likesRecieved?.map((likeRec: likesRecievedResponseData) => (
+        <NotificationCard notification={likeRec} />
+      ))}
     </div>
   );
 }

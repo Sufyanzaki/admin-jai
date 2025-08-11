@@ -27,10 +27,15 @@ const sampleNotification = {
 export default function NotificationsPage() {
   const { likesAccepted, likesAcceptedLoading, error } = useLikesAccepted();
 
+  if (likesAcceptedLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="space-y-8">
-      <NotificationCard notification={sampleNotification} />
-      <NotificationCard notification={sampleNotification} />
+      {likesAccepted?.map((likeRec: likesRecievedResponseData) => (
+        <NotificationCard notification={likeRec} />
+      ))}
     </div>
   );
 }

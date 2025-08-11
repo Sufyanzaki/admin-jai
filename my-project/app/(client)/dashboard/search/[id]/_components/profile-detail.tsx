@@ -94,6 +94,7 @@ export function ProfileDetail() {
         <ComplainModal
             openComplain={openComplain}
             setOpenComplain={setOpenComplain}
+            userId={Number(user?.id)}
         />
 
         {/* Desktop View */}

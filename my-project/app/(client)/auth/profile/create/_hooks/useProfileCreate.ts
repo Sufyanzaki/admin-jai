@@ -57,7 +57,7 @@ export default function useProfileCreateForm() {
         async (_: string, { arg }: { arg: UserProfile }) => {
 
             if(!userId) return;
-            const { lookingFor, city, country, state, ...userFields } = arg;
+            const { lookingFor, city, country, state,children, ...userFields } = arg;
             setCurrentStep("Updating user & Saving preferences");
             await Promise.all([
                 patchUserLocation(userId, {city, country, state}),

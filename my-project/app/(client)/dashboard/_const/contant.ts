@@ -4,20 +4,22 @@ import {
   dashboardUserIcon,
 } from "@/lib/icons";
 
-export const cardData = [
-  {
-    icon: dashboardUserIcon,
-    title: "My Username",
-    value: "Demo",
-  },
-  {
-    icon: dashboardLocationIcon,
-    title: "My Location",
-    value: "Mozambique",
-  },
-  {
-    icon: dashboardEnvelopIcon,
-    title: "My Email",
-    value: "adsad@adsdas.com",
-  },
-];
+export function getCardData(user: any) {
+  return [
+    {
+      icon: dashboardUserIcon,
+      title: "My Username",
+      value: user?.username ?? "N/A",
+    },
+    {
+      icon: dashboardLocationIcon,
+      title: "My Location",
+      value: user?.location ?? "N/A",
+    },
+    {
+      icon: dashboardEnvelopIcon,
+      title: "My Email",
+      value: user?.email ?? "N/A",
+    },
+  ];
+}
