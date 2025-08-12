@@ -18,6 +18,8 @@ const packageSchema = z.object({
 
 export type PackageFormValues = z.infer<typeof packageSchema>;
 
+console.log("vercel Test")
+
 export default function usePackageForm() {
   const {
     handleSubmit,
