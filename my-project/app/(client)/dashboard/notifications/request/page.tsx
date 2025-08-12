@@ -30,11 +30,12 @@ const sampleNotification = {
 export default function RequestPage() {
   const { AllImagesRequests, AllImagesRequestsLoading, error, mutate } =
     useAllImageRequests(ImageRequestType.RECIEVED, ImageRequestStatus.ACCEPTED);
-      if (AllImagesRequestsLoading) {
+  if (AllImagesRequestsLoading) {
     return <p>Loading...</p>;
   }
   return (
     <div className="space-y-8">
+      {AllImagesRequests?.length <= 0 && <p>No data to show</p>}
       {AllImagesRequests?.map((likeRec: likesRecievedResponseData) => (
         <NotificationCard notification={likeRec} />
       ))}{" "}

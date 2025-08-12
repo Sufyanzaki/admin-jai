@@ -15,6 +15,7 @@ import {
 } from "@/components/client/ux/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { SidebarList } from "@/components/client/sidebar-list";
+import { useSession } from "next-auth/react";
 
 const navLinks = [
   { label: "Hoe werkt niet", href: "/how-it-works" },
@@ -26,6 +27,9 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const tokenValid = session && session?.expires && new Date(session.expires) > new Date();
+
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -58,9 +62,11 @@ export function Header() {
 
               {/* Desktop Navigation */}
               <div className="flex flex-row items-center space-x-10">
-                <Link href={"/auth/login"}>
+                <Link
+                  href={`${tokenValid ? "/dashboard" : "/auth/login"} `}
+                >
                   <button className="hidden md:flex text-xl text-white hover:text-app-pink transition-colors">
-                    Log In
+                    {tokenValid ? "Dashboard" : "Log In"}
                   </button>
                 </Link>
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>

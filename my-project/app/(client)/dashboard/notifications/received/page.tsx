@@ -30,12 +30,14 @@ export default function ReceivedPage() {
   const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
     LikeStatus.PENDING
   );
-    if (likesRecievedLoading) {
+  if (likesRecievedLoading) {
     return <p>Loading...</p>;
   }
-  console.log(likesRecieved);
+  console.log(likesRecieved.length);
   return (
     <div className="space-y-8">
+      {likesRecieved.length <= 0 && <p>No notification to show</p>}
+
       {likesRecieved?.map((likeRec: likesRecievedResponseData) => (
         <NotificationCard notification={likeRec} />
       ))}

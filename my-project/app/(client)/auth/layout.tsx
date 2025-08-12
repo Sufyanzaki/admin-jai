@@ -35,6 +35,17 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                   />
                 </Link>
               </div>
+              {pathname !== "/admin/auth/login" && (
+                <div className=" text-black text-md text-end w-full">
+                  Don&apos;t have an account?
+                  <a
+                    href="/"
+                    className="ml-1 hover:underline font-medium"
+                  >
+                    Register
+                  </a>
+                </div>
+              )}
             </div>
             <div className="w-full mx-auto mt-10 overflow-auto ">
               <Container size={"default"} className="">
@@ -64,11 +75,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </div>
 
         <div className="w-full flex flex-col">
-          {pathname === "/admin/auth/login" && (
+          {pathname !== "/admin/auth/login" && (
             <div className=" text-black text-md text-center w-full mt-7">
               Don&apos;t have an account?
               <a
-                href="/auth/profile/create"
+                href="/"
                 className="ml-1 hover:underline font-medium"
               >
                 Register

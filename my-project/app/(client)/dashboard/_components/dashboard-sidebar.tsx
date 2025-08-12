@@ -54,7 +54,7 @@ export function DashboardSidebar() {
             <Button
               variant="ghost"
               size="dashboard"
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => signOut({ callbackUrl: "/auth/login" })}
               className="border rounded-[5px] border-white/50 text-white hover:bg-transparent w-full group-data-[collapsible=icon]:hidden"
             >
               <LogOut className="w-4 h-4" />

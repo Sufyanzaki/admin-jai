@@ -32,8 +32,10 @@ export default function TrashPage() {
   }
   return (
     <div className="space-y-8">
-      {/* <NotificationCard notification={sampleNotification} />
-      <NotificationCard notification={sampleNotification} /> */}
+      {likesRecieved.length == null && <p>No data to show</p>}
+      {likesRecieved?.map((likeRec: likesRecievedResponseData) => (
+        <NotificationCard notification={likeRec} />
+      ))}
     </div>
   );
 }

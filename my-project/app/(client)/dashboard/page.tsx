@@ -14,10 +14,14 @@ import { useMayLike } from "./_hooks/useMayLike";
 import { useProfile } from "@/app/shared-hooks/useProfile";
 import Preloader from "@/components/shared/Preloader";
 import type React from "react";
+import Link from "next/link";
+import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
 
 export default function Dashboard() {
   const router = useRouter();
   const { user, userLoading, error } = useProfile();
+      const { basicPages, isLoading, error: pagesError } = useBasicPages();
+  
   const cardData = getCardData(user);
   // const { matches, matchesLoading, matchesError } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
@@ -33,11 +37,16 @@ export default function Dashboard() {
 
   if (error) {
     return (
-      <div className="flex items-center flex-col justify-center h-64">
+      <div className="flex items-center flex-col justify-center h-64 gap-3">
         <h2 className="text-2xl font-bold text-red-600">
           Error loading your profile information
         </h2>
         <p className="text-muted-foreground">{error.message}</p>
+        <Link href={"/auth/login"}>
+          <Button variant={"theme"}>
+             Log In
+          </Button>
+        </Link>
       </div>
     );
   }

@@ -33,6 +33,7 @@ export default function NotificationsPage() {
 
   return (
     <div className="space-y-8">
+      {likesAccepted.length <= 0 && <p>No data to show</p>}
       {likesAccepted?.map((likeRec: likesRecievedResponseData) => (
         <NotificationCard notification={likeRec} />
       ))}
