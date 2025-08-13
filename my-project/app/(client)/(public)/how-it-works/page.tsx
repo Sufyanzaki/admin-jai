@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/client/ux/button";
 import { FAQItem } from "./_components/faq-item";
@@ -7,16 +7,19 @@ import { Container } from "@/components/client/ux/container";
 import ImageWrapper from "@/components/client/image-wrapper";
 import Preloader from "@/components/shared/Preloader";
 import useFaq from "@/app/shared-hooks/useFaq";
+import { useHowWork } from "@/app/shared-hooks/useHowWork";
 
 export default function HowItWorksPage() {
+  const { howWorkSettings, howWorkLoading } = useHowWork();
   const { data: faqs, isLoading, error } = useFaq();
 
-  if(!faqs) return (
+  if (isLoading || howWorkLoading)
+    return (
       <div className="flex items-center flex-col justify-center h-64 my-28">
-        <Preloader/>
-        <p className="text-sm">Loading FAQ</p>
+        <Preloader />
+        <p className="text-sm">Loading...</p>
       </div>
-  )
+    );
 
   return (
     <>
@@ -24,7 +27,7 @@ export default function HowItWorksPage() {
         <Container className="px-4 md:px-6">
           {/* Page Title */}
           <h3 className="text-[22px] lg:text-[26px] font-semibold text-gray-900 mb-6">
-            How it work
+            {howWorkSettings?.Title}
           </h3>
 
           {/* Hero Section */}
@@ -32,7 +35,7 @@ export default function HowItWorksPage() {
             {/* Left Side - Image */}
             <div className="">
               <ImageWrapper
-                src="/assets/couple-coffee.png"
+                src={howWorkSettings?.bannerImage}
                 alt="Couple having coffee together"
                 className="w-full h-[390px] object-cover"
               />
@@ -41,13 +44,10 @@ export default function HowItWorksPage() {
             {/* Right Side - Content */}
             <div className="space-y-6">
               <h2 className="text-[22px] lg:text-[34px] font-bold text-gray-900">
-                We put you in touch with nearby girls and guys!
+                {howWorkSettings?.bannerTitle}
               </h2>
               <p className="text-sm lg:text-base text-[#676770] lg:text-black leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Praesent tempus eleifend risus ut congue. Pellentesque nec lorem
-                elit. Pellentesque convallis mauris nisl eu dapibus pharetra eu
-                tristique rhoncus consequat.
+                {howWorkSettings?.bannerSubTitle}
               </p>
               <div className="flex flex-row items-center lg:justify-start justify-center space-x-4 w-full px-4 lg:px-0">
                 <Button
@@ -147,6 +147,8 @@ export default function HowItWorksPage() {
         {/* FAQ Section */}
         <div className="bg-white py-11 md:pt-16 lg:pt-20 pb-[56px] md:pb-[100px] lg:pb-[70px]">
           <Container className="px-4 md:px-6">
+            <h2 className="text-xl font-semibold">{howWorkSettings?.faqTitle}</h2>
+            <h3  className="text-lg font-medium">{howWorkSettings?.faqDescription}</h3>
             <div className="grid lg:grid-cols-2 space-x-4 space-y-10">
               {isLoading ? (
                 <div className="text-center py-10">
@@ -157,7 +159,7 @@ export default function HowItWorksPage() {
                   <p>Error loading FAQs</p>
                 </div>
               ) : (
-                faqs.map((faq, index) => (
+                faqs?.map((faq, index) => (
                   <FAQItem
                     key={index}
                     question={faq.question}

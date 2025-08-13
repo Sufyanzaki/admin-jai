@@ -20,10 +20,9 @@ import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/
 export default function Dashboard() {
   const router = useRouter();
   const { user, userLoading, error } = useProfile();
-      const { basicPages, isLoading, error: pagesError } = useBasicPages();
-  
+
   const cardData = getCardData(user);
-  // const { matches, matchesLoading, matchesError } = useTodayMatches();
+  const { matches, matchesLoading, matchesError } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
 
   if (userLoading) {
@@ -43,9 +42,7 @@ export default function Dashboard() {
         </h2>
         <p className="text-muted-foreground">{error.message}</p>
         <Link href={"/auth/login"}>
-          <Button variant={"theme"}>
-             Log In
-          </Button>
+          <Button variant={"theme"}>Log In</Button>
         </Link>
       </div>
     );
@@ -132,7 +129,7 @@ export default function Dashboard() {
                   </Button>
                 </div>
 
-                {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
                       {error ? (
                           <div className="flex items-center justify-center h-screen">
                             <div className="text-center">
@@ -154,7 +151,7 @@ export default function Dashboard() {
                               <ProfileCard key={match.id} profile={match} />
                           ))
                       ) : null}
-                    </div> */}
+                    </div>
               </div>
             </div>
             <div className="mb-4 space-y-3">

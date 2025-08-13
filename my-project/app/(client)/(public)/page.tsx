@@ -1,9 +1,12 @@
-import {HeroSection} from "./_components/hero-section";
-import {Card} from "@/components/client/ux/card";
-import {Button} from "@/components/client/ux/button";
+"use client";
+import { HeroSection } from "./_components/hero-section";
+import { Card } from "@/components/client/ux/card";
+import { Button } from "@/components/client/ux/button";
 import RecentlyJoined from "./_components/recently-joined";
-import {Container} from "@/components/client/ux/container";
-import {SignupForm} from "./_components/signup-form";
+import { Container } from "@/components/client/ux/container";
+import { SignupForm } from "./_components/signup-form";
+import { useHome } from "@/app/shared-hooks/useHome";
+import Preloader from "@/components/shared/Preloader";
 
 const steps = [
   {
@@ -27,6 +30,16 @@ const steps = [
 ];
 
 export default function Home() {
+  const { homeLoading, homeSettings } = useHome();
+
+  if (homeLoading)
+    return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">Loading...</p>
+      </div>
+    );
+
   return (
     <main className="min-h-screen">
       <HeroSection />
@@ -39,17 +52,13 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-items-center">
               <div className="space-y-3 py-3">
                 <h2 className="text-black text-[22px] font-bold lg:text-[26px] xl:text-[34px] xl:leading-[48px] mb-[14px]">
-                  How do you meet singles on our dating site?{" "}
+                  {homeSettings?.faqsTitle}
                 </h2>
                 <p className="text-[#011026] text-base font-normal xl:text-xl xl:leading-[31px]">
-                  Find out everything you need to know and more about how our
-                  website works.
+                  {homeSettings?.faqlatestSubTitle}
                 </p>
                 <p className="pt-4 pb-5 text-[#676770] text-sm xl:text-base font-normal leading-[23px]">
-                  Aenean eu leo ​​quam. Pellentesque ornare sem lacinia quam
-                  venenatis vestibulum. Etiam porta sem malesuada magna mollis
-                  euismod. Nullam id dolor id nibh ultricies vehicula ut id
-                  elit. Nullam quis risus eget urna mollis ornare.
+                  {homeSettings?.faqsDescription}
                 </p>
                 <div className="flex space-x-4">
                   <Button variant="theme" size="lg">

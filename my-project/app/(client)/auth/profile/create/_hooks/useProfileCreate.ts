@@ -52,15 +52,15 @@ export default function useProfileCreateForm() {
     const { expectations, expectationLoading } = usePartnerExpectations(userIdProp);
     const { user, userLoading } = useBasicInfo(userIdProp)
 
-    useEffect(() => {
-        if (!user) return;
-        if (user?.route === "/auth/profile/partner-preferences") {
-            router.push("/dashboard");
-        }
-        else if (user?.route) {
-            router.push(user.route);
-        }
-    }, [user?.route, router]);
+    // useEffect(() => {
+    //     if (!user) return;
+    //     if (user?.route === "/auth/profile/partner-preferences") {
+    //         router.push("/dashboard");
+    //     }
+    //     else if (user?.route) {
+    //         router.push(user.route);
+    //     }
+    // }, [user?.route, router]);
 
 
     const { trigger, isMutating } = useSWRMutation(

@@ -16,7 +16,7 @@ export const useRegistration = () => {
 
   return {
     registrationSettings: data,
-    loading,
+    registrationLoading: loading,
     error,
     mutate
   };

@@ -7,23 +7,33 @@ import { Textarea } from "@/components/client/ux/textarea";
 import { Checkbox } from "@/components/client/ux/checkbox";
 import ImageWrapper from "@/components/client/image-wrapper";
 
-export function ContactForm() {
+interface ContactItemsProps {
+  contactFormTitle: string;
+  contactFormDescription: string;
+}
+
+export function ContactForm({
+  contactFormTitle,
+  contactFormDescription,
+}: ContactItemsProps) {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
   return (
     <div className="bg-white py-16 flex flex-col lg:flex-row gap-8 w-full justify-between rounded-[10px] lg:rounded-none">
       <div className="flex flex-col lg:flex-col gap-3 items-start mb-6 w-full">
         <div className="w-14 h-14">
-          <ImageWrapper src={"/assets/sms.svg"} alt="sms" className="w-14 h-14" />
+          <ImageWrapper
+            src={"/assets/sms.svg"}
+            alt="sms"
+            className="w-14 h-14"
+          />
         </div>
         <div className="w-full">
           <h2 className="text-[22px] font-semibold text-[#1F2F49] lg:text-[34px] lg:font-bold lg:text-[#011026] mb-4">
-            If you like what you see, lets work together.
+            {contactFormTitle}
           </h2>
           <p className="text-[#676770] text-sm font-normal lg:font-medium lg:text-[#011026] lg:text-lg leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            tempus eleifend risus ut congue. Pellentesque nec lorem elit.
-            Pellentesque convallis mauris nisl eu dapibus pharetra eu tristique.
+            {contactFormDescription}
           </p>
         </div>
       </div>
