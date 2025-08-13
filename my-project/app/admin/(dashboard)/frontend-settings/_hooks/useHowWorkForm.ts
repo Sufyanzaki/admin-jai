@@ -8,8 +8,8 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {useHowWork} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useHowWork";
-import {patchHowWorkSettings} from "@/app/admin/(dashboard)/frontend-settings/_api/howWorkApi";
+import {patchHowWorkSettings} from "@/app/shared-api/howWorkApi";
+import {useHowWork} from "@/app/shared-hooks/useHowWork";
 
 const howItWorksFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),

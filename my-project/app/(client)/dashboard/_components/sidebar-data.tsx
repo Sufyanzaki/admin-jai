@@ -67,7 +67,7 @@ export default function SidebarData() {
     location.state && setValue("state", location.state);
     location.country && setValue("country", location.country);
   };
-console.log(errors)
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SidebarContent className={open ? "px-6" : "px-3"}>

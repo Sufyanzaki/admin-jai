@@ -105,8 +105,8 @@ export default function useAppearanceAndCareerForm() {
 
             setCurrentStep('Saving physical appearance & education');
 
+            patchUser(userId, { route: "/auth/profile/details" })
             await Promise.all([
-                patchUser(userId, { route: "/auth/profile/details" }),
                 physicalApi(userId, {
                     height,
                     eyeColor,

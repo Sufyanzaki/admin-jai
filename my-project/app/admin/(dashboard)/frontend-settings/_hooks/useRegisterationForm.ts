@@ -8,8 +8,8 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {patchRegistrationPageSettings} from "@/app/admin/(dashboard)/frontend-settings/_api/registerationApi";
-import {useRegisteration} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useRegisteration";
+import {patchRegistrationPageSettings} from "@/app/shared-api/registerationApi";
+import {useRegistration} from "@/app/shared-hooks/useRegistration";
 
 const registrationFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),
@@ -49,7 +49,7 @@ const registrationFormSchema = z.object({
 type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
 
 export default function useRegistrationForm() {
-    const { registrationSettings, mutate, loading } = useRegisteration();
+    const { registrationSettings, mutate, loading } = useRegistration();
 
     const {
         register,

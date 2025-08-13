@@ -1,8 +1,24 @@
+"use client"
+
 import { ContactForm } from "./_components/contact-form";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Container } from "@/components/client/ux/container";
 import ImageWrapper from "@/components/client/image-wrapper";
+import {useContact} from "@/app/shared-hooks/useContact";
+import Preloader from "@/components/shared/Preloader";
+import type React from "react";
+
 export default function ContactPage() {
+
+  const { contactSettings, contactLoading } = useContact();
+
+  if(contactLoading) return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader/>
+        <p className="text-sm">Loading ...</p>
+      </div>
+  )
+
   return (
     <div className="min-h-screen bg-white">
       <Container className="px-4 md:px-6">

@@ -6,10 +6,10 @@ import { z } from 'zod';
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { useHome } from './useHome';
-import { patchHomePageSettings } from '../_api/homeApi';
 import { useEffect } from 'react';
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
+import {useHome} from "@/app/shared-hooks/useHome";
+import {patchHomePageSettings} from "@/app/shared-api/homeApi";
 
 const homeFormSchema = z.object({
   Title: z.string().min(1, "Title is required"),

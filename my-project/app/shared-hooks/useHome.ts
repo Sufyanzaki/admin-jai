@@ -1,8 +1,8 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getHomePageSettings } from "../_api/homeApi";
-import { HomePageSettingsDto } from "../_types/homeTypes";
+import {getHomePageSettings} from "@/app/shared-api/homeApi";
+import {HomePageSettingsDto} from "@/app/shared-types/homeTypes";
 
 export const useHome = () => {
   const { data, loading, error, mutate } = useSWRFix<HomePageSettingsDto>({

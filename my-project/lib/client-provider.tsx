@@ -51,5 +51,9 @@ function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolea
         );
     }
 
-    return <>{children}</>;
+    return (
+        <>
+            {children}
+        </>
+    )
 }

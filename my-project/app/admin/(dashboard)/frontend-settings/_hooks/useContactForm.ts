@@ -6,10 +6,10 @@ import { z } from 'zod';
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { useEffect, useState } from 'react'; // Added useState
-import { patchContactPageSettings } from '../_api/contactApi';
-import { useContact } from './useContact';
+import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
+import {useContact} from "@/app/shared-hooks/useContact";
+import { patchContactPageSettings } from '@/app/shared-api/contactApi';
 
 const contactFormSchema = z.object({
   contactName: z.string().min(1, 'Contact name is required'),

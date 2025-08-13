@@ -1,5 +1,5 @@
 import { getRequest, patchRequest } from "@/shared-lib";
-import {HomePageSettingsDto} from "@/app/admin/(dashboard)/frontend-settings/_types/homeTypes";
+import { HomePageSettingsDto } from "../shared-types/homeTypes";
 
 type Payload = Partial<HomePageSettingsDto>
 

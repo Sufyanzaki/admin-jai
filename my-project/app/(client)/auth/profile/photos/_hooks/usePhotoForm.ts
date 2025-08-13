@@ -79,6 +79,8 @@ export default function usePhotoForm() {
 
             const strImages = validImageUrls.join(",");
 
+            console.log(processedImages, validImageUrls, strImages)
+
             await patchUser(userId, {
                 image: strImages,
                 route: "/auth/profile/photos"

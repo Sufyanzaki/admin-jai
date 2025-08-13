@@ -72,7 +72,6 @@ export async function getRequest<T>({
     params = {},
 }: getRequestDto): Promise<T> {
 
-    // ✅ Build query string from params
     const queryString = Object.keys(params).length
         ? "?" + new URLSearchParams(
             Object.entries(params).reduce((acc, [key, value]) => {

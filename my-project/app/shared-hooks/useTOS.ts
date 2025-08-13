@@ -1,8 +1,8 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getTermsConditionsSettings } from "../_api/tosApi";
-import { TermsSettingsDto } from "../_types/tosTypes";
+import {TermsSettingsDto} from "@/app/shared-types/tosTypes";
+import {getTermsConditionsSettings} from "@/app/shared-api/tosApi";
 
 export const useTOS = () => {
   const { data, loading, error, mutate } = useSWRFix<TermsSettingsDto>({

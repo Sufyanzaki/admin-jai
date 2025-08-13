@@ -92,8 +92,7 @@ export default function useHobbiesInterestsForm() {
             };
 
             await Promise.all([
-                patchUser(userId, {route: "auth/profile/description"}),
-                patchUser(userId, { shortDescription: arg.shortDescription }),
+                patchUser(userId, { shortDescription: arg.shortDescription, route: "auth/profile/description" }),
                 api(userId, hobbiesPayload),
             ]);
             return true;

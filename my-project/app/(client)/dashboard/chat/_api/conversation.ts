@@ -1,6 +1,7 @@
 import {getRequest, patchRequest, postRequest} from "@/shared-lib";
 import {BannerDto} from "@/app/admin/(dashboard)/marketing/banners/_types/bannerTypes";
 import {ChatResponse} from "@/app/(client)/dashboard/chat/_types/conversation";
+import {ChatMessagesResponse} from "@/app/(client)/dashboard/chat/_types/message";
 
 type Payload = {
     userId: string;
@@ -36,7 +37,7 @@ export async function getAllChats(): Promise<BannerDto[] | undefined> {
     });
 }
 
-export async function getChatDetails(id: string): Promise<ChatResponse> {
+export async function getChatDetails(id: string): Promise<ChatMessagesResponse> {
     return await getRequest({
         url: `message/${id}`,
         useAuth: true

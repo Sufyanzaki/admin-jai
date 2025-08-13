@@ -1,10 +1,10 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getRegistrationPageSettings } from "../_api/registerationApi";
-import { RegistrationSettingDto } from "../_types/registerationTypes";
+import {RegistrationSettingDto} from "@/app/shared-types/registerationTypes";
+import {getRegistrationPageSettings} from "@/app/shared-api/registerationApi";
 
-export const useRegisteration = () => {
+export const useRegistration = () => {
   const { data, loading, error, mutate } = useSWRFix<RegistrationSettingDto>({
     key: 'registration-page-settings',
     fetcher: async () => {

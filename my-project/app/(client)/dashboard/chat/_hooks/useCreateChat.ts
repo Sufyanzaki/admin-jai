@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {showError, showSuccess} from "@/shared-lib";
+import {showError} from "@/shared-lib";
 import {createChat} from "@/app/(client)/dashboard/chat/_api/conversation";
 
 export const useCreateChat = () => {
@@ -11,9 +11,7 @@ export const useCreateChat = () => {
         setMessageError(null);
 
         try {
-            const res = await createChat({ userId });
-            if (res) showSuccess("Chat created successfully!");
-            return res;
+            return await createChat({userId});
         } catch (err) {
             showError({
                 message: err instanceof Error ? err.message : "An error occurred while creating the chat",

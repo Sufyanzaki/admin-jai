@@ -1,8 +1,8 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getHowWorkSettings } from "../_api/howWorkApi";
-import { HowItWorksSettingsDto } from "../_types/howWorks";
+import {HowItWorksSettingsDto} from "@/app/shared-types/howWorks";
+import {getHowWorkSettings} from "@/app/shared-api/howWorkApi";
 
 export const useHowWork = () => {
   const { data, loading, error, mutate } = useSWRFix<HowItWorksSettingsDto>({

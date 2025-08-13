@@ -8,7 +8,6 @@ import useOTPForm from "../_hooks/useOTPForm";
 import { Controller } from "react-hook-form";
 import useResendOtp from "@/app/shared-hooks/useResendOtp";
 import {getUserEmail} from "@/lib/access-token";
-import Image from "next/image";
 
 export default function OtpPage() {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);

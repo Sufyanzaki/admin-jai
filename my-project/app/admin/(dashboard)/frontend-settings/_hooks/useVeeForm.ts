@@ -7,9 +7,9 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
-import { patchVeeSettings } from "../_api/veeApi";
-import { useVee } from "./useVee";
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
+import { useVee } from '@/app/shared-hooks/useVee';
+import {patchVeeSettings} from "@/app/shared-api/veeApi";
 
 const veeFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),

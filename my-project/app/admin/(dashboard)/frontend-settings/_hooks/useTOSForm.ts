@@ -6,10 +6,10 @@ import { z } from 'zod';
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { useEffect, useState } from 'react'; // Added useState
+import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {patchTermsConditionsSettings} from "@/app/admin/(dashboard)/frontend-settings/_api/tosApi";
-import {useTOS} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useTOS";
+import { patchTermsConditionsSettings } from '@/app/shared-api/tosApi';
+import { useTOS } from '@/app/shared-hooks/useTOS';
 
 const tosFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),

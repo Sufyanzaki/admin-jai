@@ -3,8 +3,21 @@
 import { Button } from "@/components/client/ux/button";
 import { Container } from "@/components/client/ux/container";
 import { SignupForm } from "./signup-form";
+import {useHome} from "@/app/shared-hooks/useHome";
+import Preloader from "@/components/shared/Preloader";
+import type React from "react";
 
 export function HeroSection() {
+
+  const { homeLoading, homeSettings } = useHome();
+
+  if(homeLoading) return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader/>
+        <p className="text-sm">Loading your profile information...</p>
+      </div>
+  )
+
   return (
     <section className="sticky top-0">
       <div className="relative flex h-[360px] lg:min-h-screen items-center">

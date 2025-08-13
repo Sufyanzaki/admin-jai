@@ -1,10 +1,8 @@
 'use client';
 
-import { useSWRFix } from "@/shared-lib";
-import { getTermsConditionsSettings } from "../_api/tosApi";
-import { TermsSettingsDto } from "../_types/tosTypes";
-import {getVeeSettings} from "@/app/admin/(dashboard)/frontend-settings/_api/veeApi";
-import {VeeDto} from "@/app/admin/(dashboard)/frontend-settings/_types/vee";
+import {useSWRFix} from "@/shared-lib";
+import {VeeDto} from "@/app/shared-types/vee";
+import {getVeeSettings} from "@/app/shared-api/veeApi";
 
 export const useVee = () => {
     const { data, loading, error, mutate } = useSWRFix<VeeDto>({

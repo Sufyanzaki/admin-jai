@@ -1,8 +1,8 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getAgendaSettings } from "../_api/agendaApi";
-import { AgendaSettingsDto } from "../_types/agenda";
+import {AgendaSettingsDto} from "@/app/shared-types/agenda";
+import {getAgendaSettings} from "@/app/shared-api/agendaApi";
 
 export const useAgenda = () => {
   const { data, loading, error, mutate } = useSWRFix<AgendaSettingsDto>({

@@ -1,8 +1,8 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getContactPageSettings } from "../_api/contactApi";
-import { ContactSettingDto } from "../_types/contactTypes";
+import {ContactSettingDto} from "@/app/shared-types/contactTypes";
+import {getContactPageSettings} from "@/app/shared-api/contactApi";
 
 export const useContact = () => {
   const { data, loading, error, mutate } = useSWRFix<ContactSettingDto>({

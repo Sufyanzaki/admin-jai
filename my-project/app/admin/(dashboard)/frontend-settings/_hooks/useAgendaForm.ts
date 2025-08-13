@@ -7,9 +7,9 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
-import { patchAgendaSettings } from "../_api/agendaApi";
-import { useAgenda } from "./useAgenda";
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
+import {useAgenda} from "@/app/shared-hooks/useAgenda";
+import {patchAgendaSettings} from "@/app/shared-api/agendaApi";
 
 const agendaFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),

@@ -1,51 +1,49 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { useSWRConfig } from "swr";
-import { usePusherClient } from "@/lib/pusher.js";
+import { pusherClient } from "@/lib/pusher.js";
+import { ChatMessage } from "@/app/(client)/dashboard/chat/_types/message";
+import {useParams} from "next/navigation";
 
-interface Message {
-    id: string;
+interface MessageListenerProps {
+    onMessage: (message: ChatMessage) => void;
 }
 
-interface MessagesData {
-    messages: Message[];
-}
+export const MessageListener = ({ onMessage }: MessageListenerProps) => {
 
-export const MessageListener = () => {
-    const searchParams = useSearchParams();
-    const conversationId = searchParams.get("conversationId");
-    const pusherClient = usePusherClient();
-    const { mutate } = useSWRConfig();
+    const params = useParams();
+    const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
 
     useEffect(() => {
-        if (!conversationId || !pusherClient) return;
-        const channel = pusherClient.subscribe(`conversation-${conversationId}`);
-        const messageHandler = (newMessage: Message) => {
-            const cacheKey = [`/api/messages`, conversationId];
-            mutate<MessagesData>(
-                cacheKey,
-                (currentData) => {
-                    if (!currentData) {
-                        return { messages: [newMessage] };
-                    }
-                    return {
-                        ...currentData,
-                        messages: [...currentData.messages, newMessage],
-                    };
-                },
-                { revalidate: false }
-            ).finally();
-        };
+        const pusher = pusherClient();
+        const channel = pusher.subscribe(`chat-${id}`);
+        console.log("Subscribed to channel:", channel.name);
+        channel.bind("new-message", (data: Partial<ChatMessage>) => {
+            if (!data || !data.sender) {
+                console.warn("Received malformed message:", data);
+                return;
+            }
 
-        channel.bind("new-message", messageHandler);
+            const newMessage: ChatMessage = {
+                id: String(Date.now()),
+                content: data.content ?? "",
+                time: null,
+                senderId: data.sender.id!,
+                chatId: data.chatId!,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                sender: data.sender,
+            };
+
+            onMessage(newMessage);
+
+        });
 
         return () => {
-            channel.unbind("new-message", messageHandler);
-            channel.unsubscribe();
+            channel.unbind("new-message");
+            pusher.unsubscribe(`chat-2`);
         };
-    }, [conversationId, pusherClient, mutate]);
+    }, []);
 
     return null;
 };
