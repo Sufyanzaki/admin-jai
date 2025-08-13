@@ -1,12 +1,11 @@
-import { MemberProfile } from "@/app/shared-types/member";
+import {MemberProfile} from "@/app/shared-types/member";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { Button } from "@/components/client/ux/button";
-import { cn } from "@/lib/utils";
-import { Lock } from "lucide-react";
+import {Button} from "@/components/client/ux/button";
+import {cn} from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
-import { useSendLike } from "../_hooks/useSendLike";
-import { useUnblockUser } from "../settings/blocked/_hooks/useUnblockProfile";
+import {useState} from "react";
+import {useSendLike} from "../_hooks/useSendLike";
+import {useUnblockUser} from "../settings/blocked/_hooks/useUnblockProfile";
 
 export default function ProfileCard({
   profile,
@@ -37,14 +36,7 @@ export default function ProfileCard({
             onLoad={() => setIsLoaded(true)}
           />
 
-          <ImageWrapper
-            src="/dashboardLogo.png"
-            alt="Loading placeholder"
-            className={cn(
-              "absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300",
-              loaded ? "opacity-0 z-0" : "opacity-100 z-10"
-            )}
-          />
+        <img src="/dashboardLogo.png" alt="Loading placeholder" className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`} />
 
           {/* {profile.account === "private" ? (
               <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-sm font-semibold">
