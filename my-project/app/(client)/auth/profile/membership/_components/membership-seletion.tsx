@@ -11,10 +11,6 @@ export function MembershipSelection() {
   const router = useRouter();
   const { error, loading, packages } = usePackages();
 
-  const handleSelectPlan = (planId: string) => {
-    console.log("Selected plan:", planId);
-  };
-
   const handleCompareFeatures = () => {
     console.log("Compare features clicked");
   };
@@ -34,6 +30,7 @@ export function MembershipSelection() {
   if (error) {
     return <p className="text-red-500">Failed to load membership plans.</p>;
   }
+
 
   return (
       <div className="space-y-8">
@@ -83,7 +80,7 @@ export function MembershipSelection() {
                           : `Valid for ${plan.validity} days.`}
                     </p>
                   </div>
-                  <Button variant="theme" onClick={() => handleSelectPlan(plan.id)}>
+                  <Button variant="theme" onClick={() => router.push(`/auth/profile/membership/payment/${plan.id}`)}>
                     Select
                   </Button>
                 </div>

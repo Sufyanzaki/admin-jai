@@ -73,10 +73,9 @@ export default function ProfileCard({
       <div className="block">
         <Button
           onClick={(e) => {
-            console.log("click");
             e.stopPropagation();
-            e.preventDefault(); // <-- stops Link navigation
-            sendLike(Number(profile.id)); // cast to number here
+            e.preventDefault();
+            sendLike(Number(profile.id)).finally()
           }}
           variant="ghost"
           size="sm"

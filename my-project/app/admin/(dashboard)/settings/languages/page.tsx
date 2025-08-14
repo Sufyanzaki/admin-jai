@@ -78,7 +78,7 @@ export default function LanguagesManagementPage() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
                                                     <DropdownMenuItem>
-                                                        <Link href={`/settings/languages/${language.code}`}>Translate Language</Link>
+                                                        <Link href={`/admin/settings/languages/${language.code}`}>Translate Language</Link>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         className="text-red-600"
