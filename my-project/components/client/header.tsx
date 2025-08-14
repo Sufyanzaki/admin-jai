@@ -22,13 +22,13 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "register", href: "/auth/profile/create" },
 ];
 
 export function Header() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const tokenValid = session && session?.expires && new Date(session.expires) > new Date();
+  const tokenValid =
+    session && session?.expires && new Date(session.expires) > new Date();
 
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -62,9 +62,7 @@ export function Header() {
 
               {/* Desktop Navigation */}
               <div className="flex flex-row items-center space-x-10">
-                <Link
-                  href={`${tokenValid ? "/dashboard" : "/auth/login"} `}
-                >
+                <Link href={`${tokenValid ? "/dashboard" : "/auth/login"} `}>
                   <button className="hidden md:flex text-xl text-white hover:text-app-pink transition-colors">
                     {tokenValid ? "Dashboard" : "Log In"}
                   </button>
@@ -136,12 +134,20 @@ export function Header() {
                     </Link>
                   );
                 })}
+                {tokenValid ? (
+                  <Link href="/auth/login">
+                    <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
+                      LOGIN
+                    </Button>{" "}
+                  </Link>
+                ) : (
+                  <Link href="/">
+                    <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
+                      REGISTER
+                    </Button>{" "}
+                  </Link>
+                )}
                 {/* Login Button */}
-                <Link href="/auth/login">
-                  <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
-                    LOGIN
-                  </Button>{" "}
-                </Link>
               </nav>
 
               {/* Mobile Menu Button (hidden in this design but good to have) */}

@@ -10,9 +10,11 @@ import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import {AttributeMultiSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
 export function ProfileDescriptionForm() {
   const router = useRouter();
+  const {registrationSettings, registrationLoading} = useRegistration();
 
   const {
     errors,
@@ -52,7 +54,7 @@ export function ProfileDescriptionForm() {
             03
           </div>
           <p className="text-[22px] lg:text-3xl font-semibold">
-            Describe yourself in a few words
+          {registrationSettings?.step3Title}
           </p>
         </div>
       </div>
@@ -60,7 +62,7 @@ export function ProfileDescriptionForm() {
       <div className="space-y-8">
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <Label htmlFor="description">About Me</Label>
+            <Label htmlFor="description">{registrationSettings?.myDescriptionTitle}</Label>
             <p className="text-sm mb-1">
               <span className="font-bold">{shortDescription.length} </span>
               (Minimum 100 required)
@@ -74,7 +76,7 @@ export function ProfileDescriptionForm() {
                 id="shortDescription"
                 value={field.value || ""}
                 onChange={(e) => handleDescriptionChange(e.target.value)}
-                placeholder="Tell us about yourself..."
+                placeholder={registrationSettings?.myDescriptionPlaceholder}
                 className="min-h-[120px] border-gray-300 resize-none"
                 required
               />

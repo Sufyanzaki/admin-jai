@@ -11,6 +11,7 @@ import {PersonalityBehaviorFormValues} from "@/app/admin/(dashboard)/members/add
 import Preloader from "@/components/shared/Preloader";
 import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
 interface PersonalityTrait {
   value: keyof PersonalityBehaviorFormValues;
@@ -58,6 +59,8 @@ const personalityTraits: PersonalityTrait[] = [
 ];
 
 export function PersonalityForm() {
+    const {registrationSettings, registrationLoading} = useRegistration();
+  
   const router = useRouter();
   const {
     handleSubmit,
@@ -89,7 +92,7 @@ export function PersonalityForm() {
               04
             </div>
             <p className="text-[22px] lg:text-3xl font-semibold">
-              Tell us about your personality
+             {registrationSettings?.step4Title}
             </p>
           </div>
         </div>

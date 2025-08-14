@@ -35,7 +35,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               isPassword && "pr-10",
               className
             )}
-            autoComplete="one-time-code" // ✅ For OTP
             inputMode={type === "tel" || type === "number" ? "numeric" : undefined}
             {...props}
           />

@@ -32,7 +32,7 @@ export default function ChatBoxPage() {
   };
 
   const goBack = () => {
-    router.back();
+    router.push("/dashboard/chat");
   };
 
   if (chatLoading) {
@@ -47,7 +47,7 @@ export default function ChatBoxPage() {
   const chat = chatDetails?.data.messages;
 
   const senderDetails = (chat ?? []).filter(item => item.senderId !== userId)[0];
-  const otherParticipant = senderDetails.sender;
+  const otherParticipant = senderDetails?.sender;
 
   return (
       <div className="relative">

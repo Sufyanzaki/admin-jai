@@ -9,6 +9,7 @@ import {FacebookIcon, GoogleIcon} from "@/lib/icons";
 import {RadioButtonGroup} from "@/components/client/ux/radio-button-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select"
 import { Label } from "@/components/client/ux/label";
+import { signIn } from "next-auth/react";
 
 const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString())
 const months = [
@@ -39,13 +40,13 @@ export function RegistrationForm() {
   return (
       <Card className="w-full rounded-none max-w-md bg-white">
         <CardHeader className="grid grid-cols-2 gap-4">
-          <Button variant="outline" size="lg" className="w-full">
+          <Button onClick={()=>signIn("google", { callbackUrl: "/" })} variant="outline" size="lg" className="w-full">
             <div className="flex items-center justify-center space-x-2">
               <GoogleIcon className="w-6 h-6" />
               <span className="font-light">Registreer</span>
             </div>
           </Button>
-          <Button variant="outline" size="lg" className="w-full">
+          <Button onClick={()=>signIn("facebook", { callbackUrl: "/" })}  variant="outline" size="lg" className="w-full">
             <div className="flex items-center justify-center space-x-2">
               <FacebookIcon className="w-6 h-6" />
               <span className="font-light">Registreer</span>

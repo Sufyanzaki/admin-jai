@@ -10,8 +10,10 @@ import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import {AttributeMultiSelect, AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
 export function ProfileDetailsForm() {
+  const {registrationSettings, registrationLoading} = useRegistration();
 
   const router = useRouter();
 
@@ -46,7 +48,7 @@ export function ProfileDetailsForm() {
                 02
               </div>
               <p className="text-[22px] lg:text-3xl font-semibold">
-                Tell us something about yourself?
+                {registrationSettings?.step2Title}
               </p>
             </div>
           </div>
@@ -55,7 +57,7 @@ export function ProfileDetailsForm() {
             <div className="space-y-6">
               <div className="flex flex-row gap-4 w-full items-center">
                 <h4 className="text-xl font-semibold text-gray-900 w-fit text-nowrap">
-                  What do I look like?
+                 {registrationSettings?.step2Description}
                 </h4>
                 <div className="w-full h-[0.7px] rounded-full bg-gray-200"></div>
               </div>

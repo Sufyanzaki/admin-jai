@@ -35,7 +35,7 @@ const footerLinks: FooterSection[] = [
     links: [
       { label: "Privacy", href: "#" },
       { label: "Consumer Health Data", href: "#" },
-      { label: "Privacy Policy", href: "#" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms", href: "#" },
       { label: "Cookie Policy", href: "#" },
       { label: "Intellectual Property", href: "#" },
@@ -72,7 +72,7 @@ const footerLinks: FooterSection[] = [
     links: [
       { label: "Destinations", href: "#" },
       { label: "Press room", href: "#" },
-      { label: "Contact", href: "#" },
+      { label: "Contact", href: "/contact" },
       { label: "Promo code", href: "#" },
     ] as FooterLink[],
   },

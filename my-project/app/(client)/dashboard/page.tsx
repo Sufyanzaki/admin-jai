@@ -16,11 +16,14 @@ import Preloader from "@/components/shared/Preloader";
 import type React from "react";
 import Link from "next/link";
 import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
+import { useAgenda } from "@/app/shared-hooks/useAgenda";
+import { useVee } from "@/app/shared-hooks/useVee";
 
 export default function Dashboard() {
   const router = useRouter();
   const { user, userLoading, error } = useProfile();
-
+  const { veeData, veeLoading } = useVee()
+  // console.log( veeData)
   const cardData = getCardData(user);
   const { matches, matchesLoading, matchesError } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
@@ -47,8 +50,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  console.log(user);
 
   return (
     <>
@@ -130,28 +131,28 @@ export default function Dashboard() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
-                      {error ? (
-                          <div className="flex items-center justify-center h-screen">
-                            <div className="text-center">
-                              <h2 className="text-2xl font-bold text-red-600">
-                                Error loading Today&apos;s Matches
-                              </h2>
-                              <p className="text-muted-foreground">{error.message}</p>
-                            </div>
-                          </div>
-                      ) : matchesLoading ? (
-                          Array.from({ length: 6 }).map((_, index) => (
-                              <Skeleton
-                                  key={index}
-                                  className="h-[210px] w-full rounded-lg bg-app-gray/10"
-                              />
-                          ))
-                      ) : Array.isArray(matches) ? (
-                          matches.slice(0, 6).map((match: MemberProfile) => (
-                              <ProfileCard key={match.id} profile={match} />
-                          ))
-                      ) : null}
+                  {error ? (
+                    <div className="flex items-center justify-center h-screen">
+                      <div className="text-center">
+                        <h2 className="text-2xl font-bold text-red-600">
+                          Error loading Today&apos;s Matches
+                        </h2>
+                        <p className="text-muted-foreground">{error.message}</p>
+                      </div>
                     </div>
+                  ) : matchesLoading ? (
+                    Array.from({ length: 6 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        className="h-[210px] w-full rounded-lg bg-app-gray/10"
+                      />
+                    ))
+                  ) : Array.isArray(matches) ? (
+                    matches.slice(0, 6).map((match: MemberProfile) => (
+                      <ProfileCard key={match.id} profile={match} />
+                    ))
+                  ) : null}
+                </div>
               </div>
             </div>
             <div className="mb-4 space-y-3">

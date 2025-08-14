@@ -5,20 +5,32 @@ import ImageWrapper from "@/components/client/image-wrapper";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
+import { useRegistration } from "@/app/shared-hooks/useRegistration";
+import Preloader from "@/components/shared/Preloader";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
+  const { registrationSettings, registrationLoading } = useRegistration();
+
   const pathname = usePathname();
+  if (registrationLoading) {
+    return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">Loading Profile</p>
+      </div>
+    );
+  }
   return (
     <div className="">
       <div className="hidden overflow-y-hidden h-screen w-full lg:flex flex-row ">
         <div className="h-screen w-[31%]">
           <div
-            className="h-full w-full bg-cover bg-center"
-            style={{ backgroundImage: `url(/assets/login-couple.png)` }}
+            className="h-full w-full bg-cover bg-center bg-black/20"
+            style={{ backgroundImage: `${registrationSettings?.bannerImage}` }}
           ></div>
         </div>
 
@@ -38,10 +50,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
               {pathname !== "/admin/auth/login" && (
                 <div className=" text-black text-md text-end w-full">
                   Don&apos;t have an account?
-                  <a
-                    href="/"
-                    className="ml-1 hover:underline font-medium"
-                  >
+                  <a href="/" className="ml-1 hover:underline font-medium">
                     Register
                   </a>
                 </div>
@@ -78,10 +87,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           {pathname !== "/admin/auth/login" && (
             <div className=" text-black text-md text-center w-full mt-7">
               Don&apos;t have an account?
-              <a
-                href="/"
-                className="ml-1 hover:underline font-medium"
-              >
+              <a href="/" className="ml-1 hover:underline font-medium">
                 Register
               </a>
             </div>

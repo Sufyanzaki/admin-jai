@@ -2,49 +2,35 @@
 import { Input } from "@/components/client/ux/input";
 import { MoreVertical, Search } from "lucide-react";
 import ImageWrapper from "@/components/client/image-wrapper";
+import { Chat } from "../_types/allChats";
+import { useSession } from "next-auth/react";
+import { formatDate } from "date-fns";
 
-interface Chat {
-  id: number;
-  name: string;
-  lastMessage: string;
-  timestamp: string;
-  unread?: boolean;
-  avatar: string;
-}
-
-interface Contact {
-  id: number;
-  name: string;
-  lastMessage: string;
-  timestamp: string;
-  avatar: string;
-}
 
 interface ChatSidebarProps {
   chatData: Chat[];
-  contactData: Contact[];
-  selectedChat: Chat;
+  selectedChat?: Chat;
   onSelectChat: (chat: Chat) => void;
 }
 
 export function ChatSidebar({
   chatData,
-  contactData,
   selectedChat,
   onSelectChat,
 }: ChatSidebarProps) {
+  const { data: session } = useSession();
   return (
     <div className="w-full lg:w-80 bg-white border-r border-gray-200 flex flex-col py-3 lg:px-3">
       <div className="px-4 pt-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50">
         <div className=" flex flex-row justify-between items-center w-full">
           <div className="flex items-center justify-start gap-3">
             <ImageWrapper
-              src={"https://picsum.photos/128"}
+              src={session?.user?.image ? session?.user?.image : "https://picsum.photos/128"}
               alt={"placeholder"}
               className="w-10 h-10 rounded-[5px] object-cover"
             />
             <h4 className="text-sm font-semibold text-gray-900 truncate">
-              User 1
+              {session?.user?.firstName} {session?.user?.lastName}
             </h4>
           </div>
           <div>
@@ -69,46 +55,49 @@ export function ChatSidebar({
         <div className="scrollbar-hide-until-hover overflow-y-auto max-h-[70vh]">
           <h3 className="text-sm font-semibold p-4 lg:p-3">Chats</h3>
           <div className="divide-y divide-gray-200">
-            {chatData.map((chat) => (
-              <div
-                key={chat.id}
-                onClick={() => onSelectChat(chat)}
-                className={`flex items-center gap-3 py-4 px-4 lg:px-2 cursor-pointer transition-colors rounded-[5px] ${
-                  selectedChat.id === chat.id
+            {chatData?.map((chat) => {
+              const contactUser = chat.users.find(user => user?.id !== session?.user?.id);
+              return (
+                <div
+                  key={chat.id}
+                  onClick={() => onSelectChat(chat)}
+                  className={`flex items-center gap-3 py-4 px-4 lg:px-2 cursor-pointer transition-colors rounded-[5px] 
+                    ${selectedChat && selectedChat?.id === chat?.id
                     ? "bg-blue-50"
                     : "hover:bg-gray-50"
-                }`}
-              >
-                <div className="relative">
-                  <ImageWrapper
-                    src={chat.avatar || "/placeholder.svg"}
-                    alt={chat.name}
-                    className="w-10 h-10 rounded-[5px] object-cover"
-                  />
-                  {chat.unread && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-app-blue rounded-full"></div>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-semibold text-gray-900 truncate">
-                      {chat.name}
-                    </h4>
-                    <span className="text-sm font-medium text-gray-500">
-                      {chat.timestamp}
-                    </span>
+                    }`}
+                >
+                  <div className="relative">
+                    <ImageWrapper
+                      src={contactUser?.image || "/placeholder.svg"}
+                      alt={contactUser?.firstName || "user-avatar"}
+                      className="w-10 h-10 rounded-[5px] object-cover"
+                    />
+                    {/* {chat.unread && (
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-app-blue rounded-full"></div>
+                    )} */}
                   </div>
-                  <p className="text-sm text-gray-600 truncate">
-                    {chat.lastMessage}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-semibold text-gray-900 truncate">
+                        {contactUser?.firstName} {contactUser?.lastName}
+                      </h4>
+                      <span className="text-sm font-medium text-gray-500">
+                        {formatDate(chat.updatedAt, "dd-MM-yyyy")}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 truncate">
+                      {/* {chat.lastMessage} */}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 
         {/* Contacts Section */}
-        <div className="scrollbar-hide-until-hover border-t border-app-border overflow-y-auto max-h-[50vh]">
+        {/* <div className="scrollbar-hide-until-hover border-t border-app-border overflow-y-auto max-h-[50vh]">
           <h3 className="text-sm font-semibold lg:py-3 p-4">Contacts</h3>
           <div className="">
             {contactData.map((contact) => (
@@ -137,7 +126,7 @@ export function ChatSidebar({
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

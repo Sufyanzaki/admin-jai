@@ -73,6 +73,7 @@ export const authOptions: NextAuthOptions = {
           token: response.tokens.access.token,
           role: "CLIENT",
           route: response.user.route,
+          image: response.user.image,
         };
       },
     }),

@@ -29,7 +29,7 @@ export function DashboardHeader() {
 
   const {user, userLoading} = useProfile();
 
-  if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
+  // if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
 
   const allowedItems = user?.route !== "/auth/profile/partner-preferences" ? menuItems.filter(item => item.label === "My Profile") : menuItems;
 

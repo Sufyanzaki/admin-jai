@@ -1,133 +1,22 @@
 "use client";
 import { ChatSidebar } from "./_components/chat-sidebar";
-import { ChatBox } from "./_components/chat-box";
+import ChatBox from "./_components/chat-box";
 import { ProfileSidebar } from "./_components/profile-sidebar";
 import { useState } from "react";
 import { useLaptop } from "@/hooks/use-mobile";
 import { useRouter } from "next/navigation";
 import { MessageCircleDashed } from "lucide-react";
+import { useGetAllChats } from "./_hooks/useGetAllChats";
+import Preloader from "@/components/shared/Preloader";
+import { Chat } from "./_types/allChats";
 
-const chatData = [
-  {
-    id: 1,
-    name: "Bernard Langley",
-    lastMessage: "See you tomorrow!",
-    timestamp: "Jun 5, 2023",
-    unread: true,
-    avatar: "https://i.pravatar.cc/200?img=10",
-    profile: {
-      status: "Hi friend I'm using FreeChat",
-      age: 50,
-      ethnicity: "Asian",
-      sexuality: "Straight",
-      gender: "Female",
-      eyes: "Amber",
-      hair: "Red",
-      body: "Big",
-      hairLength: "Shaved Head",
-    },
-  },
-  {
-    id: 2,
-    name: "Nunez Faulkner",
-    lastMessage: "See you tomorrow!",
-    timestamp: "Jun 5, 2023",
-    unread: false,
-    avatar: "https://i.pravatar.cc/200?img=20",
-    profile: {
-      status: "Available for chat",
-      age: 28,
-      ethnicity: "Hispanic",
-      sexuality: "Straight",
-      gender: "Male",
-      eyes: "Brown",
-      hair: "Black",
-      body: "Athletic",
-      hairLength: "Short",
-    },
-  },
-  {
-    id: 3,
-    name: "Edwards Mckenzie",
-    lastMessage: "See you tomorrow!",
-    timestamp: "Jun 5, 2023",
-    unread: true,
-    avatar: "https://i.pravatar.cc/200?img=30",
-    profile: {
-      status: "Looking for friends",
-      age: 32,
-      ethnicity: "Caucasian",
-      sexuality: "Straight",
-      gender: "Male",
-      eyes: "Blue",
-      hair: "Blonde",
-      body: "Average",
-      hairLength: "Medium",
-    },
-  },
-  {
-    id: 4,
-    name: "Elise Melendez",
-    lastMessage: "See you tomorrow!",
-    timestamp: "Jun 5, 2023",
-    unread: false,
-    avatar: "https://i.pravatar.cc/200?img=40",
-    profile: {
-      status: "New to the app",
-      age: 26,
-      ethnicity: "Hispanic",
-      sexuality: "Straight",
-      gender: "Female",
-      eyes: "Green",
-      hair: "Brown",
-      body: "Slim",
-      hairLength: "Long",
-    },
-  },
-  {
-    id: 5,
-    name: "Michael Wagner",
-    lastMessage: "See you tomorrow!",
-    timestamp: "Jun 5, 2023",
-    unread: false,
-    avatar: "https://i.pravatar.cc/200?img=50",
-    profile: {
-      status: "Active user",
-      age: 35,
-      ethnicity: "Caucasian",
-      sexuality: "Straight",
-      gender: "Male",
-      eyes: "Hazel",
-      hair: "Brown",
-      body: "Muscular",
-      hairLength: "Short",
-    },
-  },
-];
 
-const contactData = [
-  {
-    id: 6,
-    name: "Delphine Michael",
-    lastMessage: "Hi friend I'm trying to reach...",
-    timestamp: "about 3 year ago",
-    avatar: "/assets/user.png?height=40&width=40",
-  },
-];
-
-interface Chat {
-  id: number;
-  name: string;
-  lastMessage: string;
-  timestamp: string;
-  unread?: boolean;
-  avatar: string;
-}
 
 export default function ChatPage() {
   const isLaptop = useLaptop();
   const router = useRouter();
-  const [selectedChat, setSelectedChat] = useState(chatData[0]);
+  const { allChats, allChatsError, allChatsLoading } = useGetAllChats();
+  const [selectedChat, setSelectedChat] = useState<Chat>();
   const [showProfile, setShowProfile] = useState(false);
 
   const handleProfileClick = () => {
@@ -137,19 +26,38 @@ export default function ChatPage() {
   const handleCloseProfile = () => {
     setShowProfile(false);
   };
-
+  console.log(isLaptop)
   const handleSelectChat = (chat: Chat) => {
     if (isLaptop) {
-      const fullChat = chatData.find((c) => c.id === chat.id);
+      const fullChat = allChats && allChats.find((c) => c.id === chat.id);
       if (fullChat) {
         setSelectedChat(fullChat);
       }
     } else {
       // On mobile, navigate to /chat/[chatId]
-      router.push(`/dashboard/chat/${selectedChat?.id}`);
+      router.push(`/dashboard/chat/${chat?.id}`);
     }
   };
 
+  if (allChatsLoading) {
+    return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">Loading your chats information...</p>
+      </div>
+    );
+  }
+
+  if (allChatsError) {
+    return (
+      <div className="flex items-center flex-col justify-center h-64 gap-3">
+        <h2 className="text-2xl font-bold text-red-600">
+          Error loading your chats
+        </h2>
+        <p className="text-muted-foreground">{allChatsError.message}</p>
+      </div>
+    );
+  }
   return (
     <>
       <div className="relative">
@@ -159,13 +67,14 @@ export default function ChatPage() {
             height: "calc(100dvh - 125px)",
           }}
         >
-          <ChatSidebar
-            chatData={chatData}
-            contactData={contactData}
-            selectedChat={selectedChat}
-            onSelectChat={handleSelectChat}
-          />
-          {!selectedChat ? (
+          {allChats &&
+            <ChatSidebar
+              chatData={allChats}
+              selectedChat={selectedChat}
+              onSelectChat={handleSelectChat}
+            />}
+
+          {selectedChat == null || !selectedChat ? (
             <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center h-full">
               <MessageCircleDashed className="text-app-blue w-12 h-12" />
               <h2 className="text-app-blue font-semibold text-xl">
@@ -186,12 +95,12 @@ export default function ChatPage() {
       </div>
 
       <div className="lg:hidden flex w-full mb-12">
-        <ChatSidebar
-          chatData={chatData}
-          contactData={contactData}
-          selectedChat={selectedChat}
-          onSelectChat={handleSelectChat}
-        />
+        {allChats &&
+          <ChatSidebar
+            chatData={allChats}
+            selectedChat={selectedChat}
+            onSelectChat={handleSelectChat}
+          />}
       </div>
     </>
   );

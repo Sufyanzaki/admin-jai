@@ -12,9 +12,12 @@ import usePartnerForm from "@/app/(client)/auth/profile/partner-preferences/_hoo
 import {MemberLocation} from "@/app/shared-types/member";
 import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
 export default function PartnerPreferencesForm() {
     const router = useRouter();
+      const {registrationSettings, registrationLoading} = useRegistration();
+    
     const {
         control,
         handleSubmit,
@@ -55,7 +58,7 @@ export default function PartnerPreferencesForm() {
               05
             </div>
             <p className="text-[22px] lg:text-3xl font-semibold">
-              What are you looking for?
+            {registrationSettings?.step5Title}
             </p>
           </div>
         </div>
@@ -165,7 +168,7 @@ export default function PartnerPreferencesForm() {
                 <Slider
                     value={Number(weight)}
                     onValueChange={(val) => setValue("weight", val.toString())}
-                    min={30}
+                    min={0}
                     max={150}
                     step={1}
                     unit="kg"

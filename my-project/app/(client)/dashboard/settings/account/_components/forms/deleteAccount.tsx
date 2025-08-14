@@ -1,6 +1,18 @@
-import {Button} from "@/components/client/ux/button";
+'use client'
+import { useState } from "react";
+import { useDeleteMember } from "@/app/shared-hooks/useDeleteMember";
+import { Button } from "@/components/client/ux/button";
+import { useSession } from "next-auth/react";
 
-export default function DeleteAccount(){
+export default function DeleteAccount() {
+    const { data: session } = useSession();
+    const [deleteInput, setDeleteInput] = useState("");
+
+    const { deleteMemberById, isDeleting } = useDeleteMember();
+    const handleDeleteConfirm = () => {
+        deleteMemberById(String(session?.user?.id))
+    };
+
     return (
         <div className="max-w-lg mx-auto mt-12">
             <div className="text-center">
@@ -8,16 +20,24 @@ export default function DeleteAccount(){
                     Delete Account
                 </h2>
                 <p className="text-sm mb-8 leading-relaxed font-light">
-                    Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting
-                    Industry. Lorem Ipsum Has Been The Industry&apos;s Standard
-                    Dummy Text Ever Since The 1500s.
+                    Deleting account means you will no longer have access to it.
+                    Please be carefull.
                 </p>
+                <div className="flex flex-col gap-3">
+                    <label>Please Type "Delete My Account" below: </label>
+                    <input
+                        type="text"
+                        value={deleteInput}
+                        onChange={(e) => setDeleteInput(e.target.value)}
+                        className="border border-app-border rounded-md p-2 mb-8 focus:border-app-border outline-none text-center" />
+
+                </div>
                 <div className="flex justify-center gap-3">
                     <Button variant="outline" size="lg">
                         Cancel
                     </Button>
-                    <Button variant="destructive" size="lg">
-                        Delete
+                    <Button onClick={handleDeleteConfirm} disabled={deleteInput !== "Delete My Account"} variant="destructive" size="lg">
+                        {isDeleting ? "Deleting" : "Delete"}
                     </Button>
                 </div>
             </div>
