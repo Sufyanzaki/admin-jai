@@ -78,7 +78,7 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
     <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex items-center gap-4 flex-wrap">
         <Button variant="outline" size="icon" asChild className="h-8 w-8">
-          <Link href={`/staff/roles`}>
+          <Link href={`/admin/staff/roles`}>
             <ArrowLeft className="h-4 w-4" />
             <span className="sr-only">Back</span>
           </Link>

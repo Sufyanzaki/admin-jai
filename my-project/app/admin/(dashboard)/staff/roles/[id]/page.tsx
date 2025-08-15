@@ -63,7 +63,7 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
               <CardTitle>Role Details</CardTitle>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" asChild>
-                  <Link href={`/staff/roles/${id}/edit`}>
+                  <Link href={`/admin/staff/roles/${id}/edit`}>
                     <Edit className="mr-2 h-4 w-4" />
                     Edit Role
                   </Link>
@@ -85,7 +85,7 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
                 <div className="flex items-center justify-end gap-2">
                   <Badge variant="secondary">-</Badge>
                   <Button variant="ghost" size="sm" asChild>
-                    <Link href={`/staff/roles/${role.id}/users`}>
+                    <Link href={`/admin/staff/roles/${role.id}/users`}>
                       <Users className="mr-2 h-4 w-4" />
                       View Users
                     </Link>

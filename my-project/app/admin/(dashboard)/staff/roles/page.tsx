@@ -206,13 +206,13 @@ export default function RolesAndPermissionsPage() {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuItem asChild>
-                                  <Link href={`/staff/roles/${role.id}`} className="flex w-full">
+                                  <Link href={`/admin/staff/roles/${role.id}`} className="flex w-full">
                                     <Eye className="mr-2 h-4 w-4" />
                                     View
                                   </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                  <Link href={`/staff/roles/${role.id}/edit`} className="flex w-full">
+                                  <Link href={`/admin/staff/roles/${role.id}/edit`} className="flex w-full">
                                     <Pencil className="mr-2 h-4 w-4" />
                                     Edit
                                   </Link>
