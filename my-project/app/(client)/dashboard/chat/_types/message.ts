@@ -1,10 +1,4 @@
-export interface ChatMessageSender {
-    firstName: string;
-    email: string;
-    image: string;
-
-    id?: number;
-}
+import {MemberProfile} from "@/app/shared-types/member";
 
 export interface ChatMessage {
     id: string;
@@ -14,7 +8,7 @@ export interface ChatMessage {
     chatId: number;
     createdAt: string;
     updatedAt: string;
-    sender: ChatMessageSender;
+    sender: MemberProfile;
 }
 
 export interface ChatMessagesData {

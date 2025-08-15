@@ -1,23 +1,31 @@
 "use client"
-
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
 import {Button} from "@/components/admin/ui/button";
 import {Input} from "@/components/admin/ui/input";
-import {ArrowLeft, Search} from "lucide-react";
-import type React from "react";
+import {ArrowLeft, Save, Search} from "lucide-react";
+import React from "react";
 import Link from "next/link";
 import {useTranslationDetails} from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useTranslationDetails";
 import {useParams} from "next/navigation";
 import Preloader from "@/components/shared/Preloader";
 import TranslationModal from "@/app/admin/(dashboard)/settings/languages/[id]/_components/translationModal";
+import {Checkbox} from "@/components/admin/ui/checkbox";
+import useEditTranslation from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useEditTranslation";
 
 export default function LanguageTranslatePage() {
-
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
 
     const { translation, translationLoading, error } = useTranslationDetails(id);
+    const {
+        selectedRows,
+        toggleRowSelection,
+        toggleSelectAll,
+        handleValueChange,
+        updateTranslations,
+        isUpdating,
+    } = useEditTranslation();
 
     if(translationLoading) return (
         <div className="flex items-center flex-col justify-center h-64">
@@ -30,7 +38,15 @@ export default function LanguageTranslatePage() {
         <div className="text-red-500">Failed to load translations.</div>
     )
 
-    console.log(translation)
+    const obj = translation?.translations ?? {};
+    const tableData = Object.entries(obj).map(([key, value], index) => ({
+        id: index + 1,
+        key,
+        value,
+    }));
+
+    const allKeys = tableData.map(row => row.key);
+    const allSelected = allKeys.length > 0 && allKeys.every(key => selectedRows[key]);
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -48,67 +64,81 @@ export default function LanguageTranslatePage() {
                     </p>
                 </div>
             </div>
-
             <Card>
                 <CardHeader>
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <CardTitle>Arabic</CardTitle>
-
+                        <CardTitle>{translation?.language || 'Language'}</CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
-                            <Button variant="secondary" size="sm">
-                                Update
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={updateTranslations}
+                                disabled={isUpdating}
+                            >
+                                {isUpdating ? (
+                                    <>
+                                        <Preloader />
+                                        Updating...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Save className="w-4 h-4 mr-1" />
+                                        Update
+                                    </>
+                                )}
                             </Button>
                             <TranslationModal />
                             <div className="relative">
                                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                                <Input placeholder="Type Key" className="pl-8 w-40" />
+                                <Input
+                                    placeholder="Type Key"
+                                    className="pl-8 w-40"
+                                    onChange={(e) => {
+                                        // You can implement search functionality here
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
                 </CardHeader>
-
-
                 <CardContent>
                     <Table className="whitespace-nowrap">
                         <TableHeader>
                             <TableRow>
+                                <TableHead>
+                                    <Checkbox
+                                        checked={allSelected}
+                                        onCheckedChange={() => toggleSelectAll(allKeys, !allSelected)}
+                                    />
+                                </TableHead>
                                 <TableHead className="w-12 text-center">#</TableHead>
                                 <TableHead>Key</TableHead>
                                 <TableHead>Value</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {[
-                                { id: 1, key: "Congratulations", value: "تهنينا" },
-                                {
-                                    id: 2,
-                                    key: "You have successfully completed the updating process. Please Login to continue",
-                                    value: "لقد أكملت بنجاح عملية التحديث. يرجى تسجيل الدخول للمتابعة",
-                                },
-                                { id: 3, key: "Go to Home", value: "اذهب إلى الصفحة الرئيسية" },
-                                { id: 4, key: "Login to Admin panel", value: "تسجيل الدخول إلى لوحة الإدارة" },
-                                { id: 5, key: "I want to Hire", value: "أريد أن أوظف" },
-                                { id: 6, key: "Welcome", value: "مرحبا" },
-                                { id: 7, key: "Dashboard", value: "لوحة التحكم" },
-                                { id: 8, key: "Profile", value: "الملف الشخصي" },
-                            ].map((row, index) => (
+                            {tableData.map((row, index) => (
                                 <TableRow key={row.key} className="odd:bg-muted/40">
+                                    <TableCell>
+                                        <Checkbox
+                                            checked={selectedRows[row.key] || false}
+                                            onCheckedChange={() => toggleRowSelection(row.key)}
+                                        />
+                                    </TableCell>
                                     <TableCell className="text-center">{index + 1}</TableCell>
                                     <TableCell className="max-w-md">{row.key}</TableCell>
                                     <TableCell>
-                                        <input
+                                        <Input
                                             type="text"
-                                            className="w-full border rounded-md px-3 py-2 text-right"
-                                            defaultValue={row.text}
-                                            dir="rtl"
+                                            className="w-full text-center"
+                                            defaultValue={row.value}
+                                            onChange={(e) => handleValueChange(row.key, e.target.value)}
                                         />
                                     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
-
-                    {/*<PaginationSection />*/}
                 </CardContent>
             </Card>
         </div>

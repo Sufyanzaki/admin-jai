@@ -15,7 +15,7 @@ export function DashboardFooter() {
             <span className="text-gray-400 hidden sm:inline">•</span>
             <Link href="/dashboard/help" className="hover:text-gray-900">Help</Link>
             <span className="text-gray-400 hidden sm:inline">•</span>
-            <Link href="/dashboard/agenda" className="hover:text-gray-900">Packages</Link>
+            <Link href="/auth/profile/membership" className="hover:text-gray-900">Packages</Link>
             <span className="text-gray-400 hidden sm:inline">•</span>
             <Link href="/dashboard/agenda" className="hover:text-gray-900">Safety Tips</Link>
           </div>

@@ -4,6 +4,7 @@ import {Label} from "@/components/admin/ui/label";
 import {Input} from "@/components/admin/ui/input";
 import {Button} from "@/components/admin/ui/button";
 import useTranslationForm from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useTranslationForm";
+import {PlusIcon} from "lucide-react";
 
 export default function TranslationModal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,7 @@ export default function TranslationModal() {
     return (
         <>
             <Button variant="default" size="sm" onClick={() => setIsOpen(true)}>
+                <PlusIcon className="h-4 w-4 mr-1" />
                 Add New
             </Button>
 

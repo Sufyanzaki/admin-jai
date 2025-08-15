@@ -8,6 +8,7 @@ import {
 } from "@/components/admin/ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {Button} from "@/components/client/ux/button";
 
 type PaginationSectionProps = {
     extraClasses?: string;
@@ -41,7 +42,7 @@ export default function PaginationSection({
             {showDescription && (
                 <p className="text-sm text-muted-foreground md:whitespace-nowrap">
                     Showing <strong>{end === 0 ? 0 : start}</strong>
-                    {" "}to <strong>{end}</strong> of <strong>{total}</strong> Results
+                    to <strong>{end}</strong> of <strong>{total}</strong> Results
                 </p>
             )}
 
@@ -52,7 +53,9 @@ export default function PaginationSection({
                             onClick={() => handlePageChange(Math.max(1, page - 1))}
                             className={page === 1 ? "pointer-events-none opacity-50" : ""}
                         >
-                            <ChevronLeft className="h-4 w-4" />
+                            <Button variant="outline" size="sm" disabled>
+                                <ChevronLeft className="h-4 w-4" />
+                            </Button>
                         </PaginationLink>
                     </PaginationItem>
 
@@ -63,7 +66,9 @@ export default function PaginationSection({
                                 isActive={page === i + 1}
                                 onClick={() => handlePageChange(i + 1)}
                             >
-                                {i + 1}
+                                <Button variant="default" size="sm" className="bg-app-blue">
+                                    {i + 1}
+                                </Button>
                             </PaginationLink>
                         </PaginationItem>
                     ))}
@@ -73,7 +78,9 @@ export default function PaginationSection({
                             onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
                             className={page === totalPages ? "pointer-events-none opacity-50" : ""}
                         >
-                            <ChevronRight className="h-4 w-4" />
+                            <Button variant="outline" size="sm">
+                                <ChevronRight className="h-4 w-4" />
+                            </Button>
                         </PaginationLink>
                     </PaginationItem>
                 </PaginationContent>

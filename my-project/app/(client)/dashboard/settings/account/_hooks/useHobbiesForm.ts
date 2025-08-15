@@ -24,6 +24,8 @@ export default function useHobbiesForm() {
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
 
+    const userIdProps = userId;
+
     const {
         handleSubmit,
         formState: { errors, isSubmitting },
@@ -42,7 +44,8 @@ export default function useHobbiesForm() {
         mode: "onBlur",
     });
 
-    const { hobbiesInterests, hobbiesInterestsLoading } = useHobbiesInterestsInfo();
+    const { hobbiesInterests, hobbiesInterestsLoading } = useHobbiesInterestsInfo(userIdProps);
+    console.log(hobbiesInterests);
 
     useEffect(() => {
         if (!hobbiesInterests) return;

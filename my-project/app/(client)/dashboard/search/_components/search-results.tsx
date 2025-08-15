@@ -1,129 +1,16 @@
 "use client";
-import { Button } from "@/components/client/ux/button";
-import { Label } from "@/components/client/ux/label";
-import { Switch } from "@/components/client/ux/switch";
-import { Grid3X3, List } from "lucide-react";
-import { useState } from "react";
+
+import {Button} from "@/components/client/ux/button";
+import {Label} from "@/components/client/ux/label";
+import {Switch} from "@/components/client/ux/switch";
+import {Grid3X3, List} from "lucide-react";
+import {useState} from "react";
 import ProfileCard from "../../_components/profile-card";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
-import useSearchForm from "../../_hooks/useSearchForm";
-import { useSearchParams } from "next/navigation";
-import useSWR from "swr";
-import { getSearch, paramsToSearchForm, SearchResponse, useSearch } from "../../_api/getSearch";
-
-const searchResults = [
-  {
-    id: 1,
-    name: "Daniella",
-    age: 32,
-    location: "Nieuwkuijk",
-    image: "https://picsum.photos/200?random=1",
-    status: "online",
-    description: "Like to Profiel",
-    account: "private",
-  },
-  {
-    id: 2,
-    name: "Naé",
-    age: 31,
-    location: "Roerlo",
-    image: "https://picsum.photos/200?random=2",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 3,
-    name: "Laura",
-    age: 35,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=3",
-    status: "offline",
-    description: "Like to Profiel",
-    account: "private",
-  },
-  {
-    id: 4,
-    name: "Daniella",
-    age: 28,
-    location: "Heerenveen",
-    image: "https://picsum.photos/200?random=4",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 5,
-    name: "Naé",
-    age: 30,
-    location: "Renklo",
-    image: "https://picsum.photos/200?random=5",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 6,
-    name: "Laura",
-    age: 33,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=6",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-  {
-    id: 7,
-    name: "Daniella",
-    age: 32,
-    location: "Nieuwkuijk",
-    image: "https://picsum.photos/200?random=7",
-    status: "online",
-    description: "Like to Profiel",
-    account: "plus",
-  },
-  {
-    id: 8,
-    name: "Naé",
-    age: 31,
-    location: "Roerlo",
-    image: "https://picsum.photos/200?random=8",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 9,
-    name: "Laura",
-    age: 35,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=9",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-  {
-    id: 10,
-    name: "Daniella",
-    age: 28,
-    location: "Heerenveen",
-    image: "https://picsum.photos/200?random=10",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 11,
-    name: "Naé",
-    age: 30,
-    location: "Renklo",
-    image: "https://picsum.photos/200?random=11",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 12,
-    name: "Laura",
-    age: 33,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=12",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-];
+import {useSearchParams} from "next/navigation";
+import {paramsToSearchForm} from "../../_api/getSearch";
+import { useSearch } from "../../_hooks/useSearch";
+import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
 
 export function SearchResults() {
   const [online, setOnline] = useState(true);
@@ -132,12 +19,14 @@ export function SearchResults() {
   const formValues = paramsToSearchForm(searchParams);
 
   const { data, error, isLoading } = useSearch(formValues)
-  console.log(data)
+
   if (isLoading) return <p>Loading...</p>;
+
   if (error) return <p>Error: {error.message}</p>;
-  const filteredResults = online
-    ? searchResults.filter((profile) => profile.status === "online")
-    : searchResults;
+
+  if(!data) return <p>No data</p>
+
+  const filteredResults = data.data.results
 
   return (
     <div className="flex min-h-screen">
@@ -194,18 +83,17 @@ export function SearchResults() {
               ))}
             </div>
           )}
-
-          <div className="flex justify-center items-center gap-2">
-            <Button variant="outline" size="sm" disabled>
-              Previous
-            </Button>
-            <Button variant="default" size="sm" className="bg-app-blue">
-              1
-            </Button>
-            <Button variant="outline" size="sm">
-              Next
-            </Button>
-          </div>
+          <PaginationSection
+              pagination={{
+                page: data.data.page,
+                limit: data.data.limit,
+                total: data.data.total,
+                totalPages: data.data.totalPages,
+              }}
+              onPageChange={(newPage) => {
+                console.log("Go to page:", newPage);
+              }}
+          />
         </main>
       </div>
     </div>

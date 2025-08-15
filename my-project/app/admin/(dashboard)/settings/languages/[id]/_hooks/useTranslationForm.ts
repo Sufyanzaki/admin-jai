@@ -5,6 +5,8 @@ import useSWRMutation from "swr/mutation";
 import {showError, showSuccess} from "@/shared-lib";
 import {postTranslation} from "@/app/admin/(dashboard)/settings/languages/[id]/_api/translationApi";
 import {useParams} from "next/navigation";
+import {useSWRConfig} from "swr";
+import {LanguageTranslationsDto} from "@/app/admin/(dashboard)/settings/languages/[id]/_types/translation";
 
 const translationSchema = z.object({
     key: z.string().min(1, "Key is required"),
@@ -17,6 +19,7 @@ export default function useTranslationForm() {
 
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
+    const { mutate : globalMutate } = useSWRConfig();
 
     const {
         handleSubmit,
@@ -50,6 +53,20 @@ export default function useTranslationForm() {
 
     const onSubmit = async (values: TranslationFormValues, callback?: () => void) => {
         await trigger(values);
+        await globalMutate(
+            `translation-details-${id}`,
+            (currentData: LanguageTranslationsDto | undefined) => {
+                if (!currentData) return currentData;
+                return {
+                    ...currentData,
+                    translations: {
+                        ...currentData.translations,
+                        [values.key]: values.text,
+                    },
+                };
+            },
+            false
+        );
         reset();
         callback?.();
     };

@@ -18,19 +18,24 @@ export function ChatSidebar({
   selectedChat,
   onSelectChat,
 }: ChatSidebarProps) {
+
   const { data: session } = useSession();
+  const userId = session?.user?.id ? Number(session?.user?.id) : undefined;
+
+  const currentUser = chatData.map(chat => chat.users.find(user => Number(user?.id) === userId)).find(user => user);
+
   return (
     <div className="w-full lg:w-80 bg-white border-r border-gray-200 flex flex-col py-3 lg:px-3">
       <div className="px-4 pt-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50">
         <div className=" flex flex-row justify-between items-center w-full">
           <div className="flex items-center justify-start gap-3">
             <ImageWrapper
-              src={session?.user?.image ? session?.user?.image : "https://picsum.photos/128"}
+              src={currentUser?.image ? currentUser.image : "https://picsum.photos/128"}
               alt={"placeholder"}
               className="w-10 h-10 rounded-[5px] object-cover"
             />
             <h4 className="text-sm font-semibold text-gray-900 truncate">
-              {session?.user?.firstName} {session?.user?.lastName}
+              {currentUser?.firstName} {currentUser?.lastName}
             </h4>
           </div>
           <div>

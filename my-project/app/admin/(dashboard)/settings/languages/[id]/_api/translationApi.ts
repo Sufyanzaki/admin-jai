@@ -5,6 +5,7 @@ import {
 } from "@/app/admin/(dashboard)/settings/languages/[id]/_types/translation";
 
 type Payload = Partial<TranslationDto>;
+type Payload2 = Partial<LanguageTranslationsDto>;
 
 export async function getTranslationDetails(id: string): Promise<LanguageTranslationsDto> {
     return await getRequest({
@@ -13,8 +14,8 @@ export async function getTranslationDetails(id: string): Promise<LanguageTransla
     })
 }
 
-export async function updateTranslation(id: string, props: Payload): Promise<TranslationDto | undefined> {
-    const r = await patchRequest<Payload>({
+export async function updateTranslation(id: string, props: Payload2): Promise<TranslationDto | undefined> {
+    const r = await patchRequest<Payload2>({
         url: `setting/translation/${id}`,
         data: props,
         useAuth: true

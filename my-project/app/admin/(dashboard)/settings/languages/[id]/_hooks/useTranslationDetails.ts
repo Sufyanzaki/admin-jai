@@ -7,7 +7,7 @@ export const useTranslationDetails = (id: string) => {
     const { data: session } = useSession();
 
     const { data, loading, error, mutate } = useSWRFix<LanguageTranslationsDto>({
-        key: session?.token && id ? `banner-details-${id}` : '',
+        key: session?.token && id ? `translation-details-${id}` : '',
         fetcher: async () => {
             const response = await getTranslationDetails(id);
             if (!response) throw new Error('Failed to fetch banner details');

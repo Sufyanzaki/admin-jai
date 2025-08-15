@@ -9,12 +9,17 @@ import { MessageCircleDashed } from "lucide-react";
 import { useGetAllChats } from "./_hooks/useGetAllChats";
 import Preloader from "@/components/shared/Preloader";
 import { Chat } from "./_types/allChats";
+import {useSession} from "next-auth/react";
 
 
 
 export default function ChatPage() {
-  const isLaptop = useLaptop();
+  const isAboveLaptop = !useLaptop();
   const router = useRouter();
+
+  const session = useSession();
+  const userId = session?.data?.user?.id ? Number(session?.data?.user?.id) : 0;
+
   const { allChats, allChatsError, allChatsLoading } = useGetAllChats();
   const [selectedChat, setSelectedChat] = useState<Chat>();
   const [showProfile, setShowProfile] = useState(false);
@@ -26,17 +31,12 @@ export default function ChatPage() {
   const handleCloseProfile = () => {
     setShowProfile(false);
   };
-  console.log(isLaptop)
+
   const handleSelectChat = (chat: Chat) => {
-    if (isLaptop) {
+    if (isAboveLaptop) {
       const fullChat = allChats && allChats.find((c) => c.id === chat.id);
-      if (fullChat) {
-        setSelectedChat(fullChat);
-      }
-    } else {
-      // On mobile, navigate to /chat/[chatId]
-      router.push(`/dashboard/chat/${chat?.id}`);
-    }
+      if (fullChat) setSelectedChat(fullChat);
+    } else router.push(`/dashboard/chat/${chat?.id}`);
   };
 
   if (allChatsLoading) {
@@ -58,6 +58,10 @@ export default function ChatPage() {
       </div>
     );
   }
+
+  const otherParticipant = selectedChat?.users.filter(user=>Number(user.id) !== userId);
+  const otherParticipantDetails = otherParticipant?.[0];
+
   return (
     <>
       <div className="relative">
@@ -88,12 +92,9 @@ export default function ChatPage() {
             />
           )}
 
-          {showProfile && (
-            <ProfileSidebar user={selectedChat} onClose={handleCloseProfile} />
-          )}
+          {showProfile && otherParticipantDetails && <ProfileSidebar user={otherParticipantDetails} onClose={handleCloseProfile} />}
         </div>
       </div>
-
       <div className="lg:hidden flex w-full mb-12">
         {allChats &&
           <ChatSidebar

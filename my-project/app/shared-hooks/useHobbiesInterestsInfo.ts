@@ -3,14 +3,14 @@ import { getUserTrackingId } from "@/lib/access-token";
 import { getHobbiesInterests } from "@/app/shared-api/hobbiesInterestsApi";
 import { useParams } from "next/navigation";
 
-export const useHobbiesInterestsInfo = () => {
+export const useHobbiesInterestsInfo = (userIdProps?:string) => {
   
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : params.id?.[0];
 
   const tracker = getUserTrackingId();
   const allowThisTab = tracker?.hobbiesAndInterest || tracker?.step3;
-  const userId = allowThisTab ? (tracker?.id ?? id) : null;
+  const userId = userIdProps ?? (allowThisTab ? (tracker?.id ?? id) : null);
 
   const { data, loading, error, mutate } = useSWRFix({
     key: userId ? `hobbies-interests-${userId}` : '',

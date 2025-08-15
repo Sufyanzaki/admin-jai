@@ -10,8 +10,11 @@ export function HobbyInterest() {
         handleSubmit,
         onSubmit,
         isLoading,
-        errors
+        errors,
+        watch
     } = useHobbiesForm();
+
+    console.log(watch("sports"))
 
     return (
         <form onSubmit={handleSubmit((values) => onSubmit(values))}>

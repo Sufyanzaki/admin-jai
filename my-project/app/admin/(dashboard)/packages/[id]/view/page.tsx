@@ -1,17 +1,17 @@
 "use client"
 
-import { Button } from "@/components/admin/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/tabs"
-import { Badge } from "@/components/admin/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar"
-import { Progress } from "@/components/admin/ui/progress"
-import { ArrowLeft, Box, Calendar, CreditCard, Edit, Mail, Phone, Star, Users } from "lucide-react"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
+import {Badge} from "@/components/admin/ui/badge"
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar"
+import {Progress} from "@/components/admin/ui/progress"
+import {ArrowLeft, Box, Calendar, CreditCard, Edit, Phone, Star, Users} from "lucide-react"
 import Link from "next/link"
-import React, { use } from "react"
-import usePackageById from "../../_hooks/usePackageById"
+import React, {use} from "react"
 import Preloader from "@/components/shared/Preloader";
 import useAllMembers from "@/app/admin/(dashboard)/members/_hooks/useAllMembers";
+import usePackageById from "@/app/shared-hooks/usePackageById";
 
 export default function PackageDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const {id} = use(params)
@@ -106,8 +106,8 @@ export default function PackageDetailsPage({ params }: { params: Promise<{ id: s
                         </div>
                         <div className="pt-4">
                             <h4 className="mb-2 text-sm font-medium">Subscription Growth</h4>
-                            <Progress value={pkg.id * 25} className="h-2" />
-                            <p className="mt-1 text-xs text-muted-foreground">{pkg.id * 25}% increase this quarter</p>
+                            <Progress value={25} className="h-2" />
+                            <p className="mt-1 text-xs text-muted-foreground">{25}% increase this quarter</p>
                         </div>
                         <div className="flex gap-2 pt-4 flex-wrap">
                             <Link href={`/admin/packages/${pkg.id}/edit`}>

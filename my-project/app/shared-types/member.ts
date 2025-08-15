@@ -168,4 +168,7 @@ export type MemberProfile = {
     language: MemberLanguage | null;
     living: MemberLocation | null;
     physicalAppearance: MemberPhysicalAppearance | null;
+
+    packageId: string;
+    messageCount: number;
 }

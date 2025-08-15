@@ -11,16 +11,16 @@ import type React from "react";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import {DashboardList} from "./dashboard-list";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { signOut } from "next-auth/react";
+import {signOut} from "next-auth/react";
 import {useProfile} from "@/app/shared-hooks/useProfile";
 import Preloader from "@/components/shared/Preloader";
 
 const menuItems = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Search", href: "/dashboard/search" },
+  { label: "My Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
   { label: "My Visits", href: "/dashboard/visits" },
-  { label: "Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
   { label: "Notification", href: "/dashboard/notifications/received" },
+  { label: "Liked Profile", href: "/dashboard/notifications/liked-me" },
   { label: "Messages", href: "/dashboard/chat", badge: 3, badgeColor: "bg-cyan-500" },
   { label: "My Profile", href: "/dashboard/settings/account" },
 ];
@@ -29,7 +29,7 @@ export function DashboardHeader() {
 
   const {user, userLoading} = useProfile();
 
-  // if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
+  if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
 
   const allowedItems = user?.route !== "/auth/profile/partner-preferences" ? menuItems.filter(item => item.label === "My Profile") : menuItems;
 

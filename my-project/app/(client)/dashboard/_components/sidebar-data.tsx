@@ -158,7 +158,7 @@ export default function SidebarData() {
             </div>
 
             {/* Age */}
-            {/* <div className="relative group-data-[collapsible=icon]:hidden">
+            <div className="relative group-data-[collapsible=icon]:hidden">
               <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <div className="flex bg-white rounded-[5px] border border-white/20">
                 <Input
@@ -175,7 +175,7 @@ export default function SidebarData() {
                   className="border-0 text-black placeholder:text-gray-500 h-12 text-sm pl-4 rounded-l-none rounded-r-[5px]"
                 />
               </div>
-            </div> */}
+            </div>
             <div className="hidden group-data-[collapsible=icon]:flex flex-col gap-2 items-center">
               <SidebarMenuButton
                 className="text-white cursor-pointer p-0 rounded-[5px] bg-white"

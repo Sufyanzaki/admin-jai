@@ -1,22 +1,17 @@
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import useSWRMutation from "swr/mutation";
-import { showError, showSuccess } from "@/shared-lib";
-import { getSearch, SearchResponse } from "../_api/getSearch";
-import { useState } from "react";
+import {useRouter} from "next/navigation";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
 
-// ✅ Schema matches allowed API params
 export const searchSchema = z.object({
   gender: z.string().optional(),
-  relationshipStatus: z.enum(["single", "married", "widow", "divorced", "none"]).optional(),
+  relationshipStatus: z.string().optional(),
   country: z.string().optional(),
   state: z.string().optional(),
   city: z.string().optional(),
   religion: z.string().optional(),
   education: z.string().optional(),
-  hasChildren: z.coerce.boolean().optional(),
+  hasChildren: z.string().optional(),
   ageFrom: z.number().optional(),
   ageTo: z.number().optional(),
   page: z.coerce.number().default(1),
@@ -47,13 +42,13 @@ export default function useSearchForm() {
       city: "",
       religion: "",
       education: "",
-      hasChildren: false,
+      hasChildren: "",
       page: 1,
       limit: 30,
     },
   });
 
-  const onSubmit = async (values: SearchFormValues) => {
+  const onSubmit = async () => {
     const params = new URLSearchParams(
       Object.entries(watch())
         .filter(([_, v]) => v !== undefined && v !== "" && v !== null)
@@ -71,5 +66,6 @@ export default function useSearchForm() {
     control,
     watch,
     reset,
+    isSubmitting
   };
 }

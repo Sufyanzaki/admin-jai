@@ -119,7 +119,7 @@ export default function AppointmentsPage() {
     return (
       <div className="flex items-center flex-col justify-center h-64">
         <Preloader/>
-        <p className="text-sm">Loading Atrributes</p>
+        <p className="text-sm">Loading Attributes</p>
       </div>
     )
   }

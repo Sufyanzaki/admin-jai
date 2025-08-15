@@ -7,7 +7,7 @@ import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import usePackageById from "@/app/admin/(dashboard)/packages/_hooks/usePackageById";
+import usePackageById from "@/app/shared-hooks/usePackageById";
 import {useParams} from "next/navigation";
 import {useEffect} from "react";
 import {editPackage} from "@/app/shared-api/packageApi";
