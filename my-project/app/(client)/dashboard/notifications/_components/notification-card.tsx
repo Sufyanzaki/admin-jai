@@ -21,7 +21,6 @@ type Notification = {
     firstName: string;
     lastName: string;
     image: string; // URL
-    role: "CLIENT" | "ADMIN" | "OTHER"; // adjust roles as needed
   };
 };
 

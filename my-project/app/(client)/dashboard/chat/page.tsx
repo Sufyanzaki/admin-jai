@@ -9,7 +9,7 @@ import { MessageCircleDashed } from "lucide-react";
 import { useGetAllChats } from "./_hooks/useGetAllChats";
 import Preloader from "@/components/shared/Preloader";
 import { Chat } from "./_types/allChats";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 
 
@@ -59,7 +59,7 @@ export default function ChatPage() {
     );
   }
 
-  const otherParticipant = selectedChat?.users.filter(user=>Number(user.id) !== userId);
+  const otherParticipant = selectedChat?.users.filter(user => Number(user.id) !== userId);
   const otherParticipantDetails = otherParticipant?.[0];
 
   return (

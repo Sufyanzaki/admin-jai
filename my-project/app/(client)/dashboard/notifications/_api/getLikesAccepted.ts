@@ -19,7 +19,7 @@ export type accpetedLikesResponseData = {
 
 export type accpetedLikesResponse = {
     status: string; // e.g. "success"
-    data: accpetedLikesResponseData,
+    data: accpetedLikesResponseData[],
 };
 
 export async function getLikesAccepted(): Promise<accpetedLikesResponse> {

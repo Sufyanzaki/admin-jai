@@ -1,6 +1,7 @@
 "use client";
 import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
 import { LikeStatus, useLikesRecieved } from "../_hooks/useLikesRecieved";
+import { likesRecievedResponseData } from "../_api/getLikesRecived";
 
 const sampleNotification = {
   id: "1",
@@ -32,8 +33,8 @@ export default function TrashPage() {
   }
   return (
     <div className="space-y-8">
-      {likesRecieved.length == null && <p>No data to show</p>}
-      {likesRecieved?.map((likeRec: likesRecievedResponseData) => (
+      {likesRecieved && likesRecieved.length == null && <p>No data to show</p>}
+      {likesRecieved && likesRecieved?.map((likeRec: likesRecievedResponseData) => (
         <NotificationCard notification={likeRec} />
       ))}
     </div>

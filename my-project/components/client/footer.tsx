@@ -70,7 +70,7 @@ const footerLinks: FooterSection[] = [
   {
     title: "FAQ",
     links: [
-      { label: "Destinations", href: "#" },
+      { label: "Veelgestelde Vragen", href: "/faq-page" },
       { label: "Press room", href: "#" },
       { label: "Contact", href: "/contact" },
       { label: "Promo code", href: "#" },

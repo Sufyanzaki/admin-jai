@@ -22,9 +22,7 @@ import { useVee } from "@/app/shared-hooks/useVee";
 export default function Dashboard() {
   const router = useRouter();
   const { user, userLoading, error } = useProfile();
-  const { veeData, veeLoading } = useVee()
-  // console.log( veeData)
-  const cardData = getCardData(user);
+ const cardData = getCardData(user);
   const { matches, matchesLoading, matchesError } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
 

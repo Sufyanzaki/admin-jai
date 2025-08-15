@@ -12,8 +12,8 @@ export const searchSchema = z.object({
   religion: z.string().optional(),
   education: z.string().optional(),
   hasChildren: z.string().optional(),
-  ageFrom: z.number().optional(),
-  ageTo: z.number().optional(),
+  ageFrom: z.string().optional(),
+  ageTo: z.string().optional(),
   page: z.coerce.number().default(1),
   limit: z.coerce.number().max(30).default(30),
 

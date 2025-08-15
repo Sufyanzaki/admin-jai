@@ -2,14 +2,19 @@ import { sendMessage } from "@/app/(client)/dashboard/chat/_api/conversation";
 import { useParams } from "next/navigation";
 import useSWRMutation from "swr/mutation";
 
-export const useSendMessage = () => {
+type ChatDetails = {
+    chatID?: string;
+}
+
+export const useSendMessage = ({ chatID }: ChatDetails) => {
     const params = useParams();
-    const chatId = Array.isArray(params.id) ? params.id[0] : params.id ?? "";
+    const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
+    const chatId = chatID ?? id;
 
     const { trigger, data, isMutating, error } = useSWRMutation(
-        `send-message-${chatId}`,
+        `chat-details-${chatId}`,
         async (_key, { arg }: { arg: { content: string } }) => {
-            const response = await sendMessage({chatId, ...arg});
+            const response = await sendMessage({ chatId, ...arg });
             if (!response) {
                 throw new Error("Failed to send message");
             }

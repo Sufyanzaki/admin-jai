@@ -1,11 +1,13 @@
 "use client";
-import {Button} from "@/components/client/ux/button";
-import {Label} from "@/components/client/ux/label";
-import {Switch} from "@/components/client/ux/switch";
-import {Grid3X3, List} from "lucide-react";
-import {useState} from "react";
+import { Button } from "@/components/client/ux/button";
+import { Label } from "@/components/client/ux/label";
+import { Switch } from "@/components/client/ux/switch";
+import { Grid3X3, List } from "lucide-react";
+import { useState } from "react";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
+import { LikeStatus, useLikesRecieved } from "../notifications/_hooks/useLikesRecieved";
+import { likesRecievedResponseData } from "../notifications/_api/getLikesRecived";
 
 const visitResults = [
     {
@@ -121,7 +123,13 @@ const visitResults = [
 export default function MatchesPage() {
     const [online, setOnline] = useState(true);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
+    const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
+        LikeStatus.PENDING
+    );
+    if (likesRecievedLoading) {
+        return <p>Loading...</p>;
+    }
+console.log(likesRecieved)
     const filteredResults = online
         ? visitResults.filter(profile => profile.status === "online")
         : visitResults;
@@ -170,14 +178,14 @@ export default function MatchesPage() {
 
                     {viewMode === "grid" ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-                            {filteredResults.map((profile) => (
-                                <ProfileCard key={profile.id} profile={profile} />
+                            {likesRecieved && likesRecieved?.map((profile : likesRecievedResponseData) => (
+                                <ProfileCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>
                     ) : (
                         <div className="space-y-4 mb-8">
-                            {filteredResults.map((profile) => (
-                                <ListCard key={profile.id} profile={profile} />
+                            {likesRecieved && likesRecieved?.map((profile : likesRecievedResponseData) => (
+                                <ListCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>
                     )}

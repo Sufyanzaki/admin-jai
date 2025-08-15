@@ -11,7 +11,7 @@ export function DashboardFooter() {
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 gap-y-1 text-xs text-gray-600 font-medium">
             <Link href="/dashboard/agenda" className="hover:text-gray-900">Dating Tips</Link>
             <span className="text-gray-400 hidden sm:inline">•</span>
-            <Link href="/dashboard/safety-tips" className="hover:text-gray-900">Events</Link>
+            <Link href="/dashboard/agenda" className="hover:text-gray-900">Events</Link>
             <span className="text-gray-400 hidden sm:inline">•</span>
             <Link href="/dashboard/help" className="hover:text-gray-900">Help</Link>
             <span className="text-gray-400 hidden sm:inline">•</span>

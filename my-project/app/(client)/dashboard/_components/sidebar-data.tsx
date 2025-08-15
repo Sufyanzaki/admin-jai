@@ -54,7 +54,7 @@ export default function SidebarData() {
     watch,
     register,
   } = useSearchForm();
-
+console.log("search api error from sidebar", errors)
   const city = watch("city");
   const state = watch("state");
   const country = watch("country");

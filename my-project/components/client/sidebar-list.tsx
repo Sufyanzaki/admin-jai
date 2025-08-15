@@ -23,7 +23,6 @@ export function SidebarList() {
               ["NEWS", "/blog"],
               ["CONTACT", "/contact"],
               ["Terms and Services", "/privacy-policy"],
-              ["Register", "/auth/profile/create"],
             ].map(([label, link]) => (
               <li key={label}>
                 <a

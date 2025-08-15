@@ -7,7 +7,7 @@ export type likesRecievedResponseData = {
     id: number;
     senderId: number;
     receiverId: number;
-    status: "PENDING" | "ACCEPTED" | "REJECTED"; // add more statuses if needed
+    status: "PENDING" | "ACCEPTED" | "DECLINED";  // adjust if you have more statuses
     createdAt: string; // ISO date string
     updatedAt: string; // ISO date string
     sender: {
@@ -20,7 +20,7 @@ export type likesRecievedResponseData = {
 
 export type likesRecievedResponse = {
     status: string; // e.g. "success"
-    data:likesRecievedResponseData,
+    data: likesRecievedResponseData[],
 };
 
 export async function getLikesRecieved(params?: { status?: LikeStatus }): Promise<likesRecievedResponse> {

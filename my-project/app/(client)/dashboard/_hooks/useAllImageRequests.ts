@@ -29,7 +29,7 @@ export const useAllImageRequests = (type?: ImageRequestType,status?: ImageReques
   });
 
   return {
-    AllImagesRequests: data,
+    AllImagesRequests: data?.data,
     AllImagesRequestsLoading: loading,
     error,
     mutate,

@@ -1,12 +1,12 @@
 "use client"
 
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {useRouter} from 'next/navigation';
-import {showError} from '@/shared-lib';
-import {signIn} from 'next-auth/react';
-import {getUserEmail} from "@/lib/access-token";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useRouter } from 'next/navigation';
+import { showError } from '@/shared-lib';
+import { signIn } from 'next-auth/react';
+import { getUserEmail } from "@/lib/access-token";
 
 const otpSchema = z.object({
     otp: z.string()
@@ -46,16 +46,16 @@ export default function useOTPForm() {
             callbackUrl: '/dashboard',
         })) as CustomSignInResponse;
 
-        const navigation = result?.route ?? '/auth/profile/create';
+        const navigation = result?.url && result?.url.includes("/dashboard") ? '/dashboard' : '/auth/profile/create';
 
         if (result?.error) {
             const errorMessage = result.error === 'CredentialsSignin'
                 ? 'Invalid OTP '
                 : 'Login failed. Please try again.';
 
-            showError({message: errorMessage});
+            showError({ message: errorMessage });
         }
-        else router.push(navigation === "/auth/profile/partner-preferences" ? "/dashboard" : navigation);
+        else router.push(navigation);
     };
 
     return {

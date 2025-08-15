@@ -6,10 +6,11 @@ import { SignupForm } from "./signup-form";
 import { useHome } from "@/app/shared-hooks/useHome";
 import Preloader from "@/components/shared/Preloader";
 import type React from "react";
+import { useSession } from "next-auth/react";
 
 export function HeroSection() {
   const { homeLoading, homeSettings } = useHome();
-
+  const { data: session } = useSession();
   if (homeLoading)
     return (
       <div className="flex items-center flex-col justify-center h-64">
@@ -53,9 +54,10 @@ export function HeroSection() {
                   </Button>
                 </div>
               </div>
-              <div className="hidden lg:block">
+              {!session?.user && <div className="hidden lg:block">
                 <SignupForm />
-              </div>
+              </div>}
+
             </div>
           </Container>
         </div>

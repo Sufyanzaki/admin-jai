@@ -4,7 +4,7 @@ import { ImageRequestStatus, ImageRequestType } from "../_hooks/useAllImageReque
 
 export type likesRecievedResponse = {
   status: "success" | "error";
-  data: MemberProfile;
+  data: MemberProfile[];
 };
 
 export async function getAllImageRequest(

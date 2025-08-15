@@ -35,7 +35,7 @@ export default function HowItWorksPage() {
             {/* Left Side - Image */}
             <div className="">
               <ImageWrapper
-                src={howWorkSettings?.bannerImage}
+                src={howWorkSettings?.bannerImage ? howWorkSettings?.bannerImage : "assets/couple-coffee.png"}
                 alt="Couple having coffee together"
                 className="w-full h-[390px] object-cover"
               />
@@ -62,7 +62,7 @@ export default function HowItWorksPage() {
                   variant={"secondary"}
                   className="w-1/2 lg:w-fit"
                 >
-                  Start Search
+                  {howWorkSettings?.searchPlaceholder}
                 </Button>
               </div>
             </div>

@@ -8,7 +8,7 @@ export type sendImageRequestResponseData = {
     id: number;
     senderId: number;
     receiverId: number;
-    status: "PENDING" | "ACCEPTED" | "REJECTED"; // add more statuses if needed
+    status: "PENDING" | "ACCEPTED" | "DECLINED";  // adjust if you have more statuses
     createdAt: string; // ISO date string
     updatedAt: string; // ISO date string
     sender: {
@@ -21,7 +21,7 @@ export type sendImageRequestResponseData = {
 
 export type sendImageRequestResponse = {
     status: string; // e.g. "success"
-    data: sendImageRequestResponseData
+    data: sendImageRequestResponseData[],
 };
 
 

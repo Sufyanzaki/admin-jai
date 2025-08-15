@@ -20,7 +20,7 @@ const menuItems = [
   { label: "My Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
   { label: "My Visits", href: "/dashboard/visits" },
   { label: "Notification", href: "/dashboard/notifications/received" },
-  { label: "Liked Profile", href: "/dashboard/notifications/liked-me" },
+  { label: "Liked Profile", href: "/dashboard/notifications/received" },
   { label: "Messages", href: "/dashboard/chat", badge: 3, badgeColor: "bg-cyan-500" },
   { label: "My Profile", href: "/dashboard/settings/account" },
 ];

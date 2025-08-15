@@ -5,6 +5,7 @@ import {
   ImageRequestType,
   useAllImageRequests,
 } from "../../_hooks/useAllImageRequests";
+import { likesRecievedResponseData } from "../_api/getLikesRecived";
 
 const sampleNotification = {
   id: "1",
@@ -35,8 +36,8 @@ export default function RequestPage() {
   }
   return (
     <div className="space-y-8">
-      {AllImagesRequests?.length <= 0 && <p>No data to show</p>}
-      {AllImagesRequests?.map((likeRec: likesRecievedResponseData) => (
+      {AllImagesRequests && AllImagesRequests?.length <= 0 && <p>No data to show</p>}
+      {AllImagesRequests && AllImagesRequests?.map((likeRec: likesRecievedResponseData) => (
         <NotificationCard notification={likeRec} />
       ))}{" "}
     </div>

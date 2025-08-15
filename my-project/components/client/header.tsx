@@ -27,8 +27,7 @@ const navLinks = [
 export function Header() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const tokenValid =
-    session && session?.expires && new Date(session.expires) > new Date();
+  const tokenValid = session && session?.user;
 
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -45,9 +44,8 @@ export function Header() {
     <>
       {pathname === "/" ? (
         <header
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-            scrolled ? "backdrop-blur-lg bg-black/30 py-6 shadow-sm" : "py-8"
-          }`}
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-lg bg-black/30 py-6 shadow-sm" : "py-8"
+            }`}
         >
           <Container className="px-4 md:px-6">
             <div className="flex items-center justify-between">
@@ -92,9 +90,8 @@ export function Header() {
         </header>
       ) : (
         <header
-          className={`fixed top-0 left-0 right-0  bg-white z-50 transition-all duration-300 ${
-            scrolled ? "backdrop-blur-lg bg-white/30 py-6 shadow-sm" : "py-7"
-          }`}
+          className={`fixed top-0 left-0 right-0  bg-white z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-lg bg-white/30 py-6 shadow-sm" : "py-7"
+            }`}
         >
           <Container className="px-4 md:px-6">
             <div className="w-full flex items-center justify-between">
@@ -135,9 +132,9 @@ export function Header() {
                   );
                 })}
                 {tokenValid ? (
-                  <Link href="/auth/login">
+                  <Link href="/dashboard">
                     <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
-                      LOGIN
+                      Dashboard
                     </Button>{" "}
                   </Link>
                 ) : (

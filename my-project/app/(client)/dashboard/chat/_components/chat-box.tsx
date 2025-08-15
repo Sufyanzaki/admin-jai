@@ -1,19 +1,19 @@
 "use client";
-import {Button} from "@/components/client/ux/button";
-import {Input} from "@/components/client/ux/input";
-import {ArrowLeft, MoreVertical, Send} from "lucide-react";
-import {useRouter} from "next/navigation";
-import React, {useState} from "react";
+import { Button } from "@/components/client/ux/button";
+import { Input } from "@/components/client/ux/input";
+import { ArrowLeft, MoreVertical, Send } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import ImageWrapper from "@/components/client/image-wrapper";
-import {EmojiPopover} from "@/components/client/emoji-popover";
+import { EmojiPopover } from "@/components/client/emoji-popover";
 import FileUploadClip from "@/components/client/file-upload-clip";
-import {useChatDetails} from "@/app/(client)/dashboard/chat/_hooks/useChatDetails";
+import { useChatDetails } from "@/app/(client)/dashboard/chat/_hooks/useChatDetails";
 import Preloader from "@/components/shared/Preloader";
-import {useSendMessage} from "@/app/(client)/dashboard/chat/_hooks/useSendMessage";
-import {formatDistanceToNow} from "date-fns";
-import {useSession} from "next-auth/react";
-import {MessageListener} from "@/client-utils/MessageListener";
-import {Chat} from "@/app/(client)/dashboard/chat/_types/allChats";
+import { useSendMessage } from "@/app/(client)/dashboard/chat/_hooks/useSendMessage";
+import { formatDistanceToNow } from "date-fns";
+import { useSession } from "next-auth/react";
+import { MessageListener } from "@/client-utils/MessageListener";
+import { Chat } from "@/app/(client)/dashboard/chat/_types/allChats";
 
 type ChatBoxProps = {
     selectedChat: Chat;
@@ -22,9 +22,9 @@ type ChatBoxProps = {
 
 export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) {
 
-    const { chatDetails, chatLoading, chatMutate } = useChatDetails({chatId: selectedChat.id});
+    const { chatDetails, chatLoading, chatMutate } = useChatDetails({ chatId: selectedChat.id });
 
-    const { sending, sendMessageAction } = useSendMessage();
+    const { sending, sendMessageAction } = useSendMessage({ chatID: selectedChat.id });
     const router = useRouter();
     const [messageInput, setMessageInput] = useState("");
 
@@ -42,7 +42,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
 
     const otherParticipant = selectedChat?.users?.find((u) => Number(u.id) !== userId) ?? null;
 
-    const chat = chatDetails?.data.messages ?? [];
+    const chat = [...(chatDetails?.data.messages ?? [])].reverse();
 
     const handleSendMessage = async () => {
         const trimmedMessage = messageInput.trim();
@@ -79,7 +79,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
             <div
                 className="flex-1 flex flex-col relative"
                 style={{
-                    height: "calc(100dvh - 70px)",
+                    height: "calc(100dvh - 125px)",
                 }}
             >
                 {/* Header */}
@@ -117,11 +117,10 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                     className={`flex sm:overflow-x-hidden ${currentUser ? "justify-end" : "justify-start"}`}
                                 >
                                     <div
-                                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-[5px] ${
-                                            currentUser
+                                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-[5px] ${currentUser
                                                 ? "bg-[#1975D2] text-white"
                                                 : "text-gray-900 bg-[#F7F7F7]"
-                                        }`}
+                                            }`}
                                     >
                                         {message.content && (
                                             <p className="text-sm whitespace-pre-wrap">
@@ -145,9 +144,8 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                         })()}
 
                                         <p
-                                            className={`text-xs mt-1 ${
-                                                currentUser ? "text-blue-100" : "text-gray-500"
-                                            }`}
+                                            className={`text-xs mt-1 ${currentUser ? "text-blue-100" : "text-gray-500"
+                                                }`}
                                         >
                                             {formatDistanceToNow(new Date(message.createdAt), {
                                                 addSuffix: true,
