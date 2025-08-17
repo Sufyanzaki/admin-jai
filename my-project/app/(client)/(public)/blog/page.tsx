@@ -5,12 +5,38 @@ import { Container } from "@/components/client/ux/container";
 import { BlogCard } from "./_components/blog-card";
 import { Button } from "@/components/client/ux/button";
 import { CustomPagination } from "@/components/client/ux/custom-pagination";
-import {useBlogs} from "@/app/shared-hooks/useBlogs";
+import { useBlogs } from "@/app/shared-hooks/useBlogs";
+import Preloader from "@/components/shared/Preloader";
+import { useBlogCategories } from "@/app/shared-hooks/useBlogCategories";
 
 export default function BlogPage() {
   const { blogs: blogPosts = [], loading, error } = useBlogs();
+  const { categories, loading: categoryLoading, error: cateogoryError } = useBlogCategories()
+
   const [page, setPage] = useState(1);
   const total = 4;
+
+
+  if (loading) {
+    return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">Loading your profile information...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center flex-col justify-center h-64 gap-3">
+        <h2 className="text-2xl font-bold text-red-600">
+          Error loading your profile information
+        </h2>
+        <p className="text-muted-foreground">{error.message}</p>
+      </div>
+    );
+  }
+
 
   return (
     <div className="bg-white">
@@ -22,30 +48,16 @@ export default function BlogPage() {
               Blog
             </h3>
             <div className="flex-wrap gap-3 flex text-sm">
-              <Button
-                variant={"outline"}
-                className="shadow-none border-[#374756]"
-              >
-                Dating
-              </Button>
-              <Button
-                variant={"outline"}
-                className="shadow-none border-[#374756]"
-              >
-                Love
-              </Button>{" "}
-              <Button
-                variant={"outline"}
-                className="shadow-none border-[#374756]"
-              >
-                Metrimony
-              </Button>{" "}
-              <Button
-                variant={"outline"}
-                className="shadow-none border-[#374756]"
-              >
-                Tips
-              </Button>
+              {categories && categories.map((category) => (
+                <Button
+                  variant="outline"
+                  key={category.name}
+                  className="shadow-none"
+                >
+                  {category.name}
+                </Button>
+              ))}
+              
             </div>
           </div>
           {/* Blog Grid */}
@@ -73,9 +85,9 @@ export default function BlogPage() {
           </div>
 
           {/* Banner Space */}
-          <div className="bg-gray-200 h-32 flex items-center justify-center rounded-lg">
+          {/* <div className="bg-gray-200 h-32 flex items-center justify-center rounded-lg">
             <span className="text-gray-500 text-lg">banner space</span>
-          </div>
+          </div> */}
         </div>
       </Container>
     </div>

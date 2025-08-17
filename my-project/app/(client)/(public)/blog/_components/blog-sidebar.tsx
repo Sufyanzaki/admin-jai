@@ -1,14 +1,31 @@
 "use client";
 import { Button } from "@/components/client/ux/button";
 import ImageWrapper from "@/components/client/image-wrapper";
+import { useBlogCategories } from "@/app/shared-hooks/useBlogCategories";
+import Preloader from "@/components/shared/Preloader";
 
 export function BlogSidebar() {
-  const categories = [
-    { name: "Dating", count: 12 },
-    { name: "Love", count: 8 },
-    { name: "Wellness", count: 15 },
-    { name: "Tips", count: 6 },
-  ];
+  const { categories, loading, error } = useBlogCategories()
+
+    if (loading) {
+          return (
+              <div className="flex items-center flex-col justify-center h-64">
+                  <Preloader />
+                  <p className="text-sm">Loading your profile information...</p>
+              </div>
+          );
+      }
+  
+      if (error) {
+          return (
+              <div className="flex items-center flex-col justify-center h-64 gap-3">
+                  <h2 className="text-2xl font-bold text-red-600">
+                      Error loading your profile information
+                  </h2>
+                  <p className="text-muted-foreground">{error.message}</p>
+              </div>
+          );
+      }
 
   const featuredPosts = [
     {
@@ -44,7 +61,7 @@ export function BlogSidebar() {
         <h4 className="font-bold text-lg">Explore Categories</h4>
 
         <div className="flex flex-wrap gap-3">
-          {categories.map((category) => (
+          {categories && categories.map((category) => (
             <Button
               variant="outline"
               key={category.name}

@@ -1,16 +1,15 @@
 "use client";
 import ImageCard from "@/components/client/ux/image-card";
 import ImageWrapper from "@/components/client/image-wrapper";
-import {BlogDto} from "@/app/shared-types/blog";
+import { BlogDto } from "@/app/shared-types/blog";
+import { formatDate } from "date-fns";
 
 export function BlogCard({
   id,
   title,
   bannerImage,
-  metaImage,
-  metaTitle,
   createdAt,
-  categoryId,
+  category,
 }: BlogDto) {
   return (
     <div className="p-0 overflow-hidden">
@@ -36,19 +35,20 @@ export function BlogCard({
       <div className="py-3 px-0">
         <div className="flex items-center justify-between text-sm mb-3">
           <div className="flex items-center space-x-1 text-sm">
-            <span className="text-sm">{categoryId}</span>
+            <span className="text-sm">{category?.name}</span>
           </div>
           <div className="flex flex-row items-center space-x-1 ">
             <div className="bg-gray-100 rounded-full p-1">
               <ImageWrapper
-                src={metaImage || "/asstes/user/png"}
-                alt="metaImage"
+                src={bannerImage || "/asstes/user/png"}
+                alt="bannerImage"
                 className="w-8 h-8 rounded-full"
               />
             </div>
 
             <span className="text-sm font-medium">
-              {metaTitle}-{createdAt}
+              {formatDate(createdAt, "dd-MM-yyyy")}
+
             </span>
           </div>
         </div>

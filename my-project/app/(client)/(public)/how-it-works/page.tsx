@@ -148,7 +148,7 @@ export default function HowItWorksPage() {
         <div className="bg-white py-11 md:pt-16 lg:pt-20 pb-[56px] md:pb-[100px] lg:pb-[70px]">
           <Container className="px-4 md:px-6">
             <h2 className="text-xl font-semibold">{howWorkSettings?.faqTitle}</h2>
-            <h3  className="text-lg font-medium">{howWorkSettings?.faqDescription}</h3>
+            <h3  className="text-lg font-medium mb-4">{howWorkSettings?.faqDescription}</h3>
             <div className="grid lg:grid-cols-2 space-x-4 space-y-10">
               {isLoading ? (
                 <div className="text-center py-10">

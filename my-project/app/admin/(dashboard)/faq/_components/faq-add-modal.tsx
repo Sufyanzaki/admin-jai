@@ -72,9 +72,7 @@ export function FaqAddModal({ isOpen, onClose }: { isOpen: boolean; onClose: (va
                                                         </SelectItem>
                                                     ))
                                                 ) : (
-                                                    <SelectItem value="" disabled>
-                                                        No categories available
-                                                    </SelectItem>
+                                                    <span className="px-2 text-sm text-gray-500">No categories available</span>
                                                 )}
                                             </SelectContent>
                                         </Select>

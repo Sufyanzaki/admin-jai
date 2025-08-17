@@ -8,6 +8,8 @@ export type BasicPageDto = {
     keywords: string;
     metaImage: string;
     pageType: string;
+    pageTitle?: string;
+    showOnHeader?: boolean;
     isActive: boolean;
     createdAt: string;
     updatedAt: string;

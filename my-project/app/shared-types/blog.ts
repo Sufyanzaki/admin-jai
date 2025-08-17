@@ -12,6 +12,7 @@ export type BlogDto = {
     metaKeywords: string;
     createdAt: string;
     updatedAt: string;
+    category: BlogCategoryDto;
 };
 
 export type BlogCategoryDto = {
