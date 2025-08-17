@@ -1,3 +1,4 @@
+import { ChatUser } from './conversation';
 import { MemberProfile } from "@/app/shared-types/member";
 import { ChatMessage } from "./message";
 
@@ -6,7 +7,7 @@ export interface Chat {
   chatName: string;
   createdAt: string;
   updatedAt: string;
-  users: MemberProfile[];
+  ChatUser: ChatUser[];
   messages: ChatMessage[];
 }
 

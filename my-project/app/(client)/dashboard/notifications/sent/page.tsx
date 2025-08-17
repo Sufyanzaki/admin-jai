@@ -1,33 +1,26 @@
+'use client'
 import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import { ImageRequestStatus, useAllImageRequests } from "../../_hooks/useAllImageRequests";
+import { useLikesSent } from "../_hooks/useLikesSent";
+import { likesSentResponseData } from "../_api/getLikesSent";
 
-const sampleNotification = {
-  id: "1",
-  type: "like" as const,
-  from: {
-    name: "Dora M",
-    age: 39,
-    height: "5.5",
-    languages: ["Hindi"],
-    religion: "Hindu",
-    profession: "Finance Professional",
-    image: "https://picsum.photos/seed/dora/200",
-    isVerified: true,
-    isOnline: true,
-    lastSeen: "1d ago",
-  },
-  message:
-    "Hi, it is nice connecting with you. I liked your profile and would like to take this forward.",
-  timestamp: "Dec 30, 04:22 PM",
-  isStarred: true,
-};
 
 export default function SentPage() {
-
+  const { likesSent, likesSentLoading, error } = useLikesSent();
+  if (likesSentLoading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>error getting notifications...
+      <p>{error?.message}</p>
+    </p>;
+  }
   return (
     <div className="space-y-8">
-      {/* <NotificationCard notification={sampleNotification} />
-      <NotificationCard notification={sampleNotification} /> */}
+      {likesSent && likesSent?.length <= 0 && <p>No notification to show</p>}
+
+      {likesSent && likesSent?.map((likeRec: likesSentResponseData) => (
+        <NotificationCard notification={likeRec} />
+      ))}
     </div>
   );
 }

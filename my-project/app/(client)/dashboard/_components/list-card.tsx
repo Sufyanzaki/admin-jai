@@ -4,10 +4,23 @@ import ImageWrapper from "@/components/client/image-wrapper";
 import { MemberProfile } from "@/app/shared-types/member";
 import { useSendLike } from "../_hooks/useSendLike";
 import { useBlockUser } from "../_hooks/useBlockUser";
+import { useCreateChat } from "../chat/_hooks/useCreateChat";
+import { useRouter } from "next/router";
 
 export default function ListCard({ profile }: { profile: MemberProfile }) {
+  const router = useRouter();
   const { trigger: sendLike, loading } = useSendLike();
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
+  const { sendMessageRefetch, messageLoading } = useCreateChat();
+
+  const handleSendMessage = async () => {
+    if (!profile?.id) return;
+    sendMessageRefetch(profile?.id).then(res => {
+      if (res?.data?.fullChat?.id) {
+        router.push(`/dashboard/chat?chatId=${res.data.fullChat.id}`);
+      }
+    });
+  };
 
   return (
       <div className="overflow-hidden rounded-[5px] transition-shadow cursor-pointer mb-4">
@@ -43,7 +56,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                     variant="outline"
                     size="sm"
                     className="text-xs px-2 py-1 h-7 bg-transparent"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={handleSendMessage}
                 >
                   📧 Message
                 </Button>
@@ -59,14 +72,14 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                 >
                   {loading ? "Liking..." : " 💝 Interested"}
                 </Button>
-                <Button
+                {/* <Button
                     variant="outline"
                     size="sm"
                     className="text-xs px-2 py-1 h-7 bg-transparent"
                     onClick={(e) => e.stopPropagation()}
                 >
                   ⭐ Favorite
-                </Button>
+                </Button> */}
                 <Button
                     variant="outline"
                     size="sm"

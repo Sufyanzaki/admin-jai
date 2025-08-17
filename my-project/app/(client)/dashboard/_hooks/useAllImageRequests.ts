@@ -2,15 +2,14 @@ import { useSWRFix } from "@/shared-lib";
 import { getAllImageRequest, likesRecievedResponse } from "../_api/getAllImageRequest";
 
 export enum ImageRequestStatus {
-  PENDING = "pending",
-  ACCEPTED = "approve",
-  DECLINED = "declined",
+  PENDING = "PENDING",
+  ACCEPTED = "APPROVED",
+  DECLINED = "DECLINED",
 }
 
 export enum ImageRequestType {
-  PENDING = "pending",
-  RECIEVED = "received",
-  DECLINED = "declined",
+  SENT = "sent",
+  ACCEPTED = "received",
 }
 
 export const useAllImageRequests = (type?: ImageRequestType,status?: ImageRequestStatus) => {

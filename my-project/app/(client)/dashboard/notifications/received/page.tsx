@@ -11,7 +11,11 @@ export default function ReceivedPage() {
   if (likesRecievedLoading) {
     return <p>Loading...</p>;
   }
-  
+  if (error) {
+    return <p>error getting notifications...
+      <p>{error?.message}</p>
+    </p>;
+  }
   return (
     <div className="space-y-8">
       {likesRecieved && likesRecieved?.length <= 0 && <p>No notification to show</p>}

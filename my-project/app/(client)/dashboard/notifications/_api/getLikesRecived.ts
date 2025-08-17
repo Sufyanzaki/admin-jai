@@ -23,10 +23,9 @@ export type likesRecievedResponse = {
     data: likesRecievedResponseData[],
 };
 
-export async function getLikesRecieved(params?: { status?: LikeStatus }): Promise<likesRecievedResponse> {
+export async function getLikesRecieved( status?: LikeStatus ): Promise<likesRecievedResponse> {
     return await getRequest<likesRecievedResponse>({
-        url: "/users/like/received",
-        params,
+        url: `users/like/received?status=${status}`,
         useAuth: true,
     });
 }

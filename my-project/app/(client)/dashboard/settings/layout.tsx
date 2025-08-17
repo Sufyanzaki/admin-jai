@@ -5,12 +5,14 @@ import {settingsItems, SettingsSidebar,} from "../_components/settings-sidebar";
 import {Button} from "@/components/client/ux/button";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function SettingsLayout({
                                            children,
                                        }: {
     children: React.ReactNode;
 }) {
+    const {data: session} = useSession();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -27,10 +29,7 @@ export default function SettingsLayout({
                 <div className="flex gap-2 w-full sm:w-auto">
                     <Button
                         onClick={() => {
-                            const params = new URLSearchParams(searchParams.toString());
-                            params.delete("edit"); // remove edit mode
-                            params.set("view", "true"); // set view mode
-                            router.push(`?${params.toString()}`, { scroll: false });
+                            router.push(`/dashboard/search/${session?.user?.id}`);
                         }}
                         variant={searchParams.has("view") ? "theme" : "outline"}
                         size="lg"

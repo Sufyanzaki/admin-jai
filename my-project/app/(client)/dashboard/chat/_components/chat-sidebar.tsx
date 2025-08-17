@@ -2,9 +2,9 @@
 import { Input } from "@/components/client/ux/input";
 import { MoreVertical, Search } from "lucide-react";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { Chat } from "../_types/allChats";
 import { useSession } from "next-auth/react";
 import { formatDate } from "date-fns";
+import { Chat } from "../_types/allChats";
 
 
 interface ChatSidebarProps {
@@ -18,11 +18,11 @@ export function ChatSidebar({
   selectedChat,
   onSelectChat,
 }: ChatSidebarProps) {
-
+  console.log(selectedChat)
   const { data: session } = useSession();
   const userId = session?.user?.id ? Number(session?.user?.id) : undefined;
-
-  const currentUser = chatData.map(chat => chat.users.find(user => Number(user?.id) === userId)).find(user => user);
+  const currrentParticipant = selectedChat?.ChatUser?.filter(user => Number(user.userId) === userId);
+  const currentUser = currrentParticipant && currrentParticipant[0]?.user;
 
   return (
     <div className="w-full lg:w-80 bg-white border-r border-gray-200 flex flex-col py-3 lg:px-3">
@@ -61,15 +61,16 @@ export function ChatSidebar({
           <h3 className="text-sm font-semibold p-4 lg:p-3">Chats</h3>
           <div className="divide-y divide-gray-200">
             {chatData?.map((chat) => {
-              const contactUser = chat.users.find(user => user?.id !== session?.user?.id);
+              const otherParticipant = chat?.ChatUser?.filter(user => Number(user.userId) !== userId);
+              const contactUser = otherParticipant && otherParticipant[0]?.user;
               return (
                 <div
                   key={chat.id}
                   onClick={() => onSelectChat(chat)}
                   className={`flex items-center gap-3 py-4 px-4 lg:px-2 cursor-pointer transition-colors rounded-[5px] 
                     ${selectedChat && selectedChat?.id === chat?.id
-                    ? "bg-blue-50"
-                    : "hover:bg-gray-50"
+                      ? "bg-blue-50"
+                      : "hover:bg-gray-50"
                     }`}
                 >
                   <div className="relative">

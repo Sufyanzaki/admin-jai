@@ -2,41 +2,37 @@
 import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
 import { LikeStatus, useLikesRecieved } from "../_hooks/useLikesRecieved";
 import { likesRecievedResponseData } from "../_api/getLikesRecived";
+import { ImageRequestStatus, ImageRequestType, useAllImageRequests } from "../../_hooks/useAllImageRequests";
 
-const sampleNotification = {
-  id: "1",
-  type: "like" as const,
-  from: {
-    name: "Dora M",
-    age: 39,
-    height: "5.5",
-    languages: ["Hindi"],
-    religion: "Hindu",
-    profession: "Finance Professional",
-    image: "https://picsum.photos/seed/dora/200",
-    isVerified: true,
-    isOnline: true,
-    lastSeen: "1d ago",
-  },
-  message:
-    "Hi, it is nice connecting with you. I liked your profile and would like to take this forward.",
-  timestamp: "Dec 30, 04:22 PM",
-  isStarred: true,
-};
 
 export default function TrashPage() {
-  const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
-    LikeStatus.DECLINED
-  );
-  if (likesRecievedLoading) {
+  const { AllImagesRequests, AllImagesRequestsLoading, error: imageTrash, mutate } =
+    useAllImageRequests(ImageRequestType.ACCEPTED, ImageRequestStatus.DECLINED);
+  // const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
+  //   LikeStatus.DECLINED
+  // );
+  if (AllImagesRequestsLoading) {
     return <p>Loading...</p>;
   }
   return (
     <div className="space-y-8">
-      {likesRecieved && likesRecieved.length == null && <p>No data to show</p>}
-      {likesRecieved && likesRecieved?.map((likeRec: likesRecievedResponseData) => (
-        <NotificationCard notification={likeRec} />
-      ))}
+      {/* Likes */}
+      {/* <div>
+        {likesRecieved?.length === 0 && <p>No data to show</p>}
+        {likesRecieved?.map((likeRec) => (
+          <NotificationCard key={likeRec.id} notification={likeRec} />
+        ))}
+      </div> */}
+
+      {/* Images */}
+      <div>
+        {/* <h2>Your Declined Image Requests</h2> */}
+        {AllImagesRequests?.length === 0 && <p>No data to show</p>}
+        {AllImagesRequests?.map((req) => (
+          <NotificationCard key={req.id} notification={req} />
+        ))}
+      </div>
     </div>
+
   );
 }

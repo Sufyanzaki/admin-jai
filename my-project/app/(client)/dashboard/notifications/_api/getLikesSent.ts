@@ -2,14 +2,14 @@ import { ProfileResponse } from "@/app/shared-types/auth";
 import { MemberProfile } from "@/app/shared-types/member";
 import { getRequest } from "@/shared-lib";
 
-export type accpetedLikesResponseData = {
+export type likesSentResponseData = {
     id: number;
     senderId: number;
     receiverId: number;
     status: "PENDING" | "ACCEPTED" | "REJECTED"; // add more statuses if needed
     createdAt: string; // ISO date string
     updatedAt: string; // ISO date string
-    sender: {
+    receiver: {
         id: number;
         firstName: string;
         lastName: string;
@@ -17,14 +17,14 @@ export type accpetedLikesResponseData = {
     };
 }
 
-export type accpetedLikesResponse = {
+export type likesSentResponse = {
     status: string; // e.g. "success"
-    data: accpetedLikesResponseData[],
+    data: likesSentResponseData[],
 };
 
-export async function getLikesAccepted(): Promise<accpetedLikesResponse> {
-    return await getRequest<accpetedLikesResponse>({
-        url: "users/like/accepted",
+export async function getLikesSent(): Promise<likesSentResponse> {
+    return await getRequest<likesSentResponse>({
+        url: "users/like/sent",
         useAuth: true,
     });
 }

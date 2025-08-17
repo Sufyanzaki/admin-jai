@@ -13,16 +13,20 @@ export function DashboardFooter() {
       <div className="px-6 py-4">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-center md:text-left">
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 gap-y-1 text-xs text-gray-600 font-medium">
-            {isLoading ? 
-            <p>Loading...</p>
-            :footerLinks?.map((link) =>
-              <>
-                <Link href={link?.Url ? link?.Url : "/dashboard/agenda"} className="hover:text-gray-900">{link?.pageTitle}</Link>
-                <span className="text-gray-400 hidden sm:inline">•</span>
-              </>
-            )
+            <Link href={"/dashboard/agenda"} className="hover:text-gray-900">Agenda</Link>
+            <span className="text-gray-400 hidden sm:inline">•</span>
+
+            {isLoading ?
+              <p>Loading...</p>
+              : footerLinks?.map((link) =>
+                <>
+                  <Link href={link?.Url ? link?.Url : "/dashboard/agenda"} className="hover:text-gray-900">{link?.pageTitle}</Link>
+                  <span className="text-gray-400 hidden sm:inline">•</span>
+                </>
+              )
             }
-                </div>
+
+          </div>
 
           <div className="flex justify-center md:justify-end items-center gap-2">
             <Link href="#">

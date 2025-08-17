@@ -30,7 +30,7 @@ export function DashboardHeader() {
 
   const menuItems: MenuItem[] = [
     { label: "Dashboard", href: "/dashboard" },
-    { label: "My Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
+    { label: "My Matches", href: "/dashboard/matches" },
     { label: "My Visits", href: "/dashboard/visits" },
     { label: "Notification", href: "/dashboard/notifications/received" },
     { label: "Liked Profile", href: "/dashboard/notifications/received" },

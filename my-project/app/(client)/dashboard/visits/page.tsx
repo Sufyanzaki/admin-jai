@@ -129,7 +129,7 @@ export default function MatchesPage() {
     if (likesRecievedLoading) {
         return <p>Loading...</p>;
     }
-console.log(likesRecieved)
+    console.log(likesRecieved)
     const filteredResults = online
         ? visitResults.filter(profile => profile.status === "online")
         : visitResults;
@@ -178,28 +178,30 @@ console.log(likesRecieved)
 
                     {viewMode === "grid" ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-                            {likesRecieved && likesRecieved?.map((profile : likesRecievedResponseData) => (
+                            {likesRecieved && likesRecieved?.map((profile: likesRecievedResponseData) => (
                                 <ProfileCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>
                     ) : (
                         <div className="space-y-4 mb-8">
-                            {likesRecieved && likesRecieved?.map((profile : likesRecievedResponseData) => (
+                            {likesRecieved && likesRecieved?.map((profile: likesRecievedResponseData) => (
                                 <ListCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>
                     )}
 
                     <div className="flex justify-center items-center gap-2">
-                        <Button variant="outline" size="sm" disabled>
-                            Previous
-                        </Button>
-                        <Button variant="default" size="sm" className="bg-app-blue">
-                            1
-                        </Button>
-                        <Button variant="outline" size="sm">
-                            Next
-                        </Button>
+                        {/* <PaginationSection
+              pagination={{
+                page: matches?.page,
+                limit: matches?.limit,
+                total: matches?.total,
+                totalPages: matches?.totalPages,
+              }}
+              onPageChange={(newPage) => {
+                console.log("Go to page:", newPage);
+              }}
+            /> */}
                     </div>
                 </main>
             </div>

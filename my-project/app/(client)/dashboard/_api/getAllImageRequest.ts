@@ -10,9 +10,20 @@ export type likesRecievedResponse = {
 export async function getAllImageRequest(
   params?: { type?: ImageRequestType; status?: ImageRequestStatus }
 ): Promise<likesRecievedResponse> {
+  let url = "users/image-request";
+
+  if (params) {
+    const query = new URLSearchParams();
+
+    if (params.type) query.append("type", params.type);
+    if (params.status) query.append("status", params.status);
+
+    const queryString = query.toString();
+    if (queryString) url += `?${queryString}`;
+  }
+
   return await getRequest<likesRecievedResponse>({
-    url: "/users/image-request",
-    params, // <-- now params is actually used
+    url,
     useAuth: true,
   });
 }

@@ -2,6 +2,8 @@
 
 import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
 import { useLikesAccepted } from "../_hooks/useLikesAccepted";
+import { likesRecievedResponseData } from "../_api/getLikesRecived";
+import { LikeStatus, useLikesRecieved } from "../_hooks/useLikesRecieved";
 
 const sampleNotification = {
   id: "1",
@@ -25,16 +27,22 @@ const sampleNotification = {
 };
 
 export default function NotificationsPage() {
-  const { likesAccepted, likesAcceptedLoading, error } = useLikesAccepted();
-
-  if (likesAcceptedLoading) {
+  const { likesRecieved:likesAccepted , likesRecievedLoading, error } = useLikesRecieved(
+    LikeStatus.ACCEPTED
+  );
+  if (likesRecievedLoading) {
     return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>error getting notifications...
+      <p>{error?.message}</p>
+    </p>;
   }
 
   return (
     <div className="space-y-8">
-      {likesAccepted.length <= 0 && <p>No data to show</p>}
-      {likesAccepted?.map((likeRec: likesRecievedResponseData) => (
+      {likesAccepted && likesAccepted.length <= 0 && <p>No data to show</p>}
+      {likesAccepted && likesAccepted?.map((likeRec: likesRecievedResponseData) => (
         <NotificationCard notification={likeRec} />
       ))}
     </div>

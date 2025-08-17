@@ -62,32 +62,17 @@ type getRequestDto = {
     url: string;
     useAuth?: boolean;
     otherHeaders?: Record<string, string>;
-    params?: Record<string, any>;
 };
 
 export async function getRequest<T>({
     url,
     useAuth = false,
     otherHeaders = {},
-    params = {},
 }: getRequestDto): Promise<T> {
-
-    const queryString = Object.keys(params).length
-        ? "?" + new URLSearchParams(
-            Object.entries(params).reduce((acc, [key, value]) => {
-                if (value !== undefined && value !== null) {
-                    acc[key] = String(value);
-                }
-                return acc;
-            }, {} as Record<string, string>)
-        ).toString()
-        : "";
-
-    const finalUrl = `${url}${queryString}`;
 
     return (
         await fetchExtra(
-            finalUrl,
+            url,
             {
                 method: "GET",
                 headers: {

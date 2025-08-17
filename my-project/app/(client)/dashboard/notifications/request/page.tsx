@@ -7,37 +7,16 @@ import {
 } from "../../_hooks/useAllImageRequests";
 import { likesRecievedResponseData } from "../_api/getLikesRecived";
 
-const sampleNotification = {
-  id: "1",
-  type: "like" as const,
-  from: {
-    name: "Dora M",
-    age: 39,
-    height: "5.5",
-    languages: ["Hindi"],
-    religion: "Hindu",
-    profession: "Finance Professional",
-    image: "https://picsum.photos/seed/dora/200",
-    isVerified: true,
-    isOnline: true,
-    lastSeen: "1d ago",
-  },
-  message:
-    "Hi, it is nice connecting with you. I liked your profile and would like to take this forward.",
-  timestamp: "Dec 30, 04:22 PM",
-  isStarred: true,
-};
-
 export default function RequestPage() {
   const { AllImagesRequests, AllImagesRequestsLoading, error, mutate } =
-    useAllImageRequests(ImageRequestType.RECIEVED, ImageRequestStatus.ACCEPTED);
+    useAllImageRequests(ImageRequestType.ACCEPTED, ImageRequestStatus.ACCEPTED);
   if (AllImagesRequestsLoading) {
     return <p>Loading...</p>;
   }
   return (
     <div className="space-y-8">
       {AllImagesRequests && AllImagesRequests?.length <= 0 && <p>No data to show</p>}
-      {AllImagesRequests && AllImagesRequests?.map((likeRec: likesRecievedResponseData) => (
+      {AllImagesRequests && AllImagesRequests?.map((likeRec) => (
         <NotificationCard notification={likeRec} />
       ))}{" "}
     </div>

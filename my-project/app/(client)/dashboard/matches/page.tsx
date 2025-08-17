@@ -10,125 +10,12 @@ import { useTodayMatches } from "../_hooks/useTodayMatches";
 import { Skeleton } from "@/components/admin/ui/skeleton";
 import { MemberProfile } from "@/app/shared-types/member";
 
-const matchResults = [
-  {
-    id: 1,
-    name: "Daniella",
-    age: 32,
-    location: "Nieuwkuijk",
-    image: "https://picsum.photos/200?random=201",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 2,
-    name: "Naé",
-    age: 31,
-    location: "Roerlo",
-    image: "https://picsum.photos/200?random=202",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 3,
-    name: "Laura",
-    age: 35,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=203",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-  {
-    id: 4,
-    name: "Daniella",
-    age: 28,
-    location: "Heerenveen",
-    image: "https://picsum.photos/200?random=204",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 5,
-    name: "Naé",
-    age: 30,
-    location: "Renklo",
-    image: "https://picsum.photos/200?random=205",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 6,
-    name: "Laura",
-    age: 33,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=206",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-  {
-    id: 7,
-    name: "Daniella",
-    age: 32,
-    location: "Nieuwkuijk",
-    image: "https://picsum.photos/200?random=207",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 8,
-    name: "Naé",
-    age: 31,
-    location: "Roerlo",
-    image: "https://picsum.photos/200?random=208",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 9,
-    name: "Laura",
-    age: 35,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=209",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-  {
-    id: 10,
-    name: "Daniella",
-    age: 28,
-    location: "Heerenveen",
-    image: "https://picsum.photos/200?random=210",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 11,
-    name: "Naé",
-    age: 30,
-    location: "Renklo",
-    image: "https://picsum.photos/200?random=211",
-    status: "online",
-    description: "Like to Profiel",
-  },
-  {
-    id: 12,
-    name: "Laura",
-    age: 33,
-    location: "Meppel",
-    image: "https://picsum.photos/200?random=212",
-    status: "offline",
-    description: "Like to Profiel",
-  },
-];
 
 export default function MatchesPage() {
   const [online, setOnline] = useState(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const { matches, matchesLoading, error } = useTodayMatches();
+  const { matches, matchesLoading, matchesError } = useTodayMatches();
 
-  const filteredResults = online
-    ? matchResults.filter((profile) => profile.status === "online")
-    : matchResults;
 
   return (
     <div className="flex min-h-screen">
@@ -174,13 +61,13 @@ export default function MatchesPage() {
 
           {viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-              {error ? (
+              {matchesError ? (
                 <div className="flex items-center justify-center h-screen">
                   <div className="text-center">
                     <h2 className="text-2xl font-bold text-red-600">
                       Error loading Todays Matches
                     </h2>
-                    <p className="text-muted-foreground">{error.message}</p>
+                    <p className="text-muted-foreground">{matchesError.message}</p>
                   </div>
                 </div>
               ) : matchesLoading ? (
@@ -198,13 +85,13 @@ export default function MatchesPage() {
             </div>
           ) : (
             <div className="space-y-4 mb-8">
-              {error ? (
+              {matchesError ? (
                 <div className="flex items-center justify-center h-screen">
                   <div className="text-center">
                     <h2 className="text-2xl font-bold text-red-600">
                       Error loading Todays Matches
                     </h2>
-                    <p className="text-muted-foreground">{error.message}</p>
+                    <p className="text-muted-foreground">{matchesError.message}</p>
                   </div>
                 </div>
               ) : matchesLoading ? (
@@ -223,15 +110,17 @@ export default function MatchesPage() {
           )}
 
           <div className="flex justify-center items-center gap-2">
-            <Button variant="outline" size="sm" disabled>
-              Previous
-            </Button>
-            <Button variant="default" size="sm" className="bg-app-blue">
-              1
-            </Button>
-            <Button variant="outline" size="sm">
-              Next
-            </Button>
+            {/* <PaginationSection
+              pagination={{
+                page: matches?.page,
+                limit: matches?.limit,
+                total: matches?.total,
+                totalPages: matches?.totalPages,
+              }}
+              onPageChange={(newPage) => {
+                console.log("Go to page:", newPage);
+              }}
+            /> */}
           </div>
         </main>
       </div>

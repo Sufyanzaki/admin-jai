@@ -1,5 +1,6 @@
 import {useSWRFix} from "@/shared-lib";
 import {getAllChats} from "@/app/(client)/dashboard/chat/_api/conversation";
+import { ChatResponse } from "../_types/conversation";
 import { ChatsResponse } from "../_types/allChats";
 
 export const useGetAllChats = () => {

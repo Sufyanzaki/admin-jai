@@ -40,7 +40,9 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
         );
     }
 
-    const otherParticipant = selectedChat?.users?.find((u) => Number(u.id) !== userId) ?? null;
+
+    const otherParticipants = selectedChat?.ChatUser?.filter(user => Number(user.userId) !== userId);
+    const otherParticipant = otherParticipants[0]?.user;
 
     const chat = [...(chatDetails?.data.messages ?? [])].reverse();
 
@@ -118,8 +120,8 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                 >
                                     <div
                                         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-[5px] ${currentUser
-                                                ? "bg-[#1975D2] text-white"
-                                                : "text-gray-900 bg-[#F7F7F7]"
+                                            ? "bg-[#1975D2] text-white"
+                                            : "text-gray-900 bg-[#F7F7F7]"
                                             }`}
                                     >
                                         {message.content && (

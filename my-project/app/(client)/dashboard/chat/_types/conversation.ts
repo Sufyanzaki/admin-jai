@@ -1,4 +1,4 @@
-export type ChatUser = {
+export type User = {
     id: string;
     username: string;
     email: string;
@@ -28,6 +28,12 @@ export type ChatUser = {
     updatedAt: string;
     route: string | null;
     roleId: number | null;
+    messageCount?: number;
+}
+export type ChatUser = {
+    chatId: number;
+    userId: number;
+    user: User;
 }
 
 export type FullChat = {

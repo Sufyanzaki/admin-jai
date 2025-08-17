@@ -9,9 +9,9 @@ export enum LikeStatus {
 
 export const useLikesRecieved = (status?: LikeStatus) => {
   const { data, loading, error, mutate } = useSWRFix<likesRecievedResponse>({
-    key: ["likes-recieved"], 
+    key: ["likes-recieved"],
     fetcher: async () => {
-      const response = await getLikesRecieved(status ? { status } : undefined);
+      const response = await getLikesRecieved(status);
       if (!response) {
         throw new Error("Failed to fetch likes recieved");
       }

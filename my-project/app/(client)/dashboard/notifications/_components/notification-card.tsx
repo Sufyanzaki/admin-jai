@@ -8,15 +8,22 @@ import { useBlockUser } from "../../_hooks/useBlockUser";
 import { likesRecievedResponseData } from "../_api/getLikesRecived";
 import { useLikeResponse } from "../_hooks/useLikeResponse";
 import { useRouter } from "next/navigation";
+import { formatDate } from "date-fns";
 
-type Notification = {
+export type Notification = {
   id: number;
   senderId: number;
   receiverId: number;
-  status: "PENDING" | "ACCEPTED" | "DECLINED";  // adjust if you have more statuses
+  status: "PENDING" | "ACCEPTED" | "DECLINED" | "REJECTED";  // adjust if you have more statuses
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
-  sender: {
+  sender?: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    image: string; // URL
+  };
+  receiver?: {
     id: number;
     firstName: string;
     lastName: string;
@@ -28,42 +35,52 @@ type NotificationCardProps = {
   notification: Notification;
 };
 
-export function NotificationCard({notification}: NotificationCardProps) {
+export function NotificationCard({ notification }: NotificationCardProps) {
   const router = useRouter();
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
   const { trigger, loading, error } = useLikeResponse();
 
-  console.log(notification);
   const handleAccept = () => {
-    const action = "accept";
+    const action = "ACCEPTED";
     trigger(action, Number(notification?.id));
   };
 
   const handleDecline = () => {
-    const action = "decline";
+    const action = "DECLINED";
     trigger(action, Number(notification?.id));
   };
 
-  const handleViewProfile = () =>{
+  const handleViewProfile = () => {
     router.push(`/dashboard/search/${notification?.sender?.id}`)
   }
 
   const handleReport = () => {
-    blockUser(Number(notification?.sender.id)); // cast to number here
+    blockUser(Number(notification?.sender && notification?.sender.id)); // cast to number here
   };
 
   return (
     <div className="w-full rounded-[5px] bg-white border border-gray-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
-        <h3 className="font-medium text-sm sm:text-base">
-          You received a from {notification?.sender?.firstName}{" "}
-          {notification?.sender?.lastName}
-        </h3>
+        {notification?.sender && notification?.status !== "ACCEPTED" ?
+          <h3 className="font-medium text-sm sm:text-base">
+
+            You received a like from {notification?.sender?.firstName}{" "}
+            {notification?.sender?.lastName}
+          </h3> : notification?.receiver ? <h3 className="font-medium text-sm sm:text-base">
+
+            You sent a like to {notification?.receiver?.firstName}{" "}
+            {notification?.receiver?.lastName}
+          </h3> : notification?.sender && notification?.status === "ACCEPTED" &&
+          <h3 className="font-medium text-sm sm:text-base">
+
+            You accepted a like from {notification?.sender?.firstName}{" "}
+            {notification?.sender?.lastName}
+          </h3>}
         <div className="flex items-center gap-2 text-xs text-gray-500">
           <span>
             {notification?.updatedAt
-              ? notification?.updatedAt
-              : notification?.createdAt}
+              ? formatDate(notification?.updatedAt, "dd-mm-yyyy")
+              : formatDate(notification?.createdAt, "dd-mm-yyyy")}
           </span>
           {/* {isStarred && (
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -74,11 +91,16 @@ export function NotificationCard({notification}: NotificationCardProps) {
       <div className="space-y-4 px-4 py-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-shrink-0 self-center sm:self-start">
-            <ImageWrapper
+            {notification?.sender ? <ImageWrapper
               src={notification?.sender?.image || "/placeholder.svg"}
               alt={notification?.sender?.firstName}
               className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
-            />
+            /> : notification?.receiver && <ImageWrapper
+              src={notification?.receiver?.image || "/placeholder.svg"}
+              alt={notification?.receiver?.firstName}
+              className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
+            />}
+
           </div>
 
           <div className="flex-1 space-y-4">
@@ -131,27 +153,41 @@ export function NotificationCard({notification}: NotificationCardProps) {
                   </Button>
                 </div>
               </div>
-
-              <div className="sm:text-right space-y-2">
-                <p className="text-xs">She invited you to Connect</p>
-                <div className="flex gap-2 flex-wrap">
-                  <Button
-                    onClick={handleAccept}
-                    size="sm"
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    onClick={handleDecline}
-                    size="sm"
-                    variant="outline"
-                    className="px-4 grow sm:grow-0"
-                  >
-                    Decline
-                  </Button>
+              {notification?.sender && notification?.status === "PENDING" ?
+                <div className="sm:text-right space-y-2">
+                  <p className="text-xs">She invited you to Connect</p>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button
+                      onClick={handleAccept}
+                      size="sm"
+                      className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      onClick={handleDecline}
+                      size="sm"
+                      variant="outline"
+                      className="px-4 grow sm:grow-0"
+                    >
+                      Decline
+                    </Button>
+                  </div>
                 </div>
-              </div>
+                : notification?.sender && notification?.status === "DECLINED" &&
+                <div className="sm:text-right space-y-2">
+                  <p className="text-xs">She invited you to Connect</p>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button
+                      onClick={handleAccept}
+                      size="sm"
+                      className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
+                    >
+                      Accept
+                    </Button>
+                  </div>
+                </div>}
+
             </div>
           </div>
         </div>

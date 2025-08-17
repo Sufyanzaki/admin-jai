@@ -2,20 +2,23 @@
 import { ChatSidebar } from "./_components/chat-sidebar";
 import ChatBox from "./_components/chat-box";
 import { ProfileSidebar } from "./_components/profile-sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLaptop } from "@/hooks/use-mobile";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MessageCircleDashed } from "lucide-react";
 import { useGetAllChats } from "./_hooks/useGetAllChats";
 import Preloader from "@/components/shared/Preloader";
 import { Chat } from "./_types/allChats";
 import { useSession } from "next-auth/react";
+import { useChatDetails } from "./_hooks/useChatDetails";
 
 
 
 export default function ChatPage() {
   const isAboveLaptop = !useLaptop();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const chatId = searchParams.get("chatId");
 
   const session = useSession();
   const userId = session?.data?.user?.id ? Number(session?.data?.user?.id) : 0;
@@ -23,6 +26,13 @@ export default function ChatPage() {
   const { allChats, allChatsError, allChatsLoading } = useGetAllChats();
   const [selectedChat, setSelectedChat] = useState<Chat>();
   const [showProfile, setShowProfile] = useState(false);
+
+  useEffect(() => {
+    if (chatId && allChats) {
+      const chat = allChats?.find((c) => String(c.id) === chatId);
+      if (chat) setSelectedChat(chat);
+    }
+  }, [chatId, allChats]);
 
   const handleProfileClick = () => {
     setShowProfile(true);
@@ -34,7 +44,7 @@ export default function ChatPage() {
 
   const handleSelectChat = (chat: Chat) => {
     if (isAboveLaptop) {
-      const fullChat = allChats && allChats.find((c) => c.id === chat.id);
+      const fullChat = allChats && allChats?.find((c) => c.id === chat.id);
       if (fullChat) setSelectedChat(fullChat);
     } else router.push(`/dashboard/chat/${chat?.id}`);
   };
@@ -59,8 +69,8 @@ export default function ChatPage() {
     );
   }
 
-  const otherParticipant = selectedChat?.users.filter(user => Number(user.id) !== userId);
-  const otherParticipantDetails = otherParticipant?.[0];
+  const otherParticipant = selectedChat?.ChatUser?.filter(user => Number(user.userId) !== userId);
+  const otherParticipantDetails = otherParticipant && otherParticipant[0]?.user;
 
   return (
     <>

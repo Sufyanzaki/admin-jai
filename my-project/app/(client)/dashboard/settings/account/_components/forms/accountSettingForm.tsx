@@ -1,21 +1,30 @@
 "use client";
 
 import ImageWrapper from "@/components/client/image-wrapper";
-import {CloudUpload, Upload} from "lucide-react";
-import {Button} from "@/components/client/ux/button";
-import {Label} from "@/components/client/ux/label";
-import {Input} from "@/components/client/ux/input";
-import {Controller} from "react-hook-form";
-import React, {useState} from "react";
+import { CloudUpload, Upload } from "lucide-react";
+import { Button } from "@/components/client/ux/button";
+import { Label } from "@/components/client/ux/label";
+import { Input } from "@/components/client/ux/input";
+import { Controller } from "react-hook-form";
+import React, { useState } from "react";
 import useClientAccount from "@/app/(client)/dashboard/settings/account/_hooks/useAccountForm";
-import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
+import Preloader from "@/components/shared/Preloader";
 
 export default function AccountSettingForm() {
 
     const [preview, setPreview] = useState<string>();
 
-    const { errors, onSubmit, handleSubmit, register, setValue, isLoading, control, watch} = useClientAccount();
+    const { errors, onSubmit, handleSubmit, register, setValue, isLoading, control, watch, isFetching } = useClientAccount();
 
+    if (isFetching) {
+        return (
+            <div className="flex items-center flex-col justify-center h-64">
+                <Preloader />
+                <p className="text-sm">Loading your profile information...</p>
+            </div>
+        );
+    }
     const handleFileChange = (file: File) => {
         if (file && file.type.startsWith("image/")) {
             setValue("image", file, { shouldValidate: true });
@@ -26,14 +35,14 @@ export default function AccountSettingForm() {
     const imageStr = watch("image") as string;
 
     return (
-        <form onSubmit={handleSubmit(v=>onSubmit(v))} className="flex lg:flex-row flex-col gap-8">
+        <form onSubmit={handleSubmit(v => onSubmit(v))} className="flex lg:flex-row flex-col gap-8">
             <div className="flex flex-col items-center">
                 <div className="w-56 h-56 rounded-[5px] overflow-hidden mb-4 border border-gray-200">
                     {preview ? (
                         <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
                         <ImageWrapper
-                            src={imageStr || "https://placehold.co/400" }
+                            src={imageStr || "https://placehold.co/400"}
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
@@ -62,6 +71,7 @@ export default function AccountSettingForm() {
                                 accept="image/*"
                                 id="file-upload"
                                 className="hidden"
+                                disabled={isFetching}
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
                                     if (file) handleFileChange(file);
@@ -69,10 +79,10 @@ export default function AccountSettingForm() {
                             />
                             <label htmlFor="file-upload" className="w-full">
                                 <Button className="w-full" asChild size="sm" variant="theme">
-                  <span className="cursor-pointer">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Photo
-                  </span>
+                                    <span className="cursor-pointer">
+                                        <Upload className="w-4 h-4 mr-2" />
+                                        Upload Photo
+                                    </span>
                                 </Button>
                             </label>
                         </div>
@@ -86,19 +96,19 @@ export default function AccountSettingForm() {
                     <div className="space-y-6">
                         <div>
                             <Label htmlFor="firstName">First name</Label>
-                            <Input placeholder="Enter your first name" {...register("firstName")} />
+                            <Input disabled={isFetching} placeholder="Enter your first name" {...register("firstName")} />
                             {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
                         </div>
 
                         <div>
                             <Label htmlFor="username">User name</Label>
-                            <Input placeholder="Enter your username" {...register("username")} />
+                            <Input disabled={isFetching} placeholder="Enter your username" {...register("username")} />
                             {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
                         </div>
 
                         <div>
                             <Label htmlFor="dob">Date of birth</Label>
-                            <Input placeholder="YYYY-MM-DD" {...register("dob")} />
+                            <Input disabled={isFetching} placeholder="YYYY-MM-DD" {...register("dob")} />
                             {errors.dob && <p className="text-red-500 text-sm">{errors.dob.message}</p>}
                         </div>
                     </div>
@@ -106,7 +116,7 @@ export default function AccountSettingForm() {
                     <div className="space-y-6">
                         <div>
                             <Label htmlFor="lastName">Last name</Label>
-                            <Input placeholder="Enter your last name" {...register("lastName")} />
+                            <Input disabled={isFetching} placeholder="Enter your last name" {...register("lastName")} />
                             {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
                         </div>
 
@@ -115,6 +125,7 @@ export default function AccountSettingForm() {
                             <Controller
                                 name="gender"
                                 control={control}
+                                disabled={isFetching}
                                 render={({ field }) => (
                                     <AttributeSelect
                                         attributeKey="iAmA"
@@ -130,7 +141,7 @@ export default function AccountSettingForm() {
 
                         <div>
                             <Label htmlFor="email">Email</Label>
-                            <Input placeholder="Enter your email" {...register("email")} />
+                            <Input disabled={isFetching} placeholder="Enter your email" {...register("email")} />
                             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                         </div>
                     </div>
