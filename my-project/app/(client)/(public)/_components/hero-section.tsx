@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 export function HeroSection() {
   const { homeLoading, homeSettings } = useHome();
   const { data: session } = useSession();
+
   if (homeLoading)
     return (
       <div className="flex items-center flex-col justify-center h-64">
@@ -25,7 +26,7 @@ export function HeroSection() {
         <div
           className="absolute inset-0 bg-cover h-full bg-center bg-no-repeat"
           style={{
-            backgroundImage: homeSettings?.bannerImage,
+            backgroundImage: `url(${homeSettings?.bannerImage})`,
           }}
         ></div>
 

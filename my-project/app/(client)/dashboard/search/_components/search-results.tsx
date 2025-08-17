@@ -22,7 +22,9 @@ export function SearchResults() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return(
+      <p>Error</p>
+  );
 
   if(!data) return <p>No data</p>
 

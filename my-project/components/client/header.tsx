@@ -18,7 +18,7 @@ import { SidebarList } from "@/components/client/sidebar-list";
 import { useSession } from "next-auth/react";
 
 const navLinks = [
-  { label: "Hoe werkt niet", href: "/how-it-works" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy-policy" },
@@ -135,13 +135,13 @@ export function Header() {
                   <Link href="/dashboard">
                     <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
                       Dashboard
-                    </Button>{" "}
+                    </Button>
                   </Link>
                 ) : (
                   <Link href="/">
                     <Button variant={"theme"} className="py-5 mb-2 rounded-lg">
                       REGISTER
-                    </Button>{" "}
+                    </Button>
                   </Link>
                 )}
                 {/* Login Button */}

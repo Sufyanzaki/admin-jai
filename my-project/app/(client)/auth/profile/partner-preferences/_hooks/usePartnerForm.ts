@@ -48,7 +48,7 @@ export default function usePartnerForm() {
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         setValue,
         watch,
         reset,
@@ -141,6 +141,12 @@ export default function usePartnerForm() {
     );
 
     const onSubmit = async (values: PartnerFormValues) => {
+
+        if(!isDirty){
+            router.push("/auth/profile/membership");
+            return
+        }
+
         const isValid = await trigger();
         if (!isValid) return;
         await mutate(values);

@@ -36,7 +36,7 @@ export default function useHobbiesInterestsForm() {
 
     const {
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         register,
         reset,
         setValue,
@@ -110,6 +110,12 @@ export default function useHobbiesInterestsForm() {
     );
 
     const onSubmit = async (values: HobbiesInterestsForm, callback?: () => void) => {
+
+        if(!isDirty){
+            router.push("/auth/profile/personality");
+            return
+        }
+
         const result = await trigger(values);
         if (result) {
             callback?.();

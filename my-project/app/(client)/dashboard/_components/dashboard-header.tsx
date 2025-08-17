@@ -15,15 +15,12 @@ import {signOut} from "next-auth/react";
 import {useProfile} from "@/app/shared-hooks/useProfile";
 import Preloader from "@/components/shared/Preloader";
 
-const menuItems = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "My Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
-  { label: "My Visits", href: "/dashboard/visits" },
-  { label: "Notification", href: "/dashboard/notifications/received" },
-  { label: "Liked Profile", href: "/dashboard/notifications/received" },
-  { label: "Messages", href: "/dashboard/chat", badge: 3, badgeColor: "bg-cyan-500" },
-  { label: "My Profile", href: "/dashboard/settings/account" },
-];
+type MenuItem = {
+  label: string;
+  href: string;
+  badge?: number;
+  badgeColor?: string;
+};
 
 export function DashboardHeader() {
 
@@ -31,7 +28,21 @@ export function DashboardHeader() {
 
   if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
 
-  const allowedItems = user?.route !== "/auth/profile/partner-preferences" ? menuItems.filter(item => item.label === "My Profile") : menuItems;
+  const menuItems: MenuItem[] = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "My Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
+    { label: "My Visits", href: "/dashboard/visits" },
+    { label: "Notification", href: "/dashboard/notifications/received" },
+    { label: "Liked Profile", href: "/dashboard/notifications/received" },
+    { label: "Messages", href: "/dashboard/chat", badge: user?.messageCount, badgeColor: "bg-cyan-500" },
+    { label: "My Profile", href: "/dashboard/settings/account" },
+  ];
+
+  const lockedItems: MenuItem[] = [
+    { label: "Complete Profile", href: user?.route ?? "/auth/profile/create" },
+  ];
+
+  const allowedItems: MenuItem[] = user?.route === "/auth/profile/partner-preferences" ? menuItems : lockedItems;
 
   return (
       <>

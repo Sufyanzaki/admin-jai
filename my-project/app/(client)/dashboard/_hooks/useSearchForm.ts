@@ -4,7 +4,8 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 
 export const searchSchema = z.object({
-  gender: z.string().optional(),
+  quickSearch: z.string().optional(),
+  amLookingFor: z.string().optional(),
   relationshipStatus: z.string().optional(),
   country: z.string().optional(),
   state: z.string().optional(),
@@ -35,7 +36,7 @@ export default function useSearchForm() {
   } = useForm<SearchFormValues>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      gender: "",
+      amLookingFor: "",
       relationshipStatus: undefined,
       country: "",
       state: "",
@@ -45,6 +46,7 @@ export default function useSearchForm() {
       hasChildren: "",
       page: 1,
       limit: 30,
+      quickSearch: ""
     },
   });
 

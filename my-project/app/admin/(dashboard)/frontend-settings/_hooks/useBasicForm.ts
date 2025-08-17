@@ -7,7 +7,7 @@ import useSWRMutation from "swr/mutation";
 import { useState } from 'react';
 import {imageUpload} from '@/admin-utils/utils/imageUpload';
 import {showError, showSuccess} from "@/shared-lib";
-import {postBasicPage} from '../_api/basicPageApi';
+import {postBasicPage} from '@/app/shared-api/basicPageApi';
 
 const basicFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),

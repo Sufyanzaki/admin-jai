@@ -38,7 +38,7 @@ export default function usePhotoForm() {
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         setValue,
         reset,
         watch,
@@ -100,6 +100,12 @@ export default function usePhotoForm() {
     );
 
     const onSubmit = async (values: PhotoFormValues) => {
+
+        if(!isDirty){
+            router.push("/auth/profile/partner-preferences");
+            return
+        }
+
         const isValid = await trigger();
         if (!isValid) return;
         await mutate(values);

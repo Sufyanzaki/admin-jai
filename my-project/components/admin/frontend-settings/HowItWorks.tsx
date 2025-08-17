@@ -111,11 +111,10 @@ export default function HowItWorks(){
                                 </div>
                                 {bannerImage && !isUploading && (
                                     <div className="w-20 h-20 border rounded-lg overflow-hidden">
-                                        <Image
+                                        <img
                                             src={bannerImage instanceof File ? URL.createObjectURL(bannerImage) : bannerImage}
                                             alt="Preview"
                                             className="w-full h-full object-cover"
-                                            fill
                                         />
                                     </div>
                                 )}

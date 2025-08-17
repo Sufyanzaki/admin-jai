@@ -1,7 +1,7 @@
 'use client';
 
 import { useSWRFix } from "@/shared-lib";
-import { getBasicPages } from "../_api/basicPageApi";
+import { getBasicPages } from "@/app/shared-api/basicPageApi";
 import {BasicPageDto} from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
 
 export const useBasicPages = () => {

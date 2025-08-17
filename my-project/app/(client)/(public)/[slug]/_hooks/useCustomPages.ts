@@ -1,13 +1,13 @@
+import {getBasicPagesByKey} from "@/app/shared-api/basicPageApi";
 import {useSWRFix} from "@/shared-lib";
-import { BasicPageDto } from "../_types/basicPage";
-import {getBasicPagesById} from "@/app/shared-api/basicPageApi";
+import {BasicPageDto} from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
 
-export const useBasicPage = (id?: string) => {
+export const useCustomPages = (key?: string) => {
     const { data, loading, error, mutate } = useSWRFix<BasicPageDto>({
-        key: `basic-page-${id}`,
+        key: `custom-page-${key}`,
         fetcher: async () => {
-            if (!id) throw new Error('Page ID is required');
-            const response = await getBasicPagesById(id);
+            if (!key) throw new Error('Page Key is required');
+            const response = await getBasicPagesByKey(key);
             if (!response) throw new Error('Failed to fetch basic page');
             return response;
         }

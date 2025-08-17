@@ -31,6 +31,10 @@ export async function getBasicPagesById(id: string): Promise<BasicPageDto> {
     return await getRequest<BasicPageDto>({ url: `setting/basic-pages/${id}`, useAuth: true });
 }
 
+export async function getBasicPagesByKey(key: string): Promise<BasicPageDto> {
+    return await getRequest<BasicPageDto>({ url: `setting/key-pages/${key}`, useAuth: true });
+}
+
 export async function deleteBasicPage(id: string): Promise<{ id: string, status: string }> {
     const r = await deleteRequest({
         url: `setting/basic-pages/${id}`,

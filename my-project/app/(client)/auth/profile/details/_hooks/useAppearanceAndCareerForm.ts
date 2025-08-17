@@ -104,8 +104,7 @@ export default function useAppearanceAndCareerForm() {
             } = arg;
 
             setCurrentStep('Saving physical appearance & education');
-
-            patchUser(userId, { route: "/auth/profile/details" })
+            patchUser(userId, { route: "/auth/profile/details" }).finally()
             await Promise.all([
                 physicalApi(userId, {
                     height,
@@ -147,7 +146,7 @@ export default function useAppearanceAndCareerForm() {
 
     const {
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         register,
         reset,
         setValue,
@@ -210,6 +209,10 @@ export default function useAppearanceAndCareerForm() {
 
     const onSubmit = useCallback(
         async (values: AppearanceCareerForm, callback?: () => void) => {
+            if(!isDirty){
+                router.push("/auth/profile/description");
+                return
+            }
             try {
                 const result = await trigger(values);
                 if (result) {

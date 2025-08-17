@@ -1,7 +1,7 @@
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { deleteBasicPage } from "@/app/admin/(dashboard)/frontend-settings/_api/basicPageApi";
+import { deleteBasicPage } from "@/app/shared-api/basicPageApi";
 import { mutate as globalMutate } from "swr";
 import { BasicPageDto } from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
 

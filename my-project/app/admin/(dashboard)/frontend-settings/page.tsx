@@ -14,7 +14,7 @@ export default function SettingPage() {
     const { basicPages, isLoading, error } = useBasicPages();
     const { deletePageById, isDeleting } = useDeleteBasicPage();
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         await deletePageById(id);
     };
 

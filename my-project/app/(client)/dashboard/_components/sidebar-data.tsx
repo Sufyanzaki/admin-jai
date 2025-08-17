@@ -14,10 +14,12 @@ import {
 import { Input } from "@/components/client/ux/input";
 import { Button } from "@/components/client/ux/button";
 import {
+  Baby,
   BookOpen,
   Calendar,
-  ChevronsUp,
+  ChevronsUp, Church,
   Filter,
+  GraduationCap,
   HeartHandshake,
   MapPin,
   Search,
@@ -39,6 +41,7 @@ import {
 import LocationSearchInput from "@/components/client/location-search";
 import useSearchForm from "../_hooks/useSearchForm";
 import { MemberLocation } from "@/app/shared-types/member";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 
 export default function SidebarData() {
   const { open } = useSidebar();
@@ -54,13 +57,19 @@ export default function SidebarData() {
     watch,
     register,
   } = useSearchForm();
-console.log("search api error from sidebar", errors)
+
   const city = watch("city");
   const state = watch("state");
   const country = watch("country");
 
   const currentLocation =
-    city || state || country ? { city, state, country } : null;
+      city || state || country
+          ? {
+            city: city ?? "",
+            state: state ?? "",
+            country: country ?? "",
+          }
+          : null;
 
   const handleLocationSelect = (location: Partial<MemberLocation>) => {
     setValue("city", location.city);
@@ -93,54 +102,40 @@ console.log("search api error from sidebar", errors)
               </Button>
             </div>
 
-            {/* Looking For */}
-            <Controller
-              control={control}
-              name="gender"
-              render={({ field }) => (
-                <div className="relative group-data-[collapsible=icon]:hidden">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white">
-                      <SelectValue placeholder="Am Looking for" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Man</SelectItem>
-                      <SelectItem value="female">Woman</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            />
+            <div className="relative group-data-[collapsible=icon]:hidden">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
+              <Controller
+                  name="amLookingFor"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeSelect
+                          triggerClasses="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white"
+                          attributeKey="amLookingFor"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Am Looking for"
+                      />
+                  )}
+              />
+            </div>
 
             {/* Relation Status */}
-            <Controller
-              control={control}
-              name="relationshipStatus"
-              render={({ field }) => (
-                <div className="relative group-data-[collapsible=icon]:hidden">
-                  <HeartHandshake className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white">
-                      <SelectValue placeholder="Relation Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">All</SelectItem>
-                      <SelectItem value="single">
-                        Single - never married
-                      </SelectItem>
-                      <SelectItem value="widow">Single - widowed</SelectItem>
-                      <SelectItem value="married">
-                        Married - open marriage
-                      </SelectItem>
-                      <SelectItem value="divorced">
-                        Single - divorced
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            />
+            <div className="relative group-data-[collapsible=icon]:hidden">
+              <HeartHandshake className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
+              <Controller
+                  name="relationshipStatus"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeSelect
+                          attributeKey="relationStatus"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Relation Status"
+                          triggerClasses="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white"
+                      />
+                  )}
+              />
+            </div>
 
             {/* Location */}
             <div className="space-y-2 border-b border-[#E5E7EB]">
@@ -230,72 +225,56 @@ console.log("search api error from sidebar", errors)
           </CollapsibleTrigger>
 
           <CollapsibleContent className="space-y-4 mt-4 group-data-[collapsible=icon]:hidden">
-            {/* Religion */}
-            <Controller
-              control={control}
-              name="religion"
-              render={({ field }) => (
-                <div className="relative">
-                  <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white">
-                      <SelectValue placeholder="Religion" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">All</SelectItem>
-                      <SelectItem value="buddhist">Buddhist</SelectItem>
-                      <SelectItem value="muslim">Muslim</SelectItem>
-                      <SelectItem value="hindu">Hindu</SelectItem>
-                      <SelectItem value="catholic">Catholic</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            />
+            <div className="relative">
+              <Church className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
+              <Controller
+                  name="religion"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeSelect
+                          attributeKey="religion"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Select Religion"
+                          triggerClasses="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white"
+                      />
+                  )}
+              />
+            </div>
 
-            {/* Children */}
-            <Controller
-              control={control}
-              name="hasChildren"
-              render={({ field }) => (
-                <div className="relative">
-                  <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white">
-                      <SelectValue placeholder="Children" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="false">None</SelectItem>
-                      <SelectItem value="true">1 or more</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            />
+            <div className="relative">
+              <Baby className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
+              <Controller
+                  name="hasChildren"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeSelect
+                          attributeKey="children"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Select Children"
+                          triggerClasses="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white"
+                      />
+                  )}
+              />
+            </div>
 
-            {/* Education */}
-            <Controller
-              control={control}
-              name="education"
-              render={({ field }) => (
-                <div className="relative">
-                  <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white">
-                      <SelectValue placeholder="Education" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">All</SelectItem>
-                      <SelectItem value="primary">Primary School</SelectItem>
-                      <SelectItem value="secondary">High School</SelectItem>
-                      <SelectItem value="mbo">MBO</SelectItem>
-                      <SelectItem value="hbo">HBO</SelectItem>
-                      <SelectItem value="university">University</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            />
+            <div className="relative">
+              <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
+              <Controller
+                  name="education"
+                  control={control}
+                  render={({ field }) => (
+                      <AttributeSelect
+                          attributeKey="education"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Select Education"
+                          triggerClasses="bg-white border-white/20 text-black h-12 text-sm rounded-[5px] pl-12 hover:bg-white"
+                      />
+                  )}
+              />
+            </div>
           </CollapsibleContent>
         </Collapsible>
 

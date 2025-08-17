@@ -1,7 +1,7 @@
 "use client";
 
 import ErrorBoundary from "@/admin-utils/ErrorBoundary";
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode, useEffect } from "react";
 import {SessionProvider, useSession} from "next-auth/react";
 import {Session} from "next-auth";
 import {usePathname, useRouter} from "next/navigation";
@@ -14,15 +14,10 @@ export default function ClientProvider({
     children: ReactNode;
     session: Session | null;
 }) {
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
 
     return (
         <SessionProvider session={serverSession}>
-            <AuthGuard mounted={mounted}>
+            <AuthGuard>
                 <ErrorBoundary>
                     {children}
                 </ErrorBoundary>
@@ -31,19 +26,20 @@ export default function ClientProvider({
     );
 }
 
-function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolean }) {
+
+function AuthGuard({ children }: { children: ReactNode }) {
     const { status } = useSession();
     const router = useRouter();
     const pathname = usePathname();
     const isProtectedPath = pathname.includes("/dashboard");
 
     useEffect(() => {
-        if (mounted && status === "unauthenticated" && isProtectedPath) {
+        if (status === "unauthenticated" && isProtectedPath) {
             router.push("/auth/login");
         }
-    }, [mounted, status, router, isProtectedPath]);
+    }, [status, router, isProtectedPath]);
 
-    if (!mounted) {
+    if (status === "loading") {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <Preloader />
@@ -51,9 +47,5 @@ function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolea
         );
     }
 
-    return (
-        <>
-            {children}
-        </>
-    )
+    return <>{children}</>;
 }

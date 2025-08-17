@@ -31,7 +31,7 @@ export default function useProfileForm() {
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         setValue,
         reset,
         watch,
@@ -71,6 +71,12 @@ export default function useProfileForm() {
     );
 
     const onSubmit = async (values: ProfileFormValues) => {
+
+        if(!isDirty){
+            router.push("/auth/profile/membership");
+            return
+        }
+
         const isValid = await trigger();
         if (!isValid) return;
         updateUserTrackingId({ step7: true })

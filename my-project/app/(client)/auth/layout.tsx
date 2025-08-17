@@ -50,9 +50,9 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
               {pathname !== "/admin/auth/login" && (
                 <div className=" text-black text-md text-end w-full">
                   Don&apos;t have an account?
-                  <a href="/" className="ml-1 hover:underline font-medium">
+                  <Link href="/" className="ml-1 hover:underline font-medium">
                     Register
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -87,9 +87,9 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           {pathname !== "/admin/auth/login" && (
             <div className=" text-black text-md text-center w-full mt-7">
               Don&apos;t have an account?
-              <a href="/" className="ml-1 hover:underline font-medium">
+              <Link href="/" className="ml-1 hover:underline font-medium">
                 Register
-              </a>
+              </Link>
             </div>
           )}
           <div className="w-full max-w-full mt-6 mx-auto overflow-auto">

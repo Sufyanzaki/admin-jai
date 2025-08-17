@@ -14,7 +14,7 @@ import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-
 import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
 export function ProfileCreationForm() {
-  const {registrationSettings, registrationLoading} = useRegistration();
+  const {registrationSettings} = useRegistration();
   const {
     errors,
     isLoading,

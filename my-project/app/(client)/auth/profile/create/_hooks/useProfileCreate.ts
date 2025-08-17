@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { showError, showSuccess } from '@/shared-lib';
+import {useCallback, useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
+import {showError} from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
-import { patchUser } from "@/app/shared-api/userApi";
-import { patchPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
-import { useRouter } from "next/navigation";
-import { patchUserLocation } from "@/app/shared-api/livingApi";
-import { useSession } from "next-auth/react";
-import { useLiving } from "@/app/admin/(dashboard)/members/_hooks/useLiving";
-import { usePartnerExpectations } from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
-import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
-import { setUserTrackingId } from "@/lib/access-token";
+import {patchUser} from "@/app/shared-api/userApi";
+import {patchPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
+import {useRouter} from "next/navigation";
+import {patchUserLocation} from "@/app/shared-api/livingApi";
+import {useSession} from "next-auth/react";
+import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
+import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
+import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
+import {setUserTrackingId} from "@/lib/access-token";
 
 export const userProfileCreateSchema = z.object({
     username: z.string().min(1, "Username is required"),
@@ -87,7 +87,7 @@ export default function useProfileCreateForm() {
 
     const {
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         register,
         setValue,
         watch,
@@ -142,6 +142,12 @@ export default function useProfileCreateForm() {
 
     const onSubmit = useCallback(
         async (values: UserProfile, callback?: () => void) => {
+
+            if (!isDirty) {
+                router.push("/auth/profile/details");
+                return;
+            }
+
             try {
                 const result = await trigger(values);
                 if (result) {

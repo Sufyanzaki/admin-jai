@@ -25,7 +25,9 @@ export function useSWRFix<T, U = T>({
         isValidating,
         mutate,
     } = useSWR<T>(enabled ? key : null, fetcher, {
+        dedupingInterval: 600_000,
         revalidateOnFocus: false,
+        revalidateIfStale: false,
         ...config,
     });
 

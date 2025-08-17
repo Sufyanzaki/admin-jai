@@ -1,29 +1,25 @@
 "use client";
 
-import { Button } from "@/components/client/ux/button";
-import { Card, CardContent } from "@/components/client/ux/card";
-import { Bell, MoveRight } from "lucide-react";
+import {Button} from "@/components/client/ux/button";
+import {Card, CardContent} from "@/components/client/ux/card";
+import {Bell, MoveRight} from "lucide-react";
 import ProfileCard from "./_components/profile-card";
-import { getCardData } from "./_const/contant";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useTodayMatches } from "./_hooks/useTodayMatches";
-import { Skeleton } from "@/components/admin/ui/skeleton";
-import { MemberProfile } from "@/app/shared-types/member";
-import { useMayLike } from "./_hooks/useMayLike";
-import { useProfile } from "@/app/shared-hooks/useProfile";
+import {getCardData} from "./_const/contant";
+import {useRouter} from "next/navigation";
+import {useTodayMatches} from "./_hooks/useTodayMatches";
+import {Skeleton} from "@/components/admin/ui/skeleton";
+import {MemberProfile} from "@/app/shared-types/member";
+import {useMayLike} from "./_hooks/useMayLike";
+import {useProfile} from "@/app/shared-hooks/useProfile";
 import Preloader from "@/components/shared/Preloader";
 import type React from "react";
 import Link from "next/link";
-import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
-import { useAgenda } from "@/app/shared-hooks/useAgenda";
-import { useVee } from "@/app/shared-hooks/useVee";
 
 export default function Dashboard() {
   const router = useRouter();
   const { user, userLoading, error } = useProfile();
  const cardData = getCardData(user);
-  const { matches, matchesLoading, matchesError } = useTodayMatches();
+  const { matches, matchesLoading } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
 
   if (userLoading) {
@@ -90,7 +86,7 @@ export default function Dashboard() {
               <div className="text-black">
                 <h5 className="text-lg font-semibold">New Message</h5>
                 <p className="text-sm lg:text-base font-normal">
-                  You got 8 new messages.
+                  You got {user?.messageCount} new messages.
                 </p>
                 <p className="text-[10px] text-gray-500 uppercase mt-1">
                   21hr ago
@@ -99,9 +95,6 @@ export default function Dashboard() {
             </div>
 
             <div className="flex gap-3.5 justify-center">
-              <Button variant="outline" size="lg">
-                Delete
-              </Button>
               <Button variant="theme" size="lg">
                 View
               </Button>

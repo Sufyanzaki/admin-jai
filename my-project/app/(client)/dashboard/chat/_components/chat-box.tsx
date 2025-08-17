@@ -33,7 +33,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
 
     if (chatLoading) {
         return (
-            <div className="flex items-center flex-col justify-center h-64">
+            <div className="flex items-center flex-col justify-center h-64 grow">
                 <Preloader />
                 <p className="text-sm">Loading chat...</p>
             </div>

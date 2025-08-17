@@ -18,7 +18,7 @@ import { ProfileSidebar } from "../_components/profile-sidebar";
 
 export default function ChatBoxPage() {
     const { chatDetails, chatLoading, chatMutate } = useChatDetails({});
-    const { sending, sendMessageAction } = useSendMessage();
+    const { sending, sendMessageAction } = useSendMessage({});
     const router = useRouter();
     const [uploading, setUploading] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
