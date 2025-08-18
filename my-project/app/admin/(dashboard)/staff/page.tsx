@@ -221,7 +221,7 @@ export default function StaffPage() {
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
-                                  <Link href={`/staff/${staff.id}/edit`}>
+                                  <Link href={`/admin/staff/${staff.id}/edit`}>
                                     <Edit className="mr-2 h-4 w-4" />
                                     Edit
                                   </Link>

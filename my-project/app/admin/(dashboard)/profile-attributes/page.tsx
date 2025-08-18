@@ -34,6 +34,12 @@ import {
   GlassWater,
   PartyPopper,
   Circle,
+  Award, Building,
+  Dumbbell,
+  Apple,
+  PawPrint,
+  Plane,
+  Moon, Cigarette,
 } from "lucide-react";
 import AttributeForm from "./_components/attribute-form";
 import { useProfileAttributes } from "./_hooks/useProfileAttributes";
@@ -85,7 +91,7 @@ function getAttributeIcon(label: string) {
       return <Book {...iconProps} />;
     case "TV Shows":
       return <Tv {...iconProps} />;
-    case "Length":
+    case "Height":
       return <Ruler {...iconProps} />;
     case "Languages":
       return <MessageSquare {...iconProps} />;
@@ -102,11 +108,29 @@ function getAttributeIcon(label: string) {
     case "I am a":
       return <UserCheck {...iconProps} />;
     case "Smoke":
-      return <User {...iconProps} />;
+      return <Cigarette {...iconProps} />;
     case "Drinking":
       return <GlassWater {...iconProps} />;
     case "Going Out":
       return <PartyPopper {...iconProps} />;
+    case "Primary Specialization":
+      return <Award {...iconProps} />;
+    case "Department":
+      return <Building {...iconProps} />;
+    case "Primary Expertise":
+      return <Award {...iconProps} />;
+    case "Position":
+      return <Briefcase {...iconProps} />;
+    case "Exercise":
+      return <Dumbbell {...iconProps} />;
+    case "Diet":
+      return <Apple {...iconProps} />;
+    case "Pets":
+      return <PawPrint {...iconProps} />;
+    case "Travel":
+      return <Plane {...iconProps} />;
+    case "Night Life":
+      return <Moon {...iconProps} />;
     default:
       return <Circle {...iconProps} />;
   }

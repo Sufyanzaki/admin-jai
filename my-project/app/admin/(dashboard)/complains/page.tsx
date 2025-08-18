@@ -42,7 +42,7 @@ export default function PrescriptionsPage() {
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="space-y-2">
           <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Complaints</h1>
-          <p className="text-muted-foreground">Manage patient prescriptions and medications.</p>
+          <p className="text-muted-foreground">Manage Complains and tickets.</p>
         </div>
       </div>
 
@@ -50,7 +50,7 @@ export default function PrescriptionsPage() {
         <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <CardTitle>Complain List</CardTitle>
-            <CardDescription>View and manage all patient prescriptions.</CardDescription>
+            <CardDescription>View and manage all complains.</CardDescription>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             <div className="relative">

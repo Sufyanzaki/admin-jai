@@ -7,6 +7,7 @@ import useSWRMutation from "swr/mutation";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import {createBlog} from "@/app/shared-api/blogsApi";
 import {BlogDto} from "@/app/shared-types/blog";
+import {useSWRConfig} from "swr";
 
 type ImageField = File | string | undefined;
 
@@ -30,6 +31,9 @@ const createBlogSchema = z.object({
 export type CreateBlogFormValues = z.infer<typeof createBlogSchema>;
 
 export default function useCreateBlog() {
+
+    const { mutate } = useSWRConfig();
+
     const { trigger, isMutating } = useSWRMutation(
         'createBlog',
         async (_: string, { arg }: { arg: Partial<BlogDto> }) => {
@@ -99,16 +103,17 @@ export default function useCreateBlog() {
             });
 
             if (result) {
+                mutate('blogs', (current: BlogDto[] | undefined) => {
+                    return current ? [result, ...current] : [result];
+                }, false).finally()
                 showSuccess('Blog created successfully!');
                 reset();
                 callback?.();
             }
-        } catch (error) {
-            showError({
-                message: error instanceof Error
-                    ? error.message
-                    : 'An error occurred while creating the blog'
-            });
+        } catch (error: unknown) {
+            if(error instanceof Error){
+                showError({message: error.message})
+            }
         }
     };
 

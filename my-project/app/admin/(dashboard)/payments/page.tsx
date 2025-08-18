@@ -15,215 +15,36 @@ import {
 } from "@/components/admin/ui/alert-dialog";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar";
 import {Badge} from "@/components/admin/ui/badge";
-import {Button} from "@/components/admin/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/admin/ui/dropdown-menu";
 import {Input} from "@/components/admin/ui/input";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
 import {
   Calendar,
   CalendarCheck,
   CalendarDays,
-  CalendarRange,
-  Clock, CreditCard,
-  DollarSign, Download, EyeIcon, FileText,
+  Clock,
+  CreditCard,
+  DollarSign,
   List,
-  MoreHorizontal,
   Package,
   PackageCheck,
-  PencilIcon, Plus, Receipt,
-  RotateCcw,
-  Search, SquarePen, Trash2,
+  Search,
   XCircle
 } from "lucide-react";
-import Link from "next/link";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {usePayments} from "@/app/admin/(dashboard)/payments/_hooks/usePayments";
+import Preloader from "@/components/shared/Preloader";
+import {UserPackageDto} from "@/app/admin/(dashboard)/payments/_types/payment";
 
-const monthlyAppointmentsData = [
-  {
-    name: "January",
-    appointments: 320,
-    newPatients: 120,
-    followUps: 200
-  },
-  {
-    name: "February",
-    appointments: 280,
-    newPatients: 90,
-    followUps: 190
-  },
-  {
-    name: "March",
-    appointments: 350,
-    newPatients: 140,
-    followUps: 210
-  },
-  {
-    name: "April",
-    appointments: 310,
-    newPatients: 110,
-    followUps: 200
-  },
-  {
-    name: "May",
-    appointments: 290,
-    newPatients: 100,
-    followUps: 190
-  },
-  {
-    name: "June",
-    appointments: 330,
-    newPatients: 130,
-    followUps: 200
-  }
-];
-
-const paymentStats = [
-  {
-    title: "Total Payments",
-    value: "€216",
-    icon: <DollarSign className="size-6 text-muted-foreground" />,
-    description: "All time payments received",
-    status: "completed",
-    count: 12 // example count
-  },
-  {
-    title: "Active Packages",
-    value: "4",
-    icon: <Package className="size-6 text-muted-foreground" />,
-    description: "Active packages",
-    status: "active",
-    count: 4
-  },
-  {
-    title: "This Month",
-    value: "€0",
-    icon: <Calendar className="size-6 text-muted-foreground" />,
-    description: "Current month payments",
-    status: "pending",
-    count: 0
-  },
-  {
-    title: "Last Month",
-    value: "€0",
-    icon: <CalendarDays className="size-6 text-muted-foreground" />,
-    description: "Previous month payments",
-    status: "completed",
-    count: 0
-  },
-  {
-    title: "This Year",
-    value: "€216",
-    icon: <CalendarCheck className="size-6 text-muted-foreground" />,
-    description: "Current year payments",
-    status: "completed",
-    count: 12
-  },
-  {
-    title: "Last Year",
-    value: "€0",
-    icon: <CalendarRange className="size-6 text-muted-foreground" />,
-    description: "Previous year payments",
-    status: "completed",
-    count: 0
-  }
-];
-
-
-// Sample order data
-const orders = [
-  {
-    id: 1,
-    name: "Aimen Ali",
-    tier: "Vip",
-    method: "Admin Buy",
-    amount: "Є17",
-    status: "Paid",
-    date: "14-04-2025",
-  },
-  {
-    id: 2,
-    name: "Umair Ali",
-    tier: "Silver",
-    method: "stripe",
-    amount: "Є37",
-    status: "Paid",
-    date: "14-04-2025",
-  },
-  {
-    id: 3,
-    name: "Talha Khalid",
-    tier: "Vip",
-    method: "Admin Buy",
-    amount: "Є100",
-    status: "Paid",
-    date: "14-04-2025",
-  },
-  {
-    id: 4,
-    name: "Salman Khan",
-    tier: "Silver",
-    method: "Admin Buy",
-    amount: "Є37",
-    status: "Paid",
-    date: "23-04-2025",
-  },
-  {
-    id: 5,
-    name: "kris Acngel",
-    tier: "Vip",
-    method: "mollie",
-    amount: "Є5",
-    status: "Paid",
-    date: "28-04-2025",
-  },
-  {
-    id: 6,
-    name: "kris Acngel",
-    tier: "Vip",
-    method: "mollie",
-    amount: "Є5",
-    status: "Pending",
-    date: "28-04-2025",
-  },
-  {
-    id: 7,
-    name: "kris Acngel",
-    tier: "Vip",
-    method: "mollie",
-    amount: "Є5",
-    status: "Delivered",
-    date: "28-04-2025",
-  },
-  {
-    id: 8,
-    name: "kris Acngel",
-    tier: "Vip",
-    method: "mollie",
-    amount: "Є5",
-    status: "Returned",
-    date: "28-04-2025",
-  },
-  {
-    id: 9,
-    name: "kris Acngel",
-    tier: "Vip",
-    method: "mollie",
-    amount: "Є5",
-    status: "Cancelled",
-    date: "28-04-2025",
-  },
-];
+const statusColors: Record<string, string> = {
+  ACTIVE: "bg-green-500/20 text-green-700 border-green-500",
+  EXPIRED: "bg-red-500/20 text-red-700 border-red-500",
+  CANCELLED: "bg-gray-500/20 text-gray-700 border-gray-500",
+  PENDING: "bg-yellow-500/20 text-yellow-700 border-yellow-500"
+};
 
 export default function PaymentsPage() {
+  const { payments, paymentLoading } = usePayments();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -231,21 +52,116 @@ export default function PaymentsPage() {
     setSearchTerm(e.target.value);
   };
 
-  const filterOrdersByTab = (tabValue: string) => {
-    if (tabValue === "all") return orders;
-    return orders.filter(order => order.status.toLowerCase() === tabValue);
-  };
-
-  const filterOrdersBySearch = (ordersToFilter: typeof orders) => {
-    if (!searchTerm) return ordersToFilter;
-    const lower = searchTerm.toLowerCase();
-    return ordersToFilter.filter(
-        (order) =>
-            order.name.toLowerCase().includes(lower) ||
-            order.tier.toLowerCase().includes(lower) ||
-            order.method.toLowerCase().includes(lower)
+  const filterPaymentsByTab = (tabValue: string) => {
+    if (tabValue === "all") return payments?.lastTenUserPackages || [];
+    return (payments?.lastTenUserPackages || []).filter(pkg =>
+        tabValue === "active" ? pkg.status === "ACTIVE" :
+            tabValue === "expired" ? pkg.status === "EXPIRED" :
+                pkg.status === "CANCELLED"
     );
   };
+
+  const filterPaymentsBySearch = (paymentsToFilter: UserPackageDto[]) => {
+    if (!searchTerm) return paymentsToFilter;
+    const lower = searchTerm.toLowerCase();
+    return paymentsToFilter.filter(
+        (pkg) =>
+            pkg.user.firstName.toLowerCase().includes(lower) ||
+            pkg.user.lastName.toLowerCase().includes(lower) ||
+            pkg.package.name.toLowerCase().includes(lower) ||
+            pkg.status.toLowerCase().includes(lower)
+    );
+  };
+
+  if (paymentLoading || !payments) {
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading your payments...</p>
+        </div>
+    );
+  }
+
+  // Format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(amount);
+  };
+
+  // Format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  // Payment stats based on actual data
+  const paymentStats = [
+    {
+      title: "Total Payments",
+      value: formatCurrency(payments.totalPayments),
+      icon: <DollarSign className="size-6 text-muted-foreground" />,
+      description: "All time payments received",
+      status: "completed",
+      count: payments.lastTenUserPackages.length
+    },
+    {
+      title: "Active Packages",
+      value: payments.activePackages.toString(),
+      icon: <Package className="size-6 text-muted-foreground" />,
+      description: "Active packages",
+      status: "active",
+      count: payments.activePackages
+    },
+    {
+      title: "This Month",
+      value: formatCurrency(payments.thisMonthPayments),
+      icon: <Calendar className="size-6 text-muted-foreground" />,
+      description: "Current month payments",
+      status: payments.thisMonthPayments > 0 ? "completed" : "pending",
+      count: payments.lastTenUserPackages.filter(p =>
+          new Date(p.purchaseDate).getMonth() === new Date().getMonth()
+      ).length
+    },
+    {
+      title: "Last Month",
+      value: formatCurrency(payments.lastMonthPayments),
+      icon: <CalendarDays className="size-6 text-muted-foreground" />,
+      description: "Previous month payments",
+      status: payments.lastMonthPayments > 0 ? "completed" : "pending",
+      count: payments.lastTenUserPackages.filter(p => {
+        const date = new Date(p.purchaseDate);
+        const now = new Date();
+        return date.getMonth() === (now.getMonth() - 1 + 12) % 12 &&
+            date.getFullYear() === (now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear());
+      }).length
+    },
+    {
+      title: "This Year",
+      value: formatCurrency(payments.thisYearPayments),
+      icon: <CalendarCheck className="size-6 text-muted-foreground" />,
+      description: "Current year payments",
+      status: "completed",
+      count: payments.lastTenUserPackages.filter(p =>
+          new Date(p.purchaseDate).getFullYear() === new Date().getFullYear()
+      ).length
+    },
+    {
+      title: "Last Year",
+      value: formatCurrency(payments.lastYearPayments),
+      icon: <CreditCard className="size-6 text-muted-foreground" />,
+      description: "Previous year payments",
+      status: payments.lastYearPayments > 0 ? "completed" : "pending",
+      count: payments.lastTenUserPackages.filter(p =>
+          new Date(p.purchaseDate).getFullYear() === new Date().getFullYear() - 1
+      ).length
+    }
+  ];
 
   return (
       <div className="p-4 xl:p-6">
@@ -281,7 +197,7 @@ export default function PaymentsPage() {
                                         : "bg-blue-500"
                             }`}
                             style={{
-                              width: `${(stat.count / Math.max(...paymentStats.map(s => s.count))) * 100}%`
+                              width: `${(stat.count / Math.max(1, ...paymentStats.map(s => s.count))) * 100}%`
                             }}
                         />
                       </div>
@@ -296,8 +212,8 @@ export default function PaymentsPage() {
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure you want to Delete this order?</AlertDialogTitle>
-              <AlertDialogDescription>This action cannot be undone. The order's data will be permanently removed.</AlertDialogDescription>
+              <AlertDialogTitle>Are you sure you want to Delete this payment?</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone. The payment&#39;s data will be permanently removed.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -310,22 +226,18 @@ export default function PaymentsPage() {
 
         <Tabs defaultValue="all" className="space-y-4">
           <div className="flex flex-col md:flex-row justify-between gap-4">
-            <TabsList className="grid grid-cols-5 md:max-w-xl">
+            <TabsList className="grid grid-cols-4 md:max-w-xl">
               <TabsTrigger value="all" className="flex items-center gap-1 justify-center">
                 <List className="w-4 h-4" />
-                All Orders
+                All Payments
               </TabsTrigger>
-              <TabsTrigger value="pending" className="flex items-center gap-1 justify-center">
-                <Clock className="w-4 h-4" />
-                Pending
-              </TabsTrigger>
-              <TabsTrigger value="delivered" className="flex items-center gap-1 justify-center">
+              <TabsTrigger value="active" className="flex items-center gap-1 justify-center">
                 <PackageCheck className="w-4 h-4" />
-                Delivered
+                Active
               </TabsTrigger>
-              <TabsTrigger value="returned" className="flex items-center gap-1 justify-center">
-                <RotateCcw className="w-4 h-4" />
-                Returns
+              <TabsTrigger value="expired" className="flex items-center gap-1 justify-center">
+                <Clock className="w-4 h-4" />
+                Expired
               </TabsTrigger>
               <TabsTrigger value="cancelled" className="flex items-center gap-1 justify-center">
                 <XCircle className="w-4 h-4" />
@@ -336,7 +248,7 @@ export default function PaymentsPage() {
             <div className="relative w-full md:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                  placeholder="Search orders..."
+                  placeholder="Search payments..."
                   className="pl-9 w-full md:w-[300px]"
                   value={searchTerm}
                   onChange={handleSearchChange}
@@ -350,70 +262,40 @@ export default function PaymentsPage() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Tier</TableHead>
-                      <TableHead>Method</TableHead>
+                      <TableHead>Customer</TableHead>
+                      <TableHead>Package</TableHead>
                       <TableHead>Amount</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead>Purchase Date</TableHead>
+                      <TableHead>Expiry Date</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filterOrdersBySearch(filterOrdersByTab("all")).map((order) => (
-                        <TableRow key={order.id}>
+                    {filterPaymentsBySearch(filterPaymentsByTab("all")).map((pkg) => (
+                        <TableRow key={pkg.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
                               <Avatar>
-                                <AvatarImage src={"/user-2.png"} alt={order.name} />
-                                <AvatarFallback>{order.name.charAt(0)}</AvatarFallback>
+                                <AvatarImage src={"/user-2.png"} alt={`${pkg.user.firstName} ${pkg.user.lastName}`} />
+                                <AvatarFallback>{pkg.user.firstName.charAt(0)}{pkg.user.lastName.charAt(0)}</AvatarFallback>
                               </Avatar>
                               <div>
-                                <p className="font-medium">{order.name}</p>
+                                <p className="font-medium">{pkg.user.firstName} {pkg.user.lastName}</p>
                                 <p className="text-sm text-muted-foreground md:hidden">
-                                  {order.tier} • {order.method}
+                                  {pkg.package.name} • {formatCurrency(pkg.priceAtPurchase)}
                                 </p>
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell>{order.tier}</TableCell>
-                          <TableCell>{order.method}</TableCell>
-                          <TableCell>{order.amount}</TableCell>
+                          <TableCell>{pkg.package.name}</TableCell>
+                          <TableCell>{formatCurrency(pkg.priceAtPurchase)}</TableCell>
                           <TableCell>
-                            <Badge
-                                variant="outline"
-                                className={
-                                  order.status === "Paid" ? "bg-green-500/20 text-green-700 border-green-500" :
-                                      order.status === "Pending" ? "bg-yellow-500/20 text-yellow-700 border-yellow-500" :
-                                          order.status === "Delivered" ? "bg-blue-500/20 text-blue-700 border-blue-500" :
-                                              order.status === "Returned" ? "bg-purple-500/20 text-purple-700 border-purple-500" :
-                                                  order.status === "Cancelled" ? "bg-red-500/20 text-red-700 border-red-500" :
-                                                      "bg-gray-500/20 text-gray-700 border-gray-500"
-                                }
-                            >
-                              {order.status}
+                            <Badge variant="outline" className={statusColors[pkg.status] || "bg-gray-500/20 text-gray-700 border-gray-500"}>
+                              {pkg.status}
                             </Badge>
                           </TableCell>
-                          <TableCell>{order.date}</TableCell>
-                          <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                  <span className="sr-only">Actions</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem asChild>
-                                  <Link href={`/admin/payments/1`}>
-                                    <Receipt className="mr-2 h-4 w-4" />
-                                    View Order
-                                  </Link>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
+                          <TableCell>{formatDate(pkg.purchaseDate)}</TableCell>
+                          <TableCell>{formatDate(pkg.endDate)}</TableCell>
                         </TableRow>
                     ))}
                   </TableBody>
@@ -422,78 +304,47 @@ export default function PaymentsPage() {
             </Card>
           </TabsContent>
 
-          {["pending", "delivered", "returned", "cancelled"].map((tab) => (
+          {["active", "expired", "cancelled"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
                 <Card>
                   <CardContent>
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Name</TableHead>
-                          <TableHead>Tier</TableHead>
-                          <TableHead>Method</TableHead>
+                          <TableHead>Customer</TableHead>
+                          <TableHead>Package</TableHead>
                           <TableHead>Amount</TableHead>
                           <TableHead>Status</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead>Purchase Date</TableHead>
+                          <TableHead>Expiry Date</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {filterOrdersBySearch(filterOrdersByTab(tab)).map((order) => (
-                            <TableRow key={order.id}>
+                        {filterPaymentsBySearch(filterPaymentsByTab(tab)).map((pkg) => (
+                            <TableRow key={pkg.id}>
                               <TableCell>
                                 <div className="flex items-center gap-3">
                                   <Avatar>
-                                    <AvatarImage src={"/user-2.png"} alt={order.name} />
-                                    <AvatarFallback>{order.name.charAt(0)}</AvatarFallback>
+                                    <AvatarImage src={"/user-2.png"} alt={`${pkg.user.firstName} ${pkg.user.lastName}`} />
+                                    <AvatarFallback>{pkg.user.firstName.charAt(0)}{pkg.user.lastName.charAt(0)}</AvatarFallback>
                                   </Avatar>
                                   <div>
-                                    <p className="font-medium">{order.name}</p>
+                                    <p className="font-medium">{pkg.user.firstName} {pkg.user.lastName}</p>
                                     <p className="text-sm text-muted-foreground md:hidden">
-                                      {order.tier} • {order.method}
+                                      {pkg.package.name} • {formatCurrency(pkg.priceAtPurchase)}
                                     </p>
                                   </div>
                                 </div>
                               </TableCell>
-                              <TableCell>{order.tier}</TableCell>
-                              <TableCell>{order.method}</TableCell>
-                              <TableCell>{order.amount}</TableCell>
+                              <TableCell>{pkg.package.name}</TableCell>
+                              <TableCell>{formatCurrency(pkg.priceAtPurchase)}</TableCell>
                               <TableCell>
-                                <Badge
-                                    variant="outline"
-                                    className={
-                                      order.status === "Paid" ? "bg-green-500/20 text-green-700 border-green-500" :
-                                          order.status === "Pending" ? "bg-yellow-500/20 text-yellow-700 border-yellow-500" :
-                                              order.status === "Delivered" ? "bg-blue-500/20 text-blue-700 border-blue-500" :
-                                                  order.status === "Returned" ? "bg-purple-500/20 text-purple-700 border-purple-500" :
-                                                      order.status === "Cancelled" ? "bg-red-500/20 text-red-700 border-red-500" :
-                                                          "bg-gray-500/20 text-gray-700 border-gray-500"
-                                    }
-                                >
-                                  {order.status}
+                                <Badge variant="outline" className={statusColors[pkg.status] || "bg-gray-500/20 text-gray-700 border-gray-500"}>
+                                  {pkg.status}
                                 </Badge>
                               </TableCell>
-                              <TableCell>{order.date}</TableCell>
-                              <TableCell className="text-right">
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon">
-                                      <MoreHorizontal className="h-4 w-4" />
-                                      <span className="sr-only">Actions</span>
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                    <DropdownMenuItem asChild>
-                                      <Link href={`/orders/${order.id}`}>View Order</Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)} className="text-red-600">
-                                      Delete
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </TableCell>
+                              <TableCell>{formatDate(pkg.purchaseDate)}</TableCell>
+                              <TableCell>{formatDate(pkg.endDate)}</TableCell>
                             </TableRow>
                         ))}
                       </TableBody>

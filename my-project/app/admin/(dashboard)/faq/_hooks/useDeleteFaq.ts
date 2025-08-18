@@ -1,5 +1,5 @@
 import { useSWRConfig } from "swr";
-import { deleteFaq } from "../../../../shared-api/faqApi";
+import { deleteFaq } from "@/app/shared-api/faqApi";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { useState } from "react";

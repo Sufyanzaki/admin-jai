@@ -185,11 +185,11 @@ export default function PackagesPage() {
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end">
                                                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                            <DropdownMenuItem>
-                                                                <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">
-                                                                    View details
-                                                                </Link>
-                                                            </DropdownMenuItem>
+                                                            {/*<DropdownMenuItem>*/}
+                                                            {/*    <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">*/}
+                                                            {/*        View details*/}
+                                                            {/*    </Link>*/}
+                                                            {/*</DropdownMenuItem>*/}
                                                             <DropdownMenuItem>
                                                                 <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
                                                                     Edit package

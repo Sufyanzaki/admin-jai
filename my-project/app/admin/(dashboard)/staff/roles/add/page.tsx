@@ -7,87 +7,13 @@ import {Label} from "@/components/admin/ui/label"
 import {Textarea} from "@/components/admin/ui/textarea"
 import {Checkbox} from "@/components/admin/ui/checkbox"
 import {Separator} from "@/components/admin/ui/separator"
-import {
-  AlertCircle,
-  ArrowLeft,
-  BarChart2,
-  Bell,
-  Coins,
-  Cookie,
-  CreditCard,
-  DollarSign,
-  FileText,
-  Filter,
-  HelpCircle,
-  Languages,
-  Layout,
-  LayoutDashboard,
-  List,
-  Mail,
-  NotebookText,
-  Package,
-  Save,
-  Search,
-  Server,
-  Settings,
-  Share2,
-  Sliders,
-  TrendingUp,
-  UserCheck,
-  UserCog,
-  Users,
-  Video
-} from "lucide-react"
+import {ArrowLeft, Save} from "lucide-react"
 import Link from "next/link"
 import {Switch} from "@/components/admin/ui/switch"
 import {Controller} from "react-hook-form";
 import useRoleForm from "../_hook/useRoleForm";
 import React from "react";
-
-export const roleMenuItems = [
-  { id: "dashboard", title: "Dashboard", icon: LayoutDashboard, permissions: ["canView"] },
-  { id: "members", title: "Members", icon: Users, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "profile_attributes", title: "Profile Attributes", icon: UserCog, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "payments", title: "Payments", icon: CreditCard, permissions: ["canView", "canCreate", "canEdit"] },
-  { id: "frontend_settings", title: "Frontend Settings", icon: Sliders, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "faqs", title: "FAQs", icon: HelpCircle, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "faqs_category", title: "FAQs Category", icon: List, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "blogs", title: "Blogs", icon: NotebookText, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "blogs_category", title: "Blogs Category", icon: List, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "packages", title: "Packages", icon: Package, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "complaints", title: "Complaints", icon: AlertCircle, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "financial", title: "Financial", icon: DollarSign, permissions: ["canView"] },
-  { id: "income", title: "Income", icon: TrendingUp, permissions: ["canView"] },
-  { id: "member_report", title: "Member Report", icon: FileText, permissions: ["canView"] },
-  { id: "newsletter", title: "Newsletter", icon: Mail, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "banners", title: "Banners", icon: Image, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "general_settings", title: "General Settings", icon: Settings, permissions: ["canEdit"] },
-  { id: "preferences", title: "Preferences", icon: Sliders, permissions: ["canEdit"] },
-  { id: "analytic", title: "Analytic", icon: BarChart2, permissions: ["canView"] },
-  { id: "seo_settings", title: "SEO Settings", icon: Search, permissions: ["canEdit"] },
-  { id: "language", title: "Language", icon: Languages, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "currency", title: "Currency", icon: Coins, permissions: ["canView", "canEdit"] },
-  { id: "payment_methods", title: "Payment Methods", icon: CreditCard, permissions: ["canEdit"] },
-  { id: "smtp_settings", title: "SMTP Settings", icon: Mail, permissions: ["canEdit"] },
-  { id: "email_templates", title: "Email Templates", icon: Mail, permissions: ["canEdit"] },
-  { id: "third_party_settings", title: "Third Party Settings", icon: Settings, permissions: ["canEdit"] },
-  { id: "cookie", title: "Cookie", icon: Cookie, permissions: ["canEdit"] },
-  { id: "social_media_login", title: "Social Media Login", icon: Share2, permissions: ["canEdit"] },
-  { id: "abuse_word_filtering", title: "Abuse Word Filtering", icon: Filter, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "push_notification", title: "Push Notification", icon: Bell, permissions: ["canEdit"] },
-  { id: "staffs", title: "Staffs", icon: UserCheck, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "system", title: "System", icon: Server, permissions: ["canView"] },
-  { id: "footer", title: "Footer", icon: Layout, permissions: ["canView"] },
-  { id: "footer_section", title: "Footer Section", icon: Layout, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-  { id: "chat_video_setting", title: "Chat & Video Setting", icon: Video, permissions: ["canEdit"] }
-] as const;
-
-const permissionTypes = [
-  { key: "canView" as const, label: "view" },
-  { key: "canCreate" as const, label: "create" },
-  { key: "canEdit" as const, label: "edit" },
-  { key: "canDelete" as const, label: "delete" },
-];
+import {permissionTypes, roleMenuItems} from "../../const/permissions"
 
 export default function AddRolePage() {
   const {

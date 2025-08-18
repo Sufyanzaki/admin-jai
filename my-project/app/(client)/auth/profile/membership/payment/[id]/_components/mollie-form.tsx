@@ -1,7 +1,7 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
 import {Button} from "@/components/client/ux/button";
 import {FormEvent, useState} from "react";
-import {createPayment} from "@/app/(client)/auth/profile/membership/payment/[id]/_api/paymentApi";
+import {createPayment} from "@/app/shared-api/paymentApi";
 import {useRouter} from "next/navigation";
 
 type Props = {

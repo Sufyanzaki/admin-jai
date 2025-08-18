@@ -4,7 +4,7 @@ import {Label} from "@/components/client/ux/label";
 import {Button} from "@/components/client/ux/button";
 import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import {FormEvent, useState} from "react";
-import {createPayment} from "@/app/(client)/auth/profile/membership/payment/[id]/_api/paymentApi";
+import {createPayment} from "@/app/shared-api/paymentApi";
 import {showError, showSuccess} from "@/shared-lib";
 import {patchUser} from "@/app/shared-api/userApi";
 import { useSession } from "next-auth/react";

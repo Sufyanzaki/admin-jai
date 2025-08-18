@@ -26,7 +26,7 @@ export type PackageFormValues = z.infer<typeof packageSchema>;
 export default function useEditPackage() {
 
   const params = useParams();
-  const id = params.id as string | number;
+  const id = params.id as string;
 
   const {
     handleSubmit,
@@ -66,7 +66,7 @@ export default function useEditPackage() {
   }, [pkg, reset]);
 
   const { trigger, isMutating } = useSWRMutation(
-      "addPackage",
+      "editPackage",
       async (_: string, { arg }: { arg: PackageFormValues }) => {
         let imageUrl = "";
         if (arg.image instanceof File) {
@@ -79,6 +79,7 @@ export default function useEditPackage() {
         const featuresString = arg.features.join(", ");
         return await editPackage({
           ...arg,
+          id,
           image: imageUrl,
           features: featuresString,
         });

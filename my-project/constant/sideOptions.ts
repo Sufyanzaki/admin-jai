@@ -56,11 +56,11 @@ export const sidebarItems = [
         href: "/admin/packages",
         icon: Calendar,
     },
-    {
-        title: "Complaints",
-        href: "/admin/complains",
-        icon: Megaphone,
-    },
+    // {
+    //     title: "Complaints",
+    //     href: "/admin/complains",
+    //     icon: Megaphone,
+    // },
     {
         title: "Report",
         href: "/admin/reports",

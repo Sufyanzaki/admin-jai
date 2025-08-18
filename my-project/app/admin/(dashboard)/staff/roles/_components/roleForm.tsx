@@ -1,30 +1,16 @@
-import { Input } from "@/components/admin/ui/input";
-import { Label } from "@/components/admin/ui/label";
-import { Separator } from "@/components/admin/ui/separator";
-import { Textarea } from "@/components/admin/ui/textarea";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/admin/ui/tooltip";
-import { Button } from "@/components/admin/ui/button";
-import { CreditCard, Info, LayoutDashboard, UserCog, Users } from "lucide-react";
+import {Input} from "@/components/admin/ui/input";
+import {Label} from "@/components/admin/ui/label";
+import {Separator} from "@/components/admin/ui/separator";
+import {Textarea} from "@/components/admin/ui/textarea";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/admin/ui/tooltip";
+import {Button} from "@/components/admin/ui/button";
+import {Info} from "lucide-react";
 import Link from "next/link";
-import { Checkbox } from "@/components/admin/ui/checkbox";
-import { Controller } from "react-hook-form";
+import {Checkbox} from "@/components/admin/ui/checkbox";
+import {Controller} from "react-hook-form";
 import useRoleForm from "../_hook/useRoleForm";
-import React from "react";
-import { roleMenuItems } from "../add/page";
-
-interface Module {
-  id: string;
-  title: string;
-  icon: React.ElementType;
-}
-
-const modules: Module[] = [
-  { id: "dashboard", title: "Dashboard", icon: LayoutDashboard },
-  { id: "members", title: "Members", icon: Users },
-  { id: "profile_attributes", title: "Profile Attributes", icon: UserCog },
-  { id: "payments", title: "Payments", icon: CreditCard },
-];
-
+import React, { useEffect } from "react";
+import { roleMenuItems } from "../../const/permissions";
 
 const permissionTypes = [
   { key: "canView" as const, label: "view" },
@@ -45,7 +31,7 @@ export default function RoleForm() {
   } = useRoleForm();
 
   // Ensure permissions array matches modules
-  React.useEffect(() => {
+  useEffect(() => {
     roleMenuItems.forEach((mod, idx) => {
       if (!fields[idx] || fields[idx].module !== mod.id) {
         setValue(`permissions.${idx}.module`, mod.id);
@@ -86,7 +72,7 @@ export default function RoleForm() {
       <Separator />
       <div className="space-y-4">
         <Label className="text-base">Basic Permissions</Label>
-        {modules.map((module, modIdx) => (
+        {roleMenuItems.slice(0,4).map((module, modIdx) => (
           <div key={module.id} className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="font-medium">{module.title}</Label>
@@ -104,25 +90,29 @@ export default function RoleForm() {
               </TooltipProvider>
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {permissionTypes.map((type) => (
-                <Controller
-                  key={type.key}
-                  name={`permissions.${modIdx}.${type.key}`}
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`${module.id}-${type.label}`}
-                        checked={!!field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label htmlFor={`${module.id}-${type.label}`} className="text-sm capitalize">
-                        {type.label}
-                      </Label>
-                    </div>
-                  )}
-                />
-              ))}
+              {module.permissions.map((permKey) => {
+                const permConfig = permissionTypes.find((p) => p.key === permKey);
+                if (!permConfig) return null;
+                return (
+                    <Controller
+                        key={permConfig.key}
+                        name={`permissions.${modIdx}.${permConfig.key}`}
+                        control={control}
+                        render={({ field }) => (
+                            <div className="flex items-center space-x-2">
+                              <Checkbox
+                                  id={`${module.id}-${permConfig.label}`}
+                                  checked={!!field.value}
+                                  onCheckedChange={field.onChange}
+                              />
+                              <Label htmlFor={`${module.id}-${permConfig.label}`} className="capitalize">
+                                {permConfig.label}
+                              </Label>
+                            </div>
+                        )}
+                    />
+                );
+              })}
             </div>
           </div>
         ))}
