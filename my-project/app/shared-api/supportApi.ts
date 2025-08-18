@@ -1,7 +1,7 @@
-import { postRequest, patchRequest, getRequest, deleteRequest } from "@/shared-lib";
-import { SupportTicketDto } from "../(client)/dashboard/settings/support/_types/support";
+import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
+import {AdminSupportTicketDto} from "../(client)/dashboard/settings/support/_types/support";
 
-export async function createSupportTicket(payload: Omit<SupportTicketDto, "id">) {
+export async function createSupportTicket(payload: Omit<AdminSupportTicketDto, "id">) {
     const r = await postRequest({
         url: "users/support-tickets",
         data: payload,
@@ -10,23 +10,36 @@ export async function createSupportTicket(payload: Omit<SupportTicketDto, "id">)
     return r.response;
 }
 
-export async function updateSupportTicket(id: string, payload: Partial<SupportTicketDto>) {
-    const r = await patchRequest({
-        url: `users/support-tickets/${id}`,
+type ReplyPayload = {
+    ticketId: string;
+    message: string;
+}
+export async function sendReply(payload: ReplyPayload) {
+    const r = await postRequest({
+        url: "users/support-tickets/reply",
         data: payload,
         useAuth: true,
     });
     return r.response;
 }
 
-export async function getSupportTicket(id: string): Promise<SupportTicketDto | undefined> {
+export async function updateSupportTicket(payload: Partial<AdminSupportTicketDto>) {
+    const r = await patchRequest({
+        url: `users/support-tickets/status`,
+        data: payload,
+        useAuth: true,
+    });
+    return r.response;
+}
+
+export async function getSupportTicket(id: string): Promise<AdminSupportTicketDto | undefined> {
     return getRequest({
         url: `users/support-tickets/${id}`,
         useAuth: true,
     });
 }
 
-export async function getAllSupportTickets(): Promise<SupportTicketDto[]> {
+export async function getAllSupportTickets(): Promise<AdminSupportTicketDto[]> {
     return getRequest({
         url: "users/support-tickets/all",
         useAuth: true,

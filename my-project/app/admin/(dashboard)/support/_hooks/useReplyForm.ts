@@ -1,0 +1,97 @@
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
+import {showError, showSuccess} from "@/shared-lib";
+import useSWRMutation from 'swr/mutation';
+import {sendReply} from "@/app/shared-api/supportApi";
+import {useSWRConfig} from "swr";
+import {AdminSupportTicketDto} from "@/app/(client)/dashboard/settings/support/_types/support";
+
+const replySchema = z.object({
+    message: z.string()
+        .min(1, "Message is required")
+        .max(1000, "Message must be less than 1000 characters"),
+});
+
+export type ReplyFormValues = z.infer<typeof replySchema>;
+
+export default function useReplyForm(ticketId?: string) {
+
+    const {mutate} = useSWRConfig();
+
+    const { trigger, isMutating } = useSWRMutation(
+        `tickets-${ticketId}`,
+        async (_: string, { arg }: { arg: ReplyFormValues }) => {
+            if(!ticketId) throw new Error( 'Ticket ID is required to send a reply.' )
+            return await sendReply({ticketId, ...arg});
+        },
+        {
+            onError: (error: unknown) => {
+                if (error instanceof Error) {
+                    showError({ message: error.message });
+                } else {
+                    showError({ message: 'An unknown error occurred.' });
+                }
+            }
+        }
+    );
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+    } = useForm<ReplyFormValues>({
+        resolver: zodResolver(replySchema),
+        defaultValues: {
+            message: 'Thank you for your inquiry. We are looking into this issue and will get back to you shortly.',
+        },
+        mode: 'onBlur'
+    });
+
+    const onSubmit = async (values: ReplyFormValues, callback: ()=>void) => {
+        try {
+            await trigger({ message: values.message });
+            showSuccess("Reply sent successfully!");
+            callback();
+
+            mutate(
+                "support",
+                (current: AdminSupportTicketDto[] | undefined) => {
+                    return current
+                        ? current.map((ticket) => {
+                            if (ticket.id === ticketId) {
+                                return {
+                                    ...ticket,
+                                    lastReply: {
+                                        ...values,
+                                        createdAt: new Date().toISOString(),
+                                        updatedAt: new Date().toISOString(),
+                                    },
+                                };
+                            }
+                            return ticket;
+                        })
+                        : [];
+                },
+                false
+            ).finally(() => {});
+
+            reset();
+        } catch (error: unknown) {
+            const message =
+                typeof error === 'object' && error !== null && 'message' in error && typeof (error).message === 'string'
+                    ? (error as { message: string }).message
+                    : 'An unexpected error occurred. Please try again.';
+            showError({ message });
+        }
+    };
+
+    return {
+        register,
+        handleSubmit,
+        onSubmit,
+        errors,
+        isLoading: isSubmitting || isMutating,
+    };
+}

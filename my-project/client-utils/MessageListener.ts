@@ -28,7 +28,7 @@ export const MessageListener = ({ onMessage }: MessageListenerProps) => {
                 id: String(Date.now()),
                 content: data.content ?? "",
                 time: null,
-                senderId: data.sender.id!,
+                senderId: Number(data.sender.id!),
                 chatId: data.chatId!,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
