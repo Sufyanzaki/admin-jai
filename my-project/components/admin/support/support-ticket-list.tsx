@@ -17,6 +17,7 @@ import {
 } from "@/components/admin/ui/dialog"
 import {Textarea} from "@/components/admin/ui/textarea"
 import {useToast} from "@/components/admin/ui/use-toast"
+import {useSupportTickets} from "@/app/admin/(dashboard)/support/_hooks/useSupportTickets";
 
 // Sample ticket data
 const tickets = [
@@ -128,6 +129,11 @@ const tickets = [
 ]
 
 export function SupportTicketList() {
+
+  const { supportTickets, ticketsLoading } = useSupportTickets()
+
+  console.log(supportTickets)
+
   const { toast } = useToast()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedTicket, setSelectedTicket] = useState<(typeof tickets)[0] | null>(null)

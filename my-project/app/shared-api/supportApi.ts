@@ -1,5 +1,5 @@
 import { postRequest, patchRequest, getRequest, deleteRequest } from "@/shared-lib";
-import { SupportTicketDto } from "../_types/support";
+import { SupportTicketDto } from "../(client)/dashboard/settings/support/_types/support";
 
 export async function createSupportTicket(payload: Omit<SupportTicketDto, "id">) {
     const r = await postRequest({
@@ -28,7 +28,7 @@ export async function getSupportTicket(id: string): Promise<SupportTicketDto | u
 
 export async function getAllSupportTickets(): Promise<SupportTicketDto[]> {
     return getRequest({
-        url: "users/support-tickets",
+        url: "users/support-tickets/all",
         useAuth: true,
     });
 }

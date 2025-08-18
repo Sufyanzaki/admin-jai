@@ -16,8 +16,8 @@ export const useTranslationDetails = (id: string) => {
     });
 
     return {
-        translation: data,
-        translationLoading: loading,
+        response: data,
+        responseLoading: loading,
         error,
         mutate
     };

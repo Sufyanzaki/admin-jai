@@ -1,15 +1,31 @@
-export type TranslationDto = {
-    id: string;
-    key: string;
-    languageId: number;
-    text: string;
-    createdAt: string;
-    updatedAt: string;
 
-    languageCode?:string;
+export type LanguageTranslationsDto = {
+    translations: TranslationsResponse;
+    meta: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+        hasNextPage: boolean;
+        hasPrevPage: boolean;
+    };
+};
+
+
+type TranslationPagination = {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
 }
 
-export interface LanguageTranslationsDto {
+type TranslationsResponse = {
+    translations: TranslationDto;
+}
+
+export type TranslationDto = {
+    languageCode: string;
     language: string;
     translations: Record<string, string>;
+    pagination: TranslationPagination;
 }

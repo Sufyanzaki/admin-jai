@@ -81,7 +81,7 @@ export default function useProfileForm() {
         });
     }, [user, reset]);
 
-    const onSubmit = async (values: ProfileFormValues, callback?: (data: {status: number} | undefined) => void) => {
+    const onSubmit = async (values: ProfileFormValues, callback?: () => void) => {
         try {
             let imageUrl: string | undefined;
 
@@ -99,10 +99,10 @@ export default function useProfileForm() {
                 country: values.country,
             });
 
-            if (result?.status === 200) {
+            if (result) {
                 await mutate();
                 showSuccess('Profile updated successfully!');
-                callback?.(result);
+                callback?.();
             }
         } catch (error: unknown) {
             if(error instanceof Error){

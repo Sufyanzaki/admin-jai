@@ -49,7 +49,7 @@ export default function useLanguageForm() {
     defaultValues: {
       name: "",
       code: "",
-      status: undefined,
+      status: "active",
     },
     mode: "onBlur",
   });

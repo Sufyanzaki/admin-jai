@@ -1,0 +1,27 @@
+import {useSWRFix} from "@/shared-lib";
+import {DetailReportFilters, getDetailReport} from "@/app/admin/(dashboard)/reports/_api/reportApi";
+import {DetailedResponseDto} from "@/app/admin/(dashboard)/reports/_types/report";
+
+export const useDetailReport = (params: DetailReportFilters) => {
+
+    const key = `analytics-${JSON.stringify(params || {})}`;
+
+    const { data, loading, error, mutate, refetch } = useSWRFix<DetailedResponseDto>({
+        key,
+        fetcher: async () => {
+            const response = await getDetailReport();
+            if (!response) {
+                throw new Error('Failed to fetch banner details');
+            }
+            return response;
+        }
+    });
+
+    return {
+        detailReport: data,
+        detailReportLoading: loading,
+        error,
+        refetch,
+        mutate
+    };
+};

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react";
+import React, {useState, useRef, ChangeEvent} from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar";
 import { Label } from "@/components/admin/ui/label";
 import { Input } from "@/components/admin/ui/input";
@@ -21,7 +21,7 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
     isLoading
   } = useProfileForm()
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const blobUrl = URL.createObjectURL(file);
@@ -91,7 +91,7 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
       </div>
 
       {/* Form Fields */}
-      <form onSubmit={handleSubmit((data: any) => onSubmit(data, onFinish))} className="space-y-4">
+      <form onSubmit={handleSubmit((data) => onSubmit(data, onFinish))} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="firstName">First Name</Label>
@@ -101,7 +101,7 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
               placeholder="Enter your first name"
             />
             {errors.firstName && (
-              <p className="text-sm text-red-500">{String(errors.firstName.message)}</p>
+              <p className="text-sm text-red-500">{errors.firstName.message}</p>
             )}
           </div>
           
@@ -113,7 +113,7 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
               placeholder="Enter your last name"
             />
             {errors.lastName && (
-              <p className="text-sm text-red-500">{String(errors.lastName.message)}</p>
+              <p className="text-sm text-red-500">{errors.lastName.message}</p>
             )}
           </div>
         </div>
@@ -127,21 +127,10 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
             placeholder="Enter your email address"
           />
           {errors.email && (
-            <p className="text-sm text-red-500">{String(errors.email.message)}</p>
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
-          <Input 
-            id="location" 
-            {...register("location")}
-            placeholder="Enter your location"
-          />
-          {errors.location && (
-            <p className="text-sm text-red-500">{String(errors.location.message)}</p>
-          )}
-        </div>
+
 
         <Button 
           type="submit" 

@@ -1,11 +1,12 @@
 "use client";
 
-import type React from "react";
+import React, {useEffect} from "react";
 import {SidebarProvider} from "@/components/client/ux/sidebar";
 import {DashboardSidebar} from "./_components/dashboard-sidebar";
 import {DashboardFooter} from "./_components/dashboard-footer";
 import {DashboardHeader} from "@/app/(client)/dashboard/_components/dashboard-header";
 import {usePathname} from "next/navigation";
+import {postPageView} from "@/app/(client)/dashboard/_api/pageView";
 
 export default function DashboardLayout({
   children,
@@ -14,6 +15,10 @@ export default function DashboardLayout({
 }) {
 
   const pathname = usePathname();
+
+    useEffect(() => {
+        postPageView({pageLink: pathname}).finally()
+    }, [pathname]);
 
   return (
     <SidebarProvider defaultOpen={true}>

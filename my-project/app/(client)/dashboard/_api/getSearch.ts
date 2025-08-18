@@ -12,7 +12,7 @@ export function searchFormToParams(values: SearchFormValues): URLSearchParams {
 
 export function paramsToSearchForm(params: URLSearchParams): SearchFormValues {
   return {
-    gender: params.get("gender") ?? "",
+    amLookingFor: params.get("amLookingFor") ?? "",
     relationshipStatus: params.get("relationshipStatus") ?? undefined,
     country: params.get("country") ?? undefined,
     state: params.get("state") ?? undefined,

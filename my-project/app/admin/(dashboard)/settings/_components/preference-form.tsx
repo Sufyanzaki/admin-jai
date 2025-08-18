@@ -20,8 +20,14 @@ import {
 import { Button } from "@/components/admin/ui/button";
 import usePreferenceSettingsForm from "@/app/admin/(dashboard)/settings/_hooks/usePreferenceSettingForm";
 import {Controller} from "react-hook-form";
+import {useLanguages} from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
+import {useCurrencies} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useCurrencies";
 
 export default function PreferenceForm() {
+
+    const { languages } = useLanguages();
+    const { currencies } = useCurrencies();
+
     const {
         handleSubmit,
         onSubmit,
@@ -80,12 +86,11 @@ export default function PreferenceForm() {
                                             <SelectValue placeholder="Select currency" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="usd">USD – US Dollar</SelectItem>
-                                            <SelectItem value="eur">EUR – Euro</SelectItem>
-                                            <SelectItem value="gbp">GBP – British Pound</SelectItem>
-                                            <SelectItem value="cad">CAD – Canadian Dollar</SelectItem>
-                                            <SelectItem value="pkr">PKR – Pakistani Rupee</SelectItem>
-                                            <SelectItem value="inr">INR – Indian Rupee</SelectItem>
+                                            {(currencies ?? []).map((c) => (
+                                                <SelectItem key={c.currencyCode} value={c.currencyCode}>
+                                                    {c.currencyName}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 )}
@@ -114,12 +119,11 @@ export default function PreferenceForm() {
                                             <SelectValue placeholder="Select language" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="en">English</SelectItem>
-                                            <SelectItem value="es">Spanish</SelectItem>
-                                            <SelectItem value="fr">French</SelectItem>
-                                            <SelectItem value="de">German</SelectItem>
-                                            <SelectItem value="ur">Urdu</SelectItem>
-                                            <SelectItem value="hi">Hindi</SelectItem>
+                                            {(languages ?? []).map((lang) => (
+                                                <SelectItem key={lang.code} value={lang.code}>
+                                                    {lang.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 )}

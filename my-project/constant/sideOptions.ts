@@ -111,11 +111,6 @@ export const sidebarItems = [
         icon: Calendar,
     },
     {
-        title: "Chat",
-        href: "/admin/chat",
-        icon: MessageCircle,
-    },
-    {
         title: "Support",
         href: "/admin/support",
         icon: HelpCircle,

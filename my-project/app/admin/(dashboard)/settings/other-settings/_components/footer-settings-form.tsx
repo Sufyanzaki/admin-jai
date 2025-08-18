@@ -20,7 +20,6 @@ export default function FooterSettingsForm({ pagesData, onOpenDialog }: FooterSe
     <Card>
       <CardHeader>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          {/* Title + Description */}
           <div>
             <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
               <Settings className="h-5 w-5" />
@@ -31,7 +30,6 @@ export default function FooterSettingsForm({ pagesData, onOpenDialog }: FooterSe
             </CardDescription>
           </div>
 
-          {/* Button */}
           <Button
             onClick={onOpenDialog}
             className="w-full sm:w-auto"

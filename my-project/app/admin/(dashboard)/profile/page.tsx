@@ -6,34 +6,18 @@ import {Card, CardContent, CardHeader} from '@/components/admin/ui/card'
 import {Button} from '@/components/admin/ui/button'
 import {Badge} from '@/components/admin/ui/badge'
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/admin/ui/tabs'
-import {
-  Activity,
-  Bell,
-  Calendar,
-  Clock,
-  FileText,
-  Key,
-  Lock,
-  Mail,
-  MapPin,
-  Save,
-  Settings,
-  Shield,
-  User
-} from 'lucide-react'
+import {Activity, Bell, Calendar, Clock, FileText, Key, Lock, Mail, Save, Settings, Shield, User} from 'lucide-react'
 import {Switch} from '@/components/admin/ui/switch'
 import PasswordForm from './_components/PasswordForm';
 import ProfileEditForm from './_components/ProfileEditForm';
-import {useSession} from 'next-auth/react';
 import {useProfile} from "@/app/shared-hooks/useProfile";
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const { user } = useProfile();
-  const { data: session } = useSession();
 
-  const displayUser = user || session?.user as any;
+  const displayUser = user
 
   return (
     <div className="space-y-6 p-4 xl:p-6">
@@ -85,13 +69,6 @@ export default function ProfilePage() {
                       </div>
                       <span>{displayUser?.email || "No email provided"}</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Location</span>
-                      </div>
-                      <span>{displayUser?.location || "No location provided"}</span>
-                    </div>
                   
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -128,10 +105,6 @@ export default function ProfilePage() {
                       <span className="text-muted-foreground">2FA Status</span>
                       <Badge variant="success">Enabled</Badge>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Last Password Change</span>
-                      <span>7 days ago</span>
-                    </div>
                   </div>
                 )}
               </div>
@@ -159,10 +132,6 @@ export default function ProfilePage() {
               >
                 <Lock className="mr-2 h-4 w-4" />
                 {isChangingPassword ? 'Cancel Change' : 'Change Password'}
-              </Button>
-              <Button className="w-full" variant="outline">
-                <FileText className="mr-2 h-4 w-4" />
-                Download Data
               </Button>
             </CardContent>
           </Card>

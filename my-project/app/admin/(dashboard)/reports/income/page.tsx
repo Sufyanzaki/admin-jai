@@ -1,7 +1,7 @@
 "use client"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
-import {DateRangePicker} from "@/components/admin/date-range-picker"
-import {CreditCardIcon, DollarSignIcon, SearchIcon, TrendingDownIcon, TrendingUpIcon, UserIcon, WalletIcon,} from "lucide-react"
+import {DatePicker} from "@/components/admin/date-range-picker"
+import {CreditCardIcon, DollarSignIcon, SearchIcon, TrendingUpIcon, UserIcon} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select"
 import {Input} from "@/components/admin/ui/input"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
@@ -19,9 +19,89 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import {ChartContainer, ChartTooltipContent} from "@/components/admin/ui/chart"
+import {usePackageReport} from "@/app/admin/(dashboard)/reports/_hooks/usePackageReport"
+import {usePackages} from "@/app/shared-hooks/usePackages"
+import {useSearchParams} from "next/navigation"
+import {useState} from "react"
+import Preloader from "@/components/shared/Preloader"
+import {Badge} from "@/components/admin/ui/badge";
+import {Button} from "@/components/admin/ui/button";
+import {AttributeSelect} from "@/components/admin/ui/attribute-select";
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d']
 
 export default function FinancialReportsPage() {
+  const searchParams = useSearchParams()
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const [filters, setFilters] = useState({
+    startDate: searchParams.get('startDate') || '',
+    endDate: searchParams.get('endDate') || '',
+    gender: searchParams.get('gender') || '',
+    packageId: searchParams.get('packageId') || ''
+  })
+
+  const { packagesReport, packageReportLoading, refetch } = usePackageReport({
+    startDate: filters.startDate,
+    endDate: filters.endDate,
+    gender: filters.gender,
+    packageId: filters.packageId
+  })
+
+  const { packages } = usePackages()
+
+  const handleFilterChange = (key: string, value?: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value ?? "",
+    }))
+  }
+  const applyFilters = () => {
+    const params = new URLSearchParams()
+
+    if (filters.startDate) params.append('startDate', filters.startDate)
+    if (filters.endDate) params.append('endDate', filters.endDate)
+    if (filters.gender && filters.gender !== 'all') params.append('gender', filters.gender)
+    if (filters.packageId && filters.packageId !== 'all') params.append('packageId', filters.packageId)
+
+    refetch().finally()
+  }
+
+  if(!packagesReport && packageReportLoading){
+    return (
+        <div className="flex justify-center items-center h-64">
+          <Preloader />
+        </div>
+    )
+  }
+
+  if (!packagesReport && !packageReportLoading) {
+    return (
+        <div className="flex justify-center items-center h-64">
+          <p className="text-muted-foreground">No data available</p>
+        </div>
+    )
+  }
+
+  if(!packagesReport){
+    return (
+        <div className="flex justify-center items-center h-64">
+          <p className="text-muted-foreground">No data available</p>
+        </div>
+    )
+  }
+
+  // Transform API data for charts
+  const monthlyRevenueData = packagesReport.monthlyRevenue.map(item => ({
+    month: item.month,
+    revenue: item.revenue
+  }))
+
+  const revenueByGenderData = Object.entries(packagesReport.revenueByGender).map(([name, value]) => ({
+    name,
+    value
+  }))
+
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div className="flex flex-col gap-2">
@@ -33,234 +113,195 @@ export default function FinancialReportsPage() {
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-2 md:flex-row md:items-center">
-            <DateRangePicker />
-            <Select defaultValue="all-services">
+            <DatePicker
+                onDateChange={(date) => {
+                  handleFilterChange("startDate", date || "")
+                }}
+            />
+            <AttributeSelect
+                attributeKey="iAmA"
+                value={filters.gender}
+                onChange={(value) => handleFilterChange('gender', value || '')}
+                placeholder="Select gender"
+            />
+            <Select
+                value={filters.packageId}
+                onValueChange={(value) => handleFilterChange('packageId', value)}
+            >
               <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Relationship Status" />
+                <SelectValue placeholder="Package" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all-services">Relationship Status</SelectItem>
-                <SelectItem value="all-single">Single</SelectItem>
-                <SelectItem value="consultations">Married</SelectItem>
+                <SelectItem value="all">All Packages</SelectItem>
+                {(packages ?? []).map((item) => (
+                    <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
-            <Select defaultValue="all-service">
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all-service">Status</SelectItem>
-                <SelectItem value="all-active">Active</SelectItem>
-                <SelectItem value="consultations">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select defaultValue="all-departments">
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Country" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all-departments">Country</SelectItem>
-                <SelectItem value="cardiology">Germany</SelectItem>
-                <SelectItem value="neurology">India</SelectItem>
-                <SelectItem value="orthopedics">Spain</SelectItem>
-              </SelectContent>
-            </Select>
+            <Button onClick={applyFilters}>Apply Filters</Button>
           </div>
           <div className="relative w-full md:w-[320px]">
             <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input type="search" placeholder="Search customers..." className="w-full pl-8" />
+            <Input
+                type="search"
+                placeholder="Search customers..."
+                className="w-full pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Avg. monthly</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">Total Payments</CardTitle>
               <DollarSignIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$15,584</div>
-              <p className="text-xs text-muted-foreground">+12% from last year</p>
+              <div className="text-2xl font-bold">${packagesReport.totalPayments.toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                {packagesReport.yearDifferencePercent !== null ?
+                    `${packagesReport.yearDifferencePercent > 0 ? '+' : ''}${packagesReport.yearDifferencePercent}% from last year` :
+                    'No comparison data'}
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Last 3 months</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">Active Packages</CardTitle>
               <TrendingUpIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$1,298</div>
+              <div className="text-2xl font-bold">{packagesReport.activePackages}</div>
               <p className="text-xs text-muted-foreground">
-                <span className="text-green-500">+8.5%</span> from previous period
+                ${packagesReport.thisMonthPayments.toFixed(2)} this month
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Total this year</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">This Year</CardTitle>
               <UserIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">460 Travel</div>
-              <p className="text-xs text-muted-foreground">$5,600 (36% of total)</p>
+              <div className="text-2xl font-bold">${packagesReport.thisYearPayments.toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                ${packagesReport.lastYearPayments.toFixed(2)} last year
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Difference with last year</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">This Month</CardTitle>
               <CreditCardIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">94%</div>
+              <div className="text-2xl font-bold">${packagesReport.thisMonthPayments.toFixed(2)}</div>
               <p className="text-xs text-muted-foreground">
-                <span className="text-green-500">+3%</span> from previous period
+                ${packagesReport.lastMonthPayments.toFixed(2)} last month
               </p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Monthly Income Chart */}
+        {packageReportLoading ? <div className="h-64 flex justify-center items-center">
+          <Preloader />
+        </div> : <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Monthly Income</CardTitle>
+                <CardDescription>Revenue trends for the current year</CardDescription>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={monthlyRevenueData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip formatter={(value) => [`$${value}`, 'Revenue']} />
+                    <Legend />
+                    <Bar dataKey="revenue" fill="#8884d8" barSize={20} name="Revenue" />
+                    <Line type="monotone" dataKey="revenue" stroke="#ff7300" name="Trend" />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Revenue by Gender</CardTitle>
+                <CardDescription>Income distribution by customer gender</CardDescription>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                        data={revenueByGenderData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {revenueByGenderData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value) => [`$${value}`, 'Revenue']} />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
           <Card>
             <CardHeader>
-              <CardTitle>Monthly Income</CardTitle>
-              <CardDescription>Revenue trends for the current year</CardDescription>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={incomeData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="revenue" fill="#8884d8" barSize={20} name="Revenue" />
-                  <Line type="monotone" dataKey="revenue" stroke="#ff7300" name="Trend" />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Customer Distribution Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Revenue by Gender</CardTitle>
-              <CardDescription>Income distribution by customer type</CardDescription>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                      data={customerRevenueData}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {customerRevenueData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Income Details Table */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <div>
-                <CardTitle>Customer Income Details</CardTitle>
-                <CardDescription>Monthly revenue breakdown by customer</CardDescription>
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div>
+                  <CardTitle>Recent Purchases</CardTitle>
+                  <CardDescription>Last 10 package purchases</CardDescription>
+                </div>
               </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Jan</TableHead>
-                  <TableHead>Feb</TableHead>
-                  <TableHead>Mar</TableHead>
-                  <TableHead>Apr</TableHead>
-                  <TableHead>May</TableHead>
-                  <TableHead>Jun</TableHead>
-                  <TableHead>Jul</TableHead>
-                  <TableHead>Aug</TableHead>
-                  <TableHead>Sep</TableHead>
-                  <TableHead>Oct</TableHead>
-                  <TableHead>Nov</TableHead>
-                  <TableHead>Dec</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">460 Travel</TableCell>
-                  <TableCell>$1,400.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell>$1,400.00</TableCell>
-                  <TableCell>$1,400.00</TableCell>
-                  <TableCell>$1,400.00</TableCell>
-                  <TableCell>$1,400.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell>$0.00</TableCell>
-                  <TableCell className="text-right">$5,600.00</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Global Corp</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell>$2,500.00</TableCell>
-                  <TableCell className="text-right">$30,000.00</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Package</TableHead>
+                    <TableHead>Purchase Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {packagesReport.lastTenUserPackages.map((purchase) => (
+                      <TableRow key={purchase.id}>
+                        <TableCell className="font-medium">
+                          {purchase.user.firstName} {purchase.user.lastName}
+                        </TableCell>
+                        <TableCell>{purchase.package.name}</TableCell>
+                        <TableCell>
+                          {new Date(purchase.purchaseDate).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={purchase.status === 'ACTIVE' ? 'default' : 'secondary'}>
+                            {purchase.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ${purchase.priceAtPurchase.toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </>}
       </div>
   )
-}
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
-
-const incomeData = [
-  { month: 'Jan', revenue: 3900 },
-  { month: 'Feb', revenue: 2500 },
-  { month: 'Mar', revenue: 2500 },
-  { month: 'Apr', revenue: 3900 },
-  { month: 'May', revenue: 3900 },
-  { month: 'Jun', revenue: 3900 },
-  { month: 'Jul', revenue: 3900 },
-  { month: 'Aug', revenue: 2500 },
-  { month: 'Sep', revenue: 2500 },
-  { month: 'Oct', revenue: 2500 },
-  { month: 'Nov', revenue: 2500 },
-  { month: 'Dec', revenue: 2500 },
-];
-
-const customerRevenueData = [
-  { name: '460 Travel', value: 5600 },
-  { name: 'Global Corp', value: 30000 },
-  { name: 'Individual Clients', value: 20000 },
-  { name: 'Local Businesses', value: 10000 },
-];
+};

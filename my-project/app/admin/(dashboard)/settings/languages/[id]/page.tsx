@@ -4,7 +4,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {Button} from "@/components/admin/ui/button";
 import {Input} from "@/components/admin/ui/input";
 import {ArrowLeft, Save, Search} from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {useTranslationDetails} from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useTranslationDetails";
 import {useParams} from "next/navigation";
@@ -12,12 +12,45 @@ import Preloader from "@/components/shared/Preloader";
 import TranslationModal from "@/app/admin/(dashboard)/settings/languages/[id]/_components/translationModal";
 import {Checkbox} from "@/components/admin/ui/checkbox";
 import useEditTranslation from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useEditTranslation";
+import PaginationSection from "@/components/admin/Pagination";
+
+type TranslationPagination = {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
+export type TranslationDto = {
+    languageCode: string;
+    language: string;
+    translations: Record<string, string>;
+    pagination: TranslationPagination;
+};
+
+export type TranslationsResponse = {
+    translations: TranslationDto;
+};
+
+export type LanguageTranslationsDto = {
+    data: TranslationsResponse[];
+    meta: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+        hasNextPage: boolean;
+        hasPrevPage: boolean;
+    };
+};
 
 export default function LanguageTranslatePage() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
+    const [page, setPage] = useState(1);
 
-    const { translation, translationLoading, error } = useTranslationDetails(id);
+    const { response, responseLoading, error } = useTranslationDetails(id);
+
     const {
         selectedRows,
         toggleRowSelection,
@@ -27,7 +60,7 @@ export default function LanguageTranslatePage() {
         isUpdating,
     } = useEditTranslation();
 
-    if(translationLoading) return (
+    if(responseLoading) return (
         <div className="flex items-center flex-col justify-center h-64">
             <Preloader/>
             <p className="text-sm">Loading...</p>
@@ -38,8 +71,8 @@ export default function LanguageTranslatePage() {
         <div className="text-red-500">Failed to load translations.</div>
     )
 
-    const obj = translation?.translations ?? {};
-    const tableData = Object.entries(obj).map(([key, value], index) => ({
+    const translations = response?.translations?.translations ?? {};
+    const tableData = Object.entries(translations).map(([key, value], index) => ({
         id: index + 1,
         key,
         value,
@@ -47,6 +80,13 @@ export default function LanguageTranslatePage() {
 
     const allKeys = tableData.map(row => row.key);
     const allSelected = allKeys.length > 0 && allKeys.every(key => selectedRows[key]);
+
+    const pagination = response?.translations?.translations.pagination ?? {
+        total: tableData.length,
+        page,
+        limit: 10,
+        totalPages: Math.ceil(tableData.length / 10),
+    };
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -67,7 +107,7 @@ export default function LanguageTranslatePage() {
             <Card>
                 <CardHeader>
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <CardTitle>{translation?.language || 'Language'}</CardTitle>
+                        <CardTitle>{response?.translations?.translations.language || 'Language'}</CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                             <Button
                                 variant="secondary"
@@ -94,7 +134,7 @@ export default function LanguageTranslatePage() {
                                     placeholder="Type Key"
                                     className="pl-8 w-40"
                                     onChange={(e) => {
-                                        // You can implement search functionality here
+                                        // Implement search functionality here
                                     }}
                                 />
                             </div>
@@ -131,7 +171,7 @@ export default function LanguageTranslatePage() {
                                         <Input
                                             type="text"
                                             className="w-full text-center"
-                                            defaultValue={row.value}
+                                            defaultValue={row.value as string}
                                             onChange={(e) => handleValueChange(row.key, e.target.value)}
                                         />
                                     </TableCell>
@@ -139,6 +179,10 @@ export default function LanguageTranslatePage() {
                             ))}
                         </TableBody>
                     </Table>
+                    <PaginationSection
+                        pagination={{ ...pagination, page }}
+                        onPageChange={(newPage) => setPage(newPage)}
+                    />
                 </CardContent>
             </Card>
         </div>

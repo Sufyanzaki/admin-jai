@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import { showError, showSuccess } from "@/shared-lib";
-import { createSupportTicket } from "../_api/supportApi";
+import { createSupportTicket } from "../../../../../shared-api/supportApi";
 
 const supportTicketSchema = z.object({
     subject: z.string().min(5, "Subject must be at least 5 characters"),

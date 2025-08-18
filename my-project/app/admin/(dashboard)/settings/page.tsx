@@ -13,7 +13,7 @@ export default function SettingsPage() {
     <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div>
         <h2 className="text-2xl font-bold">General Settings</h2>
-        <p className="text-sm text-muted-foreground">Configure your clinic settings and preferences</p>
+        <p className="text-sm text-muted-foreground">Configure your cookie settings and preferences</p>
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
@@ -42,34 +42,47 @@ export default function SettingsPage() {
                 Overview of your server configuration and PHP settings.
               </CardDescription>
             </CardHeader>
-
             <CardContent className="space-y-6">
-              {/* Server Information */}
               <div className="border rounded-xl p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-3">Server Information</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>- PHP Version</span>
-                    <span>8.3.21</span>
+                    <span>- Node.js Version</span>
+                    <span>v20.11.1</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>- MySQL Version</span>
-                    <span>10.6.22-MariaDB</span>
+                    <span>- NPM Version</span>
+                    <span>10.5.0</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>- Next.js Version</span>
+                    <span>14.2.4</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>- Express.js Version</span>
+                    <span>4.19.2</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>- Database</span>
+                    <span>PostgreSQL 15.4</span>
                   </div>
                 </div>
               </div>
 
-              {/* PHP.ini Config */}
               <div className="border rounded-xl p-4">
-                <h3 className="text-sm font-medium text-muted-foreground mb-3">php.ini Config</h3>
+                <h3 className="text-sm font-medium text-muted-foreground mb-3">App Config</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>- File Uploads</span>
-                    <span>Enabled</span>
+                    <span>- Environment</span>
+                    <span>Production</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>- Max File Uploads</span>
-                    <span>20</span>
+                    <span>- Port</span>
+                    <span>3000</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>- Build Mode</span>
+                    <span>Server / Static Hybrid</span>
                   </div>
                 </div>
               </div>

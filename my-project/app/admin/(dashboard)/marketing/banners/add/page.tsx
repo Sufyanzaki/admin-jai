@@ -1,27 +1,16 @@
 "use client";
 
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/admin/ui/card";
-import { Input } from "@/components/admin/ui/input";
-import { Button } from "@/components/admin/ui/button";
-import { Label } from "@/components/admin/ui/label";
-import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-} from "@/components/admin/ui/select";
+import {Card, CardContent, CardHeader, CardTitle,} from "@/components/admin/ui/card";
+import {Input} from "@/components/admin/ui/input";
+import {Button} from "@/components/admin/ui/button";
+import {Label} from "@/components/admin/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/admin/ui/select";
 import {ArrowLeft, Upload, X} from "lucide-react";
-import {DateRangePicker} from "@/components/admin/date-range-picker";
+import {DatePicker} from "@/components/admin/date-range-picker";
 import Link from "next/link";
 import useBannerForm from "../_hooks/useBannerForm";
-import { useRef } from "react";
-import { Controller } from "react-hook-form";
+import {useRef} from "react";
+import {Controller} from "react-hook-form";
 
 export default function BannerAddPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -65,7 +54,6 @@ export default function BannerAddPage() {
                         <CardTitle>Banner Information</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        {/* Name + Link */}
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
                                 <Label htmlFor="name">Name</Label>
@@ -92,54 +80,69 @@ export default function BannerAddPage() {
                             </div>
                         </div>
 
-                        {/* Date Range Picker + CPM */}
                         <div className="grid gap-4 md:grid-cols-2">
-                                                    <div className="grid gap-2">
-                            <Label>Start / End Date</Label>
-                            <Controller
-                                name="dateRange"
-                                control={control}
-                                render={({ field }) => (
-                                    <>
-                                        <DateRangePicker
-                                            className="w-full [&>button]:w-full"
-                                            value={field.value as any}
-                                            onDateRangeChange={(startDate, endDate) => {
-                                                setValue('startDate', new Date(startDate));
-                                                setValue('endDate', new Date(endDate));
-                                                field.onChange({ from: new Date(startDate), to: new Date(endDate) });
-                                            }}
+                            <div className="grid gap-2">
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div className="grid gap-2">
+                                        <Label>Start Date</Label>
+                                        <Controller
+                                            name="startDate"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <DatePicker
+                                                    className="w-full [&>button]:w-full"
+                                                    value={field.value}
+                                                    onDateChange={(date) => {
+                                                        console.log(date)
+                                                        if (!date) return;
+                                                        const parsedDate = new Date(date);
+                                                        field.onChange(parsedDate);
+                                                    }}
+                                                />
+                                            )}
                                         />
-                                    </>
-                                )}
-                            />
-                            {(errors.startDate || errors.endDate) && (
-                                <div className="space-y-1">
-                                    {errors.startDate && (
-                                        <p className="text-sm text-red-400">{errors.startDate.message}</p>
-                                    )}
-                                    {errors.endDate && (
-                                        <p className="text-sm text-red-400">{errors.endDate.message}</p>
-                                    )}
+                                        {errors.startDate && (
+                                            <p className="text-sm text-red-400">{errors.startDate.message}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label>End Date</Label>
+                                        <Controller
+                                            name="endDate"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <DatePicker
+                                                    className="w-full [&>button]:w-full"
+                                                    value={field.value}
+                                                    onDateChange={(date) => {
+                                                        if (!date) return;
+                                                        const parsedDate = new Date(date);
+                                                        field.onChange(parsedDate);
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                        {errors.endDate && (
+                                            <p className="text-sm text-red-400">{errors.endDate.message}</p>
+                                        )}
+                                    </div>
                                 </div>
+                            </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="cpm">CPM</Label>
+                            <Input
+                                id="cpm"
+                                type="number"
+                                placeholder="Enter CPM"
+                                {...register('cpm', { valueAsNumber: true })}
+                            />
+                            {errors.cpm && (
+                                <p className="text-sm text-red-400">{errors.cpm.message}</p>
                             )}
                         </div>
-
-                            <div className="grid gap-2">
-                                <Label htmlFor="cpm">CPM</Label>
-                                <Input 
-                                    id="cpm" 
-                                    type="number" 
-                                    placeholder="Enter CPM" 
-                                    {...register('cpm', { valueAsNumber: true })}
-                                />
-                                {errors.cpm && (
-                                    <p className="text-sm text-red-400">{errors.cpm.message}</p>
-                                )}
-                            </div>
                         </div>
-
-                        {/* Page Selection */}
                         <div className="grid gap-2">
                             <Label htmlFor="page">Select Page</Label>
                             <Select value={watch('page')} onValueChange={(value) => setValue('page', value)}>

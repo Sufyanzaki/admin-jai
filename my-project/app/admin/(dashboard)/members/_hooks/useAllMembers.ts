@@ -1,5 +1,5 @@
 import { useSWRFix } from '@/shared-lib';
-import { memberApi, GetAllMembersParams } from '../../../../shared-api/memberApi';
+import { memberApi, GetAllMembersParams } from '@/app/shared-api/memberApi';
 
 export default function useAllMembers(params?: GetAllMembersParams) {
   const key = `all-members-${JSON.stringify(params || {})}`;
