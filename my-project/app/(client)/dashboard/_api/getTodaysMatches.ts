@@ -3,7 +3,7 @@ import {getRequest} from "@/shared-lib";
 
 export type TodayMatchesResponse = {
     status: 'success' | 'error';
-    data: MemberProfile;
+    data: MemberProfile[];
 }
 
 export async function getTodayMatches(): Promise<TodayMatchesResponse> {

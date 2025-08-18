@@ -9,26 +9,17 @@ import { likesRecievedResponseData } from "../_api/getLikesRecived";
 import { useLikeResponse } from "../_hooks/useLikeResponse";
 import { useRouter } from "next/navigation";
 import { formatDate } from "date-fns";
+import { useSession } from "next-auth/react";
 
 export type Notification = {
   id: number;
   senderId: number;
   receiverId: number;
-  status: "PENDING" | "ACCEPTED" | "DECLINED" | "REJECTED";  // adjust if you have more statuses
+  status: "PENDING" | "ACCEPTED" | "DECLINED" | "REJECTED" | "DENIED";  // adjust if you have more statuses
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
-  sender?: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    image: string; // URL
-  };
-  receiver?: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    image: string; // URL
-  };
+  sender?: MemberProfile;
+  receiver?: MemberProfile;
 };
 
 type NotificationCardProps = {
@@ -37,6 +28,7 @@ type NotificationCardProps = {
 
 export function NotificationCard({ notification }: NotificationCardProps) {
   const router = useRouter();
+  const {data: session} = useSession()
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
   const { trigger, loading, error } = useLikeResponse();
 
@@ -61,21 +53,25 @@ export function NotificationCard({ notification }: NotificationCardProps) {
   return (
     <div className="w-full rounded-[5px] bg-white border border-gray-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
-        {notification?.sender && notification?.status !== "ACCEPTED" ?
-          <h3 className="font-medium text-sm sm:text-base">
+        <div className="">
+          {notification?.sender && notification?.status !== "ACCEPTED" && notification?.sender?.id !== session?.user?.id ?
+            <h3 className="font-medium text-sm sm:text-base">
 
-            You received a like from {notification?.sender?.firstName}{" "}
-            {notification?.sender?.lastName}
-          </h3> : notification?.receiver ? <h3 className="font-medium text-sm sm:text-base">
+              You received a like from {notification?.sender?.firstName}{" "}
+              {notification?.sender?.lastName}
+            </h3> : notification?.receiver ? <h3 className="font-medium text-sm sm:text-base">
 
-            You sent a like to {notification?.receiver?.firstName}{" "}
-            {notification?.receiver?.lastName}
-          </h3> : notification?.sender && notification?.status === "ACCEPTED" &&
-          <h3 className="font-medium text-sm sm:text-base">
+              You sent a like to {notification?.receiver?.firstName}{" "}
+              {notification?.receiver?.lastName}
+            </h3> : notification?.sender && notification?.status === "ACCEPTED" &&
+            <h3 className="font-medium text-sm sm:text-base">
 
-            You accepted a like from {notification?.sender?.firstName}{" "}
-            {notification?.sender?.lastName}
-          </h3>}
+              You accepted a like from {notification?.sender?.firstName}{" "}
+              {notification?.sender?.lastName}
+            </h3>}
+
+        </div>
+
         <div className="flex items-center gap-2 text-xs text-gray-500">
           <span>
             {notification?.updatedAt
@@ -110,20 +106,14 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                   <h4 className="text-lg sm:text-xl font-semibold">
                     {notification?.sender?.firstName}
                   </h4>
-                  {/* {from.isVerified && (
+                  {(notification?.sender?.isPremium || notification?.receiver?.isPremium) && (
                     <ShieldCheck className="w-4 h-4 text-app-blue" />
-                  )} */}
+                  )}
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-xs text-green-600">
-                    {/* {from.isOnline
-                      ? "Online now"
-                      : `Online ${from.lastSeen || "1d"} ago`} */}
-                  </span>
-                </div>
-
+                <div
+                  className={`flex w-3 h-3 ${(notification?.sender?.isOnline || notification?.receiver?.isOnline) ? "bg-app-green" : "bg-app-red"
+                    } rounded-[5px] border-2 border-white`}
+                ></div>
                 {/* <p className="text-xs sm:text-sm text-gray-700 font-medium">
                   {from.age} Years, {from.height} | {from.languages.join(", ")},{" "}
                   {from.religion} | {from.profession}
@@ -153,7 +143,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                   </Button>
                 </div>
               </div>
-              {notification?.sender && notification?.status === "PENDING" ?
+              {notification?.sender && notification?.status === "PENDING" && notification?.sender?.id !== session?.user?.id ?
                 <div className="sm:text-right space-y-2">
                   <p className="text-xs">She invited you to Connect</p>
                   <div className="flex gap-2 flex-wrap">

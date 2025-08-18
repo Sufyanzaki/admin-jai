@@ -1,30 +1,45 @@
 "use client"
-
-import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
+import { useDashboardFooterSetting } from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useDashboardFooterSetting";
 import { Headphones, MessageCircle, Phone } from "lucide-react"
 import Link from "next/link"
+import React, { useEffect, useState } from "react";
 
 export function DashboardFooter() {
-  const { basicPages, isLoading, error } = useBasicPages();
-  const footerLinks = basicPages?.filter((page) => page.pageType === "Private" && !page?.showOnHeader)
+  const { data: dashboardFooterData, isLoading: isLoadingDashboardFooterData } = useDashboardFooterSetting();
+  const [sectionPageArray, setSectionPageArray] = useState()
+
+  useEffect(() => {
+    if (dashboardFooterData?.sectionPage) {
+      // Convert comma-separated string to array
+      setSectionPageArray(dashboardFooterData.sectionPage.split(',').map(page => page.trim()));
+    }
+  }, [dashboardFooterData]);
+  console.log(sectionPageArray)
 
   return (
     <footer className="bg-gray-100 border-t border-t-gray-300">
       <div className="px-6 py-4">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-center md:text-left">
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 gap-y-1 text-xs text-gray-600 font-medium">
+            {isLoadingDashboardFooterData ?
+              <p>Loading...</p>
+              : sectionPageArray?.map((link) => (
+                <React.Fragment key={link}>
+                  <Link href={`/dashboard/${encodeURIComponent(link)}`} className="hover:text-gray-900">
+                    {link}
+                  </Link>
+                  <span className="text-gray-400 hidden sm:inline">•</span>
+                </React.Fragment>
+              ))
+            }
             <Link href={"/dashboard/agenda"} className="hover:text-gray-900">Agenda</Link>
             <span className="text-gray-400 hidden sm:inline">•</span>
+            <Link href={"/dashboard/packages"} className="hover:text-gray-900">Packages</Link>
+            <span className="text-gray-400 hidden sm:inline">•</span>
+            <Link href={"/dashboard/safety-tips"} className="hover:text-gray-900">Safety Tips</Link>
+            <span className="text-gray-400 hidden sm:inline">•</span>
 
-            {isLoading ?
-              <p>Loading...</p>
-              : footerLinks?.map((link) =>
-                <>
-                  <Link href={link?.Url ? link?.Url : "/dashboard/agenda"} className="hover:text-gray-900">{link?.pageTitle}</Link>
-                  <span className="text-gray-400 hidden sm:inline">•</span>
-                </>
-              )
-            }
+
 
           </div>
 

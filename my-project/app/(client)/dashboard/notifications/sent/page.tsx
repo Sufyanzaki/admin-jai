@@ -18,7 +18,7 @@ export default function SentPage() {
     <div className="space-y-8">
       {likesSent && likesSent?.length <= 0 && <p>No notification to show</p>}
 
-      {likesSent && likesSent?.map((likeRec: likesSentResponseData) => (
+      {likesSent && likesSent?.map((likeRec) => (
         <NotificationCard notification={likeRec} />
       ))}
     </div>

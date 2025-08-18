@@ -4,7 +4,7 @@ import { getAllImageRequest, likesRecievedResponse } from "../_api/getAllImageRe
 export enum ImageRequestStatus {
   PENDING = "PENDING",
   ACCEPTED = "APPROVED",
-  DECLINED = "DECLINED",
+  DECLINED = "DENIED",
 }
 
 export enum ImageRequestType {

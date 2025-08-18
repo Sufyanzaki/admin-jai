@@ -5,7 +5,7 @@ import { MemberProfile } from "@/app/shared-types/member";
 import { useSendLike } from "../_hooks/useSendLike";
 import { useBlockUser } from "../_hooks/useBlockUser";
 import { useCreateChat } from "../chat/_hooks/useCreateChat";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function ListCard({ profile }: { profile: MemberProfile }) {
   const router = useRouter();
@@ -29,10 +29,10 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
             <div className="relative flex-shrink-0">
               <ImageWrapper
                   src={profile.image || "/placeholder.svg"}
-                  alt={profile.firstName || profile.name}
+                  alt={profile.firstName || profile.lastName}
                   className="min-w-40 h-40 object-cover rounded-[5px]"
               />
-              {(profile.isOnline || profile.status === "online") && (
+              {(profile.isOnline) && (
                   <div className="absolute top-1 right-1 w-3 h-3 bg-app-green rounded-[5px] border-2 border-white"></div>
               )}
             </div>
@@ -123,10 +123,10 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
               <div className="relative flex-shrink-0">
                 <ImageWrapper
                     src={profile.image || "/placeholder.svg"}
-                    alt={profile.firstName || profile.name}
+                    alt={profile.firstName}
                     className="w-24 h-24 object-cover rounded-[5px]"
                 />
-                {(profile.isOnline || profile.status === "online") && (
+                {(profile.isOnline) && (
                     <div className="absolute top-1 right-1 w-2 h-2 bg-app-green rounded-[5px] border border-white"></div>
                 )}
               </div>

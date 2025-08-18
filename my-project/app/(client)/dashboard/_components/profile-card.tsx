@@ -44,7 +44,7 @@ export default function ProfileCard({
             alt={profile.firstName}
             className={cn(
               "w-full h-full object-cover transition-opacity duration-500",
-              (profile.account === "private" || profile.account === "plus") && "blur-xs",
+              (profile.isPremium) && "blur-xs",
               loaded ? "opacity-100 z-0" : "opacity-0 z-0"
             )}
             onLoad={() => setIsLoaded(true)}
@@ -80,7 +80,7 @@ export default function ProfileCard({
       </Link>
 
       <div
-        className={`absolute top-2 right-2 w-3 h-3 ${profile.status === "online" ? "bg-app-green" : "bg-app-red"
+        className={`absolute top-2 right-2 w-3 h-3 ${profile.isOnline ? "bg-app-green" : "bg-app-red"
           } rounded-[5px] border-2 border-white`}
       ></div>
       <div className="block">

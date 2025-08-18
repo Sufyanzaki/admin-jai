@@ -141,6 +141,7 @@ export type MemberProfile = {
     otpExpiresAt: string | null;
     isActive: boolean;
     isDeleted: boolean;
+    isOnline?: boolean;
     image: string;
     phone: string;
     department: string | null;
@@ -152,6 +153,7 @@ export type MemberProfile = {
     children: string;
     religion: string;
     shortDescription: string;
+    location?: string;
     isPremium: boolean;
     createdAt: string;
     updatedAt: string;

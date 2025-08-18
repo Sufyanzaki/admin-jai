@@ -5,7 +5,7 @@ type Payload = Partial<PhotoDto>;
 
 export async function uploadPhoto(props: Payload): Promise<PhotoDto | undefined> {
     const r = await postRequest<Payload>({
-        url: 'photo-setting',
+        url: 'users/photo-setting',
         data: props,
         useAuth: true
     });
@@ -14,14 +14,14 @@ export async function uploadPhoto(props: Payload): Promise<PhotoDto | undefined>
 
 export async function getPhotoDetails(): Promise<PhotoDto> {
     return await getRequest({
-        url: `photo-setting`,
+        url: `users/photo-setting`,
         useAuth: true
     });
 }
 
 export async function updatePhoto(props: Payload): Promise<PhotoDto> {
     const r = await patchRequest<Payload>({
-        url: `photo-setting`,
+        url: `users/photo-setting`,
         data: props,
         useAuth: true
     });
