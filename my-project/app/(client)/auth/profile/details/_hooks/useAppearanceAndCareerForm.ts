@@ -209,10 +209,10 @@ export default function useAppearanceAndCareerForm() {
 
     const onSubmit = useCallback(
         async (values: AppearanceCareerForm, callback?: () => void) => {
-            if(!isDirty){
-                router.push("/auth/profile/description");
-                return
-            }
+            // if(!isDirty){
+            //     router.push("/auth/profile/description");
+            //     return
+            // }
             try {
                 const result = await trigger(values);
                 if (result) {

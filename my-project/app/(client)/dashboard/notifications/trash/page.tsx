@@ -1,8 +1,6 @@
 "use client";
-import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import { LikeStatus, useLikesRecieved } from "../_hooks/useLikesRecieved";
-import { likesRecievedResponseData } from "../_api/getLikesRecived";
-import { ImageRequestStatus, ImageRequestType, useAllImageRequests } from "../../_hooks/useAllImageRequests";
+import {NotificationCard} from "@/app/(client)/dashboard/notifications/_components/notification-card";
+import {ImageRequestStatus, ImageRequestType, useAllImageRequests} from "../../_hooks/useAllImageRequests";
 
 
 export default function TrashPage() {

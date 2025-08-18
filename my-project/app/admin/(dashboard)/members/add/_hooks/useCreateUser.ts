@@ -30,7 +30,7 @@ const createUserSchema = (requirePassword: boolean) => z.object({
   gender: z.string().min(1, "Gender is required"),
   age: z.coerce.number().min(1, "Age is required"),
   relationshipStatus: z.string().min(1, "Relationship status is required"),
-  children: z.boolean({ required_error: "Children is required" }),
+  children: z.string().min(1, "Children is required"),
   religion: z.string().min(1, "Religion is required"),
   shortDescription: z.string().min(1, "Short description is required"),
 });
@@ -77,7 +77,7 @@ export default function useCreateUserForm() {
       gender: "",
       age: 18,
       relationshipStatus: "",
-      children: false,
+      children: "",
       religion: "",
       shortDescription: "",
     },
@@ -103,7 +103,7 @@ export default function useCreateUserForm() {
         gender: u.gender || "",
         age: u.age || 18,
         relationshipStatus: u.relationshipStatus || "",
-        children: u.children ?? false,
+        children: u.children ?? "",
         religion: u.religion || "",
         shortDescription: u.shortDescription || "",
       });
@@ -130,10 +130,12 @@ export default function useCreateUserForm() {
         if (isFile(arg.image)) imageUrl = await imageUpload(arg.image);
         else if (typeof arg.image === "string") imageUrl = arg.image;
 
+        const { children, ...other } = arg;
+
         if (id && allowEdit) {
-          return await patchUser(id, { ...arg, image: imageUrl });
+          return await patchUser(id, { ...other, image: imageUrl });
         } else {
-          return await postUser({ ...arg, image: imageUrl });
+          return await postUser({ ...other, image: imageUrl });
         }
       },
       {
@@ -190,14 +192,13 @@ export default function useCreateUserForm() {
           };
         },
         false
-      );
+      ).finally();
     }
 
     const result = await trigger({ ...values, image: imageUrl });
     if (result) {
       showSuccess("User updated successfully!");
 
-      // Update the cache with the actual response data
       globalMutate(
         (key) => typeof key === 'string' && key.startsWith('all-members'),
         (current: GetAllMembersResponse | undefined) => {
@@ -226,12 +227,11 @@ export default function useCreateUserForm() {
           };
         },
         false
-      );
+      ).finally();
 
-      // Invalidate the query to fetch the correct data
       globalMutate(
         (key) => typeof key === 'string' && key.startsWith('all-members'),
-      );
+      ).finally();
       callback?.();
       if (id) {
         updateUserTrackingId({ basicInformation: true });

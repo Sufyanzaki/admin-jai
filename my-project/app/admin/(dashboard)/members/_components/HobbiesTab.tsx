@@ -1,34 +1,25 @@
 "use client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/admin/ui/card";
-import { Label } from "@/components/admin/ui/label";
-import { TabsContent } from "@/components/admin/ui/tabs";
-import { MultiSelectCombobox } from "@/components/admin/ui/combo-box";
-import { Button } from "@/components/admin/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Label} from "@/components/admin/ui/label";
+import {TabsContent} from "@/components/admin/ui/tabs";
+import {Button} from "@/components/admin/ui/button";
+import type {HobbiesInterestsFormValues} from "../add/_hooks/useHobbiesInterestsForm";
 import useHobbiesInterestsForm from "../add/_hooks/useHobbiesInterestsForm";
-import type { HobbiesInterestsFormValues } from "../add/_hooks/useHobbiesInterestsForm";
-import type { FieldErrors } from "react-hook-form";
-import { Controller } from "react-hook-form";
-import { AlertTriangle } from "lucide-react";
-import { useParams } from "next/navigation";
-import { getUserTrackingId } from "@/lib/access-token";
+import type {FieldErrors} from "react-hook-form";
+import {Controller} from "react-hook-form";
+import {AlertTriangle} from "lucide-react";
+import {useParams} from "next/navigation";
+import {getUserTrackingId} from "@/lib/access-token";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeMultiSelect} from "@/components/admin/ui/attribute-select";
+import type React from "react";
 
-const interestMap: { id: keyof HobbiesInterestsFormValues; label: string; options: string[] }[] = [
-  { id: "sports", label: "Sports", options: [
-    "Rugby", "Autosport", "Football", "Basketball", "Tennis", "Swimming", "Cricket", "Baseball", "Hockey", "Golf"
-  ] },
-  { id: "music", label: "Music", options: [
-    "blues", "Rock", "Pop", "Jazz", "Classical", "Hip Hop", "Country", "Electronic", "R&B", "Reggae"
-  ] },
-  { id: "kitchen", label: "Kitchen", options: [
-    "Mexicaans", "Italian", "Chinese", "Indian", "French", "Thai", "Japanese", "Mediterranean", "American", "Korean"
-  ] },
-  { id: "reading", label: "Reading", options: [
-    "Familie-en streekromans", "Mystery", "Romance", "Science Fiction", "Fantasy", "Biography", "History", "Self-help", "Poetry", "Thriller"
-  ] },
-  { id: "tvShows", label: "TV Shows", options: [
-    "Drama", "Comedy", "Action", "Horror", "Documentary", "Reality TV", "Sci-Fi", "Crime", "Romance", "Animation"
-  ] },
+const interestMap: { id: keyof HobbiesInterestsFormValues; label: string }[] = [
+  { id: "sports", label: "Sports"},
+  { id: "music", label: "Music"},
+  { id: "kitchen", label: "Kitchen"},
+  { id: "reading", label: "Reading"},
+  { id: "tvShows", label: "TV Shows"},
 ];
 
 export default function HobbiesTab({ callback }: { callback: () => void}) {
@@ -72,16 +63,17 @@ export default function HobbiesTab({ callback }: { callback: () => void}) {
           <CardContent className="space-y-6">
             {interestMap.map((section) => (
               <div key={section.id} className="space-y-3">
-                <Label className="text-base font-medium">{section.label}*</Label>
+                <Label>{section.label}*</Label>
                 <Controller
                   control={control}
                   name={section.id}
                   render={({ field }) => (
-                    <MultiSelectCombobox
-                      selected={field.value ? field.value.split(", ") : []}
-                      onChange={selected => field.onChange(selected.join(", "))}
-                      options={section.options}
-                    />
+                      <AttributeMultiSelect
+                          attributeKey={section.id}
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select"
+                      />
                   )}
                 />
                 {(errors as FieldErrors<HobbiesInterestsFormValues>)[section.id as keyof FieldErrors<HobbiesInterestsFormValues>] && (

@@ -1,18 +1,22 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { showError } from "@/shared-lib";
-import { showSuccess } from "@/shared-lib";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postLanguageInfo, patchLanguageInfo } from "@/app/shared-api/languageInfoApi";
-import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { useLanguageInfoInfo } from "../../../../../shared-hooks/useLanguageInfoInfo";
-import { useEffect, useMemo } from "react";
-import { useParams } from "next/navigation";
+import {patchLanguageInfo, postLanguageInfo} from "@/app/shared-api/languageInfoApi";
+import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
+import {useLanguageInfoInfo} from "@/app/shared-hooks/useLanguageInfoInfo";
+import {useEffect, useMemo} from "react";
+import {useParams} from "next/navigation";
 
 const languageInfoSchema = z.object({
   motherTongue: z.string().min(1, "Mother tongue is required"),
-  knownLanguages: z.string().min(1, "Known languages are required"),
+  knownLanguages: z.any().refine((val) => Array.isArray(val) && val.length > 0, {
+        message: "Please select at least one language"
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: "Please select at least one language"
+      })),
 });
 
 export type LanguageInfoFormValues = z.infer<typeof languageInfoSchema>;
@@ -42,7 +46,7 @@ export default function useLanguageInfoForm() {
     resolver: zodResolver(languageInfoSchema),
     defaultValues: {
       motherTongue: "",
-      knownLanguages: "",
+      knownLanguages: [],
     },
     mode: "onBlur",
   });
@@ -53,7 +57,7 @@ export default function useLanguageInfoForm() {
     if (id && languageInfo) {
       reset({
         motherTongue: languageInfo.motherTongue || "",
-        knownLanguages: languageInfo.knownLanguages || "",
+        knownLanguages: languageInfo.knownLanguages?.split(",") || [],
       });
     }
   }, [id, languageInfo, reset]);
@@ -64,8 +68,13 @@ export default function useLanguageInfoForm() {
 
       if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member" });
 
-      if (id && allowEdit) return await patchLanguageInfo(id, arg);
-      else return await postLanguageInfo(id, arg);
+      const payload = {
+        ...arg,
+        knownLanguages: arg.knownLanguages.join(","),
+      }
+
+      if (id && allowEdit) return await patchLanguageInfo(id, payload);
+      else return await postLanguageInfo(id, payload);
     },
     {
       onError: (error: Error) => {
@@ -76,11 +85,11 @@ export default function useLanguageInfoForm() {
     }
   );
 
-  const onSubmit = async (values: LanguageInfoFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: LanguageInfoFormValues, callback?: () => void) => {
     const result = await trigger(values);
-    if (result?.status === 201 || result?.status === 200) {
+    if (result) {
       showSuccess("Language info updated successfully!");
-      callback?.(result);
+      callback?.();
       updateUserTrackingId({ languages: true });
     }
   };

@@ -11,11 +11,41 @@ import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 
 const hobbiesInterestsSchema = z.object({
-  sports: z.string().min(1, "Sports is required"),
-  music: z.string().min(1, "Music is required"),
-  kitchen: z.string().min(1, "Kitchen is required"),
-  reading: z.string().min(1, "Reading is required"),
-  tvShows: z.string().min(1, "TV Shows is required"),
+  sports: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: "Please select at least one sport"
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: "Please select at least one sport"
+      })),
+  music: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: "Please select at least one music"
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: "Please select at least one music"
+      })),
+  kitchen: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: "Please select at least one kitchen"
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: "Please select at least one kitchen"
+      })),
+  reading: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: "Please select at least one reading"
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: "Please select at least one reading"
+      })),
+  tvShows: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: "Please select at least one tvShows"
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: "Please select at least one tvShows"
+      })),
 });
 
 export type HobbiesInterestsFormValues = z.infer<typeof hobbiesInterestsSchema>;
@@ -43,11 +73,11 @@ export default function useHobbiesInterestsForm() {
   } = useForm<HobbiesInterestsFormValues>({
     resolver: zodResolver(hobbiesInterestsSchema),
     defaultValues: {
-      sports: "",
-      music: "",
-      kitchen: "",
-      reading: "",
-      tvShows: "",
+      sports: [],
+      music: [],
+      kitchen: [],
+      reading: [],
+      tvShows: [],
     },
     mode: "onBlur",
   });
@@ -57,11 +87,11 @@ export default function useHobbiesInterestsForm() {
   useEffect(() => {
     if (id && hobbiesInterests) {
       reset({
-        sports: hobbiesInterests.sports || "",
-        music: hobbiesInterests.music || "",
-        kitchen: hobbiesInterests.kitchen || "",
-        reading: hobbiesInterests.reading || "",
-        tvShows: hobbiesInterests.tvShows || "",
+        sports: hobbiesInterests.sports?.split(",") || [],
+        music: hobbiesInterests.music?.split(",") || [],
+        kitchen: hobbiesInterests.kitchen?.split(",") || [],
+        reading: hobbiesInterests.reading?.split(",") || [],
+        tvShows: hobbiesInterests.tvShows?.split(",") || [],
       });
     }
   }, [id, hobbiesInterests, reset]);
@@ -71,8 +101,16 @@ export default function useHobbiesInterestsForm() {
     async (_: string, { arg }: { arg: HobbiesInterestsFormValues }) => {
       if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member" });
 
-      if (id && allowEdit) return await patchHobbiesInterests(id, arg);
-      else return await postHobbiesInterests(id, arg);
+      const payload = {
+        sports: arg.sports.join(","),
+        music: arg.music.join(","),
+        kitchen: arg.kitchen.join(","),
+        reading: arg.reading.join(","),
+        tvShows: arg.tvShows.join(","),
+      }
+
+      if (id && allowEdit) return await patchHobbiesInterests(id, payload);
+      else return await postHobbiesInterests(id, payload);
     },
     {
       onError: (error: Error) => {

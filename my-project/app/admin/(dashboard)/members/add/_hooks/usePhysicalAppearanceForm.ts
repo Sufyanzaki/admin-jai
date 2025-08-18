@@ -6,7 +6,7 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postPhysicalAppearance, patchPhysicalAppearance } from "@/app/shared-api/physicalAppearanceApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { usePhysicalAppearanceInfo } from "../../../../../shared-hooks/usePhysicalAppearanceInfo";
+import { usePhysicalAppearanceInfo } from "@/app/shared-hooks/usePhysicalAppearanceInfo";
 import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 
@@ -19,7 +19,6 @@ const physicalAppearanceSchema = z.object({
   appearance: z.string().min(1, "Appearance is required"),
   clothing: z.string().min(1, "Clothing is required"),
   intelligence: z.string().min(1, "Intelligence is required"),
-  language: z.string().min(1, "Language is required"),
 });
 
 export type PhysicalAppearanceFormValues = z.infer<typeof physicalAppearanceSchema>;
@@ -56,7 +55,6 @@ export default function usePhysicalAppearanceForm() {
       appearance: "",
       clothing: "",
       intelligence: "",
-      language: "",
     },
     mode: "onBlur",
   });
@@ -74,7 +72,6 @@ export default function usePhysicalAppearanceForm() {
         appearance: physicalAppearance.appearance || "",
         clothing: physicalAppearance.clothing || "",
         intelligence: physicalAppearance.intelligence || "",
-        language: physicalAppearance.language || "",
       });
     }
   }, [tracker?.id, physicalAppearance, reset]);
@@ -97,11 +94,11 @@ export default function usePhysicalAppearanceForm() {
     }
   );
 
-  const onSubmit = async (values: PhysicalAppearanceFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: PhysicalAppearanceFormValues, callback?: () => void) => {
     const result = await trigger(values);
-      if (result?.status === 201 || result?.status === 200) {
+      if (result) {
         showSuccess("Physical appearance info updated successfully!");
-        callback?.(result);
+        callback?.();
         updateUserTrackingId({ aboutMe: true });
       }
   };

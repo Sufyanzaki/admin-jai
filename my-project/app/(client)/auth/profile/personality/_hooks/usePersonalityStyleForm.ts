@@ -172,10 +172,10 @@ export default function usePersonalityStyleForm() {
 
     const onSubmit = async (values: PersonalityBehaviorFormValues, callback?: () => void) => {
 
-        if(!isDirty){
-            router.push("/auth/profile/photos");
-            return
-        }
+        // if(!isDirty){
+        //     router.push("/auth/profile/photos");
+        //     return
+        // }
 
         const result = await trigger(values);
         if (result) {

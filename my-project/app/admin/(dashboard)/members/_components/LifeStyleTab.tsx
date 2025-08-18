@@ -1,16 +1,17 @@
 "use client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/admin/ui/card";
-import { Label } from "@/components/admin/ui/label";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/admin/ui/select";
-import { Separator } from "@/components/admin/ui/separator";
-import { TabsContent } from "@/components/admin/ui/tabs";
-import { Button } from "@/components/admin/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Label} from "@/components/admin/ui/label";
+import {Separator} from "@/components/admin/ui/separator";
+import {TabsContent} from "@/components/admin/ui/tabs";
+import {Button} from "@/components/admin/ui/button";
 import useLifeStyleForm from "../add/_hooks/useLifeStyleForm";
-import { Controller } from "react-hook-form";
-import { useParams } from "next/navigation";
-import { getUserTrackingId } from "@/lib/access-token";
-import { AlertTriangle } from "lucide-react";
+import {Controller} from "react-hook-form";
+import {useParams} from "next/navigation";
+import {getUserTrackingId} from "@/lib/access-token";
+import {AlertTriangle} from "lucide-react";
 import Preloader from "@/components/shared/Preloader";
+import type React from "react";
+import {AttributeSelect} from "@/components/admin/ui/attribute-select";
 
 export default function LifeStyleTab({ callback }: { callback: () => void}) {
 
@@ -26,7 +27,7 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
     isLoading,
     control,
     onSubmit,
-      lifeStyleLoading
+    lifeStyleLoading
   } = useLifeStyleForm();
 
   return (
@@ -44,7 +45,7 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                     <div className="flex items-center gap-2">
                         <AlertTriangle className="h-5 w-5 text-amber-600" />
                         <div className="text-amber-700 text-sm">
-                            You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member
+                            You need to initialize a new member profile before you can add other details. Go back to basic Information to initialize a member
                         </div>
                     </div>
                 </div>}
@@ -56,18 +57,12 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                 control={control}
                                 name="smoke"
                                 render={({ field }) => (
-                                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                        <SelectTrigger id="smoke">
-                                            <SelectValue placeholder="Ja" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="ja">Ja</SelectItem>
-                                            <SelectItem value="nee">Nee</SelectItem>
-                                            <SelectItem value="occasionally">Occasionally</SelectItem>
-                                            <SelectItem value="socially">Socially</SelectItem>
-                                            <SelectItem value="trying-to-quit">Trying to quit</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <AttributeSelect
+                                        attributeKey="smoke"
+                                        value={field.value || undefined}
+                                        onChange={field.onChange}
+                                        placeholder="Select smoke"
+                                    />
                                 )}
                             />
                             {errors.smoke && <p className="text-sm text-red-500">{errors.smoke.message}</p>}
@@ -78,19 +73,12 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                 control={control}
                                 name="drinking"
                                 render={({ field }) => (
-                                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                        <SelectTrigger id="drinking">
-                                            <SelectValue placeholder="Nee" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="nee">Nee</SelectItem>
-                                            <SelectItem value="ja">Ja</SelectItem>
-                                            <SelectItem value="socially">Socially</SelectItem>
-                                            <SelectItem value="occasionally">Occasionally</SelectItem>
-                                            <SelectItem value="regularly">Regularly</SelectItem>
-                                            <SelectItem value="never">Never</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <AttributeSelect
+                                        attributeKey="drinking"
+                                        value={field.value || undefined}
+                                        onChange={field.onChange}
+                                        placeholder="Select drinking"
+                                    />
                                 )}
                             />
                             {errors.drinking && <p className="text-sm text-red-500">{errors.drinking.message}</p>}
@@ -101,18 +89,12 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                 control={control}
                                 name="goingOut"
                                 render={({ field }) => (
-                                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                        <SelectTrigger id="goingOut">
-                                            <SelectValue placeholder="Ja" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="ja">Ja</SelectItem>
-                                            <SelectItem value="nee">Nee</SelectItem>
-                                            <SelectItem value="weekends-only">Weekends only</SelectItem>
-                                            <SelectItem value="rarely">Rarely</SelectItem>
-                                            <SelectItem value="frequently">Frequently</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <AttributeSelect
+                                        attributeKey="goingOut"
+                                        value={field.value || undefined}
+                                        onChange={field.onChange}
+                                        placeholder="Select goingOut"
+                                    />
                                 )}
                             />
                             {errors.goingOut && <p className="text-sm text-red-500">{errors.goingOut.message}</p>}
@@ -129,18 +111,12 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                     control={control}
                                     name="exercise"
                                     render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="exercise">
-                                                <SelectValue placeholder="Select exercise frequency" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="daily">Daily</SelectItem>
-                                                <SelectItem value="regularly">Regularly (3–5 times/week)</SelectItem>
-                                                <SelectItem value="occasionally">Occasionally (1–2 times/week)</SelectItem>
-                                                <SelectItem value="rarely">Rarely</SelectItem>
-                                                <SelectItem value="never">Never</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <AttributeSelect
+                                            attributeKey="exercise"
+                                            value={field.value || undefined}
+                                            onChange={field.onChange}
+                                            placeholder="Select exercise"
+                                        />
                                     )}
                                 />
                                 {errors.exercise && <p className="text-sm text-red-500">{errors.exercise.message}</p>}
@@ -151,21 +127,12 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                     control={control}
                                     name="diet"
                                     render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="diet">
-                                                <SelectValue placeholder="Select diet preference" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="omnivore">Omnivore</SelectItem>
-                                                <SelectItem value="vegetarian">Vegetarian</SelectItem>
-                                                <SelectItem value="vegan">Vegan</SelectItem>
-                                                <SelectItem value="pescatarian">Pescatarian</SelectItem>
-                                                <SelectItem value="keto">Keto</SelectItem>
-                                                <SelectItem value="paleo">Paleo</SelectItem>
-                                                <SelectItem value="halal">Halal</SelectItem>
-                                                <SelectItem value="kosher">Kosher</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <AttributeSelect
+                                            attributeKey="diet"
+                                            value={field.value || undefined}
+                                            onChange={field.onChange}
+                                            placeholder="Select diet"
+                                        />
                                     )}
                                 />
                                 {errors.diet && <p className="text-sm text-red-500">{errors.diet.message}</p>}
@@ -176,18 +143,12 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                     control={control}
                                     name="pets"
                                     render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="pets">
-                                                <SelectValue placeholder="Select pet preference" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="love-pets">Love pets</SelectItem>
-                                                <SelectItem value="have-pets">Have pets</SelectItem>
-                                                <SelectItem value="allergic">Allergic to pets</SelectItem>
-                                                <SelectItem value="no-pets">Don't like pets</SelectItem>
-                                                <SelectItem value="want-pets">Want pets in future</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <AttributeSelect
+                                            attributeKey="pets"
+                                            value={field.value || undefined}
+                                            onChange={field.onChange}
+                                            placeholder="Select pets"
+                                        />
                                     )}
                                 />
                                 {errors.pets && <p className="text-sm text-red-500">{errors.pets.message}</p>}
@@ -198,65 +159,15 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                     control={control}
                                     name="travel"
                                     render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="travel">
-                                                <SelectValue placeholder="Select travel frequency" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="frequent">Frequent traveler</SelectItem>
-                                                <SelectItem value="occasional">Occasional traveler</SelectItem>
-                                                <SelectItem value="rare">Rarely travel</SelectItem>
-                                                <SelectItem value="love-travel">Love to travel</SelectItem>
-                                                <SelectItem value="homebody">Prefer staying home</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <AttributeSelect
+                                            attributeKey="travel"
+                                            value={field.value || undefined}
+                                            onChange={field.onChange}
+                                            placeholder="Select travel"
+                                        />
                                     )}
                                 />
                                 {errors.travel && <p className="text-sm text-red-500">{errors.travel.message}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="socialMedia">Social Media</Label>
-                                <Controller
-                                    control={control}
-                                    name="socialMedia"
-                                    render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="socialMedia">
-                                                <SelectValue placeholder="Select social media usage" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="very-active">Very active</SelectItem>
-                                                <SelectItem value="active">Active</SelectItem>
-                                                <SelectItem value="moderate">Moderate use</SelectItem>
-                                                <SelectItem value="minimal">Minimal use</SelectItem>
-                                                <SelectItem value="none">Don't use social media</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    )}
-                                />
-                                {errors.socialMedia && <p className="text-sm text-red-500">{errors.socialMedia.message}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="workLifeBalance">Work-Life Balance</Label>
-                                <Controller
-                                    control={control}
-                                    name="workLifeBalance"
-                                    render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="workLifeBalance">
-                                                <SelectValue placeholder="Select work-life balance" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="excellent">Excellent balance</SelectItem>
-                                                <SelectItem value="good">Good balance</SelectItem>
-                                                <SelectItem value="working-on-it">Working on it</SelectItem>
-                                                <SelectItem value="work-focused">Work-focused</SelectItem>
-                                                <SelectItem value="life-focused">Life-focused</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    )}
-                                />
-                                {errors.workLifeBalance && <p className="text-sm text-red-500">{errors.workLifeBalance.message}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="nightLife">Night Life</Label>
@@ -264,48 +175,15 @@ export default function LifeStyleTab({ callback }: { callback: () => void}) {
                                     control={control}
                                     name="nightLife"
                                     render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="nightLife">
-                                                <SelectValue placeholder="Select night life preference" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="love-nightlife">Love nightlife</SelectItem>
-                                                <SelectItem value="occasional">Occasional nights out</SelectItem>
-                                                <SelectItem value="quiet-evenings">Prefer quiet evenings</SelectItem>
-                                                <SelectItem value="early-bird">Early bird</SelectItem>
-                                                <SelectItem value="night-owl">Night owl</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <AttributeSelect
+                                            attributeKey="nightLife"
+                                            value={field.value || undefined}
+                                            onChange={field.onChange}
+                                            placeholder="Select nightLife"
+                                        />
                                     )}
                                 />
                                 {errors.nightLife && <p className="text-sm text-red-500">{errors.nightLife.message}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="primaryHobby">Primary Hobby</Label>
-                                <Controller
-                                    control={control}
-                                    name="primaryHobby"
-                                    render={({ field }) => (
-                                        <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                                            <SelectTrigger id="primaryHobby">
-                                                <SelectValue placeholder="Select primary hobby" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="sports">Sports</SelectItem>
-                                                <SelectItem value="reading">Reading</SelectItem>
-                                                <SelectItem value="music">Music</SelectItem>
-                                                <SelectItem value="art">Art & Creativity</SelectItem>
-                                                <SelectItem value="cooking">Cooking</SelectItem>
-                                                <SelectItem value="gaming">Gaming</SelectItem>
-                                                <SelectItem value="outdoor">Outdoor activities</SelectItem>
-                                                <SelectItem value="technology">Technology</SelectItem>
-                                                <SelectItem value="fitness">Fitness</SelectItem>
-                                                <SelectItem value="photography">Photography</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    )}
-                                />
-                                {errors.primaryHobby && <p className="text-sm text-red-500">{errors.primaryHobby.message}</p>}
                             </div>
                         </div>
                     </div>

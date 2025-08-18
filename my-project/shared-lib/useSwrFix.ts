@@ -28,6 +28,10 @@ export function useSWRFix<T, U = T>({
         dedupingInterval: 600_000,
         revalidateOnFocus: false,
         revalidateIfStale: false,
+        revalidateOnReconnect: true,
+        revalidateOnMount: true,
+        shouldRetryOnError: true,
+        focusThrottleInterval: 1000 * 60 * 10,
         ...config,
     });
 

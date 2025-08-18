@@ -101,10 +101,10 @@ export default function usePhotoForm() {
 
     const onSubmit = async (values: PhotoFormValues) => {
 
-        if(!isDirty){
-            router.push("/auth/profile/partner-preferences");
-            return
-        }
+        // if(!isDirty){
+        //     router.push("/auth/profile/partner-preferences");
+        //     return
+        // }
 
         const isValid = await trigger();
         if (!isValid) return;

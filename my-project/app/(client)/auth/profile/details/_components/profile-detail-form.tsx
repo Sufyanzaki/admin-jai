@@ -13,7 +13,7 @@ import type React from "react";
 import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
 export function ProfileDetailsForm() {
-  const {registrationSettings, registrationLoading} = useRegistration();
+  const {registrationSettings } = useRegistration();
 
   const router = useRouter();
 

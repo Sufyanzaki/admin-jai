@@ -1,14 +1,13 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { showError } from "@/shared-lib";
-import { showSuccess } from "@/shared-lib";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { postPersonalityBehavior, patchPersonalityBehavior } from "@/app/shared-api/personalityBehaviorApi";
-import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import { usePersonalityBehaviorInfo } from "@/app/shared-hooks/usePersonalityBehaviorInfo";
-import { useEffect, useMemo } from "react";
-import { useParams } from "next/navigation";
+import {patchPersonalityBehavior, postPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
+import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
+import {usePersonalityBehaviorInfo} from "@/app/shared-hooks/usePersonalityBehaviorInfo";
+import {useEffect, useMemo} from "react";
+import {useParams} from "next/navigation";
 
 const personalityBehaviorSchema = z.object({
   simple: z.boolean(),
@@ -140,9 +139,7 @@ export default function usePersonalityBehaviorForm() {
     
     },
     {
-      onError: (error: Error) => {
-        showError({ message: error.message || "Failed to update personality/behavior info" });
-      },
+      onError: (error: Error) => showError({ message: error.message || "Failed to update personality/behavior info" }),
       revalidate: false,
       populateCache: false,
     }

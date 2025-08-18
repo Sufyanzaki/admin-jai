@@ -104,7 +104,7 @@ export type MemberLifeStyle = {
     socialMedia: string
     workLifeBalance: string
     nightLife: string;
-    primaryHobby: string;
+    hobbies: string;
 }
 
 export type MemberLanguage = {

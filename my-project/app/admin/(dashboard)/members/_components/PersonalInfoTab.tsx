@@ -1,23 +1,28 @@
 "use client";
 
-import { Button } from "@/components/admin/ui/button";
-import { Calendar } from "@/components/admin/ui/calendar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card";
-import { Input } from "@/components/admin/ui/input";
-import { Label } from "@/components/admin/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/admin/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/admin/ui/select";
-import { TabsContent } from "@/components/admin/ui/tabs";
-import { Textarea } from "@/components/admin/ui/textarea";
-import { Mail, Upload } from "lucide-react";
+import {Button} from "@/components/admin/ui/button";
+import {Calendar} from "@/components/admin/ui/calendar";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Input} from "@/components/admin/ui/input";
+import {Label} from "@/components/admin/ui/label";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/admin/ui/popover";
+import {TabsContent} from "@/components/admin/ui/tabs";
+import {Textarea} from "@/components/admin/ui/textarea";
+import {Mail, Upload} from "lucide-react";
 import useCreateUserForm from "../add/_hooks/useCreateUser";
-import { Controller } from "react-hook-form";
-import { useRef } from "react";
-import { getUserTrackingId } from "@/lib/access-token";
+import {Controller} from "react-hook-form";
+import React, {useEffect, useRef} from "react";
+import {getUserTrackingId} from "@/lib/access-token";
 import {useParams} from "next/navigation";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/components/admin/ui/attribute-select";
 
-export default function PersonalInfoTab({ callback }: { callback: () => void }) {
+type PersonalInfoTabProps = {
+  fetchFinishCallback: (val:boolean)=>void;
+  callback: ()=>void;
+}
+
+export default function PersonalInfoTab({ callback, fetchFinishCallback } : PersonalInfoTabProps) {
 
   const params = useParams();
   const {id} = params;
@@ -31,8 +36,10 @@ export default function PersonalInfoTab({ callback }: { callback: () => void }) 
     setValue,
     onSubmit,
     userLoading,
-    watch,
+      watch
   } = useCreateUserForm();
+
+  useEffect(() => fetchFinishCallback(userLoading), [userLoading])
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageValue = watch("image");
@@ -176,24 +183,16 @@ export default function PersonalInfoTab({ callback }: { callback: () => void }) 
               <div className="space-y-2">
                 <Label htmlFor="gender">Gender</Label>
                 <Controller
-                  control={control}
-                  name="gender"
-                  render={({ field }) => (
-                    <Select
-                      key={field.value}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger id="gender">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Man">Man</SelectItem>
-                        <SelectItem value="Vrouw">Vrouw</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+                    name="gender"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="iAmA"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select gender"
+                        />
+                    )}
                 />
                 {errors.gender && <p className="text-sm text-red-500">{errors.gender.message}</p>}
               </div>
@@ -205,38 +204,33 @@ export default function PersonalInfoTab({ callback }: { callback: () => void }) 
               <div className="space-y-2">
                 <Label htmlFor="relation">Relation Status</Label>
                 <Controller
-                  control={control}
-                  name="relationshipStatus"
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                      <SelectTrigger id="relation">
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="single">Single - nooit getrouwd</SelectItem>
-                        <SelectItem value="divorced">Gescheiden</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+                    name="relationshipStatus"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="relationStatus"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select status"
+                        />
+                    )}
                 />
                 {errors.relationshipStatus && <p className="text-sm text-red-500">{errors.relationshipStatus.message}</p>}
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="children">Children</Label>
                 <Controller
-                  control={control}
-                  name="children"
-                  render={({ field }) => (
-                    <Select value={field.value ? "ja" : "geen"} onValueChange={v => field.onChange(v === "ja") } key={field.value ? "true": "false"}>
-                      <SelectTrigger id="children">
-                        <SelectValue placeholder="Select option" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="geen">Geen</SelectItem>
-                        <SelectItem value="ja">Ja</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+                    name="children"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="children"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select status"
+                        />
+                    )}
                 />
                 {errors.children && <p className="text-sm text-red-500">{errors.children.message}</p>}
               </div>
@@ -249,16 +243,12 @@ export default function PersonalInfoTab({ callback }: { callback: () => void }) 
                   control={control}
                   name="religion"
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange} key={field.value}>
-                      <SelectTrigger id="religion">
-                        <SelectValue placeholder="Select religion" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="rk">Rooms Katholiek</SelectItem>
-                        <SelectItem value="islam">Islam</SelectItem>
-                        <SelectItem value="hindu">Hindu</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <AttributeSelect
+                          attributeKey="religion"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Select religion"
+                      />
                   )}
                 />
                 {errors.religion && <p className="text-sm text-red-500">{errors.religion.message}</p>}

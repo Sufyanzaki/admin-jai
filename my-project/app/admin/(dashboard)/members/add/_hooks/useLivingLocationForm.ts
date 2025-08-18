@@ -69,12 +69,12 @@ export default function useLivingLocationForm() {
     }
   );
 
-  const onSubmit = async (values: UpdateUserLocationFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: UpdateUserLocationFormValues, callback?: () => void) => {
     const result = await trigger(values);
     if (result) {
       showSuccess("User location updated successfully!");
       reset();
-      callback?.(result);
+      callback?.();
       updateUserTrackingId({ living: true });
     }
   };

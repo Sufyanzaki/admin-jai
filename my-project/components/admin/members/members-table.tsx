@@ -17,10 +17,10 @@ import { CheckedState } from "@radix-ui/react-checkbox";
 import { Edit, Eye, MoreVertical, Trash, UserCheck, UserX } from "lucide-react";
 import Link from "next/link";
 import Preloader from "../../shared/Preloader";
-import {Member} from "@/app/admin/(dashboard)/members/_types/member";
+import {MemberProfile} from "@/app/shared-types/member";
 
 interface MembersTableProps {
-  members: Member[];
+  members: MemberProfile[];
   isLoading: boolean;
   checkedAll: string[];
   onCheckAll: (checked: CheckedState) => void;
@@ -88,7 +88,7 @@ export default function MembersTable({
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={member.image || "/user-2.png"} alt={`${member.firstName} ${member.lastName}`} />
-                      <AvatarFallback>{member.firstName.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{member.firstName?.charAt(0) ?? "A"}</AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-medium">{member.firstName} {member.lastName}</p>

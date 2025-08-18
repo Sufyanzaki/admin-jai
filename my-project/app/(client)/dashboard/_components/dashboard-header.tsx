@@ -24,6 +24,8 @@ type MenuItem = {
 
 export function DashboardHeader() {
 
+  console.log("render")
+
   const {user, userLoading} = useProfile();
 
   if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;

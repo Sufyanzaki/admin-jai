@@ -1,18 +1,18 @@
 "use client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/admin/ui/card";
-import { Label } from "@/components/admin/ui/label";
-import { TabsContent } from "@/components/admin/ui/tabs";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/admin/ui/select";
-import { MultiSelectCombobox } from "@/components/admin/ui/combo-box";
-import { Button } from "@/components/admin/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Label} from "@/components/admin/ui/label";
+import {TabsContent} from "@/components/admin/ui/tabs";
+import {Button} from "@/components/admin/ui/button";
+import type {LanguageInfoFormValues} from "../add/_hooks/useLanguageInfoForm";
 import useLanguageInfoForm from "../add/_hooks/useLanguageInfoForm";
-import type { LanguageInfoFormValues } from "../add/_hooks/useLanguageInfoForm";
-import type { FieldErrors } from "react-hook-form";
-import { Controller } from "react-hook-form";
-import { useParams } from "next/navigation";
-import { getUserTrackingId } from "@/lib/access-token";
-import { AlertTriangle } from "lucide-react";
+import type {FieldErrors} from "react-hook-form";
+import {Controller} from "react-hook-form";
+import {useParams} from "next/navigation";
+import {getUserTrackingId} from "@/lib/access-token";
+import {AlertTriangle} from "lucide-react";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeMultiSelect, AttributeSelect} from "@/components/admin/ui/attribute-select";
+import type React from "react";
 
 export default function LanguagesTab({ callback }: { callback: () => void}) {
 
@@ -30,13 +30,6 @@ export default function LanguagesTab({ callback }: { callback: () => void}) {
     onSubmit,
     languageInfoLoading
   } = useLanguageInfoForm();
-
-  const languageOptions = [
-    "Engels", "Nederlands", "Duits", "Frans", "Spaans", "Italiaans", "Portugees", "Russisch", "Chinees", "Japans", "Arabisch", "Hindi", "Urdu", "Turks", "Grieks", "Pools", "Zweeds", "Noors", "Fins", "Deens"
-  ];
-  const motherTongueOptions = [
-    "Hindostaans", "Nederlands", "Engels", "Duits", "Frans", "Spaans", "Italiaans", "Portugees", "Russisch", "Chinees", "Japans", "Arabisch", "Hindi", "Urdu", "Turks"
-  ];
 
   return (
     <TabsContent value="languages" className="space-y-4 mt-4">
@@ -61,25 +54,18 @@ export default function LanguagesTab({ callback }: { callback: () => void}) {
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="mother-tongue" className="text-base font-medium">
+                <Label htmlFor="motherTongue">
                   Mother Tongue *
                 </Label>
                 <Controller
                   control={control}
                   name="motherTongue"
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger id="mother-tongue" className="w-full" key={field.value}>
-                        <SelectValue placeholder="Select your mother tongue" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {motherTongueOptions.map((language) => (
-                          <SelectItem key={language} value={language}>
-                            {language}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <AttributeSelect
+                        attributeKey="languages"
+                        onChange={field.onChange}
+                        placeholder="Select"
+                        value={field.value || undefined}/>
                   )}
                 />
                 {(errors as FieldErrors<LanguageInfoFormValues>)["motherTongue"] && (
@@ -87,18 +73,19 @@ export default function LanguagesTab({ callback }: { callback: () => void}) {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="known-languages" className="text-base font-medium">
+                <Label htmlFor="knownLanguages">
                   Known Languages *
                 </Label>
                 <Controller
                   control={control}
                   name="knownLanguages"
                   render={({ field }) => (
-                    <MultiSelectCombobox
-                      options={languageOptions.filter((lang) => lang !== field.value)}
-                      selected={field.value ? field.value.split(", ") : []}
-                      onChange={(selected) => field.onChange(selected.join(", "))}
-                    />
+                      <AttributeMultiSelect
+                          attributeKey="knownLanguages"
+                          value={field.value || []}
+                          onChange={field.onChange}
+                          placeholder="Select"
+                      />
                   )}
                 />
                 {(errors as FieldErrors<LanguageInfoFormValues>)["knownLanguages"] && (

@@ -18,10 +18,7 @@ const lifeStyleSchema = z.object({
   diet: z.string().min(1, "Diet is required"),
   pets: z.string().min(1, "Pets is required"),
   travel: z.string().min(1, "Travel is required"),
-  socialMedia: z.string().min(1, "Social media is required"),
-  workLifeBalance: z.string().min(1, "Work-life balance is required"),
   nightLife: z.string().min(1, "Night life is required"),
-  primaryHobby: z.string().min(1, "Hobby is required"),
 });
 
 export type LifeStyleFormValues = z.infer<typeof lifeStyleSchema>;
@@ -58,15 +55,13 @@ export default function useLifeStyleForm() {
       diet: "",
       pets: "",
       travel: "",
-      socialMedia: "",
-      workLifeBalance: "",
       nightLife: "",
-      primaryHobby: "",
     },
     mode: "onBlur",
   });
 
   const { lifeStyle, lifeStyleLoading } = useLifeStyleInfo();
+  console.log(lifeStyle);
 
   useEffect(() => {
     if (id && lifeStyle) {
@@ -78,10 +73,7 @@ export default function useLifeStyleForm() {
         diet: lifeStyle.diet || "",
         pets: lifeStyle.pets || "",
         travel: lifeStyle.travel || "",
-        socialMedia: lifeStyle.socialMedia || "",
-        workLifeBalance: lifeStyle.workLifeBalance || "",
         nightLife: lifeStyle.nightLife || "",
-        primaryHobby: lifeStyle.primaryHobby || "",
       });
     }
   }, [id, lifeStyle, reset]);
@@ -90,11 +82,11 @@ export default function useLifeStyleForm() {
     "updateLifeStyle",
     async (_: string, { arg }: { arg: LifeStyleFormValues }) => {
 
-      if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member" });
+      if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialize a member" });
 
       if (id && allowEdit) return await patchLifeStyle(id, arg);
       else return await postLifeStyle(id, arg);
-      
+
     },
     {
       onError: (error: Error) => {
@@ -105,11 +97,11 @@ export default function useLifeStyleForm() {
     }
   );
 
-  const onSubmit = async (values: LifeStyleFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: LifeStyleFormValues, callback?: () => void) => {
     const result = await trigger(values);
-    if (result?.status === 201 || result?.status === 200) {
+    if (result) {
       showSuccess("Lifestyle updated successfully!");
-      callback?.(result);
+      callback?.();
       updateUserTrackingId({ lifeStyle: true });
     }
   };

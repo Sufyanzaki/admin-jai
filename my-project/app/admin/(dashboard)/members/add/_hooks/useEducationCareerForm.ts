@@ -94,11 +94,11 @@ export default function useEducationCareerForm() {
     }
   );
 
-  const onSubmit = async (values: EducationCareerFormValues, callback?: (data: any) => void) => {
+  const onSubmit = async (values: EducationCareerFormValues, callback?: () => void) => {
     const result = await trigger(values);
-    if (result?.status === 201 || result?.status === 200) {
+    if (result) {
       showSuccess("Education & Career updated successfully!");
-      callback?.(result.response);
+      callback?.();
       updateUserTrackingId({ educationAndCareer: true });
     }
   };

@@ -66,7 +66,7 @@ export default function PaginationSection({
                                 isActive={page === i + 1}
                                 onClick={() => handlePageChange(i + 1)}
                             >
-                                <Button variant="default" size="sm" className="bg-app-blue">
+                                <Button variant="default" size="sm" className="bg-app-blue text-black">
                                     {i + 1}
                                 </Button>
                             </PaginationLink>

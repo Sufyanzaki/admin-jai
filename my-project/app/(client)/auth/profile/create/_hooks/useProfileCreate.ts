@@ -143,10 +143,10 @@ export default function useProfileCreateForm() {
     const onSubmit = useCallback(
         async (values: UserProfile, callback?: () => void) => {
 
-            if (!isDirty) {
-                router.push("/auth/profile/details");
-                return;
-            }
+            // if (!isDirty) {
+            //     router.push("/auth/profile/details");
+            //     return;
+            // }
 
             try {
                 const result = await trigger(values);

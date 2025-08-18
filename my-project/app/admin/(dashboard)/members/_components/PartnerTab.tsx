@@ -1,20 +1,20 @@
 "use client";
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/admin/ui/card";
-import { Label } from "@/components/admin/ui/label";
-import { Input } from "@/components/admin/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/admin/ui/select";
-import { Separator } from "@/components/admin/ui/separator";
-import { TabsContent } from "@/components/admin/ui/tabs";
-import { Button } from "@/components/admin/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Label} from "@/components/admin/ui/label";
+import {Input} from "@/components/admin/ui/input";
+import {Separator} from "@/components/admin/ui/separator";
+import {TabsContent} from "@/components/admin/ui/tabs";
+import {Button} from "@/components/admin/ui/button";
 import usePartnerExpectationForm from "../add/_hooks/usePartnerExpectationForm";
-import { Controller } from "react-hook-form";
+import {Controller} from "react-hook-form";
 import React from "react";
-import { useParams } from "next/navigation";
-import { getUserTrackingId } from "@/lib/access-token";
-import { AlertTriangle } from "lucide-react";
-import LocationSearchInput, { LocationData } from "@/components/admin/location-search";
+import {useParams} from "next/navigation";
+import {getUserTrackingId} from "@/lib/access-token";
+import {AlertTriangle} from "lucide-react";
+import LocationSearchInput, {LocationData} from "@/components/admin/location-search";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/components/admin/ui/attribute-select";
 
 export default function PartnerTab({ callback }: { callback: () => void }) {
 
@@ -38,8 +38,8 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
 
   const handleLocationSelect = (location: LocationData) => {
     setValue("city", location.city);
-    setValue("state", location.state);
-    setValue("country", location.country);
+    location.state && setValue("state", location.state);
+    location.country && setValue("country", location.country);
   };
 
   const city = watch("city");
@@ -79,17 +79,50 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="origin">Origin</Label>
-                  <Input id="origin" placeholder="Origin" {...register("origin")} />
+                  <Controller
+                      control={control}
+                      name="origin"
+                      render={({ field }) => (
+                          <AttributeSelect
+                              attributeKey="origin"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select"
+                          />
+                      )}
+                  />
                   {errors.origin && <p className="text-sm text-red-500">{errors.origin.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="length">Length</Label>
-                  <Input id="length" placeholder="Length" {...register("length")} />
+                  <Controller
+                      control={control}
+                      name="length"
+                      render={({ field }) => (
+                          <AttributeSelect
+                              attributeKey="height"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select"
+                          />
+                      )}
+                  />
                   {errors.length && <p className="text-sm text-red-500">{errors.length.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="relationshipStatus">Relation Status</Label>
-                  <Input id="relationshipStatus" placeholder="Relation Status" {...register("relationshipStatus")} />
+                  <Controller
+                      control={control}
+                      name="relationshipStatus"
+                      render={({ field }) => (
+                          <AttributeSelect
+                              attributeKey="relationStatus"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select"
+                          />
+                      )}
+                  />
                   {errors.relationshipStatus && <p className="text-sm text-red-500">{errors.relationshipStatus.message}</p>}
                 </div>
                 <div className="space-y-2">
@@ -103,15 +136,12 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
                     control={control}
                     name="drinking"
                     render={({ field }) => (
-                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value? "a" : "b"}>
-                        <SelectTrigger id="drinking">
-                          <SelectValue placeholder="Nee" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="false">Nee</SelectItem>
-                          <SelectItem value="true">Ja</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <AttributeSelect
+                            attributeKey="drinking"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select"
+                        />
                     )}
                   />
                   {errors.drinking && <p className="text-sm text-red-500">{errors.drinking.message}</p>}
@@ -121,17 +151,50 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="lookingFor">Looking For</Label>
-                  <Input id="lookingFor" placeholder="Looking For" {...register("lookingFor")} />
+                  <Controller
+                      control={control}
+                      name="lookingFor"
+                      render={({ field }) => (
+                          <AttributeSelect
+                              attributeKey="amLookingFor"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select"
+                          />
+                      )}
+                  />
                   {errors.lookingFor && <p className="text-sm text-red-500">{errors.lookingFor.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="religion">Religion</Label>
-                  <Input id="religion" placeholder="Religion" {...register("religion")} />
+                  <Controller
+                      control={control}
+                      name="religion"
+                      render={({ field }) => (
+                          <AttributeSelect
+                              attributeKey="religion"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select"
+                          />
+                      )}
+                  />
                   {errors.religion && <p className="text-sm text-red-500">{errors.religion.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="education">Education</Label>
-                  <Input id="education" placeholder="Education" {...register("education")} />
+                  <Controller
+                      control={control}
+                      name="education"
+                      render={({ field }) => (
+                          <AttributeSelect
+                              attributeKey="education"
+                              value={field.value || undefined}
+                              onChange={field.onChange}
+                              placeholder="Select"
+                          />
+                      )}
+                  />
                   {errors.education && <p className="text-sm text-red-500">{errors.education.message}</p>}
                 </div>
                 <div className="space-y-2">
@@ -140,15 +203,12 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
                     control={control}
                     name="smoke"
                     render={({ field }) => (
-                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value? "a" : "b"}>
-                        <SelectTrigger id="smoke">
-                          <SelectValue placeholder="Nee" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="false">Nee</SelectItem>
-                          <SelectItem value="true">Ja</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <AttributeSelect
+                            attributeKey="smoke"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select"
+                        />
                     )}
                   />
                   {errors.smoke && <p className="text-sm text-red-500">{errors.smoke.message}</p>}
@@ -159,15 +219,12 @@ export default function PartnerTab({ callback }: { callback: () => void }) {
                     control={control}
                     name="goingOut"
                     render={({ field }) => (
-                      <Select value={field.value ? "true" : "false"} onValueChange={v => field.onChange(v === "true") } key={field.value? "a" : "b"}>
-                        <SelectTrigger id="goingOut">
-                          <SelectValue placeholder="Nee" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="false">Nee</SelectItem>
-                          <SelectItem value="true">Ja</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <AttributeSelect
+                            attributeKey="goingOut"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select"
+                        />
                     )}
                   />
                   {errors.goingOut && <p className="text-sm text-red-500">{errors.goingOut.message}</p>}

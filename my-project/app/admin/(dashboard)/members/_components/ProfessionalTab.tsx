@@ -1,19 +1,19 @@
 "use client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/admin/ui/card";
-import { Label } from "@/components/admin/ui/label";
-import { Input } from "@/components/admin/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/admin/ui/select";
-import { Separator } from "@/components/admin/ui/separator";
-import { Textarea } from "@/components/admin/ui/textarea";
-import { TabsContent } from "@/components/admin/ui/tabs";
-import { Button } from "@/components/admin/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Label} from "@/components/admin/ui/label";
+import {Input} from "@/components/admin/ui/input";
+import {Separator} from "@/components/admin/ui/separator";
+import {Textarea} from "@/components/admin/ui/textarea";
+import {TabsContent} from "@/components/admin/ui/tabs";
+import {Button} from "@/components/admin/ui/button";
 import useEducationCareerForm from "../add/_hooks/useEducationCareerForm";
-import { Controller } from "react-hook-form";
-import React, { useEffect } from "react";
-import { AlertTriangle } from "lucide-react";
-import { useParams } from "next/navigation";
-import { getUserTrackingId } from "@/lib/access-token";
+import {Controller} from "react-hook-form";
+import React from "react";
+import {AlertTriangle} from "lucide-react";
+import {useParams} from "next/navigation";
+import {getUserTrackingId} from "@/lib/access-token";
 import Preloader from "@/components/shared/Preloader";
+import {AttributeSelect} from "@/components/admin/ui/attribute-select";
 
 export default function ProfessionalTab({ callback }: { callback: () => void }) {
 
@@ -48,7 +48,7 @@ export default function ProfessionalTab({ callback }: { callback: () => void }) 
         <CardHeader>
           <CardTitle>Professional Details</CardTitle>
           <CardDescription>
-            Enter the member's occupation, education, and other professional background details.
+            Enter the member&#39;s occupation, education, and other professional background details.
           </CardDescription>
         </CardHeader>
         {!userId && <div className="border border-amber-200 bg-amber-50 rounded-sm p-4 mb-6">
@@ -63,33 +63,17 @@ export default function ProfessionalTab({ callback }: { callback: () => void }) 
           <form onSubmit={handleSubmit(v => onSubmit(v, callback))} className="space-y-4">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 space-y-2">
-                <Label htmlFor="primaryExpertise">Primary Expertise</Label>
+                <Label htmlFor="primaryExpertise">Primary Specialization</Label>
                 <Controller
                   name="primarySpecialization"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value} key={field.value}>
-                      <SelectTrigger id="primarySpecialization">
-                        <SelectValue placeholder="Select your main expertise" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="technical">Technical/Engineering</SelectItem>
-                        <SelectItem value="creative">Creative/Design</SelectItem>
-                        <SelectItem value="business">Business Development</SelectItem>
-                        <SelectItem value="marketing">Marketing</SelectItem>
-                        <SelectItem value="sales">Sales</SelectItem>
-                        <SelectItem value="finance">Finance/Accounting</SelectItem>
-                        <SelectItem value="hr">Human Resources</SelectItem>
-                        <SelectItem value="operations">Operations</SelectItem>
-                        <SelectItem value="it">Information Technology</SelectItem>
-                        <SelectItem value="customer-service">Customer Service</SelectItem>
-                        <SelectItem value="product">Product Management</SelectItem>
-                        <SelectItem value="research">Research & Development</SelectItem>
-                        <SelectItem value="education">Education/Training</SelectItem>
-                        <SelectItem value="legal">Legal/Compliance</SelectItem>
-                        <SelectItem value="healthcare">Healthcare Services</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <AttributeSelect
+                          attributeKey="primarySpecialization"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Select"
+                      />
                   )}
                 />
                 {errors.primarySpecialization && (
@@ -97,34 +81,17 @@ export default function ProfessionalTab({ callback }: { callback: () => void }) 
                 )}
               </div>
               <div className="flex-1 space-y-2">
-                <Label htmlFor="secondarySpecialization">Secondary Expertise (Optional)</Label>
+                <Label htmlFor="secondarySpecialization">Secondary Specialization (Optional)</Label>
                 <Controller
                   name="secondarySpecialization"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value} key={field.value}>
-                      <SelectTrigger id="secondarySpecialization">
-                        <SelectValue placeholder="Select additional expertise" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="technical">Technical/Engineering</SelectItem>
-                        <SelectItem value="creative">Creative/Design</SelectItem>
-                        <SelectItem value="business">Business Development</SelectItem>
-                        <SelectItem value="marketing">Marketing</SelectItem>
-                        <SelectItem value="sales">Sales</SelectItem>
-                        <SelectItem value="finance">Finance/Accounting</SelectItem>
-                        <SelectItem value="hr">Human Resources</SelectItem>
-                        <SelectItem value="operations">Operations</SelectItem>
-                        <SelectItem value="it">Information Technology</SelectItem>
-                        <SelectItem value="customer-service">Customer Service</SelectItem>
-                        <SelectItem value="product">Product Management</SelectItem>
-                        <SelectItem value="research">Research & Development</SelectItem>
-                        <SelectItem value="education">Education/Training</SelectItem>
-                        <SelectItem value="legal">Legal/Compliance</SelectItem>
-                        <SelectItem value="healthcare">Healthcare Services</SelectItem>
-                        <SelectItem value="none">None</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <AttributeSelect
+                          attributeKey="primarySpecialization"
+                          value={field.value || undefined}
+                          onChange={field.onChange}
+                          placeholder="Select"
+                      />
                   )}
                 />
               </div>
@@ -193,28 +160,12 @@ export default function ProfessionalTab({ callback }: { callback: () => void }) 
                     name="department"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={field.onChange} value={field.value} key={field.value}>
-                        <SelectTrigger id="department">
-                          <SelectValue placeholder="Select department" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="computer-science">Computer Science</SelectItem>
-                          <SelectItem value="mathematics">Mathematics</SelectItem>
-                          <SelectItem value="physics">Physics</SelectItem>
-                          <SelectItem value="chemistry">Chemistry</SelectItem>
-                          <SelectItem value="biology">Biology</SelectItem>
-                          <SelectItem value="engineering">Engineering</SelectItem>
-                          <SelectItem value="business">Business Administration</SelectItem>
-                          <SelectItem value="economics">Economics</SelectItem>
-                          <SelectItem value="psychology">Psychology</SelectItem>
-                          <SelectItem value="literature">Literature</SelectItem>
-                          <SelectItem value="history">History</SelectItem>
-                          <SelectItem value="art">Art & Design</SelectItem>
-                          <SelectItem value="music">Music</SelectItem>
-                          <SelectItem value="education">Education</SelectItem>
-                          <SelectItem value="law">Law</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <AttributeSelect
+                            attributeKey="department"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select"
+                        />
                     )}
                   />
                   {errors.department && (
@@ -227,27 +178,12 @@ export default function ProfessionalTab({ callback }: { callback: () => void }) 
                     name="position"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={field.onChange} value={field.value} key={field.value}>
-                        <SelectTrigger id="position">
-                          <SelectValue placeholder="Select position" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="owner">Owner/Founder</SelectItem>
-                          <SelectItem value="ceo">CEO/Executive Director</SelectItem>
-                          <SelectItem value="director">Director</SelectItem>
-                          <SelectItem value="manager">Manager</SelectItem>
-                          <SelectItem value="supervisor">Supervisor</SelectItem>
-                          <SelectItem value="team-lead">Team Lead</SelectItem>
-                          <SelectItem value="senior">Senior Employee</SelectItem>
-                          <SelectItem value="employee">Employee</SelectItem>
-                          <SelectItem value="junior">Junior Employee</SelectItem>
-                          <SelectItem value="intern">Intern</SelectItem>
-                          <SelectItem value="contractor">Contractor</SelectItem>
-                          <SelectItem value="freelancer">Freelancer</SelectItem>
-                          <SelectItem value="consultant">Consultant</SelectItem>
-                          <SelectItem value="volunteer">Volunteer</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <AttributeSelect
+                            attributeKey="position"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select"
+                        />
                     )}
                   />
                   {errors.position && (

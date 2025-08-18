@@ -1,8 +1,9 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
-import { useProfileAttribute } from "@/app/shared-hooks/useProfileAttribute";
-import { MultiSelectCombobox } from "@/components/client/ux/combo-box";
+import {useProfileAttribute} from "@/app/shared-hooks/useProfileAttribute";
+import {MultiSelectCombobox} from "@/components/admin/ui/combo-box";
+import {Select, SelectTrigger, SelectValue, SelectItem, SelectContent} from "@/components/admin/ui/select";
+import {cn} from "@/lib/utils";
 
 type AttributeSelectProps = {
     attributeKey: string;
@@ -13,7 +14,7 @@ type AttributeSelectProps = {
     size?: "sm" | "default";
 };
 
-export const AttributeSelect = ({ attributeKey, value, onChange, placeholder, triggerClasses = "", size }: AttributeSelectProps) => {
+export const AttributeSelect = ({ attributeKey, value, onChange, placeholder, triggerClasses = ""}: AttributeSelectProps) => {
     const { profileAttribute, getProfileAttributeError } = useProfileAttribute(attributeKey);
 
     if (getProfileAttributeError) {
@@ -21,8 +22,8 @@ export const AttributeSelect = ({ attributeKey, value, onChange, placeholder, tr
     }
 
     return (
-        <Select value={value} onValueChange={onChange}>
-            <SelectTrigger className={triggerClasses} size={size}>
+        <Select value={value} onValueChange={onChange} key={value || "empty"}>
+            <SelectTrigger className={cn(triggerClasses)}>
                 <SelectValue placeholder={placeholder || `Select ${attributeKey}`} />
             </SelectTrigger>
             <SelectContent>
@@ -45,11 +46,10 @@ type AttributeMultiSelectProps = {
 };
 
 export const AttributeMultiSelect = ({
-    attributeKey,
-    value = [],
-    onChange,
-    label,
-}: AttributeMultiSelectProps) => {
+                                         attributeKey,
+                                         value = [],
+                                         onChange,
+                                     }: AttributeMultiSelectProps) => {
     const {
         profileAttribute,
         getProfileAttributeError,
@@ -61,11 +61,9 @@ export const AttributeMultiSelect = ({
 
     return (
         <MultiSelectCombobox
-            label={label || attributeKey}
             options={profileAttribute?.updatedAttr ?? []}
             selected={value}
             onChange={onChange}
-            id={attributeKey}
         />
     );
 };

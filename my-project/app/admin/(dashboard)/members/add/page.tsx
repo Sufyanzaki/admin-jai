@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/admin/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/admin/ui/tabs";
-import { ArrowLeft } from "lucide-react";
+import {Button} from "@/components/admin/ui/button";
+import {Tabs, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
+import {ArrowLeft} from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import {useState} from "react";
 
 import PersonalInfoTab from "@/app/admin/(dashboard)/members/_components/PersonalInfoTab";
 import ProfessionalTab from "@/app/admin/(dashboard)/members/_components/ProfessionalTab";
@@ -18,8 +18,8 @@ import AboutMeTab from "@/app/admin/(dashboard)/members/_components/AboutMeTab";
 
 export default function AddMemberPage() {
   const [activeTab, setActiveTab] = useState("personal");
-  
-  return (
+
+    return (
       <div className="flex flex-col gap-5 p-4 xl:p-6">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
@@ -53,7 +53,7 @@ export default function AddMemberPage() {
           </TabsList>
 
           {/* Only render the active tab */}
-          {activeTab === "personal" && <PersonalInfoTab callback={()=>setActiveTab("professional")} />}
+          {activeTab === "personal" && <PersonalInfoTab fetchFinishCallback={()=>{}} callback={()=>setActiveTab("professional")} />}
           {activeTab === "professional" && <ProfessionalTab callback={()=>setActiveTab("behavior")}/>}
           {activeTab === "behavior" && <BehaviorTab callback={()=>setActiveTab("partner")}/>}
           {activeTab === "partner" && <PartnerTab callback={()=>setActiveTab("life_style")}/>}
