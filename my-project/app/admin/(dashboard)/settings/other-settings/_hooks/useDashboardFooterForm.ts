@@ -25,6 +25,8 @@ export function useDashboardFooterForm() {
   const { mutate: globalMutate } = useSWRConfig();
   const { data: dashboardFooterData, isLoading: isLoadingDashboardFooterData } = useDashboardFooterSetting();
 
+  console.log(dashboardFooterData)
+
   const [error, setError] = useState<string | null>(null);
 
   const {

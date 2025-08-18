@@ -1,7 +1,7 @@
 "use client";
 
-import { useSWRFix } from "@/shared-lib";
-import { getUserDashboardFooterSettings, UserDashboardFooterApiResponse } from "../_api/userDashboardFooterApi";
+import {useSWRFix} from "@/shared-lib";
+import {DashboardFooterResponse, getUserDashboardFooterSettings} from "../_api/userDashboardFooterApi";
 
 export function useDashboardFooterSetting() {
   const {
@@ -10,11 +10,10 @@ export function useDashboardFooterSetting() {
     loading,
     mutate,
     refetch
-  } = useSWRFix<UserDashboardFooterApiResponse>({
+  } = useSWRFix<DashboardFooterResponse>({
     key: "user-dashboard-footer-settings",
     fetcher: async () => {
-      const response = await getUserDashboardFooterSettings();
-      return response;
+      return await getUserDashboardFooterSettings();
     },
     config: {
       revalidateOnReconnect: false,

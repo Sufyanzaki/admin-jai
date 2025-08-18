@@ -130,12 +130,10 @@ export default function useCreateUserForm() {
         if (isFile(arg.image)) imageUrl = await imageUpload(arg.image);
         else if (typeof arg.image === "string") imageUrl = arg.image;
 
-        const { children, ...other } = arg;
-
         if (id && allowEdit) {
-          return await patchUser(id, { ...other, image: imageUrl });
+          return await patchUser(id, { ...arg, image: imageUrl });
         } else {
-          return await postUser({ ...other, image: imageUrl });
+          return await postUser({ ...arg, image: imageUrl });
         }
       },
       {
@@ -208,7 +206,6 @@ export default function useCreateUserForm() {
           if (id) {
             users = current.users.map(u => u.id === updatedUser.id ? updatedUser : u);
           } else {
-            // Replace the temporary user with the actual user from the response
             users = current.users.filter(u => u.id !== tempUser.id);
             users = [updatedUser, ...users];
           }

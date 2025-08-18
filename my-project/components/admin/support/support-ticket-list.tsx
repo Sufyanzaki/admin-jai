@@ -314,8 +314,7 @@ export function SupportTicketList() {
               <div>{selectedTicket && getStatusBadge(selectedTicket.status)}</div>
             </div>
             <div>
-              <p className="text-sm font-medium">Priority</p>
-              <p>{selectedTicket && getPriorityBadge(selectedTicket.priority)}</p>
+              <Button variant="default" size="sm">Close Ticket</Button>
             </div>
             <div>
               <p className="text-sm font-medium">Category</p>
