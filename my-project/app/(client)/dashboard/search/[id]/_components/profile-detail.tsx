@@ -12,15 +12,29 @@ import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 import { useSendLike } from "../../../_hooks/useSendLike";
 import { useCreateChat } from "@/app/(client)/dashboard/chat/_hooks/useCreateChat";
 import { MemberPersonalityBehavior } from "@/app/shared-types/member";
+import { useProfile } from "@/app/shared-hooks/useProfile";
 
 export function ProfileDetail() {
   const router = useRouter();
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
   const { user, userLoading } = useBasicInfo(id);
+  // const { user: me, error } = useProfile();
+
   const [openComplain, setOpenComplain] = useState(false);
   const { trigger: sendLike, loading } = useSendLike();
   const { sendMessageRefetch, messageLoading } = useCreateChat();
+
+  // const hasProfilePicture = user?.image ? true : false;
+  // const isFreeMember = !user?.isPremium;
+
+  // const onlyMembersWithPhotoCanSee = user?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
+  // const blurForFreeMembers = user?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
+  // const onlyVipCanSee = user?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
+  // const onRequestOnly = user?.PhotoSetting[0]?.onRequestOnly;
+
+  // const blur = onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
+
 
   const handleBack = () => router.back();
 
@@ -141,7 +155,7 @@ export function ProfileDetail() {
                 <ImageWrapper
                   src={user.image || "/placeholder.svg"}
                   alt={user.firstName || "Profile"}
-                  className="w-full h-80 object-cover rounded-[5px]"
+                  className={` w-full h-80 object-cover rounded-[5px]`}
                 />
               </div>
               <div className="space-y-2">

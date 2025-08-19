@@ -1,3 +1,5 @@
+import { PhotoDto } from "../(client)/dashboard/settings/photo/_types/photo";
+
 export type MemberLocation = {
     city: string;
     state: string;
@@ -173,4 +175,6 @@ export type MemberProfile = {
 
     packageId: string;
     messageCount: number;
+
+    PhotoSetting: PhotoDto[];
 }
