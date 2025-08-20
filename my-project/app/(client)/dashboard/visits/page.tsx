@@ -9,119 +9,8 @@ import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
 import { LikeStatus, useLikesRecieved } from "../notifications/_hooks/useLikesRecieved";
 import { likesRecievedResponseData } from "../notifications/_api/getLikesRecived";
 
-const visitResults = [
-    {
-        id: 1,
-        name: "Daniella",
-        age: 32,
-        location: "Nieuwkuijk",
-        image: "https://picsum.photos/200?random=101",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 2,
-        name: "Naé",
-        age: 31,
-        location: "Roerlo",
-        image: "https://picsum.photos/200?random=102",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 3,
-        name: "Laura",
-        age: 35,
-        location: "Meppel",
-        image: "https://picsum.photos/200?random=103",
-        status: "offline",
-        description: "Like to Profiel",
-    },
-    {
-        id: 4,
-        name: "Daniella",
-        age: 28,
-        location: "Heerenveen",
-        image: "https://picsum.photos/200?random=104",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 5,
-        name: "Naé",
-        age: 30,
-        location: "Renklo",
-        image: "https://picsum.photos/200?random=105",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 6,
-        name: "Laura",
-        age: 33,
-        location: "Meppel",
-        image: "https://picsum.photos/200?random=106",
-        status: "offline",
-        description: "Like to Profiel",
-    },
-    {
-        id: 7,
-        name: "Daniella",
-        age: 32,
-        location: "Nieuwkuijk",
-        image: "https://picsum.photos/200?random=107",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 8,
-        name: "Naé",
-        age: 31,
-        location: "Roerlo",
-        image: "https://picsum.photos/200?random=108",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 9,
-        name: "Laura",
-        age: 35,
-        location: "Meppel",
-        image: "https://picsum.photos/200?random=109",
-        status: "offline",
-        description: "Like to Profiel",
-    },
-    {
-        id: 10,
-        name: "Daniella",
-        age: 28,
-        location: "Heerenveen",
-        image: "https://picsum.photos/200?random=110",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 11,
-        name: "Naé",
-        age: 30,
-        location: "Renklo",
-        image: "https://picsum.photos/200?random=111",
-        status: "online",
-        description: "Like to Profiel",
-    },
-    {
-        id: 12,
-        name: "Laura",
-        age: 33,
-        location: "Meppel",
-        image: "https://picsum.photos/200?random=112",
-        status: "offline",
-        description: "Like to Profiel",
-    },
-];
-
 export default function MatchesPage() {
-    const [online, setOnline] = useState(true);
+    const [online, setOnline] = useState(false);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
         LikeStatus.PENDING
@@ -129,10 +18,10 @@ export default function MatchesPage() {
     if (likesRecievedLoading) {
         return <p>Loading...</p>;
     }
-    console.log(likesRecieved)
+
     const filteredResults = online
-        ? visitResults.filter(profile => profile.status === "online")
-        : visitResults;
+        ? likesRecieved?.filter(profile => profile.sender?.isOnline)
+        : likesRecieved;
 
     return (
         <div className="flex min-h-screen">
@@ -178,13 +67,13 @@ export default function MatchesPage() {
 
                     {viewMode === "grid" ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-                            {likesRecieved && likesRecieved?.map((profile: likesRecievedResponseData) => (
+                            {filteredResults?.map((profile: likesRecievedResponseData) => (
                                 <ProfileCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>
                     ) : (
                         <div className="space-y-4 mb-8">
-                            {likesRecieved && likesRecieved?.map((profile: likesRecievedResponseData) => (
+                            {filteredResults?.map((profile: likesRecievedResponseData) => (
                                 <ListCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>

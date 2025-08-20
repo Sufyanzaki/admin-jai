@@ -9,12 +9,8 @@ export type likesSentResponseData = {
     status: "PENDING" | "ACCEPTED" | "REJECTED"; // add more statuses if needed
     createdAt: string; // ISO date string
     updatedAt: string; // ISO date string
-    receiver: {
-        id: number;
-        firstName: string;
-        lastName: string;
-        image: string;
-    };
+    receiver: MemberProfile;
+    sender: MemberProfile;
 }
 
 export type likesSentResponse = {

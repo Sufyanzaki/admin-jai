@@ -3,8 +3,9 @@ import {
   dashboardLocationIcon,
   dashboardUserIcon,
 } from "@/lib/icons";
-
 export function getCardData(user: any) {
+  const location = `${user?.living?.city &&  user?.living?.city}, ${user?.living?.state && user?.living?.state}, ${user?.living?.country && user?.living?.country}`
+
   return [
     {
       icon: dashboardUserIcon,
@@ -14,7 +15,7 @@ export function getCardData(user: any) {
     {
       icon: dashboardLocationIcon,
       title: "My Location",
-      value: user?.location ?? "N/A",
+      value: location ?? "N/A",
     },
     {
       icon: dashboardEnvelopIcon,

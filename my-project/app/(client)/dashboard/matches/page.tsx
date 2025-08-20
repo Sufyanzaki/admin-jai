@@ -12,10 +12,14 @@ import { MemberProfile } from "@/app/shared-types/member";
 
 
 export default function MatchesPage() {
-  const [online, setOnline] = useState(true);
+  const [online, setOnline] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const { matches, matchesLoading, matchesError } = useTodayMatches();
 
+
+  const filteredResults = online
+    ? matches?.filter(profile => profile?.isOnline)
+    : matches;
 
   return (
     <div className="flex min-h-screen">
@@ -77,11 +81,11 @@ export default function MatchesPage() {
                     className="h-[210px] w-full rounded-lg bg-app-gray/10"
                   />
                 ))
-              ) : Array.isArray(matches) ? (
-                matches.map((profile: MemberProfile) => (
+              ) : (
+                filteredResults?.map((profile) => (
                   <ProfileCard key={profile.id} profile={profile} />
                 ))
-              ) : null}
+              )}
             </div>
           ) : (
             <div className="space-y-4 mb-8">
@@ -101,8 +105,8 @@ export default function MatchesPage() {
                     className="h-[210px] w-full rounded-lg bg-app-gray/10"
                   />
                 ))
-              ) : Array.isArray(matches) ? (
-                matches.map((profile: MemberProfile) => (
+              ) : Array.isArray(filteredResults) ? (
+                filteredResults.map((profile) => (
                   <ListCard key={profile.id} profile={profile} />
                 ))
               ) : null}

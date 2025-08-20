@@ -24,6 +24,17 @@ export function ProfileDetail() {
   const { trigger: sendLike, loading } = useSendLike();
   const { sendMessageRefetch, messageLoading } = useCreateChat();
 
+  // const hasProfilePicture = user?.image ? true : false;
+  // const isFreeMember = !user?.isPremium;
+
+  // const onlyMembersWithPhotoCanSee = user?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
+  // const blurForFreeMembers = user?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
+  // const onlyVipCanSee = user?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
+  // const onRequestOnly = user?.PhotoSetting[0]?.onRequestOnly;
+
+  // const blur = onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
+
+
   const handleBack = () => router.back();
 
   const handleSendMessage = async () => {
