@@ -67,7 +67,7 @@ export function DashboardHeader() {
                     <Sidebar className="h-full" collapsible="none">
                       <SidebarHeader className="p-6">
                         <div className="flex items-center justify-between gap-2">
-                          <Link href="#">
+                          <Link href="/dashboard">
                             <ImageWrapper src="/dashboardLogo.png" className="w-36" alt="logo" />
                           </Link>
                         </div>

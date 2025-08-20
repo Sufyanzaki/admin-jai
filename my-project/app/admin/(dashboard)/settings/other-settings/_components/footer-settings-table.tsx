@@ -5,6 +5,9 @@ import { Button } from "@/components/admin/ui/button";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/admin/ui/table";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/admin/ui/dropdown-menu";
 import { Settings, Plus, MoreVertical, Pencil, Trash } from "lucide-react";
+import {useAllFooterSections} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useAllFooterSections";
+import Preloader from "@/components/shared/Preloader";
+import type React from "react";
 
 interface FooterSettingsFormProps {
   pagesData: Array<{
@@ -15,7 +18,21 @@ interface FooterSettingsFormProps {
   onOpenDialog: () => void;
 }
 
-export default function FooterSettingsForm({ pagesData, onOpenDialog }: FooterSettingsFormProps) {
+export default function FooterSettingsTable({ pagesData, onOpenDialog }: FooterSettingsFormProps) {
+
+  const { sections, sectionsLoading } = useAllFooterSections();
+
+  if(sectionsLoading) return (
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">Loading your sections...</p>
+      </div>
+  )
+
+  if(!sections) return;
+
+  console.log(sections);
+
   return (
     <Card>
       <CardHeader>

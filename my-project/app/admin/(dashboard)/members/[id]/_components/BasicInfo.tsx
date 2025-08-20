@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar";
 import { Briefcase, Calendar, Mail, MapPin, Phone, Stethoscope } from "lucide-react";
 import { Badge } from "@/components/admin/ui/badge";
-import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 
 export default function BasicInfo() {
   const { user: basicInfo, userLoading: loading, error } = useBasicInfo();
@@ -27,7 +27,7 @@ export default function BasicInfo() {
       <Card className="md:col-span-1 rounded-2xl overflow-hidden">
         <CardHeader className="flex flex-col items-center text-center p-6 space-y-4">
           <div className="space-y-1">
-            <CardTitle className="text-xl font-semibold">No data available</CardTitle>
+            <CardTitle className="text-xl font-semibold">{error.message}</CardTitle>
           </div>
         </CardHeader>
       </Card>

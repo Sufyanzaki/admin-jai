@@ -84,4 +84,5 @@ export type DashboardFooterDto = {
     sectionPage: string;
     createdAt: string;
     updatedAt: string;
+    pages: string;
 }

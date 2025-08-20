@@ -5,6 +5,9 @@ import ImageWrapper from "@/components/client/image-wrapper";
 import { useSession } from "next-auth/react";
 import { formatDate } from "date-fns";
 import { Chat } from "../_types/allChats";
+import {useProfile} from "@/app/shared-hooks/useProfile";
+import Preloader from "@/components/shared/Preloader";
+import type React from "react";
 
 
 interface ChatSidebarProps {
@@ -18,11 +21,18 @@ export function ChatSidebar({
   selectedChat,
   onSelectChat,
 }: ChatSidebarProps) {
-  console.log(selectedChat)
   const { data: session } = useSession();
   const userId = session?.user?.id ? Number(session?.user?.id) : undefined;
-  const currrentParticipant = selectedChat?.ChatUser?.filter(user => Number(user.userId) === userId);
-  const currentUser = currrentParticipant && currrentParticipant[0]?.user;
+  const {user, userLoading} = useProfile();
+
+  if(userLoading) return(
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">Loading your chats</p>
+      </div>
+  )
+
+  if(!user) return;
 
   return (
     <div className="w-full lg:w-80 bg-white border-r border-gray-200 flex flex-col py-3 lg:px-3">
@@ -30,12 +40,12 @@ export function ChatSidebar({
         <div className=" flex flex-row justify-between items-center w-full">
           <div className="flex items-center justify-start gap-3">
             <ImageWrapper
-              src={currentUser?.image ? currentUser.image : "https://picsum.photos/128"}
+              src={user?.image ? user.image : "https://picsum.photos/128"}
               alt={"placeholder"}
               className="w-10 h-10 rounded-[5px] object-cover"
             />
             <h4 className="text-sm font-semibold text-gray-900 truncate">
-              {currentUser?.firstName} {currentUser?.lastName}
+              {user?.firstName} {user?.lastName}
             </h4>
           </div>
           <div>

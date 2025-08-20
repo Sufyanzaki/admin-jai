@@ -1,9 +1,8 @@
 "use client";
-import { Button } from "@/components/client/ux/button";
-import { X } from "lucide-react";
+import {Button} from "@/components/client/ux/button";
+import {X} from "lucide-react";
 import ImageWrapper from "@/components/client/image-wrapper";
-import {MemberProfile} from "@/app/shared-types/member";
-import { User } from "../_types/conversation";
+import {User} from "../_types/conversation";
 
 interface ProfileSidebarProps {
   user: User;

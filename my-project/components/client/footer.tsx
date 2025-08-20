@@ -180,13 +180,6 @@ export function Footer(): JSX.Element {
                           }
                         )}
                       </div>
-                      {isMobile && (
-                        <div className="mb-12 mr-16">
-                          <Button size={"sm"} className="w-fit text-[11px]">
-                            <Heart fill="white" className="w-[10px] h-[10px]" /> Start Swiping Now
-                          </Button>
-                        </div>
-                      )}
                     </div>
                   ) : (
                     <ul className="space-y-3 text-sm text-[#374151]">
@@ -212,12 +205,6 @@ export function Footer(): JSX.Element {
                 </div>
               );
             })}
-
-            <div className="hidden lg:flex justify-end">
-              <Button className="w-[230px]">
-                <Heart fill="white" /> Start Swiping Now
-              </Button>
-            </div>
           </div>
 
           <div className="text-center lg:text-start text-[15px] text-[#4B5563] leading-relaxed mb-6 font-[400]">

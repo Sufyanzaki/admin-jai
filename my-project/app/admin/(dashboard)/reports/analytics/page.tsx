@@ -47,10 +47,13 @@ export default function ReportPage() {
     relationStatus: filters.relationStatus
   });
 
+
+
   if(!analytics?.data){
     return (
         <div className="flex items-center flex-col justify-center h-64">
-          <p className="text-sm">No data available</p>
+          <Preloader />
+          <p className="text-sm">Loading</p>
         </div>
     )
   }
@@ -352,9 +355,6 @@ export default function ReportPage() {
                       <div>
                         <CardTitle>Links</CardTitle>
                         <CardDescription>Website URLs and their visit statistics</CardDescription>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Input placeholder="Search URLs..." className="h-8 w-[150px] lg:w-[250px]" />
                       </div>
                     </div>
                   </CardHeader>

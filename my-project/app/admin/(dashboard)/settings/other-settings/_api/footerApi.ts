@@ -16,7 +16,7 @@ export async function patchFooterSettings(data: Payload) {
   return r.response;
 }
 
-export async function getFooterSettings() {
+export async function getFooterSettings(): Promise<FooterSettingDto> {
   return await getRequest<FooterSettingDto>({
     url: "setting/footer",
     useAuth: true,
@@ -26,6 +26,13 @@ export async function getFooterSettings() {
 export async function getFooterSections(): Promise<FooterSectionDto[]> {
   return await getRequest({
     url: "setting/footer/sections",
+    useAuth: true,
+  });
+}
+
+export async function getFooterSectionDetails(id:string): Promise<FooterSectionDto[]> {
+  return await getRequest({
+    url: `setting/footer/sections/${id}`,
     useAuth: true,
   });
 }

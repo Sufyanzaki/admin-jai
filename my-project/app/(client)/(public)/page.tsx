@@ -1,12 +1,12 @@
 "use client";
-import { HeroSection } from "./_components/hero-section";
-import { Card } from "@/components/client/ux/card";
-import { Button } from "@/components/client/ux/button";
-import RecentlyJoined from "./_components/recently-joined";
-import { Container } from "@/components/client/ux/container";
-import { SignupForm } from "./_components/signup-form";
-import { useHome } from "@/app/shared-hooks/useHome";
+import {HeroSection} from "./_components/hero-section";
+import {Card} from "@/components/client/ux/card";
+import {Button} from "@/components/client/ux/button";
+import {Container} from "@/components/client/ux/container";
+import {SignupForm} from "./_components/signup-form";
+import {useHome} from "@/app/shared-hooks/useHome";
 import Preloader from "@/components/shared/Preloader";
+import RecentJoin from "@/app/(client)/(public)/_components/recent-join";
 
 const steps = [
   {
@@ -93,7 +93,7 @@ export default function Home() {
         </section>
         <section className="bg-[#f7f8fb] py-[50px] xl:pt-20">
           <Container className="px-4 md:px-6 space-y-24">
-            <RecentlyJoined />
+            <RecentJoin />
           </Container>
         </section>
       </div>

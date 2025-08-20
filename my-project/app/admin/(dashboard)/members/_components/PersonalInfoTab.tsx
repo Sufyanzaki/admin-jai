@@ -169,12 +169,23 @@ export default function PersonalInfoTab({ callback, fetchFinishCallback } : Pers
               </div>
               <div className="space-y-2">
                 <Label htmlFor="origin">Origin</Label>
-                <Input id="origin" placeholder="Enter origin" {...register("origin")} />
+                <Controller
+                    name="origin"
+                    control={control}
+                    render={({ field }) => (
+                        <AttributeSelect
+                            attributeKey="origin"
+                            value={field.value || undefined}
+                            onChange={field.onChange}
+                            placeholder="Select origin"
+                        />
+                    )}
+                />
                 {errors.origin && <p className="text-sm text-red-500">{errors.origin.message}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
-                <Input id="origin" placeholder="Enter phone" {...register("phone")} />
+                <Input id="phone" placeholder="Enter phone" {...register("phone")} />
                 {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
               </div>
             </div>

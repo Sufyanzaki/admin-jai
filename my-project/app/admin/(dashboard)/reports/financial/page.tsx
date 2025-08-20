@@ -78,8 +78,9 @@ export default function FinancialReportsPage() {
 
   if (!packagesReport) {
     return (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-muted-foreground">No data available</p>
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading</p>
         </div>
     )
   }
@@ -306,16 +307,6 @@ export default function FinancialReportsPage() {
                 <div>
                   <CardTitle>Recent Purchases</CardTitle>
                   <CardDescription>Last 10 package purchases</CardDescription>
-                </div>
-                <div className="relative w-full md:w-[320px]">
-                  <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                      type="search"
-                      placeholder="Search customers..."
-                      className="w-full pl-8"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                  />
                 </div>
               </div>
             </CardHeader>

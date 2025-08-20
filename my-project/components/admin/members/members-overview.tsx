@@ -72,7 +72,7 @@ export default function MembersOverview({ stats, totalMembers }: MembersOverview
         <CardContent>
           <div className="grid gap-2">
             <Button variant="outline" className="justify-start" asChild>
-              <Link href="/members/add">
+              <Link href="/admin/members/add">
                 <UserPlus className="mr-2 h-4 w-4" />
                 Add New Member
               </Link>

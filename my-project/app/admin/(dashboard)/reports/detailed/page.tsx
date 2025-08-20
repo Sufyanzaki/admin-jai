@@ -99,16 +99,18 @@ export default function DetailedReportsPage() {
 
   if (!detailReport && !detailReportLoading) {
     return (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-muted-foreground">No data available</p>
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading</p>
         </div>
     )
   }
 
   if(!detailReport){
     return (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-muted-foreground">No data available</p>
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading</p>
         </div>
     )
   }
@@ -366,9 +368,6 @@ export default function DetailedReportsPage() {
               <div>
                 <CardTitle>Recent Users</CardTitle>
                 <CardDescription>Detailed view of the last 10 users</CardDescription>
-              </div>
-              <div className="flex items-center gap-2">
-                <Input placeholder="Search users..." className="h-8 w-[150px] lg:w-[250px]" />
               </div>
             </div>
           </CardHeader>

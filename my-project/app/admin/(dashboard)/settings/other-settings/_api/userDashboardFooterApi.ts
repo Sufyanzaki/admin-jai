@@ -1,10 +1,13 @@
 import { patchRequest, getRequest } from "@/shared-lib";
-import {DashboardFooterResponse} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
+import {
+  DashboardFooterDto,
+  DashboardFooterResponse
+} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
-type UserDashboardFooterFormData = Partial<DashboardFooterResponse>;
+type Payload = Partial<DashboardFooterDto>;
 
-export async function patchUserDashboardFooterSettings(data: UserDashboardFooterFormData) {
-  const r = await patchRequest<UserDashboardFooterFormData>({
+export async function patchUserDashboardFooterSettings(data: Payload) {
+  const r = await patchRequest<Payload>({
     url: "setting/user-dashboard",
     data,
     useAuth: true,

@@ -7,16 +7,17 @@ import {useParams} from "next/navigation";
 
 interface MessageListenerProps {
     onMessage: (message: ChatMessage) => void;
+    chatId?: string;
 }
 
-export const MessageListener = ({ onMessage }: MessageListenerProps) => {
+export const MessageListener = ({ onMessage, chatId }: MessageListenerProps) => {
 
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
 
     useEffect(() => {
         const pusher = pusherClient();
-        const channel = pusher.subscribe(`chat-${id}`);
+        const channel = pusher.subscribe(`chat-${chatId ?? id}`);
         console.log("Subscribed to channel:", channel.name);
         channel.bind("new-message", (data: Partial<ChatMessage>) => {
             if (!data || !data.sender) {
@@ -41,9 +42,9 @@ export const MessageListener = ({ onMessage }: MessageListenerProps) => {
 
         return () => {
             channel.unbind("new-message");
-            pusher.unsubscribe(`chat-2`);
+            pusher.unsubscribe(`chat-${id ?? chatId}`);
         };
-    }, []);
+    }, [chatId]);
 
     return null;
 };

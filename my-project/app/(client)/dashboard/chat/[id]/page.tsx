@@ -55,6 +55,8 @@ export default function ChatBoxPage() {
         );
     }
 
+    console.log(chatDetails);
+
     const chat = chatDetails?.data.messages;
     const senderDetails = (chat ?? []).find(item => item.senderId !== userId);
     const otherParticipant = senderDetails?.sender;
@@ -73,7 +75,7 @@ export default function ChatBoxPage() {
                             ...prev,
                             messages: prev.messages + 1,
                             data: {
-                                messages: [...prev.data.messages, message]
+                                messages: [...prev.data.messages, message],
                             }
                         };
                     }, false).finally();

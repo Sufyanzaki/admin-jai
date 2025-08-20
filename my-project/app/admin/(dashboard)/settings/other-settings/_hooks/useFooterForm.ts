@@ -3,7 +3,7 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {FooterFormData, patchFooterSettings} from "../_api/footerApi";
+import {patchFooterSettings} from "../_api/footerApi";
 import {showError, showSuccess} from "@/shared-lib";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
@@ -61,7 +61,7 @@ export function useFooterForm() {
 
   const { trigger, isMutating } = useSWRMutation(
     "patchFooterSettings",
-    async (_: string, { arg }: { arg: FooterFormData }) => {
+    async (_: string, { arg }: { arg: FooterFormValues }) => {
       try {
         return await patchFooterSettings(arg);
       } catch (error: unknown) {
@@ -91,12 +91,12 @@ export function useFooterForm() {
         footerLogoUrl = await imageUpload(values.footerLogo);
       }
 
-      const payload: FooterFormData = {
+      const payload = {
         ...values,
         footerLogo: footerLogoUrl || undefined,
       };
 
-      const result = await trigger(payload);
+      await trigger(payload);
 
       globalMutate(
         "footer-settings",

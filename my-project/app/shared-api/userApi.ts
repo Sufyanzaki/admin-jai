@@ -37,4 +37,11 @@ export async function getUser(userId: string): Promise<MemberProfile> {
     url: `users/${userId}`,
     useAuth: true,
   });
-} 
+}
+
+export async function newUsers(): Promise<{ten: MemberProfile[]}> {
+  return getRequest({
+    url: `users/new-10`,
+    useAuth: true,
+  });
+}

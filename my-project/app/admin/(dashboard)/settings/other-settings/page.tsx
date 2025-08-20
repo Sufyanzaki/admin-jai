@@ -1,26 +1,15 @@
 "use client"
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
-import {Building, MoreVertical, Pencil, Plus, Settings, Trash, Upload} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from "@/components/admin/ui/dialog";
+import {Settings} from "lucide-react";
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/admin/ui/dialog";
 import {useState} from "react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
-import {Button} from "@/components/admin/ui/button";
-import {Input} from "@/components/admin/ui/input";
-import {Label} from "@/components/admin/ui/label";
 import AbusiveCard from "./_components/abusive-card";
 import CurrencyTable from "./_components/currency-table";
 import UserDashboardFooterForm from "./_components/user-dashboard-footer-form";
-import FooterSettingsForm from "./_components/footer-settings-form";
+import FooterSettingsTable from "./_components/footer-settings-table";
 import FooterForm from "./_components/footerForm";
-import {MultiSelectCombobox} from "@/components/admin/ui/combo-box";
 import FooterSectionForm from "@/app/admin/(dashboard)/settings/other-settings/_components/footer-section-form";
 
 const pagesData = [
@@ -45,8 +34,6 @@ const pagesData = [
 export default function SettingsPage() {
 
   const [openFooterDialog, setOpenFooterDialog] = useState(false);
-
-
 
   return (
     <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -105,7 +92,7 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
         <TabsContent value="footer-settings" className="space-y-4">
-          <FooterSettingsForm
+          <FooterSettingsTable
             pagesData={pagesData}
             onOpenDialog={() => setOpenFooterDialog(true)}
           />

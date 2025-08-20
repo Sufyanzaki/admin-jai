@@ -246,9 +246,6 @@ export default function ReportPage() {
                       <CardTitle>Recent Members</CardTitle>
                       <CardDescription>New members who joined recently</CardDescription>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Input placeholder="Search..." className="h-8 w-[150px] lg:w-[250px]" />
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

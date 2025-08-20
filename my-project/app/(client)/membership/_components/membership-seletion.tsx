@@ -95,11 +95,11 @@ export function MembershipSelection() {
         </div>
       </div>
 
-      <Link href="/auth/profile/membership/compare" className="text-center">
+      <Link href="/membership/compare" className="w-full">
         <Button
-          variant={"ghost"}
-          onClick={handleCompareFeatures}
-          className="w-full rounded-sm bg-[#F8F9FA] py-6 font-medium"
+            variant="ghost"
+            onClick={handleCompareFeatures}
+            className="w-full rounded-sm bg-[#F8F9FA] py-6 font-medium"
         >
           Compare Features
         </Button>

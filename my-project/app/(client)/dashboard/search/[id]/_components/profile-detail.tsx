@@ -12,10 +12,12 @@ import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 import { useSendLike } from "../../../_hooks/useSendLike";
 import { useCreateChat } from "@/app/(client)/dashboard/chat/_hooks/useCreateChat";
 import { MemberPersonalityBehavior } from "@/app/shared-types/member";
+import {useSession} from "next-auth/react";
 
 export function ProfileDetail() {
   const router = useRouter();
   const params = useParams();
+  const {data:session} = useSession();
   const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
   const { user, userLoading } = useBasicInfo(id);
   const [openComplain, setOpenComplain] = useState(false);
@@ -144,33 +146,33 @@ export function ProfileDetail() {
                   className="w-full h-80 object-cover rounded-[5px]"
                 />
               </div>
-              <div className="space-y-2">
+              {String(session?.user?.id) !== String(id) && <div className="space-y-2">
                 <Button
-                  onClick={handleSendMessage}
-                  variant="theme"
-                  size="lg"
-                  disabled={messageLoading}
-                  className="w-full"
+                    onClick={handleSendMessage}
+                    variant="theme"
+                    size="lg"
+                    disabled={messageLoading}
+                    className="w-full"
                 >
                   {messageLoading ? "Processing" : "Send Message"}
                 </Button>
                 <Button
-                  onClick={handleSendWink}
-                  variant="theme"
-                  size="lg"
-                  disabled={loading}
-                  className="w-full"
+                    onClick={handleSendWink}
+                    variant="theme"
+                    size="lg"
+                    disabled={loading}
+                    className="w-full"
                 >
                   {loading ? "Sending Wink..." : "Send Wink"}
                 </Button>
                 <Button
-                  onClick={handleReportProfile}
-                  variant="ghost"
-                  className="w-full"
+                    onClick={handleReportProfile}
+                    variant="ghost"
+                    className="w-full"
                 >
                   Report Profile
                 </Button>
-              </div>
+              </div>}
             </div>
 
             {/* Middle Column - Profile Details */}

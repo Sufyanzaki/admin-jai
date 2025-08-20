@@ -1,23 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import React from "react";
+import {Controller} from "react-hook-form";
 import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  useSidebar,
   SidebarMenuButton,
+  useSidebar,
 } from "@/components/client/ux/sidebar";
-import { Input } from "@/components/client/ux/input";
-import { Button } from "@/components/client/ux/button";
+import {Input} from "@/components/client/ux/input";
+import {Button} from "@/components/client/ux/button";
 import {
   Baby,
-  BookOpen,
   Calendar,
-  ChevronsUp, Church,
+  ChevronsUp,
+  Church,
   Filter,
   GraduationCap,
   HeartHandshake,
@@ -26,27 +25,17 @@ import {
   User,
   Users,
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/client/ux/select";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/client/ux/collapsible";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from "@/components/client/ux/collapsible";
 import LocationSearchInput from "@/components/client/location-search";
 import useSearchForm from "../_hooks/useSearchForm";
-import { MemberLocation } from "@/app/shared-types/member";
+import {MemberLocation} from "@/app/shared-types/member";
 import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import {useProfile} from "@/app/shared-hooks/useProfile";
 
 export default function SidebarData() {
   const { open } = useSidebar();
-  const router = useRouter();
-  const [showAdvancedIcons, setShowAdvancedIcons] = useState(false);
+
+  const { user } = useProfile();
 
   const {
     errors,
@@ -85,7 +74,6 @@ export default function SidebarData() {
             Quick Search
           </SidebarGroupLabel>
           <SidebarGroupContent className="space-y-4">
-            {/* Quick Search */}
             <div className="relative group-data-[collapsible=icon]:hidden">
               <Input
                 placeholder="Quick Search"
@@ -119,7 +107,6 @@ export default function SidebarData() {
               />
             </div>
 
-            {/* Relation Status */}
             <div className="relative group-data-[collapsible=icon]:hidden">
               <HeartHandshake className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 z-10" />
               <Controller
@@ -137,7 +124,6 @@ export default function SidebarData() {
               />
             </div>
 
-            {/* Location */}
             <div className="space-y-2 border-b border-[#E5E7EB]">
               <div className="flex items-center justify-center w-full bg-white border-white/20 pl-4 h-12 rounded-[5px] group-data-[collapsible=icon]:hidden">
                 <MapPin className="w-5 h-5 text-gray-500 z-10" />
@@ -152,7 +138,6 @@ export default function SidebarData() {
 
             </div>
 
-            {/* Age */}
             <div className="relative group-data-[collapsible=icon]:hidden">
               <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <div className="flex bg-white rounded-[5px] border border-white/20">
@@ -198,7 +183,6 @@ export default function SidebarData() {
               </SidebarMenuButton>
 
               <SidebarMenuButton
-                onClick={() => setShowAdvancedIcons((prev) => !prev)}
                 className="text-white cursor-pointer p-0 rounded-[5px] bg-white"
                 size="md"
               >
@@ -278,11 +262,11 @@ export default function SidebarData() {
           </CollapsibleContent>
         </Collapsible>
 
-        {/* Search Button */}
         <Button
           type="submit"
           variant="dashboard"
           size="dashboard"
+          disabled={user?.route !== "/auth/profile/partner-preferences"}
           className="w-full mt-1 group-data-[collapsible=icon]:hidden"
         >
           <span>Search</span>

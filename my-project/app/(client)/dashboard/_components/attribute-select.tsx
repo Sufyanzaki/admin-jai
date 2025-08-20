@@ -21,7 +21,7 @@ export const AttributeSelect = ({ attributeKey, value, onChange, placeholder, tr
     }
 
     return (
-        <Select value={value} onValueChange={onChange}>
+        <Select value={value} onValueChange={onChange} key={value}>
             <SelectTrigger className={triggerClasses} size={size}>
                 <SelectValue placeholder={placeholder || `Select ${attributeKey}`} />
             </SelectTrigger>

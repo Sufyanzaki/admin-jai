@@ -35,7 +35,7 @@ export function DashboardSidebar() {
             }`}
           >
             {open && (
-              <Link href="#">
+              <Link href="/dashboard">
                 <ImageWrapper
                   width={230}
                   height={230}

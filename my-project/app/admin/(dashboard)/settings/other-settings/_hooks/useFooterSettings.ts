@@ -1,7 +1,8 @@
 "use client";
 
-import { useSWRFix } from "@/shared-lib";
-import { getFooterSettings, FooterResponse } from "../_api/footerApi";
+import {useSWRFix} from "@/shared-lib";
+import {getFooterSettings} from "../_api/footerApi";
+import {FooterSettingDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
 export function useFooterSettings() {
   const {
@@ -10,11 +11,10 @@ export function useFooterSettings() {
     loading,
     mutate,
     refetch
-  } = useSWRFix<FooterResponse>({
+  } = useSWRFix<FooterSettingDto>({
     key: "footer-settings",
     fetcher: async () => {
-      const response = await getFooterSettings();
-      return response;
+      return await getFooterSettings();
     },
     config: {
       revalidateOnReconnect: false,

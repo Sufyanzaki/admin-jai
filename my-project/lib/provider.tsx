@@ -35,6 +35,7 @@ export default function Providers({
 
 function AuthGuard({ children, mounted }: { children: React.ReactNode; mounted: boolean }) {
     const { status, data } = useSession();
+    console.error(data?.user)
     const router = useRouter();
 
     useEffect(() => {

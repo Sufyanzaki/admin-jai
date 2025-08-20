@@ -1,18 +1,16 @@
 "use client";
-import { ChatSidebar } from "./_components/chat-sidebar";
+
+import {ChatSidebar} from "./_components/chat-sidebar";
 import ChatBox from "./_components/chat-box";
-import { ProfileSidebar } from "./_components/profile-sidebar";
-import { useEffect, useState } from "react";
-import { useLaptop } from "@/hooks/use-mobile";
-import { useRouter, useSearchParams } from "next/navigation";
-import { MessageCircleDashed } from "lucide-react";
-import { useGetAllChats } from "./_hooks/useGetAllChats";
+import {ProfileSidebar} from "./_components/profile-sidebar";
+import {useEffect, useState} from "react";
+import {useLaptop} from "@/hooks/use-mobile";
+import {useRouter, useSearchParams} from "next/navigation";
+import {MessageCircleDashed} from "lucide-react";
+import {useGetAllChats} from "./_hooks/useGetAllChats";
 import Preloader from "@/components/shared/Preloader";
-import { Chat } from "./_types/allChats";
-import { useSession } from "next-auth/react";
-import { useChatDetails } from "./_hooks/useChatDetails";
-
-
+import {Chat} from "./_types/allChats";
+import {useSession} from "next-auth/react";
 
 export default function ChatPage() {
   const isAboveLaptop = !useLaptop();

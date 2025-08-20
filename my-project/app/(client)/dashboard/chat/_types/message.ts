@@ -1,4 +1,4 @@
-import {MemberProfile} from "@/app/shared-types/member";
+import {User} from "@/app/(client)/dashboard/chat/_types/conversation";
 
 export interface ChatMessage {
     id: string;
@@ -8,7 +8,7 @@ export interface ChatMessage {
     chatId: number;
     createdAt: string;
     updatedAt: string;
-    sender: MemberProfile;
+    sender: User;
 }
 
 export interface ChatMessagesData {

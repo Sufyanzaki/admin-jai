@@ -5,9 +5,9 @@ import {z} from 'zod';
 import {showError} from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
 import {patchUser} from "@/app/shared-api/userApi";
-import {patchPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
+import {patchPartnerExpectation, postPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
 import {useRouter} from "next/navigation";
-import {patchUserLocation} from "@/app/shared-api/livingApi";
+import {patchUserLocation, postUserLocation} from "@/app/shared-api/livingApi";
 import {useSession} from "next-auth/react";
 import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
 import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
@@ -68,12 +68,14 @@ export default function useProfileCreateForm() {
         async (_: string, { arg }: { arg: UserProfile }) => {
 
             if (!userId) return;
-            const { lookingFor, city, country, state, children, ...userFields } = arg;
+            const { lookingFor, city, country, state, ...userFields } = arg;
             setCurrentStep("Updating user & Saving preferences");
+            const livingApi = living ? patchUserLocation : postUserLocation;
+            const partnerApi = expectations ? patchPartnerExpectation : postPartnerExpectation;
             await Promise.all([
-                patchUserLocation(userId, { city, country, state }),
+                livingApi(userId, { city, country, state }),
                 patchUser(userId, { ...userFields, route: "/auth/profile/create" }),
-                patchPartnerExpectation(userId, { lookingFor }),
+                partnerApi(userId, { lookingFor }),
             ]);
             return true;
         },

@@ -1,7 +1,8 @@
 "use client";
 
 import {useSWRFix} from "@/shared-lib";
-import {DashboardFooterResponse, getUserDashboardFooterSettings} from "../_api/userDashboardFooterApi";
+import { getUserDashboardFooterSettings } from "../_api/userDashboardFooterApi";
+import {DashboardFooterResponse} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
 export function useDashboardFooterSetting() {
   const {
@@ -21,7 +22,7 @@ export function useDashboardFooterSetting() {
   });
 
   return {
-    data: data?.data, // Extract the nested data object
+    data,
     error,
     isLoading: loading,
     mutate,

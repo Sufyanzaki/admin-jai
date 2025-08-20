@@ -82,12 +82,6 @@ export function UserNav() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/admin/chat" className="flex items-center gap-2">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                <span>Chat</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
               <Link href="/admin/support" className="flex items-center gap-2">
                 <HelpCircle className="mr-2 h-4 w-4" />
                 <span>Support</span>

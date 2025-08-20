@@ -44,7 +44,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
     const otherParticipants = selectedChat?.ChatUser?.filter(user => Number(user.userId) !== userId);
     const otherParticipant = otherParticipants[0]?.user;
 
-    const chat = [...(chatDetails?.data.messages ?? [])].reverse();
+    const chat = [...(chatDetails?.data.messages ?? [])];
 
     const handleSendMessage = async () => {
         const trimmedMessage = messageInput.trim();
@@ -76,6 +76,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                         false
                     ).finally();
                 }}
+                chatId={selectedChat.id}
             />
 
             <div
@@ -96,7 +97,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                 src={otherParticipant?.image ?? "/default-avatar.png"}
                                 alt={otherParticipant?.firstName || "Chat participant"}
                                 className="w-10 h-10 rounded-full object-cover cursor-pointer"
-                                onClick={onProfileClick} // ✅ open sidebar
+                                onClick={onProfileClick}
                             />
                             <h2 className="text-lg font-semibold text-gray-900">
                                 {otherParticipant?.firstName || "Chat"}

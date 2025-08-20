@@ -38,6 +38,12 @@ export default function ExpectationPage() {
     setAgeRange,
   } = useClientExpectationsForm();
 
+  const city = watch("city");
+  const state = watch("state");
+  const country = watch("country");
+
+  const currentLocation = city || state || country ? { city, state, country } : null;
+
   const handleLocationSelect = (location: Partial<MemberLocation>) => {
     setValue("city", location.city, { shouldDirty: true });
     location.country && setValue("country", location.country, { shouldDirty: true });
@@ -176,7 +182,7 @@ export default function ExpectationPage() {
           <div>
             <Label>Location</Label>
             <div className="border border-app-border rounded-[5px] !h-13 py-1">
-              <LocationSearchInput onSelect={handleLocationSelect} />
+              <LocationSearchInput value={currentLocation} onSelect={handleLocationSelect} placeholder="Start typing your city or address" />
               {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
 
             </div>

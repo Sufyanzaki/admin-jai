@@ -1,6 +1,6 @@
-import { Button } from "@/components/admin/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card";
-import { CalendarIcon, BarChartIcon as ChartBarIcon, LineChartIcon, PackageIcon, TrendingUpIcon, UsersIcon } from "lucide-react";
+import {Button} from "@/components/admin/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {BarChartIcon as ChartBarIcon, CalendarIcon, LineChartIcon, TrendingUpIcon, UsersIcon} from "lucide-react";
 import Link from "next/link";
 
 const reportCards = [
@@ -14,7 +14,7 @@ const reportCards = [
       { label: "Net Profit", value: "$00" },
       { label: "Growth", value: "+00%" },
     ],
-    link: "/reports/financial",
+    link: "/admin/reports/financial",
     buttonVariant: "default",
   },
   {
@@ -27,7 +27,7 @@ const reportCards = [
       { label: "Completion Rate", value: "70.2%" },
       { label: "No-Show Rate", value: "6.8%" },
     ],
-    link: "/reports/income",
+    link: "/admin/reports/income",
     buttonVariant: "default",
   },
   {
@@ -40,7 +40,7 @@ const reportCards = [
       { label: "New Patients", value: "428" },
       { label: "Avg. Duration", value: "32 min" },
     ],
-    link: "/reports/detailed",
+    link: "/admin/reports/detailed",
     buttonVariant: "default",
   },
   {
@@ -53,7 +53,7 @@ const reportCards = [
       { label: "Avg. Attendance", value: "92.5%" },
       { label: "Productivity", value: "87.3%" },
     ],
-    link: "/reports/member",
+    link: "/admin/reports/member",
   },
   {
     type: "Analytic",
@@ -65,7 +65,7 @@ const reportCards = [
       { label: "Templates", value: "12" },
       { label: "Export Options", value: "PDF, CSV, Excel" },
     ],
-    link: "/reports/analytics",
+    link: "/admin/reports/analytics",
   },
 ];
 

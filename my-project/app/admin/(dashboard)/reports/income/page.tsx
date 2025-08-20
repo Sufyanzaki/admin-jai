@@ -22,7 +22,7 @@ import {
 import {usePackageReport} from "@/app/admin/(dashboard)/reports/_hooks/usePackageReport"
 import {usePackages} from "@/app/shared-hooks/usePackages"
 import {useSearchParams} from "next/navigation"
-import {useState} from "react"
+import React, {useState} from "react"
 import Preloader from "@/components/shared/Preloader"
 import {Badge} from "@/components/admin/ui/badge";
 import {Button} from "@/components/admin/ui/button";
@@ -77,21 +77,22 @@ export default function FinancialReportsPage() {
 
   if (!packagesReport && !packageReportLoading) {
     return (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-muted-foreground">No data available</p>
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading</p>
         </div>
     )
   }
 
   if(!packagesReport){
     return (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-muted-foreground">No data available</p>
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading</p>
         </div>
     )
   }
 
-  // Transform API data for charts
   const monthlyRevenueData = packagesReport.monthlyRevenue.map(item => ({
     month: item.month,
     revenue: item.revenue
@@ -139,16 +140,6 @@ export default function FinancialReportsPage() {
               </SelectContent>
             </Select>
             <Button onClick={applyFilters}>Apply Filters</Button>
-          </div>
-          <div className="relative w-full md:w-[320px]">
-            <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-                type="search"
-                placeholder="Search customers..."
-                className="w-full pl-8"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            />
           </div>
         </div>
 
