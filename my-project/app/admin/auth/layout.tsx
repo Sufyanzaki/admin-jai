@@ -12,7 +12,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const isAdmin = session?.user?.role === "ADMIN";
+  const isAdmin = session?.user?.role !== "ADMIN";
 
   useEffect(() => {
     if (status === "authenticated" && isAdmin) {

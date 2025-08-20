@@ -2,7 +2,7 @@
 
 import ErrorBoundary from "@/admin-utils/ErrorBoundary";
 import {ThemeProvider} from "next-themes";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {SessionProvider, useSession} from "next-auth/react";
 import {Session} from "next-auth";
 import {useRouter} from "next/navigation";
@@ -33,14 +33,14 @@ export default function Providers({
     );
 }
 
-function AuthGuard({ children, mounted }: { children: React.ReactNode; mounted: boolean }) {
+function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolean }) {
     const { status, data } = useSession();
     console.error(data?.user)
     const router = useRouter();
 
     useEffect(() => {
 
-        if (mounted && (status === "unauthenticated" || data?.user.role !== "ADMIN")) {
+        if (mounted && (status === "unauthenticated" || data?.user.role === "CLIENT")) {
             router.push("/admin/auth/login");
         }
     }, [mounted, status, router, data?.user.role]);

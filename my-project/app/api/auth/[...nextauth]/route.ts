@@ -39,7 +39,8 @@ export const authOptions: NextAuthOptions = {
           firstName: response.user.firstName,
           lastName: response.user.lastName,
           token: response.tokens.access.token,
-          role: "ADMIN",
+          role: response.user.role,
+          permissions: response.user.allow?.permissions ?? []
         };
       },
     }),

@@ -16,6 +16,7 @@ import AnimateHeight from "react-animate-height";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { sidebarItems } from "@/constant/sideOptions";
+import { useSession } from "next-auth/react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -35,6 +36,12 @@ type SidebarItem = {
   submenu?: SidebarSubItem[];
 };
 
+type Permission = {
+  module: string;
+  canView: boolean;
+};
+
+
 export function Sidebar({
   isOpen,
   setIsOpen,
@@ -44,11 +51,36 @@ export function Sidebar({
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const { theme } = useTheme();
 
+  const {data:session} = useSession();
+
+  const permissions: Permission[] = session?.user?.permissions || [];
+
+function canViewModule(module: string) {
+  if (!module) return true;
+  const perm = permissions.find((p) => p.module === module);
+  return perm ? perm.canView : false;
+}
+
+function filterSidebarItems(items: typeof sidebarItems) {
+  return items
+    .filter((item) => canViewModule(item.module))
+    .map((item) => {
+      if (item.submenu) {
+        const filteredSubmenu = item.submenu.filter((sub) =>
+          canViewModule(sub.module)
+        );
+        return { ...item, submenu: filteredSubmenu };
+      }
+      return item;
+    });
+}
+
   // Update useMobile hook to use xl breakpoint (1200px) instead of md
   const isMobile = useLaptop();
 
- const navigationItems: SidebarItem[] = sidebarItems.slice(0, -1);
-const footerItem: SidebarItem = sidebarItems[sidebarItems.length - 1];
+  const filteredSidebarItems = filterSidebarItems(sidebarItems);
+  const navigationItems: SidebarItem[] = filteredSidebarItems.slice(0, -1);
+  const footerItem: SidebarItem = filteredSidebarItems[filteredSidebarItems.length - 1];
 
   const toggleSubmenu = (title: string) => {
     if (isCollapsed) return;

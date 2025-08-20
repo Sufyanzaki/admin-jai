@@ -10,7 +10,7 @@ import {Separator} from "@/components/admin/ui/separator"
 import {ArrowLeft, Save} from "lucide-react"
 import Link from "next/link"
 import {Switch} from "@/components/admin/ui/switch"
-import {use} from "react"
+import React, {use} from "react"
 import {Controller} from "react-hook-form"
 import useEditRoleForm from "../../_hook/useEditRoleForm"
 import Preloader from "@/components/shared/Preloader";
@@ -25,7 +25,7 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
     loading,
     error,
     errors,
-    isSubmitting
+    isSubmitting,
   } = useEditRoleForm(id);
 
   if (loading) {

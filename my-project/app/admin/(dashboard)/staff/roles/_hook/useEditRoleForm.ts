@@ -1,6 +1,6 @@
 "use client"
 
-import { useForm } from "react-hook-form";
+import {useFieldArray, useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useRoleById from "./useRoleById";
@@ -36,16 +36,25 @@ export default function useEditRoleForm(id: number | string) {
     handleSubmit,
     formState: { errors, isSubmitting },
     control,
+    watch,
     reset,
+      setValue,
   } = useForm<EditRoleFormValues>({
     resolver: zodResolver(roleSchema),
     defaultValues: {
       name: "",
       description: "",
       isDefault: false,
-      permissions: [],
+      permissions: [
+        { module: "", canView: false, canCreate: false, canEdit: false, canDelete: false },
+      ],
     },
     mode: "onBlur",
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "permissions",
   });
 
   useEffect(() => {
@@ -92,8 +101,11 @@ export default function useEditRoleForm(id: number | string) {
     errors,
     isSubmitting: isSubmitting || isMutating,
     reset,
+    watch,
     loading,
+    setValue,
     error,
     onSubmit,
+    fields, append, remove
   };
 } 

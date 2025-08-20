@@ -177,4 +177,8 @@ export type MemberProfile = {
     messageCount: number;
 
     PhotoSetting: PhotoDto[];
+
+    allow?:{
+        permissions: string[];
+    }
 }
