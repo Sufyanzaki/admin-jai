@@ -12,8 +12,11 @@ import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import {DashboardList} from "./dashboard-list";
 import ImageWrapper from "@/components/client/image-wrapper";
 import {signOut} from "next-auth/react";
-import {useProfile} from "@/app/shared-hooks/useProfile";
 import Preloader from "@/components/shared/Preloader";
+import NotificationListener from "@/client-utils/NotificationListener";
+import {useSWRConfig} from "swr";
+import {ProfileResponse} from "@/app/shared-types/auth";
+import {useProfile} from "@/app/shared-hooks/useProfile";
 
 type MenuItem = {
   label: string;
@@ -23,10 +26,9 @@ type MenuItem = {
 };
 
 export function DashboardHeader() {
+  const { mutate } = useSWRConfig();
 
-  console.log("render")
-
-  const {user, userLoading} = useProfile();
+  const { response, userLoading } = useProfile();
 
   if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
 
@@ -36,18 +38,49 @@ export function DashboardHeader() {
     { label: "My Visits", href: "/dashboard/visits" },
     { label: "Notification", href: "/dashboard/notifications/received" },
     { label: "Liked Profile", href: "/dashboard/notifications/received" },
-    { label: "Messages", href: "/dashboard/chat", badge: user?.messageCount, badgeColor: "bg-cyan-500" },
+    { label: "Messages", href: "/dashboard/chat", badge: response?.user.messageCount, badgeColor: "bg-cyan-500" },
     { label: "My Profile", href: "/dashboard/settings/account" },
   ];
 
   const lockedItems: MenuItem[] = [
-    { label: "Complete Profile", href: user?.route ?? "/auth/profile/create" },
+    { label: "Complete Profile", href: response?.user.route ?? "/auth/profile/create" },
   ];
 
-  const allowedItems: MenuItem[] = user?.route === "/auth/profile/partner-preferences" ? menuItems : lockedItems;
+  const allowedItems: MenuItem[] = response?.user.route === "/auth/profile/partner-preferences" ? menuItems : lockedItems;
+
+  const handleNotification = () => {
+    // @ts-expect-error SWRConfig is not typed
+    mutate(
+        "user-profile",
+        (current: ProfileResponse | undefined) => {
+          if (!current) return current;
+          return {
+            ...current,
+            user: {
+              ...current.user,
+              messageCount: (current.user.messageCount ?? 0) + 1,
+            },
+          };
+        },
+        {
+          optimisticData: (current: ProfileResponse | undefined) => {
+            if (!current) return current;
+            return {
+              ...current,
+              user: {
+                ...current.user,
+                messageCount: (current.user.messageCount ?? 0) + 1,
+              },
+            };
+          },
+          revalidate: false,
+        }
+    ).then();
+  };
 
   return (
       <>
+        <NotificationListener onMessage={handleNotification} />
         <header className="p-4 sm:p-6 w-full">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 xl:hidden justify-between w-full">

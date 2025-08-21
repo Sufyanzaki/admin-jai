@@ -17,15 +17,15 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   const { registrationSettings, registrationLoading } = useRegistration();
   const router = useRouter();
-  const {user, userLoading} = useProfile();
+  const {response, userLoading} = useProfile();
   const { status } = useSession();
 
   useEffect(() => {
-    const condition = status === "authenticated" && user?.route === "/auth/profile/partner-preferences";
+    const condition = status === "authenticated" && response?.user.route === "/auth/profile/partner-preferences";
     if (condition) {
       router.push("/dashboard");
     }
-  }, [status, router, user]);
+  }, [status, router, response]);
 
   if (registrationLoading || userLoading) {
     return (

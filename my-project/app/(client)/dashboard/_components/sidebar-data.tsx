@@ -35,8 +35,6 @@ import {useProfile} from "@/app/shared-hooks/useProfile";
 export default function SidebarData() {
   const { open } = useSidebar();
 
-  const { user } = useProfile();
-
   const {
     errors,
     onSubmit,
@@ -46,6 +44,8 @@ export default function SidebarData() {
     watch,
     register,
   } = useSearchForm();
+
+  const { response } = useProfile();
 
   const city = watch("city");
   const state = watch("state");
@@ -266,7 +266,7 @@ export default function SidebarData() {
           type="submit"
           variant="dashboard"
           size="dashboard"
-          disabled={user?.route !== "/auth/profile/partner-preferences"}
+          disabled={response?.user.route !== "/auth/profile/partner-preferences"}
           className="w-full mt-1 group-data-[collapsible=icon]:hidden"
         >
           <span>Search</span>

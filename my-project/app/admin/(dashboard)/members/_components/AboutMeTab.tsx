@@ -15,7 +15,7 @@ import Preloader from "@/components/shared/Preloader";
 import type React from "react";
 import { AttributeSelect } from "@/components/admin/ui/attribute-select";
 
-export default function AboutMeTab() {
+export default function AboutMeTab({callback}: { callback: () => void }) {
 
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : params.id?.[0];
@@ -45,7 +45,7 @@ export default function AboutMeTab() {
             Tell us about your physical attributes and preferences
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit((values) => onSubmit(values))}>
+        <form onSubmit={handleSubmit((values) => onSubmit(values, callback))}>
           {!userId && <div className="border border-amber-200 bg-amber-50 rounded-sm p-4 mb-6">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-amber-600" />

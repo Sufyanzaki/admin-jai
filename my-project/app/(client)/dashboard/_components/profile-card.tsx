@@ -23,15 +23,15 @@ export default function ProfileCard({
 }) {
   const router = useRouter();
   const [loaded, setIsLoaded] = useState(false);
-  const { user } = useProfile();
+  const { response } = useProfile();
 
   const { trigger: sendLike, loading } = useSendLike();
   const { trigger } = useUnblockUser();
   const { sendMessageRefetch } = useCreateChat();
   const { requestTrigger } = useImageRequest()
 
-  const hasProfilePicture = !!user?.image;
-  const isFreeMember = !user?.isPremium;
+  const hasProfilePicture = !!response?.user.image;
+  const isFreeMember = !response?.user.isPremium;
 
   const onlyMembersWithPhotoCanSee = profile?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
   const blurForFreeMembers = profile?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
@@ -95,7 +95,9 @@ export default function ProfileCard({
               </div>
             )
               : onRequestOnly ? (
-                <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+                <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold"
+                     onClick={handleImageRequest}
+                  >
                   <Lock />
                   Request for photo
                   <br />

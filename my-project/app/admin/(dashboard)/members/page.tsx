@@ -10,7 +10,6 @@ import { CheckedState } from "@radix-ui/react-checkbox";
 import useAllMembers from "./_hooks/useAllMembers";
 import { useDebounce } from "@/hooks/useDebounce";
 
-// Import new components
 import {useDeleteMember} from "@/app/shared-hooks/useDeleteMember";
 import {useUpdateMemberStatus} from "@/app/admin/(dashboard)/members/_hooks/useUpdateMemberStatus";
 import MembersFilters from "@/components/admin/members/members-filters";
@@ -36,7 +35,6 @@ export default function StaffPage() {
   const [limit] = useState(20);
   const [bulkSelectValue, setBulkSelectValue] = useState<string>("");
 
-  // Use custom debounce hook
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const params = {
@@ -45,9 +43,7 @@ export default function StaffPage() {
     search: debouncedSearchQuery || undefined,
     status: selectedStatuses.length === 1 ? selectedStatuses[0].toLowerCase() : undefined,
     gender: selectedGender.length === 1 ? selectedGender[0] : undefined,
-    isPremium: selectedMemberships.length === 1 
-      ? (selectedMemberships[0] === "Premium" ? true : false) 
-      : undefined,
+    isPremium: selectedMemberships.length === 1  ? (selectedMemberships[0] === "Premium")  : undefined,
   };
 
   const { data: membersData, error, isLoading } = useAllMembers(params);
@@ -58,7 +54,7 @@ export default function StaffPage() {
   const stats = membersData?.stats;
 
   const statuses = ["Active", "Inactive"];
-  const membershipOptions = ["Premium", "Freemember"];
+  const membershipOptions = ["Premium", "Free member"];
   const genderOptions = ["Male", "Female", "Other"];
   const activeFilters = selectedMemberships.length + selectedStatuses.length + selectedGender.length;
 
@@ -74,14 +70,12 @@ export default function StaffPage() {
     setCurrentPage(1);
   };
 
-  // Toggle membership filter
   const toggleMembership = (membership: string) => {
     setSelectedMemberships((prev) =>
       prev.includes(membership) ? prev.filter((m) => m !== membership) : [...prev, membership]
     );
   };
 
-  // Toggle status filter
   const toggleStatus = (status: string) => {
     setSelectedStatuses((prev) =>
       prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]
@@ -92,7 +86,6 @@ export default function StaffPage() {
     setSelectedGender(gender ? [gender] : []);
   };
 
-  // Clear all filters
   const clearFilters = () => {
     setSelectedMemberships([]);
     setSelectedStatuses([]);
@@ -102,10 +95,9 @@ export default function StaffPage() {
     setBulkSelectValue("");
   };
 
-  // Apply filters
   const applyFilters = () => {
     setIsFilterOpen(false);
-    setCurrentPage(1); // Reset to first page when applying filters
+    setCurrentPage(1);
   };
 
   const handleCheckAll = (checked: CheckedState) => {

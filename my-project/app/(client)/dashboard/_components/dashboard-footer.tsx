@@ -8,13 +8,12 @@ export function DashboardFooter() {
   const { data: dashboardFooterData, isLoading: isLoadingDashboardFooterData } = useDashboardFooterSetting();
   const [sectionPageArray, setSectionPageArray] = useState()
 
-  useEffect(() => {
-    if (dashboardFooterData?.sectionPage) {
-      // Convert comma-separated string to array
-      setSectionPageArray(dashboardFooterData.sectionPage.split(',').map(page => page.trim()));
-    }
-  }, [dashboardFooterData]);
-  console.log(sectionPageArray)
+  // useEffect(() => {
+  //   if (dashboardFooterData?.sectionPage) {
+  //     // Convert comma-separated string to array
+  //     setSectionPageArray(dashboardFooterData.sectionPage.split(',').map(page => page.trim()));
+  //   }
+  // }, [dashboardFooterData]);
 
   return (
     <footer className="bg-gray-100 border-t border-t-gray-300">
@@ -23,7 +22,7 @@ export function DashboardFooter() {
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 gap-y-1 text-xs text-gray-600 font-medium">
             {isLoadingDashboardFooterData ?
               <p>Loading...</p>
-              : sectionPageArray?.map((link) => (
+              : [].map((link) => (
                 <React.Fragment key={link}>
                   <Link href={`/dashboard/${encodeURIComponent(link)}`} className="hover:text-gray-900">
                     {link}

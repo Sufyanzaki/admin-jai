@@ -15,9 +15,9 @@ import {useProfile} from "@/app/shared-hooks/useProfile";
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
-  const { user } = useProfile();
+  const { response } = useProfile();
 
-  const displayUser = user
+  const displayUser = response?.user
 
   return (
     <div className="space-y-6 p-4 xl:p-6">

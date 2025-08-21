@@ -55,12 +55,12 @@ export function Sidebar({
 
   const permissions: Permission[] = session?.user?.permissions || [];
 
-function canViewModule(module: string) {
-  if (!module) return true;
-  const perm = permissions.find((p) => p.module === module);
-  return perm ? perm.canView : false;
-}
-
+  function canViewModule(module: string) {
+    if (!module) return true;
+    if (permissions.length === 0) return true;
+    const perm = permissions.find((p) => p.module === module);
+    return perm ? perm.canView : false;
+  }
 function filterSidebarItems(items: typeof sidebarItems) {
   return items
     .filter((item) => canViewModule(item.module))

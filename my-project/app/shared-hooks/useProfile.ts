@@ -6,7 +6,7 @@ import { ProfileResponse } from "@/app/shared-types/auth";
 
 export const useProfile = () => {
   
-  const { data, loading, error, mutate } = useSWRFix<ProfileResponse>({
+  const { data, loading, error, mutate } = useSWRFix<ProfileResponse | undefined>({
     key: 'user-profile',
     fetcher: async () => {
       const response = await getProfile();
@@ -16,7 +16,7 @@ export const useProfile = () => {
   });
 
   return {
-    user: data?.user,
+    response: data,
     userLoading: loading,
     error,
     mutate

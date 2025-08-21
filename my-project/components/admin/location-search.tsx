@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { Input } from "@/components/admin/ui/input"
 import { cn } from "@/lib/utils"
 import debounce from "lodash.debounce"
@@ -112,7 +112,8 @@ export default function LocationSearchInput({
     initProvider()
   }, [])
 
-  const searchLocations = debounce(async (value: string) => {
+  // Stable debounced search function
+  const searchLocations = useMemo(() => debounce(async (value: string) => {
     if (!provider || !value || hasSelectedRef.current) {
       hasSelectedRef.current = false
       return setResults([])
@@ -159,7 +160,7 @@ export default function LocationSearchInput({
     } catch (err) {
       console.error("GeoSearch error", err)
     }
-  }, 400)
+  }, 400), [provider])
 
   useEffect(() => {
     if (provider) {
@@ -181,7 +182,7 @@ export default function LocationSearchInput({
 
   return (
     <div className={cn("relative w-full", className)}>
-      <Input
+    <Input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}

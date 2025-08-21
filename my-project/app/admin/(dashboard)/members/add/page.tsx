@@ -5,7 +5,6 @@ import {Tabs, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
 import {ArrowLeft} from "lucide-react";
 import Link from "next/link";
 import {useState} from "react";
-
 import PersonalInfoTab from "@/app/admin/(dashboard)/members/_components/PersonalInfoTab";
 import ProfessionalTab from "@/app/admin/(dashboard)/members/_components/ProfessionalTab";
 import BehaviorTab from "@/app/admin/(dashboard)/members/_components/BehaviorTab";
@@ -15,8 +14,11 @@ import HobbiesTab from "@/app/admin/(dashboard)/members/_components/HobbiesTab";
 import LanguagesTab from "@/app/admin/(dashboard)/members/_components/LanguagesTab";
 import LivingTab from "@/app/admin/(dashboard)/members/_components/LivingTab";
 import AboutMeTab from "@/app/admin/(dashboard)/members/_components/AboutMeTab";
+import {useRouter} from "next/navigation";
 
 export default function AddMemberPage() {
+
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("personal");
 
     return (
@@ -61,7 +63,7 @@ export default function AddMemberPage() {
           {activeTab === "hobbies" && <HobbiesTab callback={()=>setActiveTab("languages")}/>}
           {activeTab === "languages" && <LanguagesTab callback={()=>setActiveTab("living")}/>}
           {activeTab === "living" && <LivingTab callback={()=>setActiveTab("about_me")}/>}
-          {activeTab === "about_me" && <AboutMeTab />}
+          {activeTab === "about_me" && <AboutMeTab callback={()=>router.push("/admin/members")} />}
         </Tabs>
       </div>
   );

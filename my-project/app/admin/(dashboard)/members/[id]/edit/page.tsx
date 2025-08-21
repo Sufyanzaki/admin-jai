@@ -14,9 +14,11 @@ import LanguagesTab from "@/app/admin/(dashboard)/members/_components/LanguagesT
 import LivingTab from "@/app/admin/(dashboard)/members/_components/LivingTab";
 import AboutMeTab from "@/app/admin/(dashboard)/members/_components/AboutMeTab";
 import {useState} from "react";
+import {useRouter} from "next/navigation";
 
 export default function EditMemberPage() {
 
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("personal");
   const [fetchFinish, setFetchFinish] = useState(false);
 
@@ -62,7 +64,7 @@ export default function EditMemberPage() {
           {activeTab === "hobbies" && <HobbiesTab callback={()=>setActiveTab("languages")} />}
           {activeTab === "languages" && <LanguagesTab callback={()=>setActiveTab("living")} />}
           {activeTab === "living" && <LivingTab callback={()=>setActiveTab("about_me")} />}
-          {activeTab === "about_me" && <AboutMeTab />}
+          {activeTab === "about_me" && <AboutMeTab callback={()=>router.push("/admin/members")} />}
         </Tabs>
       </div>
   );

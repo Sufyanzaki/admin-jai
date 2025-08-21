@@ -1,21 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/client/ux/button";
-import { usePathname } from "next/navigation";
+import {useEffect, useState} from "react";
+import {Button} from "@/components/client/ux/button";
+import {usePathname} from "next/navigation";
 import Link from "next/link";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { Container } from "@/components/client/ux/container";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/client/ux/sheet";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { SidebarList } from "@/components/client/sidebar-list";
-import { useSession } from "next-auth/react";
+import {Container} from "@/components/client/ux/container";
+import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,} from "@/components/client/ux/sheet";
+import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
+import {SidebarList} from "@/components/client/sidebar-list";
+import {useSession} from "next-auth/react";
 
 const navLinks = [
   { label: "How it works", href: "/how-it-works" },

@@ -151,7 +151,7 @@ export default function usePartnerForm() {
         if (!isValid) return;
         await mutate(values);
         updateUserTrackingId({ step6: true })
-        router.push("/auth/profile/membership");
+        router.push("/membership");
     };
 
     return {

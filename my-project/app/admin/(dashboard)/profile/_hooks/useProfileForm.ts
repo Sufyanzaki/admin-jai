@@ -30,15 +30,15 @@ const profileSchema = z.object({
 export type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export default function useProfileForm() {
-    const { user, mutate } = useProfile();
+    const { response, mutate } = useProfile();
 
     const { trigger, isMutating } = useSWRMutation(
         'updateProfile',
         async (url: string, { arg }: { arg: ProfileFormValues }) => {
-            if(!user) throw new Error( 'User not found. Please refresh the page and try again.' )
+            if(!response) throw new Error( 'User not found. Please refresh the page and try again.' )
             const {country, city, state, image, email, lastName, firstName} = arg;
-            await patchUserLocation(user.id, {country, city, state})
-            return await updateProfile(user.id, {image, email, lastName, firstName});
+            await patchUserLocation(response.user.id, {country, city, state})
+            return await updateProfile(response.user.id, {image, email, lastName, firstName});
         },
         {
             onError: (error: Error) => {
@@ -69,7 +69,8 @@ export default function useProfileForm() {
     });
 
     useEffect(() => {
-        if (!user) return;
+        if (!response) return;
+        const {user} = response;
 
         reset({
             firstName: user.firstName ?? "",
@@ -79,7 +80,7 @@ export default function useProfileForm() {
             state: user.living?.state ?? "",
             country: user.living?.country ?? "",
         });
-    }, [user, reset]);
+    }, [response, reset]);
 
     const onSubmit = async (values: ProfileFormValues, callback?: () => void) => {
         try {

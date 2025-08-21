@@ -85,7 +85,7 @@ export function MembershipSelection() {
               <Button
                 variant="theme"
                 onClick={() =>
-                  router.push(`/auth/profile/membership/payment/${plan.id}`)
+                  router.push(`/membership/payment/${plan.id}`)
                 }
               >
                 Select

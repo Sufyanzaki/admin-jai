@@ -17,7 +17,7 @@ export const useUpdateMemberStatus = () => {
         {
             onSuccess: () => showSuccess("Member status updated successfully!"),
             onError: (error) => {
-                globalMutate("all-members");
+                globalMutate("all-members").finally();
                 showError({ message: error.message });
             }
         }
@@ -31,11 +31,19 @@ export const useUpdateMemberStatus = () => {
                 (key) => typeof key === 'string' && key.startsWith('all-members'),
                 (currentData: GetAllMembersResponse | undefined) => {
                     if (!currentData?.users) return currentData;
+                    const updatedUsers = currentData.users.map(member =>
+                        member.id === id ? { ...member, isActive } : member
+                    );
+                    const activeCount = updatedUsers.filter(member => member.isActive).length;
+                    const inactiveCount = updatedUsers.filter(member => !member.isActive).length;
                     return {
                         ...currentData,
-                        users: currentData.users.map(member =>
-                            member.id === id ? { ...member, isActive } : member
-                        )
+                        stats: {
+                            ...currentData.stats,
+                            active: activeCount,
+                            inactive: inactiveCount,
+                        },
+                        users: updatedUsers,
                     };
                 },
                 false

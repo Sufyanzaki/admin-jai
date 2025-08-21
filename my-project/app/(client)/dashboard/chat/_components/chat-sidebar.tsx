@@ -23,7 +23,7 @@ export function ChatSidebar({
 }: ChatSidebarProps) {
   const { data: session } = useSession();
   const userId = session?.user?.id ? Number(session?.user?.id) : undefined;
-  const {user, userLoading} = useProfile();
+  const {response, userLoading} = useProfile();
 
   if(userLoading) return(
       <div className="flex items-center flex-col justify-center h-64">
@@ -32,7 +32,7 @@ export function ChatSidebar({
       </div>
   )
 
-  if(!user) return;
+  if(!response) return;
 
   return (
     <div className="w-full lg:w-80 bg-white border-r border-gray-200 flex flex-col py-3 lg:px-3">
@@ -40,12 +40,12 @@ export function ChatSidebar({
         <div className=" flex flex-row justify-between items-center w-full">
           <div className="flex items-center justify-start gap-3">
             <ImageWrapper
-              src={user?.image ? user.image : "https://picsum.photos/128"}
+              src={response?.user.image ? response.user.image : "https://picsum.photos/128"}
               alt={"placeholder"}
               className="w-10 h-10 rounded-[5px] object-cover"
             />
             <h4 className="text-sm font-semibold text-gray-900 truncate">
-              {user?.firstName} {user?.lastName}
+              {response?.user.firstName} {response?.user.lastName}
             </h4>
           </div>
           <div>

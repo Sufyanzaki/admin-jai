@@ -17,8 +17,8 @@ import Link from "next/link";
 
 export default function Dashboard() {
   const router = useRouter();
-  const { user, userLoading, error } = useProfile();
- const cardData = getCardData(user);
+  const { response, userLoading, error } = useProfile();
+ const cardData = getCardData(response?.user);
   const { matches, matchesLoading } = useTodayMatches();
   const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
 
@@ -86,7 +86,7 @@ export default function Dashboard() {
               <div className="text-black">
                 <h5 className="text-lg font-semibold">New Message</h5>
                 <p className="text-sm lg:text-base font-normal">
-                  You got {user?.messageCount} new messages.
+                  You got {response?.user.messageCount} new messages.
                 </p>
                 <p className="text-[10px] text-gray-500 uppercase mt-1">
                   21hr ago
@@ -103,7 +103,7 @@ export default function Dashboard() {
         </div>
 
         {/* if user data not added show complete profile button */}
-        {user?.route === "/auth/profile/partner-preferences" ? (
+        {response?.user.route === "/auth/profile/partner-preferences" ? (
           <div className="py-6 space-y-8">
             <div>
               <div>
