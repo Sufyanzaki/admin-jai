@@ -126,7 +126,7 @@ export default function NotificationsPage() {
                       </Badge>
                     </TableCell>
                     {canEdit &&  <TableCell className="text-right">
-                      <Link href={`/settings/notifications/${template.id}`} className="inline-flex items-center justify-center p-2 rounded hover:bg-muted transition">
+                      <Link href={`/admin/settings/notifications/${template.id}`} className="inline-flex items-center justify-center p-2 rounded hover:bg-muted transition">
                         <PencilIcon className="h-4 w-4 text-muted-foreground" />
                         <span className="sr-only">Edit</span>
                       </Link>

@@ -32,17 +32,6 @@ export type TranslationsResponse = {
     translations: TranslationDto;
 };
 
-export type LanguageTranslationsDto = {
-    data: TranslationsResponse[];
-    meta: {
-        total: number;
-        page: number;
-        limit: number;
-        totalPages: number;
-        hasNextPage: boolean;
-        hasPrevPage: boolean;
-    };
-};
 
 export default function LanguageTranslatePage() {
     const params = useParams();

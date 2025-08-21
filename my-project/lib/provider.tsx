@@ -39,7 +39,6 @@ function AuthGuard({ children, mounted }: { children: ReactNode; mounted: boolea
     const router = useRouter();
 
     useEffect(() => {
-
         if (mounted && (status === "unauthenticated" || data?.user.role === "CLIENT")) {
             router.push("/admin/auth/login");
         }

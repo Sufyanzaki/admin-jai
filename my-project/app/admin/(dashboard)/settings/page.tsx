@@ -12,7 +12,10 @@ import {useSession} from "next-auth/react";
 export default function SettingsPage() {
   const { data: session } = useSession();
 
-  const permissionsMap = (session?.user.permissions ?? []).reduce((acc, perm) => {
+  const permissionsArr = session?.user.permissions ?? [];
+  const isAdmin = permissionsArr.length === 0;
+
+  const permissionsMap = permissionsArr.reduce((acc, perm) => {
     acc[perm.module] = {
       canCreate: perm.canCreate ?? true,
       canEdit: perm.canEdit ?? true,
@@ -22,11 +25,12 @@ export default function SettingsPage() {
     return acc;
   }, {} as Record<string, { canCreate: boolean; canEdit: boolean; canDelete: boolean; canView: boolean }>);
 
-  const generalSettings = permissionsMap["general_settings"];
-  const preferences = permissionsMap["preferences"];
-  const system = permissionsMap["system"];
-  const cookie = permissionsMap["cookie"];
-  const seoSettings = permissionsMap["seo_settings"];
+  // If admin, allow all tabs
+  const generalSettings = isAdmin ? { canView: true, canEdit: true } : permissionsMap["general_settings"];
+  const preferences = isAdmin ? { canView: true, canEdit: true } : permissionsMap["preferences"];
+  const system = isAdmin ? { canView: true, canEdit: true } : permissionsMap["system"];
+  const cookie = isAdmin ? { canView: true, canEdit: true } : permissionsMap["cookie"];
+  const seoSettings = isAdmin ? { canView: true, canEdit: true } : permissionsMap["seo_settings"];
 
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -37,26 +41,26 @@ export default function SettingsPage() {
 
         <Tabs defaultValue="basic" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
-            {generalSettings?.canView && <TabsTrigger value="basic">Basic</TabsTrigger>}
-            {preferences?.canView && <TabsTrigger value="preferences">Preferences</TabsTrigger>}
-            {system?.canView && <TabsTrigger value="system">System</TabsTrigger>}
-            {cookie?.canView && <TabsTrigger value="cookies">Cookies</TabsTrigger>}
-            {seoSettings?.canView && <TabsTrigger value="seo-settings">SEO Settings</TabsTrigger>}
+            {(isAdmin || generalSettings?.canView) && <TabsTrigger value="basic">Basic</TabsTrigger>}
+            {(isAdmin || preferences?.canView) && <TabsTrigger value="preferences">Preferences</TabsTrigger>}
+            {(isAdmin || system?.canView) && <TabsTrigger value="system">System</TabsTrigger>}
+            {(isAdmin || cookie?.canView) && <TabsTrigger value="cookies">Cookies</TabsTrigger>}
+            {(isAdmin || seoSettings?.canView) && <TabsTrigger value="seo-settings">SEO Settings</TabsTrigger>}
           </TabsList>
 
-          {generalSettings?.canView && (
+          {(isAdmin || generalSettings?.canView) && (
               <TabsContent value="basic" className="space-y-4">
-                <BasicSettingsForm canEdit={generalSettings?.canEdit} />
+                <BasicSettingsForm canEdit={isAdmin || generalSettings?.canEdit} />
               </TabsContent>
           )}
 
-          {preferences?.canView && (
+          {(isAdmin || preferences?.canView) && (
               <TabsContent value="preferences" className="space-y-4">
-                <PreferenceForm canEdit={preferences?.canEdit} />
+                <PreferenceForm canEdit={isAdmin || preferences?.canEdit} />
               </TabsContent>
           )}
 
-          {system?.canView && (
+          {(isAdmin || system?.canView) && (
               <TabsContent value="system" className="space-y-4">
                 <Card>
                   <CardHeader>
@@ -117,7 +121,7 @@ export default function SettingsPage() {
               </TabsContent>
           )}
 
-          {cookie?.canView && (
+          {(isAdmin || cookie?.canView) && (
               <TabsContent value="cookies" className="space-y-4">
                 <Card>
                   <CardHeader>
@@ -128,13 +132,13 @@ export default function SettingsPage() {
                     <CardDescription>Update your cookies basic information</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <CookiesForm canEdit={cookie?.canEdit} />
+                    <CookiesForm canEdit={isAdmin || cookie?.canEdit} />
                   </CardContent>
                 </Card>
               </TabsContent>
           )}
 
-          {seoSettings?.canView && (
+          {(isAdmin || seoSettings?.canView) && (
               <TabsContent value="seo-settings" className="space-y-4">
                 <Card>
                   <CardHeader>
@@ -146,7 +150,7 @@ export default function SettingsPage() {
                       Manage meta titles, descriptions, and keywords to improve your app’s visibility in search engines.
                     </CardDescription>
                   </CardHeader>
-                  <SEOForm canEdit={seoSettings?.canEdit} />
+                  <SEOForm canEdit={isAdmin || seoSettings?.canEdit} />
                 </Card>
               </TabsContent>
           )}

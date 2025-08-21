@@ -61,7 +61,10 @@ export default function useTranslationForm() {
                     ...currentData,
                     translations: {
                         ...currentData.translations,
-                        [values.key]: values.text,
+                        translations: {
+                            ...currentData.translations.translations,
+                            [values.key]: values.text,
+                        },
                     },
                 };
             },

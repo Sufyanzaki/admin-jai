@@ -48,7 +48,7 @@ export default function useEmailTemplateForm({ id, languages = [] }: Props) {
 
   const initialTranslations = useMemo(() => {
     return languages.map((lang) => ({
-      language: lang.name,
+      language: lang.code,
       subject: " ",
       content: " ",
     }));

@@ -28,9 +28,5 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     );
   }
 
-  if (status === "authenticated" && isAdmin) {
-    return null;
-  }
-
   return <div className="min-h-screen bg-gray-950">{children}</div>;
 }

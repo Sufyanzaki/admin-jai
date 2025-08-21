@@ -17,7 +17,7 @@ import Preloader from "@/components/shared/Preloader";
 
 export default function EditEmailTemplatePage() {
   const params = useParams();
-  let id = params?.id as string;
+  const id = params?.id as string;
   const { languages, languagesLoading } = useLanguages();
   const { handleSubmit, emailTemplate, loading, error, control, onSubmit, isLoading, register, errors } = useEmailTemplateForm({id, languages});
 
