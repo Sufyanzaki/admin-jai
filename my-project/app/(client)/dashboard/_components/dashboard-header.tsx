@@ -143,12 +143,9 @@ export function DashboardHeader() {
             <nav className="hidden xl:flex justify-end w-full items-center gap-6 font-poppins font-semibold text-[16px] tracking-normal">
               {allowedItems.map(({ label, href, badge, badgeColor }) => (
                   <div key={label} className="relative">
-                    <a
-                        href={href}
-                        className="text-gray-600 hover:text-gray-900 uppercase"
-                    >
+                    <Link href={href} className="text-gray-600 hover:text-gray-900 uppercase" >
                       {label}
-                    </a>
+                    </Link>
                     {badge !== undefined && (
                         <Badge
                             className={`absolute -top-4 -right-3 h-[22px] w-[22px] flex items-center justify-center rounded-full font-poppins font-semibold text-[12px] text-white ${badgeColor}`}
