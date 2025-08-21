@@ -6,22 +6,21 @@ import { Grid3X3, List } from "lucide-react";
 import { useState } from "react";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
-import { LikeStatus, useLikesRecieved } from "../notifications/_hooks/useLikesRecieved";
-import { likesRecievedResponseData } from "../notifications/_api/getLikesRecived";
+import { LikeStatus, useLikesReceived } from "../notifications/_hooks/useLikesReceived";
 
 export default function MatchesPage() {
     const [online, setOnline] = useState(false);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-    const { likesRecieved, likesRecievedLoading, error } = useLikesRecieved(
+    const { likesReceived, likesReceivedLoading } = useLikesReceived(
         LikeStatus.PENDING
     );
-    if (likesRecievedLoading) {
+    if (likesReceivedLoading) {
         return <p>Loading...</p>;
     }
 
     const filteredResults = online
-        ? likesRecieved?.filter(profile => profile.sender?.isOnline)
-        : likesRecieved;
+        ? likesReceived?.filter(profile => profile.sender?.isOnline)
+        : likesReceived;
 
     return (
         <div className="flex min-h-screen">
@@ -67,13 +66,13 @@ export default function MatchesPage() {
 
                     {viewMode === "grid" ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-                            {filteredResults?.map((profile: likesRecievedResponseData) => (
+                            {filteredResults?.map((profile) => (
                                 <ProfileCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>
                     ) : (
                         <div className="space-y-4 mb-8">
-                            {filteredResults?.map((profile: likesRecievedResponseData) => (
+                            {filteredResults?.map((profile) => (
                                 <ListCard key={profile.id} profile={profile?.sender} />
                             ))}
                         </div>

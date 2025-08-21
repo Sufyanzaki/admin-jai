@@ -1,7 +1,6 @@
 'use client'
-import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import { useLikesSent } from "../_hooks/useLikesSent";
-import { likesSentResponseData } from "../_api/getLikesSent";
+import {NotificationCard} from "@/app/(client)/dashboard/notifications/_components/notification-card";
+import {useLikesSent} from "../_hooks/useLikesSent";
 
 
 export default function SentPage() {
@@ -18,8 +17,8 @@ export default function SentPage() {
     <div className="space-y-8">
       {likesSent && likesSent?.length <= 0 && <p>No notification to show</p>}
 
-      {likesSent && likesSent?.map((likeRec) => (
-        <NotificationCard notification={likeRec} />
+      {likesSent && likesSent?.map((likeRec, index) => (
+        <NotificationCard notification={likeRec} key={index} />
       ))}
     </div>
   );

@@ -1,13 +1,14 @@
-import { useSWRFix } from "@/shared-lib";
-import { accpetedLikesResponse, getLikesAccepted } from "../_api/getLikesAccepted";
+import {useSWRFix} from "@/shared-lib";
+import {ApiResponseDto} from "@/app/(client)/dashboard/notifications/_types/notification";
+import {getLikesAccepted} from "../_api/likes";
 
 export const useLikesAccepted = () => {
-    const { data, loading, error, mutate } = useSWRFix<accpetedLikesResponse>({
-        key: 'likes-recieved',
+    const { data, loading, error, mutate } = useSWRFix<ApiResponseDto>({
+        key: 'likes-received',
         fetcher: async () => {
             const response = await getLikesAccepted();
             if (!response) {
-                throw new Error('Failed to fetch likes recieved');
+                throw new Error('Failed to fetch likes received');
             }
             return response;
         }

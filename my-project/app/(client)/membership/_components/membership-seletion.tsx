@@ -23,7 +23,7 @@ export function MembershipSelection() {
   };
 
   const handleBack = () => {
-    router.push("/auth/profile/account");
+    router.back();
   };
 
   if (loading || registrationLoading) {

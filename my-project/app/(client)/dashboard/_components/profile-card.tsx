@@ -1,16 +1,18 @@
-import { MemberProfile } from "@/app/shared-types/member";
+import {MemberProfile} from "@/app/shared-types/member";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { Button } from "@/components/client/ux/button";
-import { cn } from "@/lib/utils";
+import {Button} from "@/components/client/ux/button";
+import {cn} from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
-import { useSendLike } from "../_hooks/useSendLike";
-import { useUnblockUser } from "../settings/blocked/_hooks/useUnblockProfile";
-import { useCreateChat } from "../chat/_hooks/useCreateChat";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useProfile } from "@/app/shared-hooks/useProfile";
-import { Lock } from "lucide-react";
+import {useState} from "react";
+import {useSendLike} from "../_hooks/useSendLike";
+import {useUnblockUser} from "../settings/blocked/_hooks/useUnblockProfile";
+import {useCreateChat} from "../chat/_hooks/useCreateChat";
+import {useRouter} from "next/navigation";
+import {useProfile} from "@/app/shared-hooks/useProfile";
+import {Lock} from "lucide-react";
+import {showConfirmation} from "@/shared-lib";
+import {MouseEvent} from "react";
+import {useImageRequest} from "@/app/(client)/dashboard/_hooks/useImageRequest";
 
 export default function ProfileCard({
   profile,
@@ -21,13 +23,14 @@ export default function ProfileCard({
 }) {
   const router = useRouter();
   const [loaded, setIsLoaded] = useState(false);
-  const { user, userLoading, error } = useProfile();
+  const { user } = useProfile();
 
   const { trigger: sendLike, loading } = useSendLike();
-  const { trigger, loading: unblockLoading, error: unblockError } = useUnblockUser();
-  const { sendMessageRefetch, messageLoading } = useCreateChat();
+  const { trigger } = useUnblockUser();
+  const { sendMessageRefetch } = useCreateChat();
+  const { requestTrigger } = useImageRequest()
 
-  const hasProfilePicture = user?.image ? true : false;
+  const hasProfilePicture = !!user?.image;
   const isFreeMember = !user?.isPremium;
 
   const onlyMembersWithPhotoCanSee = profile?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
@@ -46,6 +49,11 @@ export default function ProfileCard({
     });
   };
 
+  const handleImageRequest = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    showConfirmation(()=>requestTrigger(profile.id));
+  };
 
   return (
     <div className="rounded-t-[5px] overflow-hidden hover:shadow-lg transition-shadow">
@@ -65,10 +73,15 @@ export default function ProfileCard({
             onLoad={() => setIsLoaded(true)}
           />
 
-          <img src="/dashboardLogo.png" alt="Loading placeholder" className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`} />
+          <img
+              src="/dashboardLogo.png"
+              alt="Loading placeholder"
+              className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`}
+          />
 
           {blurForFreeMembers ? (
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold">
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
+                 onClick={handleImageRequest}>
               <Lock />
               Visible for Premium Members
               <br />

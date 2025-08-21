@@ -1,53 +1,43 @@
 "use client";
 
-import { MemberProfile } from "@/app/shared-types/member";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { Button } from "@/components/client/ux/button";
-import { Mail, ShieldCheck, Star } from "lucide-react";
-import { useBlockUser } from "../../_hooks/useBlockUser";
-import { likesRecievedResponseData } from "../_api/getLikesRecived";
-import { useLikeResponse } from "../_hooks/useLikeResponse";
-import { useRouter } from "next/navigation";
-import { formatDate } from "date-fns";
-import { useSession } from "next-auth/react";
-
-export type Notification = {
-  id: number;
-  senderId: number;
-  receiverId: number;
-  status: "PENDING" | "ACCEPTED" | "DECLINED" | "REJECTED" | "DENIED";  // adjust if you have more statuses
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  sender?: MemberProfile;
-  receiver?: MemberProfile;
-};
+import {Button} from "@/components/client/ux/button";
+import {ShieldCheck} from "lucide-react";
+import {useBlockUser} from "../../_hooks/useBlockUser";
+import {useLikeResponse} from "../_hooks/useLikeResponse";
+import {useRouter} from "next/navigation";
+import {formatDate} from "date-fns";
+import {useSession} from "next-auth/react";
+import {RequestDto} from "@/app/(client)/dashboard/notifications/_types/notification";
 
 type NotificationCardProps = {
-  notification: Notification;
+  notification: RequestDto;
 };
 
 export function NotificationCard({ notification }: NotificationCardProps) {
   const router = useRouter();
   const {data: session} = useSession()
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
-  const { trigger, loading, error } = useLikeResponse();
+  const { trigger } = useLikeResponse();
 
   const handleAccept = () => {
     const action = "ACCEPTED";
-    trigger(action, Number(notification?.id));
+    trigger(action, Number(notification?.id)).finally();
   };
 
   const handleDecline = () => {
     const action = "DECLINED";
-    trigger(action, Number(notification?.id));
+    trigger(action, Number(notification?.id)).finally();
   };
+
+  if(true) return;
 
   const handleViewProfile = () => {
     router.push(`/dashboard/search/${notification?.sender?.id}`)
   }
 
   const handleReport = () => {
-    blockUser(Number(notification?.sender && notification?.sender.id)); // cast to number here
+    blockUser(Number(notification?.sender && notification?.sender.id)).finally();
   };
 
   return (
@@ -104,16 +94,13 @@ export function NotificationCard({ notification }: NotificationCardProps) {
               <div className="space-y-2 sm:max-w-[70%]">
                 <div className="flex items-center gap-2">
                   <h4 className="text-lg sm:text-xl font-semibold">
-                    {notification?.sender?.firstName}
+                    {notification?.sender?.firstName} {" "} {notification?.sender?.lastName}
                   </h4>
                   {(notification?.sender?.isPremium || notification?.receiver?.isPremium) && (
                     <ShieldCheck className="w-4 h-4 text-app-blue" />
                   )}
                 </div>
-                <div
-                  className={`flex w-3 h-3 ${(notification?.sender?.isOnline || notification?.receiver?.isOnline) ? "bg-app-green" : "bg-app-red"
-                    } rounded-[5px] border-2 border-white`}
-                ></div>
+                <div className={`flex w-3 h-3 ${(notification?.sender?.isOnline || notification?.receiver?.isOnline) ? "bg-app-green" : "bg-app-red" } rounded-[5px] border-2 border-white`} />
                 {/* <p className="text-xs sm:text-sm text-gray-700 font-medium">
                   {from.age} Years, {from.height} | {from.languages.join(", ")},{" "}
                   {from.religion} | {from.profession}
@@ -131,7 +118,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     size="sm"
                     className="px-4 sm:px-6 w-full sm:w-auto"
                   >
-                    View my Profile
+                    View Profile
                   </Button>
                   <Button
                     onClick={handleReport}
@@ -139,13 +126,13 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     size="sm"
                     className="px-4 sm:px-6 w-full sm:w-auto"
                   >
-                    {blockLoading ? "Reporting..." : "Report This Profile"}
+                    {blockLoading ? "Blocking..." : "Block This Profile"}
                   </Button>
                 </div>
               </div>
               {notification?.sender && notification?.status === "PENDING" && notification?.sender?.id !== session?.user?.id ?
                 <div className="sm:text-right space-y-2">
-                  <p className="text-xs">She invited you to Connect</p>
+                  <p className="text-xs">Someone invited you to Connect</p>
                   <div className="flex gap-2 flex-wrap">
                     <Button
                       onClick={handleAccept}

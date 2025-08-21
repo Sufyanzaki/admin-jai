@@ -1,16 +1,14 @@
 import {showError, showSuccess} from '@/shared-lib';
-import {postLike} from './../_api/postLike';
 import {useState} from "react";
-import { postImageRequestRespond } from '../_api/postImageRequestResponsd';
-import { postImageRequest } from '../_api/postImageRequest';
+import {postImageRequest} from '../_api/imageRequestApi';
 
 export const useImageRequest = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+    const [requestLoading, setRequestLoading] = useState(false);
+    const [requestError, setRequestError] = useState<Error | null>(null);
 
-    const trigger = async (targetId: number) => {
-        setLoading(true);
-        setError(null);
+    const requestTrigger = async (targetId: string) => {
+        setRequestLoading(true);
+        setRequestError(null);
 
         try {
             const res = await postImageRequest({targetId});
@@ -20,16 +18,16 @@ export const useImageRequest = () => {
             return res;
         } catch (err) {
             showError({
-                message: error instanceof Error
-                    ? error.message
+                message: requestError instanceof Error
+                    ? requestError.message
                     : 'An error occurred while liking this profile'
             });
-            setError(err as Error);
+            setRequestError(err as Error);
             throw err;
         } finally {
-            setLoading(false);
+            setRequestLoading(false);
         }
     };
 
-    return { trigger, loading , error };
+    return { requestTrigger, requestLoading, requestError };
 };

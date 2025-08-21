@@ -1,7 +1,7 @@
 import { showError, showSuccess } from '@/shared-lib';
 import { postLike, sendLike } from './../_api/postLike';
 import { useState } from "react";
-import { blockUser } from '../_api/postBlockUser';
+import { postBlockUser } from '../_api/postBlockUser';
 import { mutate } from 'swr';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
@@ -35,7 +35,7 @@ export const useReportProfile = (blockedUserId: number) => {
   const trigger = async (blockedUserId: number) => {
 
     try {
-      const res = await blockUser({ blockedUserId });
+      const res = await postBlockUser({ blockedUserId });
       if (res) {
         showSuccess("User Blocked successfully!");
       }

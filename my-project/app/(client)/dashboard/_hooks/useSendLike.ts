@@ -1,6 +1,6 @@
 import { showError, showSuccess } from '@/shared-lib';
-import { postLike } from './../_api/postLike';
 import { useState } from "react";
+import { postLike } from '../notifications/_api/likes';
 
 export const useSendLike = () => {
     const [loading, setLoading] = useState(false);
@@ -16,14 +16,12 @@ export const useSendLike = () => {
                 showSuccess('Like sent successfully!');
             }
             return res;
-        } catch (err: any) {
-            const apiMessage = err?.message;
-
-            showError({
-                message: apiMessage || (err instanceof Error ? err.message : 'An error occurred while liking this profile')
-            });
-
-            setError(err as Error);
+        } catch (err: unknown) {
+            if(err instanceof Error){
+                const apiMessage = err?.message;
+                showError({ message: apiMessage });
+                setError(err);
+            }
             throw err;
         } finally {
             setLoading(false);

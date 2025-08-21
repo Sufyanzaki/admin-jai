@@ -5,16 +5,19 @@ import {Textarea} from "@/components/client/ux/textarea";
 import {Label} from "@/components/client/ux/label";
 import {useRouter} from "next/navigation";
 import {ArrowLeft, ArrowRight} from "lucide-react";
-import useHobbiesInterestsForm from "../_hooks/useHobbiesInterestForm";
+import useHobbiesInterestsForm, {HobbiesInterestsForm} from "../_hooks/useHobbiesInterestForm";
 import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import {AttributeMultiSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
 import { useRegistration } from "@/app/shared-hooks/useRegistration";
+import {useAbusiveWords} from "@/app/shared-hooks/useAbusiveWords";
 
 export function ProfileDescriptionForm() {
   const router = useRouter();
-  const {registrationSettings, registrationLoading} = useRegistration();
+  const { registrationSettings } = useRegistration();
+
+  const { words, wordLoading } = useAbusiveWords();
 
   const {
     errors,
@@ -24,20 +27,12 @@ export function ProfileDescriptionForm() {
     setValue,
     watch,
     isSubmitting,
-    isFetching
+    isFetching,
+    setError,
+    clearErrors,
   } = useHobbiesInterestsForm();
 
-  const shortDescription = watch("shortDescription") || "";
-
-  const handleDescriptionChange = (value: string) => {
-    setValue("shortDescription", value);
-  };
-
-  const handleBack = () => {
-    router.push("/auth/profile/details");
-  };
-
-  if(isFetching){
+  if(isFetching || wordLoading){
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader/>
@@ -46,8 +41,46 @@ export function ProfileDescriptionForm() {
     )
   }
 
+  const abusiveWords = (words?.word || "")
+      .split(",")
+      .map(w => w.trim().toLowerCase())
+      .filter(Boolean);
+
+  const shortDescription = watch("shortDescription") || "";
+
+  const handleDescriptionChange = (value: string) => {
+    setValue("shortDescription", value);
+    const found = abusiveWords.find(word => value.toLowerCase().includes(word) );
+    if (found) {
+      setError("shortDescription", {
+        type: "manual",
+        message: `The word "${found}" is not allowed.`,
+      });
+    } else {
+      clearErrors("shortDescription");
+    }
+  };
+
+  const handleFormSubmit = (data: HobbiesInterestsForm) => {
+    const found = abusiveWords.find(word =>
+        (data.shortDescription || "").toLowerCase().includes(word)
+    );
+    if (found) {
+      setError("shortDescription", {
+        type: "manual",
+        message: `The word "${found}" is not allowed.`,
+      });
+      return;
+    }
+    onSubmit(data).finally();
+  };
+
+  const handleBack = () => {
+    router.push("/auth/profile/details");
+  };
+
   return (
-    <form className="space-y-8" onSubmit={handleSubmit(data => onSubmit(data))}>
+    <form className="space-y-8" onSubmit={handleSubmit(handleFormSubmit)}>
       <div className="text-start space-y-4">
         <div className="flex items-center justify-start space-x-3">
           <div className="min-w-8 w-8 min-h-8 h-8 lg:w-10 lg:h-10 bg-black text-white rounded-[5px] flex items-center justify-center font-bold text-base lg:text-xl">
@@ -75,7 +108,7 @@ export function ProfileDescriptionForm() {
               <Textarea
                 id="shortDescription"
                 value={field.value || ""}
-                onChange={(e) => handleDescriptionChange(e.target.value)}
+                onChange={e => handleDescriptionChange(e.target.value)}
                 placeholder={registrationSettings?.myDescriptionPlaceholder}
                 className="min-h-[120px] border-gray-300 resize-none"
                 required

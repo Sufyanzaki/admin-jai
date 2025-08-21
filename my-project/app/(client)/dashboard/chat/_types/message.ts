@@ -13,6 +13,7 @@ export interface ChatMessage {
 
 export interface ChatMessagesData {
     messages: ChatMessage[];
+    users: User[];
 }
 
 export interface ChatMessagesResponse {

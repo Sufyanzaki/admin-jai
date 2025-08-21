@@ -8,6 +8,7 @@ import React, {useEffect} from "react";
 import {useRegistration} from "@/app/shared-hooks/useRegistration";
 import Preloader from "@/components/shared/Preloader";
 import {useSession} from "next-auth/react";
+import {useProfile} from "@/app/shared-hooks/useProfile";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -16,15 +17,17 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   const { registrationSettings, registrationLoading } = useRegistration();
   const router = useRouter();
+  const {user, userLoading} = useProfile();
   const { status } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    const condition = status === "authenticated" && user?.route === "/auth/profile/partner-preferences";
+    if (condition) {
       router.push("/dashboard");
     }
-  }, [status, router]);
+  }, [status, router, user]);
 
-  if (registrationLoading) {
+  if (registrationLoading || userLoading) {
     return (
         <div className="flex flex-col items-center justify-center h-64">
           <Preloader />

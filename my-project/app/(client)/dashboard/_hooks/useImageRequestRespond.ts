@@ -1,7 +1,7 @@
 import {showError, showSuccess} from '@/shared-lib';
 import {postLike} from './../_api/postLike';
 import {useState} from "react";
-import { postImageRequestRespond } from '../_api/postImageRequestResponsd';
+import { postImageRequestRespond } from '../_api/imageRequestApi';
 
 export const useImageRequestRespond = () => {
     const [loading, setLoading] = useState(false);

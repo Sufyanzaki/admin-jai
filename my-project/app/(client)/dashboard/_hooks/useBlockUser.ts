@@ -1,7 +1,7 @@
 import { showError, showSuccess } from '@/shared-lib';
 import { postLike, sendLike } from './../_api/postLike';
 import { useState } from "react";
-import { blockUser } from '../_api/postBlockUser';
+import { postBlockUser } from '../_api/postBlockUser';
 import { mutate } from 'swr';
 
 export const useBlockUser = () => {
@@ -13,7 +13,7 @@ export const useBlockUser = () => {
         setError(null);
 
         try {
-            const res = await blockUser({ blockedUserId });
+            const res = await postBlockUser({ blockedUserId });
             if (res) {
                 showSuccess('User Blocked successfully!');
             }

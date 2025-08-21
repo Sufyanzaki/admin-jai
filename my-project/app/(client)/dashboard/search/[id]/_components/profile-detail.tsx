@@ -13,6 +13,7 @@ import { useSendLike } from "../../../_hooks/useSendLike";
 import { useCreateChat } from "@/app/(client)/dashboard/chat/_hooks/useCreateChat";
 import { MemberPersonalityBehavior } from "@/app/shared-types/member";
 import {useSession} from "next-auth/react";
+import Link from "next/link";
 
 export function ProfileDetail() {
   const router = useRouter();
@@ -148,7 +149,6 @@ export function ProfileDetail() {
 
         <div className="px-5">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-            {/* Left Column - Image and Actions */}
             <div className="space-y-4">
               <div className="relative">
                 <ImageWrapper
@@ -158,15 +158,25 @@ export function ProfileDetail() {
                 />
               </div>
               {String(session?.user?.id) !== String(id) && <div className="space-y-2">
-                <Button
-                    onClick={handleSendMessage}
-                    variant="theme"
-                    size="lg"
-                    disabled={messageLoading}
-                    className="w-full"
-                >
-                  {messageLoading ? "Processing" : "Send Message"}
-                </Button>
+                <div>
+                  {user.isPremium ? <Button
+                      onClick={handleSendMessage}
+                      variant="theme"
+                      size="lg"
+                      disabled={messageLoading}
+                      className="w-full"
+                  >
+                    {messageLoading ? "Processing" : "Send Message"}
+                  </Button> : <Link href="/membership">
+                    <Button
+                        variant="theme"
+                        size="lg"
+                        className="w-full"
+                    >
+                      Subscribe
+                    </Button>
+                  </Link>}
+                </div>
                 <Button
                     onClick={handleSendWink}
                     variant="theme"

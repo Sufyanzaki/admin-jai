@@ -36,12 +36,14 @@ export default function useHobbiesInterestsForm() {
 
     const {
         handleSubmit,
-        formState: { errors, isSubmitting, isDirty },
+        formState: { errors, isSubmitting },
         register,
         reset,
         setValue,
         watch,
         control,
+        setError,
+        clearErrors,
     } = useForm<HobbiesInterestsForm>({
         resolver: zodResolver(hobbiesInterestsSchema),
         defaultValues: {
@@ -134,6 +136,8 @@ export default function useHobbiesInterestsForm() {
         control,
         watch,
         onSubmit,
+        setError,
+        clearErrors,
         isFetching: hobbiesInterestsLoading || userLoading,
     };
 }

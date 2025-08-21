@@ -6,7 +6,7 @@ import {showError} from "@/shared-lib";
 import {showSuccess} from "@/shared-lib";
 import {patchAbusiveWords} from "../_api/abusiveWordsApi";
 import {useEffect} from "react";
-import {useAbusiveWords} from "./useAbusiveWords";
+import {useAbusiveWords} from "@/app/shared-hooks/useAbusiveWords";
 
 export const abusiveWordsSchema = z.object({
   word: z.string().min(1, "At least one word is required"),
@@ -27,11 +27,11 @@ export default function useAbusiveWordsForm() {
     mode: "onBlur",
   });
 
-  const {word, wordLoading} = useAbusiveWords();
+  const {words, wordLoading} = useAbusiveWords();
 
   useEffect(() => {
-    if (word) reset(word);
-  }, [word, reset]);
+    if (words) reset(words);
+  }, [words, reset]);
 
   const { trigger, isMutating } = useSWRMutation(
     "patchAbusiveWords",

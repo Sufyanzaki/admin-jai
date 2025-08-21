@@ -9,11 +9,11 @@ export type blockResponse = {
 };
 
 
-export async function blockUser(payload: blockUser): Promise<blockResponse> {
+export async function postBlockUser(payload: blockUser): Promise<blockResponse> {
     const r = await postRequest<blockUser>({
         url: "users/block",
         data: payload,
         useAuth: true,
     });
     return r.response;
-} 
+}

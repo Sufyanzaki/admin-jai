@@ -1,5 +1,5 @@
 import {useSWRFix} from "@/shared-lib";
-import {getAbusiveWords} from "../_api/abusiveWordsApi";
+import {getAbusiveWords} from "../admin/(dashboard)/settings/other-settings/_api/abusiveWordsApi";
 
 export const useAbusiveWords = () => {
 const { data, loading, error, mutate } = useSWRFix<{word: string}>({
@@ -10,7 +10,7 @@ const { data, loading, error, mutate } = useSWRFix<{word: string}>({
 });
 
 return {
-    word: data,
+    words: data,
     wordLoading: loading,
     error,
     mutate

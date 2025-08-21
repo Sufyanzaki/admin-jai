@@ -1,36 +1,13 @@
 "use client";
 
-import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import { useLikesAccepted } from "../_hooks/useLikesAccepted";
-import { likesRecievedResponseData } from "../_api/getLikesRecived";
-import { LikeStatus, useLikesRecieved } from "../_hooks/useLikesRecieved";
-
-const sampleNotification = {
-  id: "1",
-  type: "like" as const,
-  from: {
-    name: "Dora M",
-    age: 39,
-    height: "5.5",
-    languages: ["Hindi"],
-    religion: "Hindu",
-    profession: "Finance Professional",
-    image: "https://picsum.photos/seed/dora/200",
-    isVerified: true,
-    isOnline: true,
-    lastSeen: "1d ago",
-  },
-  message:
-    "Hi, it is nice connecting with you. I liked your profile and would like to take this forward.",
-  timestamp: "Dec 30, 04:22 PM",
-  isStarred: true,
-};
+import {NotificationCard} from "@/app/(client)/dashboard/notifications/_components/notification-card";
+import {LikeStatus, useLikesReceived} from "../_hooks/useLikesReceived";
 
 export default function NotificationsPage() {
-  const { likesRecieved:likesAccepted , likesRecievedLoading, error } = useLikesRecieved(
+  const { likesReceived:likesAccepted , likesReceivedLoading, error } = useLikesReceived(
     LikeStatus.ACCEPTED
   );
-  if (likesRecievedLoading) {
+  if (likesReceivedLoading) {
     return <p>Loading...</p>;
   }
   if (error) {
@@ -42,8 +19,8 @@ export default function NotificationsPage() {
   return (
     <div className="space-y-8">
       {likesAccepted && likesAccepted.length <= 0 && <p>No data to show</p>}
-      {likesAccepted && likesAccepted?.map((likeRec: likesRecievedResponseData) => (
-        <NotificationCard notification={likeRec} />
+      {likesAccepted && likesAccepted?.map((likeRec, index) => (
+        <NotificationCard notification={likeRec} key={index} />
       ))}
     </div>
   );

@@ -1,6 +1,5 @@
-import { ChatUser } from './conversation';
-import { MemberProfile } from "@/app/shared-types/member";
-import { ChatMessage } from "./message";
+import {ChatUser} from './conversation';
+import {ChatMessage} from "./message";
 
 export interface Chat {
   id: string;

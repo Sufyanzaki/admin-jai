@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import { MessageListener } from "@/client-utils/MessageListener";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { ProfileSidebar } from "../_components/profile-sidebar";
+import {ChatMessage, ChatMessagesResponse } from "../_types/message";
 
 export default function ChatBoxPage() {
     const { chatDetails, chatLoading, chatMutate } = useChatDetails({});
@@ -55,32 +56,41 @@ export default function ChatBoxPage() {
         );
     }
 
-    console.log(chatDetails);
+    if(!chatDetails) return;
 
-    const chat = chatDetails?.data.messages;
-    const senderDetails = (chat ?? []).find(item => item.senderId !== userId);
-    const otherParticipant = senderDetails?.sender;
+    const allParticipants = chatDetails.data.users ?? [];
+    const otherParticipant = allParticipants.find(user => Number(user.id) !== Number(userId));
+
+    const chat = chatDetails.data.messages ?? [];
 
     return (
         <div className="relative">
             <MessageListener
-                onMessage={(message) => {
-                    chatMutate((prev) => {
-                        if (!prev) return {
-                            messages: 1,
-                            data: { messages: [message] },
-                            status: "success"
-                        };
+                onMessage={(message: ChatMessage) => {
+                    chatMutate((prev?: ChatMessagesResponse): ChatMessagesResponse => {
+                        if (!prev) {
+                            return {
+                                status: "success",
+                                messages: 1,
+                                data: {
+                                    users: chatDetails.data.users ?? [],
+                                    messages: [message],
+                                },
+                            };
+                        }
+
                         return {
                             ...prev,
                             messages: prev.messages + 1,
                             data: {
+                                ...prev.data,
                                 messages: [...prev.data.messages, message],
-                            }
+                            },
                         };
                     }, false).finally();
                 }}
             />
+
             <div className="flex-1 flex flex-col relative" style={{ height: "calc(100dvh - 70px)" }}>
                 {/* Header */}
                 <div className="px-4 bg-white py-3 border-b border-gray-200">
@@ -93,7 +103,7 @@ export default function ChatBoxPage() {
                                 className="w-10 h-10 rounded-full object-cover"
                             />
                             <h2 className="text-lg font-semibold text-gray-900">
-                                {otherParticipant?.firstName || "Chat"}
+                                {otherParticipant?.firstName || "Chat"} {" "} {otherParticipant?.lastName}
                             </h2>
                         </div>
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setShowProfile(true)}>
@@ -102,7 +112,6 @@ export default function ChatBoxPage() {
                     </div>
                 </div>
 
-                {/* Messages */}
                 <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
                     {(chat ?? []).length > 0 ? (
                         [...chat ?? []].reverse().map((message) => {
@@ -160,9 +169,7 @@ export default function ChatBoxPage() {
                     )}
                 </div>
 
-                {/* Input Area */}
                 <div className="p-4 bg-white border-t border-gray-200 space-y-2">
-                    {/* Attachment Preview */}
                     {attachments.length > 0 && (
                         <div className="flex gap-2 flex-wrap">
                             {attachments.map((fileUrl, idx) => (

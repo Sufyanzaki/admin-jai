@@ -1,13 +1,8 @@
-import { MemberProfile } from "@/app/shared-types/member";
-import { getRequest } from "@/shared-lib";
+import {getRequest} from "@/shared-lib";
+import {MemberProfile} from "@/app/shared-types/member";
 
-export type blockedProfilesResponse = {
-    status: 'success' | 'error';
-    data: MemberProfile;
-}
-
-export async function getBlockedProfiles(): Promise<blockedProfilesResponse> {
-    return await getRequest<blockedProfilesResponse>({
+export async function getBlockedProfiles(): Promise<MemberProfile[]> {
+    return await getRequest({
         url: "users/blocked",
         useAuth: true,
     });

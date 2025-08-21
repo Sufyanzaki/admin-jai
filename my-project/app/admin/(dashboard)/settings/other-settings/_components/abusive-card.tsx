@@ -1,4 +1,3 @@
-import useAbusiveWordsForm from "../_hooks/usePatchAbusiveWords";
 import { Badge } from "@/components/admin/ui/badge";
 import { Button } from "@/components/admin/ui/button";
 import { CardContent, CardFooter } from "@/components/admin/ui/card";
@@ -7,6 +6,7 @@ import { Label } from "@/components/admin/ui/label";
 import { X } from "lucide-react";
 import { useState } from "react";
 import Preloader from "@/components/shared/Preloader";
+import useAbusiveWordsForm from "@/app/admin/(dashboard)/settings/other-settings/_hooks/usePatchAbusiveWords";
 
 type Props = {
   canEdit: boolean;
