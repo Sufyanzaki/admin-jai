@@ -34,7 +34,7 @@ export const roleMenuItems = [
     { id: "analytic", title: "Analytic", icon: BarChart2, permissions: ["canView"] },
     { id: "seo_settings", title: "SEO Settings", icon: Search, permissions: ["canView", "canEdit"] },
     { id: "language", title: "Language", icon: Languages, permissions: ["canView", "canCreate", "canEdit", "canDelete"] },
-    { id: "currency", title: "Currency", icon: Coins, permissions: ["canView", "canEdit", "canCreate"] },
+    { id: "currency", title: "Currency", icon: Coins, permissions: ["canView", "canEdit", "canCreate", "canDelete"] },
     { id: "payment_methods", title: "Payment Methods", icon: CreditCard, permissions: ["canView", "canEdit"] },
     { id: "smtp_settings", title: "SMTP Settings", icon: Mail, permissions: ["canView","canEdit"] },
     { id: "email_templates", title: "Email Templates", icon: Mail, permissions: ["canView","canEdit"] },

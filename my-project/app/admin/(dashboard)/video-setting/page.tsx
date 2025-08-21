@@ -10,9 +10,11 @@ import { Controller } from "react-hook-form";
 import useChatSettingForm from "../settings/other-settings/_hooks/useChatSettingForm";
 import React from "react";
 import Preloader from "@/components/shared/Preloader";
+import {useSession} from "next-auth/react";
 
 export default function ChatAndVideoSetting() {
     const { handleSubmit, onSubmit, errors, isLoading, control, register, loading } = useChatSettingForm();
+    const { data:session } = useSession();
 
     if (loading) {
         return (
@@ -22,6 +24,13 @@ export default function ChatAndVideoSetting() {
             </div>
         )
     }
+
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "chat_video_setting");
+    }
+
+    const canEdit = permissions?.canEdit ?? true;
 
     return (
         <div className="flex flex-col gap-5 p-4 xl:p-6">
@@ -109,7 +118,7 @@ export default function ChatAndVideoSetting() {
                                     name="enableImages"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") } key={field.value}>
+                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") } key={field.value?"a":"b"}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select option" />
                                             </SelectTrigger>
@@ -128,7 +137,7 @@ export default function ChatAndVideoSetting() {
                                     name="enableVideos"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") }  key={field.value}>
+                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") }  key={field.value?"a":"b"}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select option" />
                                             </SelectTrigger>
@@ -147,7 +156,7 @@ export default function ChatAndVideoSetting() {
                                     name="enableFiles"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") } key={field.value}>
+                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") } key={field.value?"a":"b"}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select option" />
                                             </SelectTrigger>
@@ -175,11 +184,11 @@ export default function ChatAndVideoSetting() {
                                 File extension list must be comma separated list. Ex. doc, xls, zip, txt.
                             </p>
                         </div>
-                        <div className="flex justify-end pt-4">
+                        {canEdit && <div className="flex justify-end pt-4">
                             <Button className="px-8" type="submit" disabled={isLoading}>
                                 {isLoading ? "Updating..." : "Update"}
                             </Button>
-                        </div>
+                        </div>}
                     </CardContent>
                 </form>
             </Card>

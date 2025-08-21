@@ -114,9 +114,8 @@ export const sidebarItems = [
         href: "/admin/staff",
         icon: UserCog,
         submenu: [
-            { title: "All Staff", module: "", href: "/admin/staff" },
-            { title: "Add Staff", module: "", href: "/admin/staff/add" },
-            { title: "Roles & Permissions", module: "", href: "/admin/staff/roles" },
+            { title: "All Staff", module: "staffs", href: "/admin/staff"},
+            { title: "Roles & Permissions", module: "", href: "/admin/staff/roles"},
         ],
     },
     {

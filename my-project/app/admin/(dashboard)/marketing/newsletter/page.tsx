@@ -1,37 +1,49 @@
 "use client"
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/admin/ui/table";
-import { Button } from "@/components/admin/ui/button";
-import { Input } from "@/components/admin/ui/input";
-import {Plus, Search, Eye, Trash2, MoreVertical, Copy, Save} from "lucide-react";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
+import {Button} from "@/components/admin/ui/button";
+import {Input} from "@/components/admin/ui/input";
+import {Eye, MoreVertical, Plus, Search, Trash2} from "lucide-react";
 import {
     DropdownMenu,
-    DropdownMenuTrigger,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/admin/ui/dropdown-menu";
-import PaginationSection from "@/components/admin/Pagination";
 import Link from "next/link";
 import useNewsletters from "./_hooks/useNewsletters";
 import useDeleteNewsletter from "./_hooks/useDeleteNewsletter";
-import { unescapeHtml } from "@/lib/utils";
+import {unescapeHtml} from "@/lib/utils";
 import Preloader from "@/components/shared/Preloader";
+import {useSession} from "next-auth/react";
 
 export default function NewsletterListPage() {
+
+    const { data: session } = useSession();
+
     const { data: newsletters, isLoading, error } = useNewsletters();
-    const { deleteNewsletterById, isLoading: isDeleting, error: deleteError } = useDeleteNewsletter();
-    const [deletingId, setDeletingId] = React.useState<number | null>(null);
+    const { deleteNewsletterById, isLoading: isDeleting } = useDeleteNewsletter();
+    const [deletingId, setDeletingId] = React.useState<string | null>(null);
     const [searchQuery, setSearchQuery] = React.useState("");
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         setDeletingId(id);
         await deleteNewsletterById(id);
         setDeletingId(null);
     };
+
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "newsletter");
+    }
+
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -41,12 +53,14 @@ export default function NewsletterListPage() {
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Newsletter List</h2>
                     <p className="text-muted-foreground">View and manage newsletters</p>
                 </div>
-                <Button className="gap-2" asChild={true}>
-                    <Link href="/admin/marketing/newsletter/add">
-                        <Plus className="w-4 h-4" />
-                        Add Newsletter
-                    </Link>
-                </Button>
+                {canCreate && (
+                    <Button className="gap-2" asChild={true}>
+                        <Link href="/admin/marketing/newsletter/add">
+                            <Plus className="w-4 h-4" />
+                            Add Newsletter
+                        </Link>
+                    </Button>
+                )}
             </div>
 
             {/* Card Section */}
@@ -80,53 +94,58 @@ export default function NewsletterListPage() {
                                     <TableHead className="w-12 text-center">#</TableHead>
                                     <TableHead>Subject</TableHead>
                                     <TableHead>Content</TableHead>
-                                    <TableHead className="text-right">Option</TableHead>
+                                    {(canEdit || canDelete) && (
+                                        <TableHead className="text-right">Option</TableHead>
+                                    )}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {newsletters
                                     .filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
                                     .map((item, index) => (
-                                    <TableRow key={item.id}>
-                                        <TableCell className="text-center">{index + 1}</TableCell>
-                                        <TableCell>{item.title}</TableCell>
-                                        <TableCell className="whitespace-pre-line"><div dangerouslySetInnerHTML={{__html: unescapeHtml(item.content)}} /></TableCell>
-                                        <TableCell className="text-right">
-                                            {isDeleting && deletingId === item.id ? (
-                                                <div className="flex justify-end h-full">
-                                                    <Preloader size="sm" />
-                                                </div>
-                                            ) : (
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon">
-                                                            <MoreVertical className="w-4 h-4" />
-                                                            <span className="sr-only">Open actions</span>
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                        <DropdownMenuSeparator />
-                                                        <DropdownMenuItem className="flex items-center gap-2">
-                                                            <Link href={`/marketing/newsletter/${item.id}`} className="flex items-center gap-2">
-                                                                <Eye className="w-4 h-4" />
-                                                                View
-                                                            </Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem className="flex items-center gap-2 text-red-500 focus:text-red-600" onClick={() => handleDelete(item.id)} disabled={isDeleting && deletingId === item.id}>
-                                                            {isDeleting && deletingId === item.id ? (
-                                                                <Preloader size="sm" />
-                                                            ) : (
-                                                                <Trash2 className="w-4 h-4" />
-                                                            )}
-                                                            Delete
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
+                                        <TableRow key={item.id}>
+                                            <TableCell className="text-center">{index + 1}</TableCell>
+                                            <TableCell>{item.title}</TableCell>
+                                            <TableCell className="whitespace-pre-line"><div dangerouslySetInnerHTML={{__html: unescapeHtml(item.content)}} /></TableCell>
+                                            {(canEdit || canDelete) && (
+                                                <TableCell className="text-right">
+                                                    {isDeleting && deletingId === item.id ? (
+                                                        <div className="flex justify-end h-full">
+                                                            <Preloader size="sm" />
+                                                        </div>
+                                                    ) : (
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button variant="ghost" size="icon">
+                                                                    <MoreVertical className="w-4 h-4" />
+                                                                    <span className="sr-only">Open actions</span>
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end">
+                                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                <DropdownMenuSeparator />
+                                                                <DropdownMenuItem className="flex items-center gap-2">
+                                                                    <Link href={`/marketing/newsletter/${item.id}`} className="flex items-center gap-2">
+                                                                        <Eye className="w-4 h-4" />
+                                                                        View
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                                {canDelete && (
+                                                                    <DropdownMenuItem
+                                                                        className="flex items-center gap-2 text-red-500 focus:text-red-600"
+                                                                        onClick={() => handleDelete(item.id)}
+                                                                    >
+                                                                        <Trash2 className="w-4 h-4" />
+                                                                        Delete
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
+                                                    )}
+                                                </TableCell>
                                             )}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                        </TableRow>
+                                    ))}
                             </TableBody>
                         </Table>
                     ) : (

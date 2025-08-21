@@ -29,6 +29,8 @@ interface MembersTableProps {
   onStatusChange?: (id: string, isActive: boolean) => void;
   isItemDeleting?: (id: string) => boolean;
   isItemUpdating?: (id: string) => boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 export default function MembersTable({
@@ -41,6 +43,8 @@ export default function MembersTable({
   onStatusChange,
   isItemDeleting,
   isItemUpdating,
+  canEdit = true,
+  canDelete = true,
 }: MembersTableProps) {
   return (
     <div className="rounded-md border">
@@ -142,7 +146,7 @@ export default function MembersTable({
                               View Profile
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
+                          <DropdownMenuItem asChild disabled={!canEdit}>
                             <Link href={`/admin/members/${member.id}/edit`} className="flex items-center gap-2">
                               <Edit className="h-4 w-4" />
                               Edit Profile
@@ -162,7 +166,11 @@ export default function MembersTable({
                                 </>
                             )}
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={()=>onDeleteClick(member.id)} className="text-red-500">
+                          <DropdownMenuItem
+                            onClick={() => onDeleteClick(member.id)}
+                            className="text-red-500"
+                            disabled={!canDelete}
+                          >
                             <Trash className="mr-2 h-4 w-4" />
                             Delete
                           </DropdownMenuItem>

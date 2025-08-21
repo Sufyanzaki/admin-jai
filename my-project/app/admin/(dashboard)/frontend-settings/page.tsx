@@ -9,10 +9,13 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {useBasicPages} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
 import {useDeleteBasicPage} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useDeleteBasicPage";
 import Preloader from "@/components/shared/Preloader";
+import {useSession} from "next-auth/react";
 
 export default function SettingPage() {
     const { basicPages, isLoading, error } = useBasicPages();
     const { deletePageById, isDeleting } = useDeleteBasicPage();
+
+    const { data: session } = useSession();
 
     const handleDelete = async (id: string) => {
         await deletePageById(id);
@@ -30,6 +33,17 @@ export default function SettingPage() {
     const customPages = basicPages?.filter(page => page.type.toLowerCase() === 'custom') || [];
     const corePages = basicPages?.filter(page => page.type.toLowerCase() !== 'custom') || [];
 
+
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "frontend_settings");
+    }
+
+    // Permission flags
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
+
     return (
         <div className="container space-y-6 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -41,7 +55,7 @@ export default function SettingPage() {
                 </div>
 
                 <div className="flex gap-2">
-                    <Button asChild>
+                    <Button asChild disabled={!canCreate}>
                         <Link href="/admin/frontend-settings/create">
                             <Plus className="mr-2 h-4 w-4" />
                             New Page
@@ -75,7 +89,13 @@ export default function SettingPage() {
                                     <TableCell className="align-top capitalize">{page.pageType?.toLowerCase()}</TableCell>
                                     <TableCell className="text-right align-top">
                                         <div className="flex justify-end gap-2">
-                                            <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                className="h-8 w-8"
+                                                asChild
+                                                disabled={!canEdit}
+                                            >
                                                 <Link href={`/admin/frontend-settings/edit?slug=${page.type}`}>
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit</span>
@@ -120,7 +140,13 @@ export default function SettingPage() {
                                         <TableCell className="align-top capitalize">{page.pageType?.toLowerCase()}</TableCell>
                                         <TableCell className="text-right align-top">
                                             <div className="flex justify-end gap-2">
-                                                <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    asChild
+                                                    disabled={!canEdit}
+                                                >
                                                     <Link href={`/admin/frontend-settings/edit/${page.id}/basic`}>
                                                         <Edit className="h-4 w-4" />
                                                         <span className="sr-only">Edit</span>
@@ -129,8 +155,8 @@ export default function SettingPage() {
                                                 <Button
                                                     variant="outline"
                                                     size="icon"
-                                                    disabled={isDeleting}
-                                                    onClick={() => handleDelete(page.id)}
+                                                    disabled={isDeleting || !canDelete}
+                                                    onClick={() => canDelete && handleDelete(page.id)}
                                                     className="h-8 w-8 text-destructive hover:text-destructive"
                                                 >
                                                     <Trash2 className="h-4 w-4" />

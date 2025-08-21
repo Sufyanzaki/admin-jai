@@ -7,10 +7,10 @@ import { Card, CardContent } from "@/components/admin/ui/card";
 import {Ban, Calendar, Edit, Eye, Mail, MapPin, Package, Trash2, User, UserCheck} from "lucide-react";
 import Link from "next/link";
 import Preloader from "../../shared/Preloader";
-import {Member} from "@/app/admin/(dashboard)/members/_types/member";
+import {MemberProfile} from "@/app/shared-types/member";
 
 interface MembersGridProps {
-  members: Member[];
+  members: MemberProfile[];
   isLoading: boolean;
   currentPage: number;
   totalPages?: number;
@@ -19,6 +19,8 @@ interface MembersGridProps {
   onStatusChange?: (id: string, isActive: boolean) => void;
   isItemDeleting?: (id: string) => boolean;
   isItemUpdating?: (id: string) => boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 export default function MembersGrid({
@@ -27,7 +29,9 @@ export default function MembersGrid({
   onDeleteClick,
   onStatusChange,
   isItemDeleting,
-  isItemUpdating
+  isItemUpdating,
+  canEdit = true,
+  canDelete = true,
 }: MembersGridProps) {
   if (isLoading) {
     return (
@@ -103,16 +107,17 @@ export default function MembersGrid({
                     </Link>
                   </Button>
 
-                  <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center">
+                  <Button asChild variant="ghost" className="flex-1 rounded-none border-l py-2 justify-center" disabled={!canEdit}>
                     <Link href={`/admin/members/${member.id}/edit`}>
                       <Edit className="h-4 w-4" />
                     </Link>
                   </Button>
 
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     className="flex-1 rounded-none border-l py-2 justify-center"
                     onClick={() => onStatusChange && onStatusChange(member.id, !member.isActive)}
+                    disabled={!canEdit}
                   >
                     {isItemUpdating && isItemUpdating(member.id) ? (
                       <Preloader size="sm" />
@@ -123,7 +128,12 @@ export default function MembersGrid({
                     )}
                   </Button>
 
-                  <Button variant="ghost" className="flex-1 rounded-none rounded-br-md border-l py-2 justify-center" onClick={()=>onDeleteClick(member.id)}>
+                  <Button
+                    variant="ghost"
+                    className="flex-1 rounded-none rounded-br-md border-l py-2 justify-center"
+                    onClick={() => onDeleteClick(member.id)}
+                    disabled={!canDelete}
+                  >
                     {isItemDeleting && isItemDeleting(member.id) ? <Preloader />: (
                       <Trash2 className="h-4 w-4 text-red-600" />
                     )}

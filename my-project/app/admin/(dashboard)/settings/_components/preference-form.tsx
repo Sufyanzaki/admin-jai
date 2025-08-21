@@ -23,7 +23,7 @@ import {Controller} from "react-hook-form";
 import {useLanguages} from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
 import {useCurrencies} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useCurrencies";
 
-export default function PreferenceForm() {
+export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
 
     const { languages } = useLanguages();
     const { currencies } = useCurrencies();
@@ -134,11 +134,11 @@ export default function PreferenceForm() {
                         )}
                     </div>
 
-                    <div className="flex justify-end pt-6">
+                    {canEdit && <div className="flex justify-end pt-6">
                         <Button className="px-8" type="submit" disabled={isLoading}>
                             {isLoading ? "Saving..." : "Save Configuration"}
                         </Button>
-                    </div>
+                    </div>}
                 </CardContent>
             </Card>
         </form>

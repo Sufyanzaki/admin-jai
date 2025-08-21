@@ -13,8 +13,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import useDeleteFaq from "./_hooks/useDeleteFaq";
 import Preloader from "@/components/shared/Preloader";
 import {FaqEditModal} from "@/app/admin/(dashboard)/faq/_components/faq-edit-modal";
+import {useSession} from "next-auth/react";
 
 export default function SupportFAQ() {
+
+    const { data: session } = useSession();
+
     const [searchQuery, setSearchQuery] = useState("");
     const [open, setOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -22,7 +26,7 @@ export default function SupportFAQ() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { deleteFaqById, isLoading: isDeleting } = useDeleteFaq();
-    const [deletingId, setDeletingId] = useState<number | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const filteredFAQs = (faqs || []).filter(
         (faq) =>
@@ -30,7 +34,7 @@ export default function SupportFAQ() {
             faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleEdit = (id: number) => {
+    const handleEdit = (id: string) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set("edit", String(id));
         router.replace(`?${params.toString()}`);
@@ -47,11 +51,26 @@ export default function SupportFAQ() {
         }
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         setDeletingId(id);
         await deleteFaqById(id);
         setDeletingId(null);
     };
+
+
+    let permissions;
+    let categoryPermissions;
+
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "faqs");
+        categoryPermissions = session.user.permissions.find(permission => permission.module === "faqs_category");
+    }
+
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
+
+    const canViewCategory = categoryPermissions?.canView ?? true;
 
     return (
         <div className="space-y-6 p-4 xl:p-6">
@@ -61,15 +80,15 @@ export default function SupportFAQ() {
                     <p className="text-muted-foreground">Create and manage members faq surveys</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button variant="secondary" size="sm">
+                    {canViewCategory && <Button variant="secondary" size="sm">
                         <Link href="/admin/faq/category">
                             Manage Category
                         </Link>
-                    </Button>
-                    <Button size="sm" onClick={() => setOpen(true)}>
+                    </Button>}
+                    {canCreate && <Button size="sm" onClick={() => setOpen(true)}>
                         <PlusCircle className="h-4 w-4 mr-2" />
                         Add Faq
-                    </Button>
+                    </Button>}
                 </div>
             </div>
 
@@ -123,7 +142,8 @@ export default function SupportFAQ() {
                                                     variant="outline"
                                                     size="icon"
                                                     className="h-8 w-8"
-                                                    onClick={() => handleEdit(faq.id)}
+                                                    onClick={() => canEdit && handleEdit(faq.id)}
+                                                    disabled={!canEdit}
                                                 >
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit FAQ</span>
@@ -132,8 +152,8 @@ export default function SupportFAQ() {
                                                     variant="outline"
                                                     size="icon"
                                                     className="h-8 w-8 text-destructive hover:text-destructive"
-                                                    onClick={() => handleDelete(faq.id)}
-                                                    disabled={isDeleting && deletingId === faq.id}
+                                                    onClick={() => canDelete && handleDelete(faq.id)}
+                                                    disabled={isDeleting && deletingId === faq.id || !canDelete}
                                                 >
                                                     {isDeleting && deletingId === faq.id ? (
                                                         <Preloader size="sm"/>

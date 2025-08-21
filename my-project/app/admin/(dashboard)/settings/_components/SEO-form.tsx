@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 
-export default function SEOForm() {
+export default function SEOForm({canEdit}: {canEdit: boolean}) {
   const {
     handleSubmit,
     onSubmit,
@@ -176,11 +176,11 @@ export default function SEOForm() {
             </p>
           </div>
 
-          <div className="flex justify-end pt-6">
+          {canEdit && <div className="flex justify-end pt-6">
             <Button className="px-8" type="submit" disabled={isLoading}>
               {isLoading ? "Saving..." : "Save Configuration"}
             </Button>
-          </div>
+          </div>}
         </form>
       </CardContent>
   );

@@ -1,31 +1,23 @@
 "use client"
-import { Button } from "@/components/admin/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card"
-import { Input } from "@/components/admin/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/admin/ui/table"
-import {
-  ArrowLeft,
-  Mail,
-  MoreHorizontal, PencilIcon,
-} from "lucide-react"
+import {Button} from "@/components/admin/ui/button"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Input} from "@/components/admin/ui/input"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
+import {ArrowLeft, Mail, PencilIcon,} from "lucide-react"
 import Link from "next/link"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/admin/ui/dropdown-menu"
-import { Badge } from "@/components/admin/ui/badge"
-import { useEmailTemplates } from "./_hooks/useEmailTemplates";
-import { useState } from "react";
+import {Badge} from "@/components/admin/ui/badge"
+import {useEmailTemplates} from "./_hooks/useEmailTemplates";
+import {useState} from "react";
 import Preloader from "@/components/shared/Preloader"
+import { useSession } from "next-auth/react"
 
 export default function NotificationsPage() {
+
+  const {data: session} = useSession();
+
   const { emailTemplates, loading, error } = useEmailTemplates();
   const [search, setSearch] = useState("");
 
-  // Filter templates by search (key or subject)
   const filteredTemplates = (emailTemplates ?? []).filter(template => {
     const subject = template.translations[0]?.subject || "";
     return (
@@ -33,6 +25,13 @@ export default function NotificationsPage() {
       subject.toLowerCase().includes(search.toLowerCase())
     );
   });
+
+  let permissions;
+  if (session?.user.permissions) {
+    permissions = session.user.permissions.find(permission => permission.module === "email_templates");
+  }
+
+  const canEdit = permissions?.canEdit ?? true;
 
   return (
     <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -112,7 +111,7 @@ export default function NotificationsPage() {
                 <TableHead>Subject</TableHead>
                 <TableHead className="hidden md:table-cell">Last Updated</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                {canEdit && <TableHead className="text-right">Actions</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody className="whitespace-nowrap">
@@ -126,12 +125,12 @@ export default function NotificationsPage() {
                         {template.isActive ? "Active" : "Inactive"}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">
+                    {canEdit &&  <TableCell className="text-right">
                       <Link href={`/settings/notifications/${template.id}`} className="inline-flex items-center justify-center p-2 rounded hover:bg-muted transition">
                         <PencilIcon className="h-4 w-4 text-muted-foreground" />
                         <span className="sr-only">Edit</span>
                       </Link>
-                    </TableCell>
+                    </TableCell>}
                   </TableRow>
               ))}
             </TableBody>

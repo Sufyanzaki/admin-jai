@@ -31,9 +31,11 @@ import { usePatchPackage } from "./_hooks/usePatchPackage";
 import Preloader from "@/components/shared/Preloader";
 import {usePackages} from "@/app/shared-hooks/usePackages";
 import {PackageDto} from "@/app/shared-types/packages";
+import {useSession} from "next-auth/react";
 
 export default function PackagesPage() {
     const { packages, loading, error } = usePackages();
+    const { data:session } = useSession();
     const { mutate: patchPackageStatus, loading: patching } = usePatchPackage();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [currentPackage, setCurrentPackage] = useState<null | PackageDto>(null)
@@ -64,6 +66,15 @@ export default function PackagesPage() {
     );
     if (error) return <div className="p-6 text-red-500">Failed to load packages.</div>;
     if (!packages) return <div className="p-6 text-muted-foreground">No packages found.</div>;
+
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "packages");
+    }
+
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
 
     return (
         <>

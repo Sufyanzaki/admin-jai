@@ -18,6 +18,7 @@ import Preloader from "@/components/shared/Preloader";
 import { useDebounce } from "@/hooks/useDebounce";
 import useRoles from "./roles/_hook/useRoles";
 import {useDeleteStaff} from "@/app/admin/(dashboard)/staff/_hooks/useDeleteStaff";
+import { useSession } from "next-auth/react";
 
 export default function StaffPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState({key: '', value:false});
@@ -28,6 +29,7 @@ export default function StaffPage() {
   const [statusFilter, setStatusFilter] = useState("all");
 
   const { deleteStaffById, isItemDeleting } = useDeleteStaff();
+  const { data:session } = useSession();
 
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
@@ -62,22 +64,31 @@ export default function StaffPage() {
     deleteStaffById(deleteDialogOpen.key).finally(() => setDeleteDialogOpen({key: '', value:false}));
   };
 
+  let permissions;
+  if (session?.user.permissions) {
+    permissions = session.user.permissions.find(permission => permission.module === "staffs");
+  }
+
+  const canCreate = permissions?.canCreate ?? true;
+  const canEdit = permissions?.canEdit ?? true;
+  const canDelete = permissions?.canDelete ?? true;
+
   return (
     <>
     <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
           <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Staff Management</h2>
-          <p className="text-muted-foreground">Manage clinic staff, roles, and permissions</p>
+          <p className="text-muted-foreground">Manage staff, roles, and permissions</p>
         </div>
-        <div className="flex items-center flex-wrap gap-2">
+        {canCreate && <div className="flex items-center flex-wrap gap-2">
           <Button asChild>
             <Link href="/admin/staff/add">
               <UserPlus className="mr-2 h-4 w-4" />
               Add New Staff
             </Link>
           </Button>
-        </div>
+        </div>}
       </div>
 
       <div className="md:grid max-md:space-y-6 gap-6 md:grid-cols-4">
@@ -220,17 +231,17 @@ export default function StaffPage() {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild>
+                                {canEdit && <DropdownMenuItem asChild>
                                   <Link href={`/admin/staff/${staff.id}/edit`}>
                                     <Edit className="mr-2 h-4 w-4" />
                                     Edit
                                   </Link>
-                                </DropdownMenuItem>
+                                </DropdownMenuItem>}
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => setDeleteDialogOpen({value: true, key: staff.id})} className="text-red-500">
+                                {canDelete && <DropdownMenuItem onClick={() => setDeleteDialogOpen({value: true, key: staff.id})} className="text-red-500">
                                   <Trash className="mr-2 h-4 w-4" />
                                   Delete
-                                </DropdownMenuItem>
+                                </DropdownMenuItem>}
                               </DropdownMenuContent>
                             </DropdownMenu>
                           )}
@@ -320,18 +331,18 @@ export default function StaffPage() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-2">
-                <Button variant="outline" className="justify-start" asChild>
+                {canCreate && <Button variant="outline" className="justify-start" asChild>
                   <Link href="/admin/staff/add">
                     <UserPlus className="mr-2 h-4 w-4" />
                     Add New Staff
                   </Link>
-                </Button>
-                <Button variant="outline" className="justify-start" asChild>
+                </Button>}
+                {canCreate && <Button variant="outline" className="justify-start" asChild>
                   <Link href="/admin/staff/roles">
                     <Shield className="mr-2 h-4 w-4" />
                     Add Roles
                   </Link>
-                </Button>
+                </Button>}
               </div>
             </CardContent>
           </Card>

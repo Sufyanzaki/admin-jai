@@ -10,18 +10,23 @@ import { useSearchParams } from "next/navigation";
 type CategoryModalProps = {
   isOpen: boolean;
   onClose: (value: boolean) => void;
+  canCreate?: boolean;
+  canEdit?: boolean;
 };
 
-export default function CategoryModal({ isOpen, onClose }: CategoryModalProps) {
+export default function CategoryModal({ isOpen, onClose, canCreate = true, canEdit = true }: CategoryModalProps) {
     const searchParams = useSearchParams();
     const editId = searchParams.get("edit");
     const { data: categories } = useFaqCategories();
     const initialName = editId && categories ? (categories.find((cat) => String(cat.id) === String(editId))?.name || "") : "";
     const isEdit = Boolean(editId);
 
-    const editHook = useEditFaqCategory(editId ? Number(editId) : null, initialName);
+    const editHook = useEditFaqCategory(editId ? editId : null, initialName);
     const createHook = useFaqCategoryForm();
     const { handleSubmit, onSubmit, register, errors, isLoading } = isEdit ? editHook : createHook;
+
+    // Determine permission for submit
+    const canSubmit = isEdit ? canEdit : canCreate;
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -37,7 +42,7 @@ export default function CategoryModal({ isOpen, onClose }: CategoryModalProps) {
                                 id="categoryName"
                                 placeholder="Category Name"
                                 {...register("name")}
-                                disabled={isLoading}
+                                disabled={isLoading || !canSubmit}
                                 required
                             />
                             {errors.name && (
@@ -48,7 +53,7 @@ export default function CategoryModal({ isOpen, onClose }: CategoryModalProps) {
                             <Button variant="outline" type="button" onClick={() => onClose(false)} disabled={isLoading}>
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={isLoading}>
+                            <Button type="submit" disabled={isLoading || !canSubmit}>
                                 {isLoading ? (isEdit ? "Saving..." : "Submitting...") : (isEdit ? "Save" : "Submit")}
                             </Button>
                         </div>

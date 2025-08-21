@@ -3,6 +3,9 @@ export interface FaqDto {
     question: string;
     answer: string;
     categoryId: string;
+
+    category: FaqCategoryDto;
+
     createdAt: string;
     updatedAt: string;
 }

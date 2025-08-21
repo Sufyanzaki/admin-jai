@@ -10,7 +10,7 @@ import Preloader from "@/components/shared/Preloader";
 import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
 import {MultiOptionSelect} from "@/components/admin/ui/combo-box";
 
-export default function UserDashboardFooterForm() {
+export default function UserDashboardFooterForm({canEdit}: { canEdit: boolean}) {
   const { basicPages, isLoading:basicLoading } = useBasicPages();
 
   const {
@@ -77,11 +77,11 @@ export default function UserDashboardFooterForm() {
                   <p className="text-xs text-red-500">{errors.sectionPage.message}</p>
               )}
             </div>
-            <div className="flex justify-end pt-6">
+            {canEdit && <div className="flex justify-end pt-6">
               <Button type="submit" className="px-8" disabled={isLoading}>
                 {isLoading ? "Saving..." : "Save Configuration"}
               </Button>
-            </div>
+            </div>}
           </CardContent>
         </Card>
       </form>

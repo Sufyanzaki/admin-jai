@@ -9,7 +9,7 @@ import useCookieSettingsForm from "../_hooks/useCookieSettingsForm";
 import Preloader from "@/components/shared/Preloader";
 import { SimpleEditor } from "@/components/admin/tiptap-templates/simple/simple-editor";
 
-export default function CookiesForm() {
+export default function CookiesForm({canEdit} : {canEdit: boolean}) {
     const {
         handleSubmit,
         onSubmit,
@@ -63,11 +63,11 @@ export default function CookiesForm() {
                 />
             </div>
 
-            <div className="flex justify-end pt-6">
+            {canEdit && <div className="flex justify-end pt-6">
                 <Button type="submit" className="px-8" disabled={isLoading}>
                     {isLoading ? "Saving..." : "Save Settings"}
                 </Button>
-            </div>
+            </div>}
         </form>
     );
 }

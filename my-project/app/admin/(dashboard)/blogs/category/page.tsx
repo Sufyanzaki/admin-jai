@@ -13,17 +13,20 @@ import {
     DropdownMenuTrigger
 } from "@/components/admin/ui/dropdown-menu";
 import {Badge} from "@/components/admin/ui/badge";
-import {useBlogCategories} from "../../../../shared-hooks/useBlogCategories";
+import {useBlogCategories} from "@/app/shared-hooks/useBlogCategories";
 import AddCategoryForm from "./_components/addCategoryForm";
 import useDeleteBlogCategory from "./_hooks/useDeleteBlogCategory";
 import {useSWRConfig} from "swr";
 import EditCategoryModal from "./_components/EditCategoryModal";
 import Preloader from "@/components/shared/Preloader";
 import {BlogCategoryDto} from "@/app/shared-types/blog";
+import {useSession} from "next-auth/react";
 
 export default function BlogCategoryManagement() {
+
+    const { data:session } = useSession();
+
     const [search, setSearch] = useState("")
-    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
     const { categories = [], loading, error } = useBlogCategories();
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const { deleteCategoryById, isDeleting } = useDeleteBlogCategory();
@@ -34,6 +37,15 @@ export default function BlogCategoryManagement() {
         cat.name.toLowerCase().includes(search.toLowerCase())
     )
 
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "blogs_category");
+    }
+
+    // Permission flags
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
 
     return (
         <div className=" space-y-4 p-4 xl:p-6">
@@ -83,7 +95,9 @@ export default function BlogCategoryManagement() {
                                         <TableHead>Category</TableHead>
                                         <TableHead>Posts</TableHead>
                                         <TableHead>Status</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
+                                        {(canEdit || canDelete) && (
+                                            <TableHead className="text-right">Actions</TableHead>
+                                        )}
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -100,10 +114,8 @@ export default function BlogCategoryManagement() {
                                                         {category.isActive ? "active" : "inactive"}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell className="text-right">
-                                                    {isDeleting && deletingId === category.id ? (
-                                                        <Preloader size="sm" />
-                                                    ) : (
+                                                {(canEdit || canDelete) && (
+                                                    <TableCell className="text-right">
                                                         <DropdownMenu>
                                                             <DropdownMenuTrigger asChild>
                                                                 <Button variant="ghost" className="h-8 w-8 p-0">
@@ -112,31 +124,36 @@ export default function BlogCategoryManagement() {
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end">
-                                                                <DropdownMenuItem onClick={() => {
-                                                                    const params = new URLSearchParams(window.location.search);
-                                                                    params.set('edit', String(category.id));
-                                                                    window.history.replaceState(null, '', `?${params.toString()}`);
-                                                                    setIsEditDialogOpen(true);
-                                                                }}>
-                                                                    <Pencil className="mr-2 h-4 w-4" />
-                                                                    Edit
-                                                                </DropdownMenuItem>
-                                                                <DropdownMenuItem
-                                                                    className="text-red-600"
-                                                                    onClick={async () => {
-                                                                        setDeletingId(category.id);
-                                                                        await deleteCategoryById(category.id);
-                                                                        await globalMutate('blog-categories', (current: BlogCategoryDto[] = []) => current.filter(cat => cat.id !== category.id), false);
-                                                                        setDeletingId(null);
-                                                                    }}
-                                                                >
-                                                                    <Trash className="mr-2 h-4 w-4" />
-                                                                    Delete
-                                                                </DropdownMenuItem>
+                                                                {canEdit && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => {
+                                                                            const params = new URLSearchParams(window.location.search);
+                                                                            params.set('edit', String(category.id));
+                                                                            window.history.replaceState(null, '', `?${params.toString()}`);
+                                                                        }}
+                                                                    >
+                                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                                        Edit
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {canDelete && (
+                                                                    <DropdownMenuItem
+                                                                        className="text-red-600"
+                                                                        onClick={async () => {
+                                                                            setDeletingId(category.id);
+                                                                            await deleteCategoryById(category.id);
+                                                                            await globalMutate('blog-categories', (current: BlogCategoryDto[] = []) => current.filter(cat => cat.id !== category.id), false);
+                                                                            setDeletingId(null);
+                                                                        }}
+                                                                    >
+                                                                        <Trash className="mr-2 h-4 w-4" />
+                                                                        Delete
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                             </DropdownMenuContent>
                                                         </DropdownMenu>
-                                                    )}
-                                                </TableCell>
+                                                    </TableCell>
+                                                )}
                                             </TableRow>
                                         ))
                                     ) : (
@@ -153,17 +170,19 @@ export default function BlogCategoryManagement() {
                 </Card>
 
                 {/* Add Category Form */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Add New Category</CardTitle>
-                        <CardDescription>Create a new blog category</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <AddCategoryForm />
-                    </CardContent>
-                </Card>
+                {canCreate && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Add New Category</CardTitle>
+                            <CardDescription>Create a new blog category</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <AddCategoryForm />
+                        </CardContent>
+                    </Card>
+                )}
             </div>
-            <EditCategoryModal />
+            {canEdit && <EditCategoryModal />}
         </div>
     )
 }

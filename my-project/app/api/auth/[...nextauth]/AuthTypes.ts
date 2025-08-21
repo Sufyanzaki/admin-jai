@@ -1,4 +1,5 @@
 import "next-auth";
+import {Permission} from "@/app/admin/(dashboard)/staff/roles/add/_types/roleTypes";
 
 declare module "next-auth" {
   interface User {
@@ -49,6 +50,8 @@ declare module "next-auth" {
       shortDescription?: string;
       createdAt?: string;
       updatedAt?: string;
+
+      permissions?: Permission[];
     };
     token?: string;
   }

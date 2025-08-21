@@ -22,7 +22,13 @@ import CurrencyModal from "@/app/admin/(dashboard)/settings/other-settings/_comp
 import CurrencyEditModal from "@/app/admin/(dashboard)/settings/other-settings/_components/currency-edit-modal";
 import FormatForm from "@/app/admin/(dashboard)/settings/other-settings/_components/format-form";
 
-export default function CurrencyTable() {
+type CurrencyTableProps = {
+    canEdit: boolean;
+    canCreate: boolean;
+    canDelete: boolean;
+}
+
+export default function CurrencyTable({ canEdit, canCreate, canDelete }: CurrencyTableProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -72,14 +78,18 @@ export default function CurrencyTable() {
                             <CardDescription>Manage your system settings and appearance</CardDescription>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                            <Button variant="outline" onClick={() => setOpenFormatDialog(true)} className="w-full sm:w-auto">
-                                <Settings2 className="mr-2 h-4 w-4" />
-                                Set Format
-                            </Button>
-                            <Button onClick={() => setOpenAddDialog(true)} className="w-full sm:w-auto">
-                                <Plus className="mr-2 h-4 w-4" />
-                                Add Currency
-                            </Button>
+                            {canEdit && (
+                                <Button variant="outline" onClick={() => setOpenFormatDialog(true)} className="w-full sm:w-auto">
+                                    <Settings2 className="mr-2 h-4 w-4" />
+                                    Set Format
+                                </Button>
+                            )}
+                            {canCreate && (
+                                <Button onClick={() => setOpenAddDialog(true)} className="w-full sm:w-auto">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Add Currency
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </CardHeader>
@@ -96,7 +106,9 @@ export default function CurrencyTable() {
                                         <TableHead>Currency</TableHead>
                                         <TableHead>Code</TableHead>
                                         <TableHead>RTL</TableHead>
-                                        <TableHead className="w-[120px] text-right">Actions</TableHead>
+                                        {(canEdit || canDelete) && (
+                                            <TableHead className="w-[120px] text-right">Actions</TableHead>
+                                        )}
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -110,34 +122,40 @@ export default function CurrencyTable() {
                                             <TableCell>
                                                 <Switch id={`switch-${currency.id}`} checked={!!currency.textDirection} />
                                             </TableCell>
-                                            <TableCell>
-                                                {isDeleting && isItemDeleting(currency.id) ? (
-                                                    <Preloader size="sm" />
-                                                ) : (
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger asChild>
-                                                            <Button variant="ghost" className="h-8 w-8 p-0 ml-auto">
-                                                                <MoreHorizontal className="h-4 w-4" />
-                                                                <span className="sr-only">Open menu</span>
-                                                            </Button>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end" className="w-[160px]">
-                                                            <DropdownMenuItem onClick={() => handleEdit(currency.id)}>
-                                                                <Pencil className="mr-2 h-4 w-4" />
-                                                                Edit
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuSeparator />
-                                                            <DropdownMenuItem
-                                                                className="text-destructive focus:text-destructive"
-                                                                onClick={() => deleteMemberById(currency.id)}
-                                                            >
-                                                                <Trash2 className="mr-2 h-4 w-4" />
-                                                                Delete
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                )}
-                                            </TableCell>
+                                            {(canEdit || canDelete) && (
+                                                <TableCell>
+                                                    {isDeleting && isItemDeleting(currency.id) ? (
+                                                        <Preloader size="sm" />
+                                                    ) : (
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button variant="ghost" className="h-8 w-8 p-0 ml-auto">
+                                                                    <MoreHorizontal className="h-4 w-4" />
+                                                                    <span className="sr-only">Open menu</span>
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end" className="w-[160px]">
+                                                                {canEdit && (
+                                                                    <DropdownMenuItem onClick={() => handleEdit(currency.id)}>
+                                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                                        Edit
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {canEdit && canDelete && <DropdownMenuSeparator />}
+                                                                {canDelete && (
+                                                                    <DropdownMenuItem
+                                                                        className="text-destructive focus:text-destructive"
+                                                                        onClick={() => deleteMemberById(currency.id)}
+                                                                    >
+                                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                                        Delete
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
+                                                    )}
+                                                </TableCell>
+                                            )}
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -147,41 +165,47 @@ export default function CurrencyTable() {
                 )}
             </Card>
 
-            <Dialog open={openFormatDialog} onOpenChange={setOpenFormatDialog}>
-                <DialogContent className="sm:max-w-[600px]">
-                    <DialogHeader>
-                        <DialogTitle>Currency Format Settings</DialogTitle>
-                        <DialogDescription>Configure how currency values are displayed</DialogDescription>
-                    </DialogHeader>
-                    <FormatForm currencies={currencies} setOpenFormatDialog={setOpenFormatDialog} />
-                </DialogContent>
-            </Dialog>
+            {canEdit && (
+                <Dialog open={openFormatDialog} onOpenChange={setOpenFormatDialog}>
+                    <DialogContent className="sm:max-w-[600px]">
+                        <DialogHeader>
+                            <DialogTitle>Currency Format Settings</DialogTitle>
+                            <DialogDescription>Configure how currency values are displayed</DialogDescription>
+                        </DialogHeader>
+                        <FormatForm currencies={currencies} setOpenFormatDialog={setOpenFormatDialog} />
+                    </DialogContent>
+                </Dialog>
+            )}
 
-            <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
-                <DialogContent className="sm:max-w-[600px]">
-                    <DialogHeader>
-                        <DialogTitle>Add New Currency</DialogTitle>
-                        <DialogDescription>Add a new currency to your system</DialogDescription>
-                    </DialogHeader>
-                    <CurrencyModal setOpenAddDialog={setOpenAddDialog} />
-                </DialogContent>
-            </Dialog>
+            {canCreate && (
+                <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
+                    <DialogContent className="sm:max-w-[600px]">
+                        <DialogHeader>
+                            <DialogTitle>Add New Currency</DialogTitle>
+                            <DialogDescription>Add a new currency to your system</DialogDescription>
+                        </DialogHeader>
+                        <CurrencyModal setOpenAddDialog={setOpenAddDialog} />
+                    </DialogContent>
+                </Dialog>
+            )}
 
-            <Dialog
-                open={editDialog.isOpen}
-                onOpenChange={(open) => setEditDialog((prev) => ({ ...prev, isOpen: open }))}
-            >
-                <DialogContent className="sm:max-w-[600px]">
-                    <DialogHeader>
-                        <DialogTitle>Edit Currency</DialogTitle>
-                        <DialogDescription>Edit currency settings</DialogDescription>
-                    </DialogHeader>
-                    <CurrencyEditModal
-                        id={editDialog.id!}
-                        setOpenEditDialog={(open: boolean) => setEditDialog((prev) => ({ ...prev, isOpen: open }))}
-                    />
-                </DialogContent>
-            </Dialog>
+            {canEdit && (
+                <Dialog
+                    open={editDialog.isOpen}
+                    onOpenChange={(open) => setEditDialog((prev) => ({ ...prev, isOpen: open }))}
+                >
+                    <DialogContent className="sm:max-w-[600px]">
+                        <DialogHeader>
+                            <DialogTitle>Edit Currency</DialogTitle>
+                            <DialogDescription>Edit currency settings</DialogDescription>
+                        </DialogHeader>
+                        <CurrencyEditModal
+                            id={editDialog.id!}
+                            setOpenEditDialog={(open: boolean) => setEditDialog((prev) => ({ ...prev, isOpen: open }))}
+                        />
+                    </DialogContent>
+                </Dialog>
+            )}
         </>
     );
 }

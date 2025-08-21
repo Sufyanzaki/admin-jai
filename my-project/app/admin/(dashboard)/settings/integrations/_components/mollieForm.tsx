@@ -1,13 +1,16 @@
 "use client";
 
 import { Button } from "@/components/admin/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/admin/ui/card";
 import { Input } from "@/components/admin/ui/input";
 import { Label } from "@/components/admin/ui/label";
 import { Switch } from "@/components/admin/ui/switch";
 import { Controller } from "react-hook-form";
+import { CreditCard } from "lucide-react";
 import useMollieForm from "../_hooks/useMollieForm";
+import Preloader from "@/components/shared/Preloader";
 
-export default function MollieForm() {
+export default function MollieForm({ canEdit }: { canEdit: boolean }) {
   const {
     register,
     handleSubmit,
@@ -19,52 +22,70 @@ export default function MollieForm() {
   } = useMollieForm();
 
   if (isLoadingData) {
-    return <div>Loading Mollie settings...</div>;
+    return (
+        <div className="flex items-center flex-col justify-center h-64">
+          <Preloader />
+          <p className="text-sm">Loading Mollie settings</p>
+        </div>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Mollie Settings</h3>
-        <div className="space-y-4">
-          <div className="grid gap-2">
-            <Label htmlFor="mollie-key">Mollie Key</Label>
-            <div className="flex items-center space-x-2">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <CreditCard className="mr-2 h-5 w-5" />
+              Mollie Settings
+            </CardTitle>
+            <CardDescription>Configure your Mollie payment gateway</CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            {/* Mollie Key */}
+            <div className="space-y-2">
+              <Label htmlFor="mollie-key">Mollie API Key</Label>
               <Input
-                id="mollie-key"
-                type="password"
-                placeholder="Enter your Mollie API key"
-                {...register('key')}
+                  id="mollie-key"
+                  type="password"
+                  placeholder="Enter your Mollie API key"
+                  disabled={!canEdit}
+                  {...register("key")}
               />
+              {errors.key && (
+                  <p className="text-sm text-red-500">{errors.key.message}</p>
+              )}
             </div>
-            {errors.key && (
-              <p className="text-sm text-red-500">{errors.key.message}</p>
-            )}
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="mollie-status">Activation Status</Label>
-            <div className="flex items-center space-x-2">
+
+            {/* Activation Status */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label htmlFor="mollie-status">Activation Status</Label>
+                <p className="text-xs text-muted-foreground">
+                  Enable/disable Mollie payment gateway
+                </p>
+              </div>
               <Controller
-                name="isActive"
-                control={control}
-                render={({ field }) => (
-                  <Switch
-                    id="mollie-status"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                )}
+                  name="isActive"
+                  control={control}
+                  render={({ field }) => (
+                      <Switch
+                          id="mollie-status"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled={!canEdit}
+                      />
+                  )}
               />
-              <span className="text-sm">Enable Mollie payments</span>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-end gap-2 flex-wrap mt-6">
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save Changes"}
-        </Button>
-      </div>
-    </form>
+          </CardContent>
+
+          {canEdit && <CardFooter className="flex justify-end gap-2 flex-wrap">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Save Settings"}
+            </Button>
+          </CardFooter>}
+        </Card>
+      </form>
   );
 }

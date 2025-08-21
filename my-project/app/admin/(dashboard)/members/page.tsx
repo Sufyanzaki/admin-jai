@@ -19,8 +19,12 @@ import MembersGrid from "@/components/admin/members/members-grid";
 import PaginationSection from "@/components/admin/Pagination";
 import MembersOverview from "@/components/admin/members/members-overview";
 import DeleteMemberDialog from "@/components/admin/members/delete-member-dialog";
+import {useSession} from "next-auth/react";
 
 export default function StaffPage() {
+
+  const { data:session } = useSession();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState({key: '', value:false});
@@ -131,6 +135,16 @@ export default function StaffPage() {
     );
   }
 
+  let memberPermissions;
+  if (session?.user.permissions) {
+    memberPermissions = session.user.permissions.find(permission => permission.module === "members");
+  }
+
+  // Example usage:
+  const canCreateMember = memberPermissions?.canCreate ?? true;
+  const canEditMember = memberPermissions?.canEdit ?? true;
+  const canDeleteMember = memberPermissions?.canDelete ?? true;
+
   return (
     <>
       <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -140,7 +154,11 @@ export default function StaffPage() {
             <p className="text-muted-foreground">Manage staff, roles, and permissions</p>
           </div>
           <div className="flex items-center flex-wrap gap-2">
-            <Button asChild className="w-full sm:w-fit">
+            <Button
+              asChild
+              className="w-full sm:w-fit"
+              disabled={!canCreateMember}
+            >
               <Link href="/admin/members/add">
                 <UserPlus className="mr-2 h-4 w-4" />
                 Add New Member
@@ -189,10 +207,12 @@ export default function StaffPage() {
                     checkedAll={checkedAll}
                     onCheckAll={handleCheckAll}
                     onSingleCheck={handleSingleCheck}
-                    onDeleteClick={(id) => setDeleteDialogOpen({value: true, key: id})}
-                    onStatusChange={updateMemberStatus}
+                    onDeleteClick={canDeleteMember ? (id) => setDeleteDialogOpen({value: true, key: id}) : () => {}}
+                    onStatusChange={canEditMember ? updateMemberStatus : undefined}
                     isItemDeleting={isItemDeleting}
                     isItemUpdating={isItemUpdating}
+                    canEdit={canEditMember}
+                    canDelete={canDeleteMember}
                   />
                 </TabsContent>
                 <TabsContent value="grid" className="mt-0">
@@ -202,10 +222,12 @@ export default function StaffPage() {
                     currentPage={currentPage}
                     totalPages={membersData?.pagination?.totalPages}
                     onPageChange={setCurrentPage}
-                    onDeleteClick={(id) => setDeleteDialogOpen({value: true, key: id})}
-                    onStatusChange={updateMemberStatus}
+                    onDeleteClick={canDeleteMember ? (id) => setDeleteDialogOpen({value: true, key: id}) : () => {}}
+                    onStatusChange={canEditMember ? updateMemberStatus : undefined}
                     isItemDeleting={isItemDeleting}
                     isItemUpdating={isItemUpdating}
+                    canEdit={canEditMember}
+                    canDelete={canDeleteMember}
                   />
                 </TabsContent>
               </Tabs>

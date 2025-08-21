@@ -1,50 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Link from "next/link";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/admin/ui/card";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/admin/ui/table";
+import {Card, CardContent, CardHeader, CardTitle,} from "@/components/admin/ui/card";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/admin/ui/table";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/admin/ui/dropdown-menu";
-import { Badge } from "@/components/admin/ui/badge";
-import { Input } from "@/components/admin/ui/input";
-import { Button } from "@/components/admin/ui/button";
-import {Search, MoreHorizontal, UserPlus, Loader2} from "lucide-react";
-import PaginationSection from "@/components/admin/Pagination";
-import { useBanners } from "./_hooks/useBanners";
-import { format } from "date-fns";
-import { useDeleteBanner } from "./_hooks/useDeleteBanner";
+import {Badge} from "@/components/admin/ui/badge";
+import {Input} from "@/components/admin/ui/input";
+import {Button} from "@/components/admin/ui/button";
+import {Loader2, MoreHorizontal, Search, UserPlus} from "lucide-react";
+import {useBanners} from "./_hooks/useBanners";
+import {format} from "date-fns";
+import {useDeleteBanner} from "./_hooks/useDeleteBanner";
+import { useSession } from "next-auth/react";
 
 
 export default function BannerListPage() {
+
+    const { data: session } = useSession();
+
     const { banners, bannersLoading, error } = useBanners();
     const [searchTerm, setSearchTerm] = useState("");
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const { deleteBannerById, isDeleting } = useDeleteBanner();
 
-    // Filter banners based on search term
-    const filteredBanners = banners?.filter(banner => 
+    const filteredBanners = banners?.filter(banner =>
         banner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         banner.page.toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
 
-    // Format date for display
     const formatDate = (dateString: string) => {
         try {
             return format(new Date(dateString), 'dd-MM-yyyy');
@@ -53,7 +42,6 @@ export default function BannerListPage() {
         }
     };
 
-    // Show loading state
     if (bannersLoading) {
         return (
             <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -67,7 +55,6 @@ export default function BannerListPage() {
         );
     }
 
-    // Show error state
     if (error) {
         return (
             <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -80,6 +67,16 @@ export default function BannerListPage() {
             </div>
         );
     }
+
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "newsletter");
+    }
+
+    // Permission flags
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">

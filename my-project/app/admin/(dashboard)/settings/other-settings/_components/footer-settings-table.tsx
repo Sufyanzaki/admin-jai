@@ -10,6 +10,9 @@ import Preloader from "@/components/shared/Preloader";
 import type React from "react";
 
 interface FooterSettingsFormProps {
+  canEdit: boolean;
+  canDelete: boolean;
+  canCreate: boolean;
   pagesData: Array<{
     id: number;
     name: string;
@@ -18,9 +21,11 @@ interface FooterSettingsFormProps {
   onOpenDialog: () => void;
 }
 
-export default function FooterSettingsTable({ pagesData, onOpenDialog }: FooterSettingsFormProps) {
+export default function FooterSettingsTable({ pagesData, onOpenDialog, canEdit, canDelete, canCreate }: FooterSettingsFormProps) {
 
   const { sections, sectionsLoading } = useAllFooterSections();
+
+  console.log(sections);
 
   if(sectionsLoading) return (
       <div className="flex items-center flex-col justify-center h-64">
@@ -29,9 +34,7 @@ export default function FooterSettingsTable({ pagesData, onOpenDialog }: FooterS
       </div>
   )
 
-  if(!sections) return;
-
-  console.log(sections);
+  if(!sections) return;;
 
   return (
     <Card>
@@ -47,13 +50,13 @@ export default function FooterSettingsTable({ pagesData, onOpenDialog }: FooterS
             </CardDescription>
           </div>
 
-          <Button
-            onClick={onOpenDialog}
-            className="w-full sm:w-auto"
+          {canCreate && <Button
+              onClick={onOpenDialog}
+              className="w-full sm:w-auto"
           >
             <Plus className="mr-2 h-4 w-4" />
             Add New
-          </Button>
+          </Button>}
         </div>
       </CardHeader>
       <div className="px-4 space-y-6 pb-6">
@@ -81,14 +84,14 @@ export default function FooterSettingsTable({ pagesData, onOpenDialog }: FooterS
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={onOpenDialog}>
+                        {canEdit &&  <DropdownMenuItem onClick={onOpenDialog}>
                           <Pencil className="w-4 h-4 mr-2" />
                           Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        </DropdownMenuItem>}
+                        {canDelete &&   <DropdownMenuItem>
                           <Trash className="w-4 h-4 mr-2 text-red-500" />
                           <span className="text-red-500">Delete</span>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem>}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

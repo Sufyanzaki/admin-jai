@@ -11,22 +11,26 @@ import CategoryModal from "./_components/category-modal";
 import useFaqCategoryDelete from "./_hooks/useFaqCategoryDelete";
 import { useRouter, useSearchParams } from "next/navigation";
 import Preloader from "@/components/shared/Preloader";
+import {useSession} from "next-auth/react";
 
 export default function CategoryPage() {
+
+    const { data: session } = useSession();
+
     const [open, setOpen] = useState(false);
     const { data: categories, isLoading } = useFaqCategories();
     const { deleteCategory, isLoading: isDeleting } = useFaqCategoryDelete();
-    const [deletingId, setDeletingId] = useState<number | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         setDeletingId(id);
         await deleteCategory(id);
         setDeletingId(null);
     };
 
-    const handleEdit = (id: number) => {
+    const handleEdit = (id: string) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set("edit", String(id));
         router.replace(`?${params.toString()}`);
@@ -41,6 +45,16 @@ export default function CategoryPage() {
             router.replace(`?${params.toString()}`);
         }
     };
+
+    let permissions;
+    if (session?.user.permissions) {
+        permissions = session.user.permissions.find(permission => permission.module === "faqs_category");
+    }
+
+    // Permission flags
+    const canCreate = permissions?.canCreate ?? true;
+    const canEdit = permissions?.canEdit ?? true;
+    const canDelete = permissions?.canDelete ?? true;
 
     return (
         <div className="container py-6 space-y-6 p-4 xl:p-6">
@@ -64,7 +78,7 @@ export default function CategoryPage() {
                     <Button asChild variant="secondary">
                         <Link href="/admin/faq">Back</Link>
                     </Button>
-                    <Button onClick={() => setOpen(true)}>
+                    <Button onClick={() => setOpen(true)} disabled={!canCreate}>
                         <Plus className="mr-2 h-4 w-4" />
                         Add New
                     </Button>
@@ -101,7 +115,13 @@ export default function CategoryPage() {
                                         <TableCell className="align-top">{category.name}</TableCell>
                                         <TableCell className="text-right align-top">
                                             <div className="flex justify-end gap-2">
-                                                <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleEdit(category.id)}>
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    onClick={() => canEdit && handleEdit(category.id)}
+                                                    disabled={!canEdit}
+                                                >
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit FAQ</span>
                                                 </Button>
@@ -109,8 +129,8 @@ export default function CategoryPage() {
                                                     variant="outline"
                                                     size="icon"
                                                     className="h-8 w-8 text-destructive hover:text-destructive"
-                                                    onClick={() => handleDelete(category.id)}
-                                                    disabled={isDeleting && deletingId === category.id}
+                                                    onClick={() => canDelete && handleDelete(category.id)}
+                                                    disabled={isDeleting && deletingId === category.id || !canDelete}
                                                 >
                                                     {isDeleting && deletingId === category.id ? (
                                                         <Preloader size="sm"/>
@@ -132,7 +152,7 @@ export default function CategoryPage() {
                     )}
                 </CardContent>
             </Card>
-            <CategoryModal isOpen={open} onClose={handleModalClose} />
+            <CategoryModal isOpen={open} onClose={handleModalClose} canCreate={canCreate} canEdit={canEdit} />
         </div>
     );
 }

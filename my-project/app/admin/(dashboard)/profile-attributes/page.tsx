@@ -44,6 +44,7 @@ import {
 import AttributeForm from "./_components/attribute-form";
 import { useProfileAttributes } from "./_hooks/useProfileAttributes";
 import Preloader from "@/components/shared/Preloader";
+import {useSession} from "next-auth/react";
 
 function getAttributeIcon(label: string) {
   const iconProps = { className: "h-4 w-4" };
@@ -136,7 +137,8 @@ function getAttributeIcon(label: string) {
   }
 }
 
-export default function AppointmentsPage() {
+export default function AttributePage() {
+  const {data:session} = useSession();
   const { attributes, loading } = useProfileAttributes();
 
   if (loading || !attributes) {
@@ -148,56 +150,70 @@ export default function AppointmentsPage() {
     )
   }
 
+  let permissions;
+  if (session?.user.permissions) {
+    permissions = session.user.permissions.find(permission => permission.module === "profile_attributes");
+  }
+
+  const canCreate = permissions?.canCreate ?? true;
+  const canEdit = permissions?.canEdit ?? true;
+  const canDelete = permissions?.canDelete ?? true;
+
   return (
-      <div className="">
-        <div className="flex flex-col space-y-6 p-4 xl:p-6">
-          <div className="flex flex-col space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Profile Attributes
-            </h2>
-            <p className="text-muted-foreground">
-              Define and display key user characteristics like age, location, interests, and activity status for building personalized profiles and user interfaces.
-            </p>
+    <div className="">
+      <div className="flex flex-col space-y-6 p-4 xl:p-6">
+        <div className="flex flex-col space-y-2">
+          <h2 className="text-3xl font-bold tracking-tight">
+            Profile Attributes
+          </h2>
+          <p className="text-muted-foreground">
+            Define and display key user characteristics like age, location, interests, and activity status for building personalized profiles and user interfaces.
+          </p>
+        </div>
+
+        <Tabs defaultValue={attributes[0]?.id?.toString() || "1"} className="flex flex-col md:flex-row gap-6 w-full">
+          <div className="w-full md:w-64">
+            <TabsList className="flex md:flex-col flex-row gap-1 h-auto w-full bg-muted/50 p-2 overflow-x-auto md:overflow-visible">
+              {attributes.map((attribute) => (
+                <TabsTrigger
+                  key={attribute.id}
+                  value={attribute.id.toString()}
+                  className="justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full min-w-[140px] cursor-pointer md:min-w-0"
+                >
+                  <div className="flex items-center gap-2">
+                    {getAttributeIcon(attribute.label)}
+                    <span className="truncate">{attribute.label}</span>
+                  </div>
+                  <span className="border px-1 text-[10px] rounded-sm">{attribute.options ? attribute.options.split(",").filter(Boolean).length : 0}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
           </div>
 
-          <Tabs defaultValue={attributes[0]?.id?.toString() || "1"} className="flex flex-col md:flex-row gap-6 w-full">
-            <div className="w-full md:w-64">
-              <TabsList className="flex md:flex-col flex-row gap-1 h-auto w-full bg-muted/50 p-2 overflow-x-auto md:overflow-visible">
-                {attributes.map((attribute) => (
-                    <TabsTrigger
-                        key={attribute.id}
-                        value={attribute.id.toString()}
-                        className="justify-between border rounded-sm gap-2 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm w-full min-w-[140px] cursor-pointer md:min-w-0"
-                    >
-                      <div className="flex items-center gap-2">
-                        {getAttributeIcon(attribute.label)}
-                        <span className="truncate">{attribute.label}</span>
-                      </div>
+          <div className="flex-1 w-full">
+            {attributes.map((attribute) => (
+              <TabsContent key={attribute.id} value={attribute.id.toString()} className="mt-0">
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl">{attribute.label}</CardTitle>
+                    <CardDescription>
+                      Add values for {attribute.label.toLowerCase()} that will appear on your profile.
+                    </CardDescription>
+                  </CardHeader>
 
-                      <span className="border px-1 text-[10px] rounded-sm">{attribute.options ? attribute.options.split(",").filter(Boolean).length : 0}</span>
-                    </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-
-            <div className="flex-1 w-full">
-              {attributes.map((attribute) => (
-                  <TabsContent key={attribute.id} value={attribute.id.toString()} className="mt-0">
-                    <Card className="shadow-sm">
-                      <CardHeader className="pb-4">
-                        <CardTitle className="text-xl">{attribute.label}</CardTitle>
-                        <CardDescription>
-                          Add values for {attribute.label.toLowerCase()} that will appear on your profile.
-                        </CardDescription>
-                      </CardHeader>
-
-                      <AttributeForm attribute={attribute} />
-                    </Card>
-                  </TabsContent>
-              ))}
-            </div>
-          </Tabs>
-        </div>
+                  {/* Pass permissions to AttributeForm */}
+                  <AttributeForm
+                    attribute={attribute}
+                    canCreate={canCreate}
+                    canEdit={canEdit}
+                    canDelete={canDelete}
+                  />
+                </Card>
+              </TabsContent>
+            ))}
+          </div>
+        </Tabs>
       </div>
+    </div>
   );
 }

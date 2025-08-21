@@ -22,6 +22,7 @@ import {Search} from "lucide-react";
 import {usePayments} from "@/app/admin/(dashboard)/payments/_hooks/usePayments";
 import Preloader from "@/components/shared/Preloader";
 import {UserPackageDto} from "@/app/admin/(dashboard)/payments/_types/payment";
+import {useSession} from "next-auth/react";
 
 const statusColors: Record<string, string> = {
   ACTIVE: "bg-green-500/20 text-green-700 border-green-500",
@@ -31,6 +32,8 @@ const statusColors: Record<string, string> = {
 };
 
 export default function PaymentsPage() {
+
+  const { data:session } = useSession();
   const { payments, paymentLoading } = usePayments();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

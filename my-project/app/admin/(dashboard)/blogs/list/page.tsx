@@ -15,11 +15,23 @@ import Link from "next/link";
 import {useBlogs} from "@/app/shared-hooks/useBlogs";
 import Preloader from "@/components/shared/Preloader";
 import {useDeleteBlog} from "@/app/shared-hooks/useDeleteBlog";
+import {useSession} from "next-auth/react";
 
 export default function BlogListPage() {
 
   const { blogs = [], loading, error } = useBlogs();
   const { deleteBlogById, isItemDeleting } = useDeleteBlog();
+  const {data:session} = useSession();
+
+  let permissions;
+  if (session?.user.permissions) {
+    permissions = session.user.permissions.find(permission => permission.module === "blogs");
+  }
+
+  // Permission flags
+  const canCreate = permissions?.canCreate ?? true;
+  const canEdit = permissions?.canEdit ?? true;
+  const canDelete = permissions?.canDelete ?? true;
 
   return (
     <div className="flex flex-col gap-4 p-4 xl:p-6">
@@ -28,12 +40,14 @@ export default function BlogListPage() {
           <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">Blog List</h1>
           <p className="text-muted-foreground">Manage and track all blogs in the fleet</p>
         </div>
-        <Button className="w-full md:w-auto" asChild>
-          <Link className="flex items-center" href="/admin/blogs/create">
-            <Plus className="mr-2 h-4 w-4" />
-            New Blog
-          </Link>
-        </Button>
+        {canCreate && (
+          <Button className="w-full md:w-auto" asChild>
+            <Link className="flex items-center" href="/admin/blogs/create">
+              <Plus className="mr-2 h-4 w-4" />
+              New Blog
+            </Link>
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -104,7 +118,9 @@ export default function BlogListPage() {
                     <TableHead className="hidden md:table-cell">Category</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    {(canEdit || canDelete) && (
+                      <TableHead className="text-right">Actions</TableHead>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody className="whitespace-nowrap">
@@ -121,38 +137,43 @@ export default function BlogListPage() {
                       <TableCell>
                         <Badge variant="default">Active</Badge>
                       </TableCell>
-                      <TableCell className="text-right">
-                        {isItemDeleting(blog.id) ? (
-                            <Preloader size="sm" />
-                              ) : (
-                                <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/admin/blogs/list/${blog.id}`}>
-                                <Eye className="mr-2 h-4 w-4" /> View
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link href={`/admin/blogs/list/edit/${blog.id}`}>
-                                <Pencil className="mr-2 h-4 w-4" /> Edit
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-red-600"
-                              onClick={() => deleteBlogById(blog.id)}
-                              disabled={isItemDeleting(blog.id)}
-                            >
-                              <Trash className="mr-2 h-4 w-4" /> Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                      {(canEdit || canDelete) && (
+                        <TableCell className="text-right">
+                          {isItemDeleting(blog.id) ? (
+                              <Preloader size="sm" />
+                                ) : (
+                                  <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem asChild>
+                                <Link href={`/admin/blogs/list/${blog.id}`}>
+                                  <Eye className="mr-2 h-4 w-4" /> View
+                                </Link>
+                              </DropdownMenuItem>
+                              {canEdit && (
+                                <DropdownMenuItem asChild>
+                                  <Link href={`/admin/blogs/list/edit/${blog.id}`}>
+                                    <Pencil className="mr-2 h-4 w-4" /> Edit
+                                  </Link>
+                                </DropdownMenuItem>
                               )}
-                      </TableCell>
+                              {canDelete && (
+                                <DropdownMenuItem
+                                  className="text-red-600"
+                                  onClick={() => deleteBlogById(blog.id)}
+                                >
+                                  <Trash className="mr-2 h-4 w-4" /> Delete
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                                )}
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>

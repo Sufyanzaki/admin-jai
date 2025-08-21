@@ -24,7 +24,7 @@ import { Settings, Upload, X } from "lucide-react";
 import Preloader from "@/components/shared/Preloader";
 import Image from "next/image";
 
-export default function BasicSettingsForm() {
+export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
   const {
     handleSubmit,
     control,
@@ -333,11 +333,11 @@ export default function BasicSettingsForm() {
               </div>
             </div>
           </div>
-          <div className="flex justify-end gap-4 pt-4">
+          {canEdit &&  <div className="flex justify-end gap-4 pt-4">
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Saving..." : "Save Configuration"}
             </Button>
-          </div>
+          </div>}
         </form>
       </CardContent>
     </Card>

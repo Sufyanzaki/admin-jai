@@ -22,7 +22,7 @@ const firebaseInstructions = [
   'Configure the "firebase-messaging-sw.js" file and keep the file in the root directory of your cPanel.'
 ];
 
-export default function PushNotificationForm() {
+export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
   const {
     register,
     handleSubmit,
@@ -31,8 +31,6 @@ export default function PushNotificationForm() {
     isLoading,
     isLoadingData,
     control,
-    reset,
-    existingData,
   } = usePushForm();
 
   if (isLoadingData) {
@@ -73,6 +71,7 @@ export default function PushNotificationForm() {
                   <Switch
                     id="push-status"
                     checked={field.value}
+                    disabled={!canEdit}
                     onCheckedChange={field.onChange}
                   />
                 )}
@@ -87,6 +86,7 @@ export default function PushNotificationForm() {
                   type="password"
                   placeholder="Enter FCM API Key"
                   {...register('fcmApiKey')}
+                    disabled={!canEdit}
                 />
                 {errors.fcmApiKey && (
                   <p className="text-sm text-red-500">{errors.fcmApiKey.message}</p>
@@ -98,6 +98,7 @@ export default function PushNotificationForm() {
                   id="fcm-auth-domain"
                   placeholder="Enter Auth Domain"
                   {...register('authDomain')}
+                    disabled={!canEdit}
                 />
                 {errors.authDomain && (
                   <p className="text-sm text-red-500">{errors.authDomain.message}</p>
@@ -109,6 +110,7 @@ export default function PushNotificationForm() {
                   id="fcm-project-id"
                   placeholder="Enter Project ID"
                   {...register('projectId')}
+                    disabled={!canEdit}
                 />
                 {errors.projectId && (
                   <p className="text-sm text-red-500">{errors.projectId.message}</p>
@@ -119,6 +121,7 @@ export default function PushNotificationForm() {
                 <Input
                   id="fcm-storage-bucket"
                   placeholder="Enter Storage Bucket"
+                  disabled={!canEdit}
                   {...register('storageBucket')}
                 />
                 {errors.storageBucket && (
@@ -130,6 +133,7 @@ export default function PushNotificationForm() {
                 <Input
                   id="fcm-sender-id"
                   placeholder="Enter Sender ID"
+                  disabled={!canEdit}
                   {...register('messagingSenderId')}
                 />
                 {errors.messagingSenderId && (
@@ -141,6 +145,7 @@ export default function PushNotificationForm() {
                 <Input
                   id="fcm-app-id"
                   placeholder="Enter App ID"
+                  disabled={!canEdit}
                   {...register('appId')}
                 />
                 {errors.appId && (
@@ -152,6 +157,7 @@ export default function PushNotificationForm() {
                 <Input
                   id="firebase-server-key"
                   type="password"
+                  disabled={!canEdit}
                   placeholder="Enter Firebase Server Key"
                   {...register('serverKey')}
                 />
@@ -182,11 +188,11 @@ export default function PushNotificationForm() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end gap-2 flex-wrap">
+        {canEdit && <CardFooter className="flex justify-end gap-2 flex-wrap">
           <Button type="submit" disabled={isLoading}>
             {isLoading ? "Saving..." : "Save Settings"}
           </Button>
-        </CardFooter>
+        </CardFooter>}
       </Card>
     </form>
   );

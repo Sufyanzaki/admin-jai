@@ -44,8 +44,8 @@ export default function useGoogleSettingsForm() {
   } = useForm<GoogleSettingsFormValues>({
     resolver: zodResolver(googleSettingsSchema),
     defaultValues: {
-      clientId: null,
-      clientSecret: null,
+      clientId: "",
+      clientSecret: "",
       isActive: false,
     },
     mode: 'onBlur',
