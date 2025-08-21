@@ -10,6 +10,7 @@ export const useProfile = () => {
     key: 'user-profile',
     fetcher: async () => {
       const response = await getProfile();
+      console.log('Profile fetched:', response);
       if (!response) throw new Error('Failed to fetch profile');
       return response;
     }

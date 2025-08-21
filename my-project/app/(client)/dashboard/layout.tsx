@@ -7,6 +7,7 @@ import {DashboardFooter} from "./_components/dashboard-footer";
 import {DashboardHeader} from "@/app/(client)/dashboard/_components/dashboard-header";
 import {usePathname} from "next/navigation";
 import {postPageView} from "@/app/(client)/dashboard/_api/pageView";
+import OnlineStatusListener from "@/client-utils/OnlineStatusListener";
 
 export default function DashboardLayout({
   children,
@@ -22,6 +23,7 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider defaultOpen={true}>
+        <OnlineStatusListener onStatusChange={()=>{}} />
       <DashboardSidebar />
       <div className="w-full flex flex-col min-h-screen">
         <nav className="sticky top-0 z-40 bg-white/10 backdrop-blur-md border-b border-gray-500/20 ml-auto w-full">
