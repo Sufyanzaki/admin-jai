@@ -5,7 +5,7 @@ export const showConfirmation = (
 ): void => {
   Swal.fire({
     title: "Are you sure?",
-    text: "You won't be able to revert this!",
+    text: "Are you sure you want to proceed with this action?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",

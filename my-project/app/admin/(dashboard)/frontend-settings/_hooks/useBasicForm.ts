@@ -11,7 +11,7 @@ import {postBasicPage} from '@/app/shared-api/basicPageApi';
 
 const basicFormSchema = z.object({
     Title: z.string().min(1, 'Title is required'),
-    Url: z.string().url('Invalid URL format').min(1, 'URL is required'),
+    Url: z.string().min(1, 'URL is required'),
     content: z.string().min(1, 'Content is required'),
     metaTitle: z.string().min(1, 'Meta title is required'),
     metaDescription: z.string().min(1, 'Meta description is required'),
@@ -24,7 +24,7 @@ const basicFormSchema = z.object({
 type BasicFormValues = z.infer<typeof basicFormSchema>;
 
 export default function useBasicForm() {
-    const [isUploading, setIsUploading] = useState(false); // New state for image upload
+    const [isUploading, setIsUploading] = useState(false);
 
     const {
         register,
@@ -50,7 +50,7 @@ export default function useBasicForm() {
 
     const { trigger, isMutating } = useSWRMutation('createBasicPage',
         async (url: string, { arg }: { arg: BasicFormValues }) => {
-            return await postBasicPage(arg)
+            return await postBasicPage({...arg, Url: `${process.env.NEXT_APP_BASE}/page/${arg.Url}`});
         },
         {
             onError: (error: Error) => {
@@ -64,7 +64,6 @@ export default function useBasicForm() {
         let metaImageUrl = values.metaImage;
 
         try {
-            // Start image upload loading
             if (values.metaImage instanceof File) {
                 setIsUploading(true);
                 metaImageUrl = await imageUpload(values.metaImage);
@@ -95,9 +94,9 @@ export default function useBasicForm() {
         watch,
         control,
         errors,
-        isLoading: isMutating || isUploading, // Combine both loading states
-        isFormSubmitting: isMutating, // Separate state for form submission
-        isUploading, // Separate state for image upload
+        isLoading: isMutating || isUploading,
+        isFormSubmitting: isMutating,
+        isUploading,
         onSubmit,
     };
 }

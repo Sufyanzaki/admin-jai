@@ -84,7 +84,7 @@ export default function ChatBoxPage() {
                             messages: prev.messages + 1,
                             data: {
                                 ...prev.data,
-                                messages: [...prev.data.messages, message],
+                                messages: [message, ...prev.data.messages],
                             },
                         };
                     }, false).finally();
@@ -114,7 +114,7 @@ export default function ChatBoxPage() {
 
                 <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
                     {(chat ?? []).length > 0 ? (
-                        [...chat ?? []].reverse().map((message) => {
+                        [...chat ?? []].map((message) => {
                             const currentUser = message.senderId === userId;
                             return (
                                 <div

@@ -68,14 +68,22 @@ export default function CreatePage() {
 
                         <div className="space-y-2">
                             <Label htmlFor="Url">URL*</Label>
-                            <Input
-                                id="Url"
-                                {...register("Url")}
-                                placeholder="Page URL"
-                                disabled={isLoading}
-                            />
+                            <div className="flex rounded-md shadow-sm">
+                                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-muted text-sm text-muted-foreground">
+                                  {process.env.NEXT_APP_BASE}/page/
+                                </span>
+                                <Input
+                                    id="Url"
+                                    {...register("Url")}
+                                    placeholder="relative-path"
+                                    disabled={isLoading}
+                                    className="rounded-l-none"
+                                />
+                            </div>
                             {errors.Url && (
-                                <p className="text-sm font-medium text-destructive">{errors.Url.message}</p>
+                                <p className="text-sm font-medium text-destructive">
+                                    {errors.Url.message}
+                                </p>
                             )}
                         </div>
 

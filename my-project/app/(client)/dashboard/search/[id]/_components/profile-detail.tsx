@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/client/ux/button";
 import { Badge } from "@/components/client/ux/badge";
-import { ArrowLeft, Shield, Star } from "lucide-react";
+import {ArrowLeft, Lock, Shield, Star} from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/client/ux/tabs";
-import { ReactNode, useState } from "react";
+import {MouseEvent, ReactNode, useState} from "react";
 import ImageWrapper from "@/components/client/image-wrapper";
 import ComplainModal from "@/components/client/complain-modal";
 import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
@@ -14,6 +14,9 @@ import { useCreateChat } from "@/app/(client)/dashboard/chat/_hooks/useCreateCha
 import { MemberPersonalityBehavior } from "@/app/shared-types/member";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
+import {showConfirmation} from "@/shared-lib";
+import {useImageRequest} from "@/app/(client)/dashboard/_hooks/useImageRequest";
+import {cn} from "@/lib/utils";
 
 export function ProfileDetail() {
   const router = useRouter();
@@ -24,17 +27,25 @@ export function ProfileDetail() {
   const [openComplain, setOpenComplain] = useState(false);
   const { trigger: sendLike, loading } = useSendLike();
   const { sendMessageRefetch, messageLoading } = useCreateChat();
+  const { requestTrigger } = useImageRequest()
 
-  // const hasProfilePicture = user?.image ? true : false;
-  // const isFreeMember = !user?.isPremium;
+  const [loaded, setIsLoaded] = useState(false);
 
-  // const onlyMembersWithPhotoCanSee = user?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
-  // const blurForFreeMembers = user?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
-  // const onlyVipCanSee = user?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
-  // const onRequestOnly = user?.PhotoSetting[0]?.onRequestOnly;
+  const hasProfilePicture = !!user?.image;
+  const isFreeMember = !user?.isPremium;
 
-  // const blur = onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
+  const onlyMembersWithPhotoCanSee = user?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
+  const blurForFreeMembers = user?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
+  const onlyVipCanSee = user?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
+  const onRequestOnly = user?.PhotoSetting[0]?.onRequestOnly;
 
+  const blur = onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
+
+  const handleImageRequest = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    showConfirmation(()=>requestTrigger(id));
+  };
 
   const handleBack = () => router.back();
 
@@ -55,7 +66,6 @@ export function ProfileDetail() {
 
   const handleReportProfile = () => setOpenComplain(true);
 
-  // Helper functions
   const getDisplayValue = (value?: string | number) => value || '-';
   const toArray = (val?: string) => val ? val.split(",").map(v => v.trim()).filter(Boolean) : [];
   const getPersonalityTraits = (traitsObj: MemberPersonalityBehavior | null) => {
@@ -73,7 +83,6 @@ export function ProfileDetail() {
     );
   }
 
-  // Profile sections components to reduce duplication
   const ProfileSection = ({ title, children }: { title: string; children: ReactNode }) => (
     <div className="space-y-4">
       <h4 className="text-xl font-semibold">{title}</h4>
@@ -102,6 +111,56 @@ export function ProfileDetail() {
       </span>
     </div>
   );
+
+  const renderImageOverlay = () => {
+    switch (true) {
+      case blurForFreeMembers:
+        return (
+            <div
+                className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
+                onClick={handleImageRequest}
+            >
+              <Lock />
+              Visible for Premium Members
+              <br />
+              <p className="text-xs font-normal">View Plan</p>
+            </div>
+        );
+
+      case onlyMembersWithPhotoCanSee:
+        return (
+            <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+              <Lock />
+              Visible when You have photo
+            </div>
+        );
+
+      case onRequestOnly:
+        return (
+            <div
+                className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold"
+                onClick={handleImageRequest}
+            >
+              <Lock />
+              Request for photo
+              <br />
+            </div>
+        );
+
+      case onlyVipCanSee:
+        return (
+            <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+              <Lock />
+              Only Vip members can see
+              <br />
+            </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
@@ -150,12 +209,23 @@ export function ProfileDetail() {
         <div className="px-5">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
             <div className="space-y-4">
-              <div className="relative">
+              <div className="relative aspect-square ">
                 <ImageWrapper
                   src={user.image || "/placeholder.svg"}
                   alt={user.firstName || "Profile"}
-                  className="w-full h-80 object-cover rounded-[5px]"
+                  className={cn(
+                      "w-full h-full object-cover transition-opacity duration-500",
+                      blur && "blur-xs",
+                      loaded ? "opacity-100 z-0" : "opacity-0 z-0"
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                 />
+                <img
+                    src="/dashboardLogo.png"
+                    alt="Loading placeholder"
+                    className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`}
+                />
+                {renderImageOverlay()}
               </div>
               {String(session?.user?.id) !== String(id) && <div className="space-y-2">
                 <div>

@@ -3,7 +3,7 @@
 import { Container } from '@/components/client/ux/container'
 import React from 'react'
 import { useParams } from "next/navigation";
-import { useCustomPages } from "@/app/(client)/(public)/[slug]/_hooks/useCustomPages";
+import { useCustomPages } from "@/app/(client)/(public)/page/[slug]/_hooks/useCustomPages";
 import Preloader from "@/components/shared/Preloader";
 import { unescapeHtml } from '@/lib/utils';
 

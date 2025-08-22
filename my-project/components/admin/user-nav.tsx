@@ -49,7 +49,6 @@ export function UserNav() {
   return (
     <div className="flex items-center gap-4">
       <ThemeToggle />
-      <NotificationDropdown />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-md">

@@ -3,15 +3,12 @@ import ImageWrapper from "@/components/client/image-wrapper";
 import {Button} from "@/components/client/ux/button";
 import {cn} from "@/lib/utils";
 import Link from "next/link";
-import {useState} from "react";
+import {MouseEvent, useState} from "react";
 import {useSendLike} from "../_hooks/useSendLike";
 import {useUnblockUser} from "../settings/blocked/_hooks/useUnblockProfile";
-import {useCreateChat} from "../chat/_hooks/useCreateChat";
-import {useRouter} from "next/navigation";
 import {useProfile} from "@/app/shared-hooks/useProfile";
 import {Lock} from "lucide-react";
 import {showConfirmation} from "@/shared-lib";
-import {MouseEvent} from "react";
 import {useImageRequest} from "@/app/(client)/dashboard/_hooks/useImageRequest";
 
 export default function ProfileCard({
@@ -21,13 +18,11 @@ export default function ProfileCard({
   profile: MemberProfile;
   blocked?: boolean;
 }) {
-  const router = useRouter();
   const [loaded, setIsLoaded] = useState(false);
   const { response } = useProfile();
 
   const { trigger: sendLike, loading } = useSendLike();
   const { trigger } = useUnblockUser();
-  const { sendMessageRefetch } = useCreateChat();
   const { requestTrigger } = useImageRequest()
 
   const hasProfilePicture = !!response?.user.image;
@@ -45,6 +40,56 @@ export default function ProfileCard({
     e.preventDefault();
     showConfirmation(()=>requestTrigger(profile.id));
   };
+
+  const renderImageOverlay = () => {
+    switch (true) {
+      case blurForFreeMembers:
+        return (
+            <div
+                className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
+                onClick={handleImageRequest}
+            >
+              <Lock />
+              Visible for Premium Members
+              <br />
+              <p className="text-xs font-normal">View Plan</p>
+            </div>
+        );
+
+      case onlyMembersWithPhotoCanSee:
+        return (
+            <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+              <Lock />
+              Visible when You have photo
+            </div>
+        );
+
+      case onRequestOnly:
+        return (
+            <div
+                className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold"
+                onClick={handleImageRequest}
+            >
+              <Lock />
+              Request for photo
+              <br />
+            </div>
+        );
+
+      case onlyVipCanSee:
+        return (
+            <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+              <Lock />
+              Only Vip members can see
+              <br />
+            </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
 
   return (
     <div className="rounded-t-[5px] overflow-hidden hover:shadow-lg transition-shadow">
@@ -70,31 +115,7 @@ export default function ProfileCard({
               className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`}
           />
 
-          {blurForFreeMembers ? (
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
-                 onClick={handleImageRequest}>
-              <Lock />
-              Visible for Premium Members
-              <br />
-              <p className="text-xs font-normal">View Plan</p>
-            </div>
-          ) :
-            onlyMembersWithPhotoCanSee ? (
-              <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
-                <Lock />
-                Visible when You have photo
-              </div>
-            )
-              : onRequestOnly ? (
-                <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold"
-                     onClick={handleImageRequest}
-                  >
-                  <Lock />
-                  Request for photo
-                  <br />
-                </div>
-              ) : (<></>)
-          }
+          {renderImageOverlay()}
         </div>
 
         <div className="absolute bottom-0 text-center px-3 py-1 bg-white/70 w-full">

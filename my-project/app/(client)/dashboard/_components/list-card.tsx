@@ -11,7 +11,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
   const router = useRouter();
   const { trigger: sendLike, loading } = useSendLike();
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
-  const { sendMessageRefetch, messageLoading } = useCreateChat();
+  const { sendMessageRefetch } = useCreateChat();
 
   const handleSendMessage = async () => {
     if (!profile?.id) return;
