@@ -1,14 +1,10 @@
 "use client"
 
 import type React from "react"
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import Link from "next/link";
 import ImageWrapper from "@/components/client/image-wrapper";
 import {Container} from "@/components/client/ux/container";
 import {useRegistration} from "@/app/shared-hooks/useRegistration";
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
 export default function PaymentLayout({ children }: { children: React.ReactNode }) {
 
@@ -78,9 +74,7 @@ export default function PaymentLayout({ children }: { children: React.ReactNode 
                     </p>
                     <div className="mt-6 mx-auto w-full max-w-full overflow-auto">
                         <Container>
-                            <Elements stripe={stripePromise}>
-                                {children}
-                            </Elements>
+                            {children}
                         </Container>
                     </div>
                 </div>

@@ -6,6 +6,9 @@ import usePackageById from "@/app/shared-hooks/usePackageById";
 import Preloader from "@/components/shared/Preloader";
 import {useParams} from "next/navigation";
 import MollieForm from "./_components/mollie-form";
+import {Elements} from "@stripe/react-stripe-js";
+import type React from "react";
+import {loadStripe} from "@stripe/stripe-js";
 
 export default function PaymentMethodSelector() {
 
@@ -39,6 +42,8 @@ export default function PaymentMethodSelector() {
         )
     }
 
+    const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
+
     return (
         <div className="w-full bg-white rounded-[5px] space-y-6">
             <h1 className="text-2xl font-bold mb-6">Choose a Payment Method</h1>
@@ -56,7 +61,9 @@ export default function PaymentMethodSelector() {
                             Enter your card details below to complete the payment.
                         </p>
 
-                        <StripeForm id={id} amount={pkg.price}/>
+                        <Elements stripe={stripePromise}>
+                            <StripeForm id={id} amount={pkg.price}/>
+                        </Elements>
                     </div>
                 </TabsContent>
 
