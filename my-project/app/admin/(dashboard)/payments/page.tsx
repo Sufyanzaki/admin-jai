@@ -15,14 +15,13 @@ import {
 } from "@/components/admin/ui/alert-dialog";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar";
 import {Badge} from "@/components/admin/ui/badge";
-import {Card, CardContent} from "@/components/admin/ui/card";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card";
 import {Input} from "@/components/admin/ui/input";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
-import {Search} from "lucide-react";
+import {CreditCardIcon, DollarSignIcon, Search, TrendingUpIcon, UserIcon} from "lucide-react";
 import {usePayments} from "@/app/admin/(dashboard)/payments/_hooks/usePayments";
 import Preloader from "@/components/shared/Preloader";
 import {UserPackageDto} from "@/app/admin/(dashboard)/payments/_types/payment";
-import {useSession} from "next-auth/react";
 
 const statusColors: Record<string, string> = {
   ACTIVE: "bg-green-500/20 text-green-700 border-green-500",
@@ -33,7 +32,6 @@ const statusColors: Record<string, string> = {
 
 export default function PaymentsPage() {
 
-  const { data:session } = useSession();
   const { payments, paymentLoading } = usePayments();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -88,6 +86,59 @@ export default function PaymentsPage() {
               <p className="text-muted-foreground">Manage your payments and their records.</p>
             </div>
           </div>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm xl:text-lg font-medium">Total Payments</CardTitle>
+              <DollarSignIcon className="size-8 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">${payments.totalPayments.toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                {payments.yearDifferencePercent !== null ?
+                    `${payments.yearDifferencePercent > 0 ? '+' : ''}${payments.yearDifferencePercent}% from last year` :
+                    'No comparison data'}
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm xl:text-lg font-medium">Active Packages</CardTitle>
+              <TrendingUpIcon className="size-8 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{payments.activePackages}</div>
+              <p className="text-xs text-muted-foreground">
+                ${payments.thisMonthPayments.toFixed(2)} this month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm xl:text-lg font-medium">This Year</CardTitle>
+              <UserIcon className="size-8 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">${payments.thisYearPayments.toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                ${payments.lastYearPayments.toFixed(2)} last year
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm xl:text-lg font-medium">This Month</CardTitle>
+              <CreditCardIcon className="size-8 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">${payments.thisMonthPayments.toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                ${payments.lastMonthPayments.toFixed(2)} last month
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="flex justify-end mb-6">

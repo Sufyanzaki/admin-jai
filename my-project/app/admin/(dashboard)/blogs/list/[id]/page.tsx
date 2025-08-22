@@ -7,13 +7,13 @@ import {ArrowLeft, Bookmark, Calendar, Edit, Share2} from "lucide-react"
 import Link from "next/link"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
 import {useParams} from "next/navigation";
-import useBlogById from "../../../../../shared-hooks/useBlogById";
 import {unescapeHtml} from "@/lib/utils"
 import Preloader from "@/components/shared/Preloader";
+import useBlogById from "@/app/shared-hooks/useBlogById";
 
 export default function BlogListDetails() {
   const params = useParams();
-  const id = params.id as string | number;
+  const id = params.id as string;
   const { blog, loading, error } = useBlogById(id);
 
   if (loading) {
@@ -115,7 +115,7 @@ export default function BlogListDetails() {
                   <TabsTrigger value="seo">SEO</TabsTrigger>
                 </TabsList>
                 <TabsContent value="content" className="space-y-4">
-                  <div className="rounded-md overflow-hidden mb-4">
+                  <div className="rounded-md overflow-hidden mb-4 w-40 h-40">
                     <img
                         src={blog.bannerImage}
                         alt={blog.title}

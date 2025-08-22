@@ -81,8 +81,8 @@ export default function ReportsPage() {
 
 	const {data:session} = useSession();
 
-	const permissionsArr = session?.user?.permissions || [];
-	const isAdmin = session?.user?.role === "admin";
+	const permissionsArr = session?.user.permissions ?? [];
+	const isAdmin = permissionsArr.length === 0;
 
 	const permissionsMap = permissionsArr.reduce((acc, perm) => {
 		acc[perm.module] = {

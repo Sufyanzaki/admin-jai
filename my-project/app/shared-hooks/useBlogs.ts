@@ -1,17 +1,21 @@
 import { useSWRFix } from "@/shared-lib";
-import {BlogDto} from "@/app/shared-types/blog";
 import {getAllBlogs} from "@/app/shared-api/blogsApi";
+import { BlogApiResponse } from "../shared-types/blog";
 
 export const useBlogs = () => {
-    const { data, loading, error, mutate } = useSWRFix<BlogDto[]>({
+    const { data, loading, error } = useSWRFix<BlogApiResponse>({
         key: 'blogs',
         fetcher: getAllBlogs
     });
 
+    const blogPosts = data?.categories?.categories?.flatMap((cat) => cat.blogs) ?? [];
+
     return {
-        blogs: data,
+        blogs: blogPosts,
         loading,
         error,
-        mutate
+        categories: data?.categories?.categories ?? [],
+        categoryNames: data?.categories?.categoryNames ?? [],
+        stats: data?.categories?.stats,
     };
 }; 

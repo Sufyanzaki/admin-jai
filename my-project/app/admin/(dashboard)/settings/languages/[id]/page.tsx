@@ -14,25 +14,6 @@ import {Checkbox} from "@/components/admin/ui/checkbox";
 import useEditTranslation from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useEditTranslation";
 import PaginationSection from "@/components/admin/Pagination";
 
-type TranslationPagination = {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-}
-
-export type TranslationDto = {
-    languageCode: string;
-    language: string;
-    translations: Record<string, string>;
-    pagination: TranslationPagination;
-};
-
-export type TranslationsResponse = {
-    translations: TranslationDto;
-};
-
-
 export default function LanguageTranslatePage() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
@@ -70,7 +51,7 @@ export default function LanguageTranslatePage() {
     const allKeys = tableData.map(row => row.key);
     const allSelected = allKeys.length > 0 && allKeys.every(key => selectedRows[key]);
 
-    const pagination = response?.translations?.translations.pagination ?? {
+    const pagination = response?.translations?.pagination ?? {
         total: tableData.length,
         page,
         limit: 10,

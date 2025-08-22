@@ -1,10 +1,10 @@
 import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
-import {BlogDto} from "@/app/shared-types/blog";
+import {BlogApiResponse, BlogDto} from "@/app/shared-types/blog";
 
 type Payload = Partial<BlogDto>;
 
-export async function getAllBlogs(): Promise<BlogDto[]> {
-    return await getRequest<BlogDto[]>({
+export async function getAllBlogs(): Promise<BlogApiResponse> {
+    return await getRequest<BlogApiResponse>({
         url: 'blog',
         useAuth: true
     });

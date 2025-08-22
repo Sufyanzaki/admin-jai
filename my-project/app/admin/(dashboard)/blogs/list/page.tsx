@@ -16,11 +16,13 @@ import {useBlogs} from "@/app/shared-hooks/useBlogs";
 import Preloader from "@/components/shared/Preloader";
 import {useDeleteBlog} from "@/app/shared-hooks/useDeleteBlog";
 import {useSession} from "next-auth/react";
+import {useBlogStatus} from "@/app/admin/(dashboard)/blogs/_hooks/useBlogStatus";
 
 export default function BlogListPage() {
 
-  const { blogs = [], loading, error } = useBlogs();
+  const { blogs = [], loading, error, stats } = useBlogs();
   const { deleteBlogById, isItemDeleting } = useDeleteBlog();
+  const {updateBlogStatus, isItemUpdating} = useBlogStatus();
   const {data:session} = useSession();
 
   let permissions;
@@ -28,7 +30,6 @@ export default function BlogListPage() {
     permissions = session.user.permissions.find(permission => permission.module === "blogs");
   }
 
-  // Permission flags
   const canCreate = permissions?.canCreate ?? true;
   const canEdit = permissions?.canEdit ?? true;
   const canDelete = permissions?.canDelete ?? true;
@@ -57,7 +58,7 @@ export default function BlogListPage() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">7</div>
+              <div className="text-2xl font-bold">{stats?.totalBlogs}</div>
               <Notebook className="size-8 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">+1 from last month</p>
@@ -70,7 +71,7 @@ export default function BlogListPage() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">4</div>
+              <div className="text-2xl font-bold">{stats?.activeBlogs}</div>
               <CheckCircle className="size-8 text-green-500" />
             </div>
             <p className="text-xs text-muted-foreground">Currently visible and updated</p>
@@ -83,7 +84,7 @@ export default function BlogListPage() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">3</div>
+              <div className="text-2xl font-bold">{stats?.inactiveBlogs}</div>
               <Ban className="size-8 text-red-500" />
             </div>
             <p className="text-xs text-muted-foreground">Hidden or unpublished blogs</p>
@@ -135,11 +136,16 @@ export default function BlogListPage() {
                       <TableCell className="hidden md:table-cell">{blog.categoryId}</TableCell>
                       <TableCell>{blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : ''}</TableCell>
                       <TableCell>
-                        <Badge variant="default">Active</Badge>
+                        <Badge
+                            variant={blog.isActive ? "default" : "secondary"}
+                            className={blog.isActive ? "bg-green-500" : "bg-red-500 text-white"}
+                        >
+                          {blog.isActive ? "Active" : "Inactive"}
+                        </Badge>
                       </TableCell>
                       {(canEdit || canDelete) && (
                         <TableCell className="text-right">
-                          {isItemDeleting(blog.id) ? (
+                          {(isItemDeleting(blog.id) || isItemUpdating(blog.id)) ? (
                               <Preloader size="sm" />
                                 ) : (
                                   <DropdownMenu>
@@ -160,6 +166,25 @@ export default function BlogListPage() {
                                     <Pencil className="mr-2 h-4 w-4" /> Edit
                                   </Link>
                                 </DropdownMenuItem>
+                              )}
+                              {canEdit && (
+                                  <DropdownMenuItem
+                                      onClick={() =>
+                                          updateBlogStatus(blog.id, !blog.isActive)
+                                      }
+                                  >
+                                    {blog.isActive ? (
+                                        <>
+                                          <Ban className="mr-2 h-4 w-4 text-red-500" />
+                                          Set Inactive
+                                        </>
+                                    ) : (
+                                        <>
+                                          <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                                          Set Active
+                                        </>
+                                    )}
+                                  </DropdownMenuItem>
                               )}
                               {canDelete && (
                                 <DropdownMenuItem
