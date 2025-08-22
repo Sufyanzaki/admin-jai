@@ -1,14 +1,19 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { showError, showSuccess } from "@/shared-lib";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
+import {createFooterSection, updateFooterSection} from "@/app/admin/(dashboard)/settings/other-settings/_api/footerApi";
 import {useFooterSectionSetting} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFooterSectionSetting";
+import {useSearchParams} from "next/navigation";
+import {useSWRConfig} from "swr";
+import {FooterSectionDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
 const footerSectionFormSchema = z.object({
+    sectionName: z.string().min(1, "Section name is required"),
     pageNames: z.array(
         z.object({
             title: z.string(),
@@ -20,9 +25,13 @@ const footerSectionFormSchema = z.object({
 export type FooterSectionFormValues = z.infer<typeof footerSectionFormSchema>;
 
 export function useFooterSectionForm() {
-    const { data: footerSectionData, isLoading: isLoadingFooterSectionData } = useFooterSectionSetting(1);
 
-    console.log(footerSectionData)
+    const { mutate:globalMutate } = useSWRConfig();
+
+    const searchParams = useSearchParams();
+    const editId = searchParams.get("editId") ?? undefined;
+
+    const {isLoading, data} = useFooterSectionSetting(editId)
 
     const [error, setError] = useState<string | null>(null);
 
@@ -32,48 +41,28 @@ export function useFooterSectionForm() {
         setValue,
         reset,
         control,
+        register,
         watch,
     } = useForm<FooterSectionFormValues>({
         resolver: zodResolver(footerSectionFormSchema),
         defaultValues: {
+            sectionName: "",
             pageNames: [],
         },
         mode: "onBlur",
     });
 
-    // Prefill form from API
-    useEffect(() => {
-        if (footerSectionData?.data.pageNames) {
-            const titles = footerSectionData.data.pageNames
-                .split(",")
-                .map((t: string) => t.trim());
-
-            const urls = (footerSectionData.data.pagesLinks || "")
-                .split(",")
-                .map((u: string) => u.trim());
-
-            const sectionPageArray = titles.map((title, idx) => ({
-                title,
-                url: urls[idx] || "",
-            }));
-
-            reset({
-                pageNames: sectionPageArray,
-            });
-        }
-    }, [footerSectionData, reset]);
-
-    // SWR mutation for save
     const { trigger, isMutating } = useSWRMutation(
-        "patchFooterSectionSettings",
+        "createFooterSection",
         async (_: string, { arg }: { arg: FooterSectionFormValues }) => {
             try {
                 const payload = {
-                    ...footerSectionData?.data,
+                    sectionName: arg.sectionName,
                     pageNames: arg.pageNames.map((p) => p.title).join(","),
                     pagesLinks: arg.pageNames.map((p) => p.url).join(","),
                 };
-                return await patchFooterSectionSettings(payload);
+                if(editId) return await updateFooterSection(editId, payload);
+                return await createFooterSection(payload)
             } catch (error: unknown) {
                 const message =
                     error instanceof Error ? error.message : "Something went wrong";
@@ -89,10 +78,29 @@ export function useFooterSectionForm() {
                 setError(message);
                 showError({ message });
             },
+            onSuccess: () => {
+                showSuccess("Footer section updated successfully!");
+            },
             revalidate: false,
             populateCache: false,
         }
     );
+
+    useEffect(() => {
+        if (!data) return;
+        const pageNamesArray = data.pageNames ? data.pageNames.split(',') : [];
+        const pagesLinksArray = data.pagesLinks ? data.pagesLinks.split(',') : [];
+
+        const formattedPageNames = pageNamesArray.map((title: string, index: number) => ({
+            title: title.trim(),
+            url: pagesLinksArray[index] ? pagesLinksArray[index].trim() : '#'
+        }));
+
+        reset({
+            sectionName: data.sectionName || "",
+            pageNames: formattedPageNames
+        });
+    }, [data, reset]);
 
     const onSubmit = async (
         values: FooterSectionFormValues,
@@ -101,9 +109,41 @@ export function useFooterSectionForm() {
         setError(null);
 
         try {
-            await trigger(values);
-            showSuccess("Footer section updated successfully!");
+            const r = await trigger(values);
             callback?.();
+            if(!r) throw new Error("Failed to create footer section");
+            globalMutate(
+                "footer-all-settings",
+                (current: FooterSectionDto[] = []) => {
+                    if (editId) {
+                        return current.map(item =>
+                            item.id.toString() === editId
+                                ? {
+                                    ...item,
+                                    sectionName: values.sectionName,
+                                    pageNames: values.pageNames.map(p => p.title).join(","),
+                                    pagesLinks: values.pageNames.map(p => p.url).join(","),
+                                    updatedAt: new Date().toISOString(),
+                                }
+                                : item
+                        );
+                    } else {
+                        return [
+                            ...current,
+                            {
+                                id: r.id ?? Date.now(),
+                                sectionName: values.sectionName,
+                                pageNames: values.pageNames.map(p => p.title).join(","),
+                                pagesLinks: values.pageNames.map(p => p.url).join(","),
+                                footerId: r.footerId ?? 1,
+                                createdAt: new Date().toISOString(),
+                                updatedAt: new Date().toISOString(),
+                            },
+                        ];
+                    }
+                },
+                false
+            ).finally();
         } catch (error: unknown) {
             const message =
                 error instanceof Error
@@ -115,16 +155,17 @@ export function useFooterSectionForm() {
 
     return {
         handleSubmit,
+        register,
         errors,
-        isLoading: isSubmitting || isMutating || isLoadingFooterSectionData,
+        isSubmitting: isSubmitting || isMutating,
         setValue,
         reset,
         control,
         watch,
         onSubmit,
         error,
+        isFetching: isLoading,
         trigger,
-        footerSectionData,
-        isLoadingFooterSectionData,
     };
 }
+

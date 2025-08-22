@@ -4,9 +4,7 @@ import {NotificationCard} from "@/app/(client)/dashboard/notifications/_componen
 import {LikeStatus, useLikesReceived} from "../_hooks/useLikesReceived";
 
 export default function NotificationsPage() {
-  const { likesReceived:likesAccepted , likesReceivedLoading, error } = useLikesReceived(
-    LikeStatus.ACCEPTED
-  );
+  const { likesReceived:likesAccepted , likesReceivedLoading, error } = useLikesReceived( LikeStatus.ACCEPTED );
   if (likesReceivedLoading) {
     return <p>Loading...</p>;
   }

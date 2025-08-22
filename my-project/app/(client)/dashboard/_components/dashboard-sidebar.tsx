@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import {LogOut} from "lucide-react";
 import {
   Sidebar,
   SidebarFooter,
@@ -10,15 +10,24 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/client/ux/sidebar";
-import { Button } from "@/components/client/ux/button";
+import {Button} from "@/components/client/ux/button";
 import Link from "next/link";
 import type React from "react";
 import SidebarData from "@/app/(client)/dashboard/_components/sidebar-data";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { signOut } from "next-auth/react";
+import {signOut} from "next-auth/react";
 
 export function DashboardSidebar() {
   const { open } = useSidebar();
+
+  const handleSignOut = async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    await signOut({
+      callbackUrl: '/auth/login',
+      redirect: true
+    });
+  };
 
   return (
     <div className="hidden xl:block">
@@ -54,7 +63,7 @@ export function DashboardSidebar() {
             <Button
               variant="ghost"
               size="dashboard"
-              onClick={() => signOut({ callbackUrl: "/auth/login" })}
+              onClick={handleSignOut}
               className="border rounded-[5px] border-white/50 text-white hover:bg-transparent w-full group-data-[collapsible=icon]:hidden"
             >
               <LogOut className="w-4 h-4" />

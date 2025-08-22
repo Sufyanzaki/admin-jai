@@ -40,15 +40,6 @@ export default function ProfileCard({
 
   const blur = onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
 
-  const handleSendMessage = async () => {
-    if (!profile?.id) return;
-    sendMessageRefetch(profile?.id).then(res => {
-      if (res?.data?.fullChat?.id) {
-        router.push(`/dashboard/chat?chatId=${res.data.fullChat.id}`);
-      }
-    });
-  };
-
   const handleImageRequest = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
@@ -139,16 +130,18 @@ export default function ProfileCard({
             onClick={(e) => {
               console.log("click");
               e.stopPropagation();
-              e.preventDefault(); // <-- stops Link navigation
-              trigger(Number(profile.id)); // cast to number here
+              e.preventDefault();
+              trigger(Number(profile.id)).finally();
             }}
             variant="theme" size="sm" className="w-full">
             Unblock Member
           </Button>
         ) : (
-          <Button onClick={handleSendMessage} variant="theme" size="sm" className="w-full">
-            Connect Now!
-          </Button>
+          <Link href={`/dashboard/search/${profile.id}`}>
+            <Button variant="theme" size="sm" className="w-full" type="button">
+              Connect Now!
+            </Button>
+          </Link>
         )}
       </div>
     </div>

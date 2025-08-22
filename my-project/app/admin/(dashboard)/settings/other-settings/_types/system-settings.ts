@@ -54,8 +54,10 @@ export type FooterSectionDto =  {
     id: string;
     sectionName: string;
     pageNames: string;
+    pagesLinks: string;
+    footerId: string;
     createdAt: string;
-    updatedAt: string;
+    updatedAt: string
 }
 
 export type ChatSettingDto = {

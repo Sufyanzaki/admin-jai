@@ -88,11 +88,6 @@ export type MemberResponseDto = {
     data: MemberDataDto;
 }
 
-//detailedReports types
-
-type Count = {
-    [key: string]: number;
-}
 
 type RelationshipPercentage = {
     status: string;
@@ -173,4 +168,48 @@ type DetailedData = {
 export type DetailedResponseDto = {
     success: boolean;
     data: DetailedData;
+}
+
+//summary overview
+
+// Root response type
+export interface ReportResponse {
+    success: boolean;
+    data: ReportData;
+}
+
+export interface ReportData {
+    userReport: UserReport;
+    packageReport: PackageReport;
+    memberReport: MemberReport;
+    analyticsReport: AnalyticsReport;
+}
+
+export interface UserReport {
+    dailyLogins: number;
+    completedProfiles: number;
+    deletedAccounts: number;
+    neverLoggedIn: number;
+}
+
+export interface PackageReport {
+    totalRevenue: number;
+    activePackages: number;
+    thisMonthRevenue: number;
+    thisYearRevenue: number;
+    revenueByGender: Record<string, number>; // e.g., { "Woman": 179.94 }
+}
+
+export interface MemberReport {
+    totalMembers: number;
+    activeMembers: number;
+    membersLastMonth: number;
+    membersThisMonth: number;
+}
+
+export interface AnalyticsReport {
+    totalUsers: number;
+    newSignups: number;
+    totalMatches: number;
+    totalMessages: number;
 }

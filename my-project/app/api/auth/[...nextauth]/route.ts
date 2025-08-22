@@ -45,7 +45,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
 
-    // User OTP
     CredentialsProvider({
       id: "user-login",
       name: "User Login",
@@ -91,6 +90,7 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: "/auth/login",
+    signOut: "/auth/login", // Add signOut page
   },
   callbacks: {
     async jwt({ token, user, account, profile, trigger, session }) {
@@ -125,10 +125,20 @@ export const authOptions: NextAuthOptions = {
       session.token = (token.user as { token?: string }).token;
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
   session: {
     strategy: "jwt",
-    maxAge: 2 * 60 * 60, // 2 hours in seconds
+    maxAge: 2 * 60 * 60,
+  },
+  events: {
+    async signOut({ token }) {
+      console.log('User signed out', token);
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

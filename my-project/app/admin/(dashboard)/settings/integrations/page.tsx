@@ -18,7 +18,10 @@ import {useSession} from "next-auth/react";
 export default function IntegrationsPage() {
   const {data: session} = useSession();
 
-  const permissionsMap = (session?.user.permissions ?? []).reduce((acc, perm) => {
+  const permissionsArr = session?.user.permissions ?? [];
+  const isAdmin = permissionsArr.length === 0;
+
+  const permissionsMap = permissionsArr.reduce((acc, perm) => {
     acc[perm.module] = {
       canCreate: perm.canCreate ?? true,
       canEdit: perm.canEdit ?? true,
@@ -28,11 +31,12 @@ export default function IntegrationsPage() {
     return acc;
   }, {} as Record<string, { canCreate: boolean; canEdit: boolean; canDelete: boolean; canView: boolean }>);
 
-  const socialMediaLogin = permissionsMap["social_media_login"];
-  const thirdPartySettings = permissionsMap["third_party_settings"];
-  const paymentMethods = permissionsMap["payment_methods"];
-  const smtpSettings = permissionsMap["smtp_settings"];
-  const pushNotification = permissionsMap["push_notification"];
+  // If admin, allow all tabs and editing
+  const socialMediaLogin = isAdmin ? { canView: true, canEdit: true } : permissionsMap["social_media_login"];
+  const thirdPartySettings = isAdmin ? { canView: true, canEdit: true } : permissionsMap["third_party_settings"];
+  const paymentMethods = isAdmin ? { canView: true, canEdit: true } : permissionsMap["payment_methods"];
+  const smtpSettings = isAdmin ? { canView: true, canEdit: true } : permissionsMap["smtp_settings"];
+  const pushNotification = isAdmin ? { canView: true, canEdit: true } : permissionsMap["push_notification"];
 
   return (
       <div className="flex flex-col space-y-6 p-4 xl:p-6">
@@ -50,14 +54,14 @@ export default function IntegrationsPage() {
 
         <Tabs defaultValue="social">
           <TabsList className="grid w-full grid-cols-4 sm:grid-cols-5 md:w-[600px]">
-            {socialMediaLogin?.canView && <TabsTrigger value="social">Social</TabsTrigger>}
-            {thirdPartySettings?.canView && <TabsTrigger value="third-party">Third Party</TabsTrigger>}
-            {paymentMethods?.canView && <TabsTrigger value="settings">Payments</TabsTrigger>}
-            {smtpSettings?.canView && <TabsTrigger value="smtp">SMTP</TabsTrigger>}
-            {pushNotification?.canView && <TabsTrigger value="push-notification">Push Noti.</TabsTrigger>}
+            {(isAdmin || socialMediaLogin?.canView) && <TabsTrigger value="social">Social</TabsTrigger>}
+            {(isAdmin || thirdPartySettings?.canView) && <TabsTrigger value="third-party">Third Party</TabsTrigger>}
+            {(isAdmin || paymentMethods?.canView) && <TabsTrigger value="settings">Payments</TabsTrigger>}
+            {(isAdmin || smtpSettings?.canView) && <TabsTrigger value="smtp">SMTP</TabsTrigger>}
+            {(isAdmin || pushNotification?.canView) && <TabsTrigger value="push-notification">Push Noti.</TabsTrigger>}
           </TabsList>
 
-          {socialMediaLogin?.canView && (
+          {(isAdmin || socialMediaLogin?.canView) && (
               <TabsContent value="social" className="space-y-6 pt-4">
                 <Card>
                   <CardHeader>
@@ -68,21 +72,21 @@ export default function IntegrationsPage() {
                     <CardDescription>Configure social media authentication providers</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <GoogleForm canEdit={socialMediaLogin?.canEdit} />
+                    <GoogleForm canEdit={isAdmin || socialMediaLogin?.canEdit} />
                     <Separator />
-                    <FacebookForm canEdit={socialMediaLogin?.canEdit} />
+                    <FacebookForm canEdit={isAdmin || socialMediaLogin?.canEdit} />
                   </CardContent>
                 </Card>
               </TabsContent>
           )}
 
-          {thirdPartySettings?.canView && (
+          {(isAdmin || thirdPartySettings?.canView) && (
               <TabsContent value="third-party" className="space-y-6 pt-4">
-                <CaptchaForm canEdit={thirdPartySettings?.canEdit} />
+                <CaptchaForm canEdit={isAdmin || thirdPartySettings?.canEdit} />
               </TabsContent>
           )}
 
-          {paymentMethods?.canView && (
+          {(isAdmin || paymentMethods?.canView) && (
               <TabsContent value="settings" className="space-y-6 pt-4">
                 <Card>
                   <CardHeader>
@@ -93,23 +97,23 @@ export default function IntegrationsPage() {
                     <CardDescription>Configure your payment gateway settings</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <MollieForm canEdit={paymentMethods?.canEdit} />
+                    <MollieForm canEdit={isAdmin || paymentMethods?.canEdit} />
                     <Separator />
-                    <StripeForm canEdit={paymentMethods?.canEdit} />
+                    <StripeForm canEdit={isAdmin || paymentMethods?.canEdit} />
                   </CardContent>
                 </Card>
               </TabsContent>
           )}
 
-          {smtpSettings?.canView && (
+          {(isAdmin || smtpSettings?.canView) && (
               <TabsContent value="smtp" className="space-y-6 pt-4">
-                <SMTPForm canEdit={smtpSettings?.canEdit} />
+                <SMTPForm canEdit={isAdmin || smtpSettings?.canEdit} />
               </TabsContent>
           )}
 
-          {pushNotification?.canView && (
+          {(isAdmin || pushNotification?.canView) && (
               <TabsContent value="push-notification" className="space-y-6 pt-4">
-                <PushNotificationForm canEdit={pushNotification?.canEdit} />
+                <PushNotificationForm canEdit={isAdmin || pushNotification?.canEdit} />
               </TabsContent>
           )}
         </Tabs>

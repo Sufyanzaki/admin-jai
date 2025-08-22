@@ -3,9 +3,12 @@ import {BlogApiResponse, BlogDto} from "@/app/shared-types/blog";
 
 type Payload = Partial<BlogDto>;
 
-export async function getAllBlogs(): Promise<BlogApiResponse> {
+export async function getAllBlogs(category: string | null = null, page: number = 1): Promise<BlogApiResponse> {
+    const params: Record<string, string> = { page: page.toString() };
+    if (category) params.category = category;
+
     return await getRequest<BlogApiResponse>({
-        url: 'blog',
+        url: `blog?` + new URLSearchParams(params).toString(),
         useAuth: true
     });
 }

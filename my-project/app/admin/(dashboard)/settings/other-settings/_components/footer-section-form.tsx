@@ -7,11 +7,15 @@ import {useBasicPages} from "@/app/admin/(dashboard)/frontend-settings/_hooks/us
 import Preloader from "@/components/shared/Preloader";
 import {useFooterSectionForm} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFooterSectionForm";
 
-export default function FooterSectionForm(){
+type Props = {
+    callback: ()=>void;
+}
+
+export default function FooterSectionForm({callback}:Props){
 
     const { basicPages, isLoading } = useBasicPages();
 
-    const {} = useFooterSectionForm();
+    const { register, errors, setValue, watch, handleSubmit, onSubmit, isSubmitting } = useFooterSectionForm();
 
     if(isLoading){
         return (
@@ -24,8 +28,10 @@ export default function FooterSectionForm(){
 
     if(!basicPages) return;
 
+    const selectedPages = watch("pageNames") || [];
+
     const handlePageChange = (newSelection: { title: string; url: string }[]) => {
-        // setValue("sectionPage", newSelection);
+        setValue("pageNames", newSelection, { shouldValidate: true });
     };
 
     const customPages = basicPages
@@ -36,27 +42,37 @@ export default function FooterSectionForm(){
         }));
 
     return (
-        <>
+        <form onSubmit={handleSubmit(v => onSubmit(v, callback)) }>
             <div className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="section-name">Section Name</Label>
-                    <Input id="section-name" placeholder="Enter name" />
+                    <Input
+                        id="section-name"
+                        placeholder="Enter section name"
+                        {...register("sectionName")}
+                    />
+                    {errors.sectionName && (
+                        <p className="text-sm text-red-500">{errors.sectionName.message}</p>
+                    )}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="section-page">Section Page</Label>
                     <MultiOptionSelect
                         options={customPages}
-                        selected={[]}
+                        selected={selectedPages}
                         onChange={handlePageChange}
                         getLabel={(p) => p.title}
                         getKey={(p) => p.url || p.title}
                     />
+                    {errors.pageNames && (
+                        <p className="text-sm text-red-500">{errors.pageNames.message}</p>
+                    )}
                 </div>
             </div>
 
             <DialogFooter className="mt-4">
-                <Button type="submit">Save Configuration</Button>
+                <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Saving" : "Save Configuration"}</Button>
             </DialogFooter>
-        </>
+        </form>
     )
 }

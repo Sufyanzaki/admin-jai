@@ -18,9 +18,10 @@ export async function getLikesReceived({status}: Payload ): Promise<ApiResponseD
 }
 
 export async function postLikeResponse(payload: Payload, userId: number): Promise<ApiResponseDto> {
-    const r = await postRequest<Payload>({
+    const newPayload = {action: payload.status ?? ""}
+    const r = await postRequest<{action: string}>({
         url: `users/like/${userId}/respond`,
-        data: payload,
+        data: newPayload,
         useAuth: true,
     });
     return r.response;

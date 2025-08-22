@@ -79,7 +79,7 @@ export default function PaginationSection({
                             onClick={() => handlePageChange(page - 1)}
                             className={page === 1 ? "pointer-events-none opacity-50" : ""}
                         >
-                            <Button variant="outline" size="sm" disabled={page === 1} className="hover:text-dark-blue">
+                            <Button variant="outline" size="sm" disabled={page === 1} className="hover:text-dark-blue text-muted-foreground">
                                 <ChevronLeft className="h-4 w-4" />
                             </Button>
                         </PaginationLink>
@@ -97,7 +97,7 @@ export default function PaginationSection({
                                     <Button
                                         variant={page === p ? "default" : "outline"}
                                         size="sm"
-                                        className={page === p ? "hover:text-dark-blue bg-app-blue text-black" : "hover:text-dark-blue"}
+                                        className={page === p ? "hover:text-dark-blue bg-app-blue text-muted-foreground" : "hover:text-dark-blue"}
                                     >
                                         {p}
                                     </Button>
@@ -111,7 +111,7 @@ export default function PaginationSection({
                             onClick={() => handlePageChange(page + 1)}
                             className={page === totalPages ? "pointer-events-none opacity-50" : ""}
                         >
-                            <Button variant="outline" size="sm" disabled={page === totalPages} className="hover:text-dark-blue">
+                            <Button variant="outline" size="sm" disabled={page === totalPages} className="text-muted-foreground">
                                 <ChevronRight className="h-4 w-4" />
                             </Button>
                         </PaginationLink>

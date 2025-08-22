@@ -73,7 +73,6 @@ export default function RecentJoin() {
                 </Button>
             </div>
 
-            {/* Mobile Slider */}
             <div className="relative sm:hidden">
                 <div
                     ref={sliderRef}
@@ -87,7 +86,8 @@ export default function RecentJoin() {
                             className={`keen-slider__slide ${!showSlider ? "!min-w-0" : ""}`}
                         >
                             <div className="relative rounded-lg overflow-hidden group">
-                                <figure className="w-[400px] h-[400px] object-cover">
+                                <figure className="w-[400px] h-[400px] object-cover relative">
+                                     <div className="absolute inset-0 bg-black/20" />
                                     <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                                 </figure>
 
@@ -103,11 +103,10 @@ export default function RecentJoin() {
                   </span>
                                 )}
 
-                                {/* Name and location */}
                                 <div className="absolute bottom-2 left-2 text-white text-2xl">
                                     <p className="font-semibold">{member.name}</p>
                                     {member.location && (
-                                        <p className="text-sm">{member.location}</p>
+                                        <p className="text-m">{member.location}</p>
                                     )}
                                 </div>
                             </div>
@@ -143,15 +142,14 @@ export default function RecentJoin() {
                 )}
             </div>
 
-            {/* Default Grid for Medium and Larger Screens */}
             <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-6">
                 {members.map((member, idx) => (
                     <div key={idx} className="relative rounded-lg overflow-hidden group">
-                        <figure className="w-[400px] h-[400px] object-cover">
+                        <figure className="w-[400px] h-[400px] object-cover relative">
+                              <div className="absolute inset-0 bg-black/20" />
                             <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                         </figure>
 
-                        {/* Badge */}
                         {member.badge === "Featured" && (
                             <span className="absolute top-2 right-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-md font-medium">
                 Featured
@@ -163,7 +161,6 @@ export default function RecentJoin() {
               </span>
                         )}
 
-                        {/* Name and location */}
                         <div className="absolute bottom-2 left-2 text-white text-sm">
                             <p className="font-semibold">{member.name}</p>
                             {member.location && <p className="text-xs">{member.location}</p>}

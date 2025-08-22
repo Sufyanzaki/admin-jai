@@ -2,38 +2,20 @@
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
 import {Settings} from "lucide-react";
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/admin/ui/dialog";
-import {useState} from "react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
 import AbusiveCard from "./_components/abusive-card";
 import CurrencyTable from "./_components/currency-table";
 import UserDashboardFooterForm from "./_components/user-dashboard-footer-form";
 import FooterSettingsTable from "./_components/footer-settings-table";
 import FooterForm from "./_components/footerForm";
-import FooterSectionForm from "@/app/admin/(dashboard)/settings/other-settings/_components/footer-section-form";
 import {useSession} from "next-auth/react";
-
-const pagesData = [
-  {
-    id: 1,
-    name: "Bedrijf",
-    pages: ["Home", "Contact", "How Work", "Registration", "Agenda"],
-  },
-  {
-    id: 2,
-    name: "Veilig daten",
-    pages: ["Agenda"],
-  },
-  {
-    id: 3,
-    name: "Legal",
-    pages: ["Algemene voorwaarden", "Privacy", "Disclaimer"],
-  },
-];
+import {superUser} from "@/lib/utils";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
-  const [openFooterDialog, setOpenFooterDialog] = useState(false);
+
+  const permissionsArr = session?.user.permissions ?? [];
+  const isAdmin = permissionsArr.length === 0;
 
   const permissionsMap = (session?.user.permissions ?? []).reduce((acc, perm) => {
     acc[perm.module] = {
@@ -45,10 +27,10 @@ export default function SettingsPage() {
     return acc;
   }, {} as Record<string, { canCreate: boolean; canEdit: boolean; canDelete: boolean; canView: boolean }>);
 
-  const currency = permissionsMap["currency"];
-  const abuseWordFiltering = permissionsMap["abuse_word_filtering"];
-  const footer = permissionsMap["footer"];
-  const footerSection = permissionsMap["footer_section"];
+  const currency = isAdmin ? superUser: permissionsMap["currency"];
+  const abuseWordFiltering = isAdmin ? superUser : permissionsMap["abuse_word_filtering"];
+  const footer = isAdmin ? superUser : permissionsMap["footer"];
+  const footerSection = isAdmin ? superUser : permissionsMap["footer_section"];
 
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -118,8 +100,6 @@ export default function SettingsPage() {
                     canEdit={footerSection?.canEdit}
                     canDelete={footerSection?.canDelete}
                     canCreate={footerSection?.canCreate}
-                    pagesData={pagesData}
-                    onOpenDialog={() => setOpenFooterDialog(true)}
                 />
               </TabsContent>
           )}
@@ -130,18 +110,6 @@ export default function SettingsPage() {
               </TabsContent>
           )}
         </Tabs>
-
-        <Dialog open={openFooterDialog} onOpenChange={setOpenFooterDialog}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add Footer Section</DialogTitle>
-              <DialogDescription>
-                Provide the name and page associated with this section.
-              </DialogDescription>
-            </DialogHeader>
-            <FooterSectionForm />
-          </DialogContent>
-        </Dialog>
       </div>
   )
 }

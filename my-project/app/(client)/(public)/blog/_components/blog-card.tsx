@@ -24,7 +24,7 @@ export function BlogCard({
       <div className="py-3 px-0">
         <div className="flex items-center justify-between text-sm mb-3">
           <div className="flex items-center space-x-1 text-sm">
-            <span className="text-sm">{category?.name}</span>
+            {/*<span className="text-sm">{category?.name}</span>*/}
           </div>
           <div className="flex flex-row items-center space-x-1 ">
             <div className="bg-gray-100 rounded-full p-1">

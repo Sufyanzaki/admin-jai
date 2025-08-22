@@ -2,7 +2,7 @@ import {getRequest} from "@/shared-lib";
 import {
     AnalyticsResponseDto,
     DetailedResponseDto,
-    MemberResponseDto
+    MemberResponseDto, ReportResponse
 } from "@/app/admin/(dashboard)/reports/_types/report";
 import {RevenueDataDto} from "@/app/admin/(dashboard)/payments/_types/payment";
 
@@ -128,6 +128,13 @@ export async function getMemberReport(filters?: MemberProps): Promise<MemberResp
 
     return await getRequest({
         url,
+        useAuth: true
+    });
+}
+
+export const getReportSummary = async (): Promise<ReportResponse> => {
+    return await getRequest({
+        url: 'users/reports-summary',
         useAuth: true
     });
 }

@@ -13,9 +13,7 @@ export function useAllFooterSections() {
         refetch: sectionsRefetch,
     } = useSWRFix<FooterSectionDto[]>({
         key: "footer-all-settings",
-        fetcher: async () => {
-            return await getFooterSections();
-        },
+        fetcher: async () => await getFooterSections(),
         config: {
             revalidateOnReconnect: false,
         }

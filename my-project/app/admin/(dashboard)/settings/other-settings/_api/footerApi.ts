@@ -1,4 +1,4 @@
-import {patchRequest, getRequest, postRequest} from "@/shared-lib";
+import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
 import {
   FooterSectionDto,
   FooterSettingDto
@@ -30,11 +30,19 @@ export async function getFooterSections(): Promise<FooterSectionDto[]> {
   });
 }
 
-export async function getFooterSectionDetails(id:string): Promise<FooterSectionDto[]> {
+export async function getFooterSectionDetails(id:string): Promise<FooterSectionDto> {
   return await getRequest({
     url: `setting/footer/sections/${id}`,
     useAuth: true,
   });
+}
+
+export async function deleteFooterSectionDetails(id:string): Promise<FooterSectionDto> {
+  const r = await deleteRequest({
+    url: `setting/footer/sections/${id}`,
+    useAuth: true,
+  });
+  return r.response;
 }
 
 export async function updateFooterSection(id: string,data: SectionPayload): Promise<FooterSectionDto> {

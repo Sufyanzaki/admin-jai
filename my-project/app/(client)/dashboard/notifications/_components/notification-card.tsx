@@ -45,17 +45,17 @@ export function NotificationCard({ notification }: NotificationCardProps) {
           {notification?.sender && notification.status !== "ACCEPTED" && notification.sender?.id !== session?.user?.id ?
             <h3 className="font-medium text-sm sm:text-base">
 
-              You received a like from {notification.sender?.firstName}{" "}
-              {notification.sender?.lastName}
+              You received a like from {notification.sender.firstName}
+              {notification.sender.lastName}
             </h3> : notification.receiver ? <h3 className="font-medium text-sm sm:text-base">
 
-              You sent a like to {notification.receiver?.firstName}{" "}
-              {notification.receiver?.lastName}
+              You sent a like to {notification.sender.firstName}
+              {notification.sender.lastName}
             </h3> : notification.sender && notification.status === "ACCEPTED" &&
             <h3 className="font-medium text-sm sm:text-base">
 
-              You accepted a like from {notification.sender?.firstName}{" "}
-              {notification.sender?.lastName}
+              You accepted a like from {notification.sender.firstName}
+              {notification.sender.lastName}
             </h3>}
 
         </div>
@@ -73,8 +73,8 @@ export function NotificationCard({ notification }: NotificationCardProps) {
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-shrink-0 self-center sm:self-start">
             {notification.sender ? <ImageWrapper
-              src={notification.sender?.image || "/placeholder.svg"}
-              alt={notification.sender?.firstName}
+              src={notification.sender.image || "/placeholder.svg"}
+              alt={notification.sender.firstName}
               className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
             /> : notification.receiver && <ImageWrapper
               src={notification.receiver?.image || "/placeholder.svg"}
@@ -89,16 +89,26 @@ export function NotificationCard({ notification }: NotificationCardProps) {
               <div className="space-y-2 sm:max-w-[70%]">
                 <div className="flex items-center gap-2">
                   <h4 className="text-lg sm:text-xl font-semibold">
-                    {notification.sender.firstName} {" "} {notification.sender?.lastName}
+                    {notification.sender.firstName} {" "} {notification.sender.lastName}
                   </h4>
                   {(notification.sender.isPremium || notification.receiver.isPremium) && (
                     <ShieldCheck className="w-4 h-4 text-app-blue" />
                   )}
                 </div>
-                <div className={`flex w-3 h-3 ${(notification.sender?.isOnline) ? "bg-app-green" : "bg-app-red" } rounded-[5px] border-2 border-white`} />
+                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red" } rounded-[5px] border-2 border-white`} />
                 <p className="text-xs sm:text-sm text-gray-700 font-medium">
-                  {notification.sender.age} Years, {notification.sender.dob} | {notification.sender.religion},{" "}
-                  {notification.sender.relationshipStatus} | {notification.sender.gender}
+                  {[
+                    { label: "Age", value: `${notification.sender.age} Years` },
+                    { label: "DOB", value: notification.sender.dob.split("T")[0] },
+                    { label: "Religion", value: notification.sender.religion },
+                    { label: "Status", value: notification.sender.relationshipStatus },
+                    { label: "Gender", value: notification.sender.gender },
+                  ].map((item, index, arr) => (
+                      <span key={index}>
+      {item.label}: {item.value}
+                        {index < arr.length - 1 && " | "}
+    </span>
+                  ))}
                 </p>
 
                 <div className="flex items-start gap-2">
@@ -127,7 +137,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                   </Button>
                 </div>
               </div>
-              {notification.sender && notification.status === "PENDING" && notification.sender?.id !== session?.user?.id ?
+              {notification.sender && notification.status === "PENDING" && notification.sender.id !== session?.user?.id ?
                 <div className="sm:text-right space-y-2">
                   <p className="text-xs">Someone invited you to Connect</p>
                   <div className="flex gap-2 flex-wrap">

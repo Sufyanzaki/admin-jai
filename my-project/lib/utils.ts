@@ -19,3 +19,5 @@ export function isFile(value: unknown): value is File {
 }
 
 export const toArray = (str?: string) => str?.split(",").map(s => s.trim()).filter(Boolean) ?? [];
+
+export const superUser = { canView: true, canEdit: true, canCreate: true, canDelete: true };
