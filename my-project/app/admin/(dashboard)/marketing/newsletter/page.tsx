@@ -125,7 +125,7 @@ export default function NewsletterListPage() {
                                                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                                 <DropdownMenuSeparator />
                                                                 <DropdownMenuItem className="flex items-center gap-2">
-                                                                    <Link href={`/marketing/newsletter/${item.id}`} className="flex items-center gap-2">
+                                                                    <Link href={`/admin/marketing/newsletter/${item.id}`} className="flex items-center gap-2">
                                                                         <Eye className="w-4 h-4" />
                                                                         View
                                                                     </Link>
