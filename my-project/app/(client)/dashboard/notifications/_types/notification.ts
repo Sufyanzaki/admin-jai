@@ -1,6 +1,4 @@
-export type SenderDto = {
-    educationCareer: string | null;
-}
+import {MemberProfile} from "@/app/shared-types/member";
 
 export type RequestDto = {
     id: string;
@@ -9,7 +7,8 @@ export type RequestDto = {
     status: string;
     createdAt: string;
     updatedAt: string;
-    sender: SenderDto;
+    sender: MemberProfile;
+    receiver: MemberProfile;
 }
 
 export type ApiResponseDto = {

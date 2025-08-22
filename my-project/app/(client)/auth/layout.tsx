@@ -18,6 +18,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   const { registrationSettings, registrationLoading } = useRegistration();
   const router = useRouter();
   const {response, userLoading} = useProfile();
+
   const { status } = useSession();
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     }
   }, [status, router, response]);
 
-  if (registrationLoading || userLoading) {
+  if (userLoading && status === "authenticated") {
     return (
         <div className="flex flex-col items-center justify-center h-64">
           <Preloader />
@@ -40,10 +41,10 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <div>
         <div className="hidden h-screen w-full lg:flex flex-row overflow-hidden">
           <div className="h-screen w-[31%]">
-            <div
+            {registrationLoading ? <div className="w-full flex justify-center items-center"><Preloader /></div> : <div
                 className="h-full w-full bg-cover bg-center bg-black/20"
                 style={{ backgroundImage: `url(${registrationSettings?.bannerImage})` }}
-            />
+            />}
           </div>
 
           <div className="w-[69%] flex flex-col">

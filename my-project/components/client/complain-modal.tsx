@@ -34,7 +34,6 @@ export default function ComplainModal({
     onSubmit,
     errors,
     register,
-    setValue,
     control,
     isSubmitting,
   } = useReportProfile(userId);
@@ -42,8 +41,7 @@ export default function ComplainModal({
     <Dialog open={openComplain} onOpenChange={setOpenComplain}>
       <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
         <form
-          onSubmit={handleSubmit((values) =>
-            onSubmit(values, () => setOpenComplain(false))
+          onSubmit={handleSubmit(v => onSubmit(v, () => setOpenComplain(false))
           )}
         >
           <DialogHeader>
@@ -98,7 +96,7 @@ export default function ComplainModal({
             </div>
           </div>
 
-          <div className="border-t pt-4">
+          <div className="pt-4">
             <p className="text-xs text-gray-500 mb-4">
               Your report will be kept confidential and reviewed by our team.
               Thank you for helping us maintain a safe community.

@@ -10,7 +10,7 @@ export enum LikeStatus {
 
 export const useLikesReceived = (status?: LikeStatus) => {
   const { data, loading, error, mutate } = useSWRFix<ApiResponseDto>({
-    key: ["likes-received"],
+    key: "likes-received",
     fetcher: async () => {
       const response = await getLikesReceived({status});
       if (!response) {

@@ -1,8 +1,7 @@
-import { showError, showSuccess } from '@/shared-lib';
-import { postLike, sendLike } from './../_api/postLike';
-import { useState } from "react";
-import { postBlockUser } from '../_api/postBlockUser';
-import { mutate } from 'swr';
+import {showError, showSuccess} from '@/shared-lib';
+import {useState} from "react";
+import {postBlockUser} from '../_api/postBlockUser';
+import {mutate} from 'swr';
 
 export const useBlockUser = () => {
     const [loading, setLoading] = useState(false);
@@ -17,17 +16,13 @@ export const useBlockUser = () => {
             if (res) {
                 showSuccess('User Blocked successfully!');
             }
-            mutate("blocked-profiles");
+            mutate("blocked-profiles").finally();
             return res;
-        } catch (err: any) {
+        } catch (err: unknown) {
             let message = 'An error occurred while blocking this profile';
 
             if (err instanceof Error) {
                 message = err.message;
-            } else if (err?.response?.data?.message) {
-                message = err.response.data.message; // axios-style
-            } else if (err?.message) {
-                message = err.message; // fetch or plain object
             }
 
             showError({ message });

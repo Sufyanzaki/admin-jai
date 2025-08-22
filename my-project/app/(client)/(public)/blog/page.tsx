@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Container } from "@/components/client/ux/container";
-import { BlogCard } from "./_components/blog-card";
-import { Button } from "@/components/client/ux/button";
-import { CustomPagination } from "@/components/client/ux/custom-pagination";
-import { useBlogs } from "@/app/shared-hooks/useBlogs";
+import {Container} from "@/components/client/ux/container";
+import {BlogCard} from "./_components/blog-card";
+import {Button} from "@/components/client/ux/button";
+import {useBlogs} from "@/app/shared-hooks/useBlogs";
 import Preloader from "@/components/shared/Preloader";
+import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
 
 export default function BlogPage() {
   const {
@@ -15,15 +14,12 @@ export default function BlogPage() {
     error,
     categories,
     categoryNames,
-    stats,
   } = useBlogs();
 
-  const [page, setPage] = useState(1);
+  const paginationData = categories.length > 0 ? categories[0].pagination : { total: 0, page: 1, limit: 10, totalPages: 1 };
 
-  const total =
-    categories.length > 0
-      ? categories[0].pagination?.totalPages ?? 1
-      : 1;
+  const handlePageChange = (newPage: number) => {
+  };
 
   if (loading) {
     return (
@@ -81,10 +77,9 @@ export default function BlogPage() {
           </div>
 
           <div className="flex justify-center items-center space-x-2 mb-12">
-            <CustomPagination
-              totalPages={total}
-              currentPage={page}
-              onPageChange={setPage}
+            <PaginationSection
+                pagination={paginationData}
+                onPageChange={handlePageChange}
             />
           </div>
         </div>

@@ -1,18 +1,16 @@
-import { showError, showSuccess } from '@/shared-lib';
-import { postLike, sendLike } from './../_api/postLike';
-import { useState } from "react";
-import { postBlockUser } from '../_api/postBlockUser';
-import { mutate } from 'swr';
+import {showError, showSuccess} from '@/shared-lib';
+import {postBlockUser} from '../_api/postBlockUser';
+import {mutate} from 'swr';
 import z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
 
-export const reportUserchema = z.object({
+export const reportSchema = z.object({
   reason: z.string().min(1, "please enter reason"),
   additionDetail: z.string().optional(),
 });
 
-export type ComplaintFormValues = z.infer<typeof reportUserchema>;
+export type ComplaintFormValues = z.infer<typeof reportSchema>;
 
 export const useReportProfile = (blockedUserId: number) => {
 
@@ -25,7 +23,7 @@ export const useReportProfile = (blockedUserId: number) => {
     setValue,
     watch,
   } = useForm<ComplaintFormValues>({
-    resolver: zodResolver(reportUserchema),
+    resolver: zodResolver(reportSchema),
     defaultValues: {
       reason: "",
       additionDetail: "",
@@ -39,17 +37,13 @@ export const useReportProfile = (blockedUserId: number) => {
       if (res) {
         showSuccess("User Blocked successfully!");
       }
-      mutate("blocked-profiles");
+      mutate("blocked-profiles").finally();
       return res;
-    } catch (err: any) {
+    } catch (err: unknown) {
       let message = "An error occurred while blocking this profile";
 
       if (err instanceof Error) {
         message = err.message;
-      } else if (err?.response?.data?.message) {
-        message = err.response.data.message; // axios-style
-      } else if (err?.message) {
-        message = err.message; // fetch or plain object
       }
 
       showError({ message });
@@ -57,8 +51,9 @@ export const useReportProfile = (blockedUserId: number) => {
     }
   };
 
-  const onSubmit = async (values: ComplaintFormValues, callback?: () => void) => {
-    const result = await trigger(blockedUserId);
+  const onSubmit = async (_: ComplaintFormValues, callback?: () => void) => {
+    await trigger(blockedUserId);
+    callback?.();
   };
 
 

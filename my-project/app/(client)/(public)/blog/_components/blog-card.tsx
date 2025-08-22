@@ -1,36 +1,25 @@
 "use client";
-import ImageCard from "@/components/client/ux/image-card";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { BlogDto } from "@/app/shared-types/blog";
-import { formatDate } from "date-fns";
+import {BlogDto} from "@/app/shared-types/blog";
+import {formatDate} from "date-fns";
+import {unescapeHtml} from "@/lib/utils";
+import Link from "next/link";
 
 export function BlogCard({
   id,
   title,
   bannerImage,
   createdAt,
-  category,
+  description
 }: BlogDto) {
   return (
     <div className="p-0 overflow-hidden">
       <div className="relative hidden lg:block">
-        <ImageCard
-          src={bannerImage || "/placeholder.svg"}
-          alt={title}
-          width={490}
-          height={343}
-          className="!rounded-[5px]"
-        />
+        <img src={bannerImage || "/placeholder.svg"} alt={title} className="rounded-[5px] object-cover aspect-video" />
       </div>
 
       <div className="relative lg:hidden block">
-        <ImageCard
-          src={bannerImage || "/placeholder.svg"}
-          alt={title}
-          width={390}
-          height={253}
-          className="!rounded-[5px]"
-        />
+        <img src={bannerImage || "/placeholder.svg"} alt={title} className="rounded-[5px] object-cover aspect-square" />
       </div>
       <div className="py-3 px-0">
         <div className="flex items-center justify-between text-sm mb-3">
@@ -53,10 +42,12 @@ export function BlogCard({
           </div>
         </div>
         <h4 className="font-semibold text-[18px] lg:text-xl mb-2 transition-colors cursor-pointer">
-          <a href={`/blog/${id}`}>{title}</a>
+          <Link href={`/blog/${id}`}>{title}</Link>
         </h4>
-        {/* <p className="text-gray-600 text-sm line-clamp-3">{excerpt}</p>
-         */}
+        <p
+            className="text-gray-600 text-sm line-clamp-3"
+            dangerouslySetInnerHTML={{ __html: unescapeHtml(description) }}
+        />
       </div>
     </div>
   );
