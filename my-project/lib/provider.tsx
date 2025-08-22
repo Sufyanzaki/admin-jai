@@ -24,7 +24,7 @@ export default function Providers({
         <SessionProvider session={serverSession}>
             <AuthGuard mounted={mounted}>
                 <ErrorBoundary>
-                    <ThemeProvider defaultTheme="system" attribute="class" enableSystem={mounted}>
+                    <ThemeProvider defaultTheme="dark" attribute="class" enableSystem={false}>
                         {children}
                     </ThemeProvider>
                 </ErrorBoundary>
