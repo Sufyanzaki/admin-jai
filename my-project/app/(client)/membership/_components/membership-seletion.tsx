@@ -52,46 +52,48 @@ export function MembershipSelection() {
 
       <div className="space-y-6 mt-12">
         <div className="flex flex-col items-center lg:flex-row w-full gap-8 lg:gap-6 text-center">
-          {packages?.map((plan: PackageDto) => (
-            <div key={plan.id} className="w-full relative space-y-2">
-              <div className="border border-app-border rounded-sm py-5 ">
-                <div className="absolute -top-2 -right-2 bg-app-light-pink text-white text-xs px-3 py-1 rounded-full font-medium">
-                  {plan.validity} Days
-                </div>
+          {packages?.map((plan: PackageDto) => {
+            if (!plan.isActive) return null;
+            return (
+                <div key={plan.id} className="w-full relative space-y-2">
+                  <div className="border border-app-border rounded-sm py-5 ">
+                    <div className="absolute -top-2 -right-2 bg-app-light-pink text-white text-xs px-3 py-1 rounded-full font-medium">
+                      {plan.validity} Days
+                    </div>
 
-                <div className="text-3xl font-bold text-[#343A40]">
-                  ${plan.price}
+                    <div className="text-3xl font-bold text-[#343A40]">
+                      ${plan.price}
+                    </div>
+                  </div>
+                  <div className="text-start text-sm">{plan.name}</div>
                 </div>
-              </div>
-              <div className="text-start text-sm">{plan.name}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="space-y-6 mt-12">
-          {packages?.map((plan: PackageDto) => (
-            <div
-              key={plan.id}
-              className="flex items-center justify-between p-4 border-t border-b border-app-border "
-            >
-              <div>
-                <h4 className="font-semibold">{plan.name}</h4>
-                <p className="text-sm">
-                  {plan.features
-                    ? plan.features
-                    : `Valid for ${plan.validity} days.`}
-                </p>
-              </div>
-              <Button
-                variant="theme"
-                onClick={() =>
-                  router.push(`/membership/payment/${plan.id}`)
-                }
-              >
-                Select
-              </Button>
-            </div>
-          ))}
+          {packages?.map((plan: PackageDto) => {
+            if (!plan.isActive) return null;
+            return (
+                <div
+                    key={plan.id}
+                    className="flex items-center justify-between p-4 border-t border-b border-app-border"
+                >
+                  <div>
+                    <h4 className="font-semibold">{plan.name}</h4>
+                    <p className="text-sm">
+                      {plan.features ? plan.features : `Valid for ${plan.validity} days.`}
+                    </p>
+                  </div>
+                  <Button
+                      variant="theme"
+                      onClick={() => router.push(`/membership/payment/${plan.id}`)}
+                  >
+                    Select
+                  </Button>
+                </div>
+            );
+          })}
         </div>
       </div>
 
