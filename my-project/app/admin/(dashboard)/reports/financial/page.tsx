@@ -2,9 +2,8 @@
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
 import {DatePicker} from "@/components/admin/date-range-picker"
-import {CreditCardIcon, DollarSignIcon, SearchIcon, TrendingUpIcon, WalletIcon,} from "lucide-react"
+import {CreditCardIcon, DollarSignIcon, TrendingUpIcon, WalletIcon,} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select"
-import {Input} from "@/components/admin/ui/input"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
 import {
   Bar,
@@ -24,14 +23,12 @@ import {usePackageReport} from "@/app/admin/(dashboard)/reports/_hooks/usePackag
 import {useSearchParams} from "next/navigation";
 import React, {useState} from "react";
 import {AttributeSelect} from "@/components/admin/ui/attribute-select";
-import {Button} from "@/components/admin/ui/button";
 import {usePackages} from "@/app/shared-hooks/usePackages";
 import Preloader from "@/components/shared/Preloader";
 
 export default function FinancialReportsPage() {
   const { packages } = usePackages()
   const searchParams = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState('')
 
   const [filters, setFilters] = useState({
     startDate: searchParams.get('startDate') || '',
@@ -40,23 +37,12 @@ export default function FinancialReportsPage() {
     packageId: searchParams.get('packageId') || ''
   })
 
-  const { packagesReport, packageReportLoading, refetch } = usePackageReport({
+  const { packagesReport, packageReportLoading } = usePackageReport({
     startDate: filters.startDate,
     endDate: filters.endDate,
     gender: filters.gender,
     packageId: filters.packageId
   })
-
-  const applyFilters = () => {
-    const params = new URLSearchParams()
-
-    if (filters.startDate) params.append('startDate', filters.startDate)
-    if (filters.endDate) params.append('endDate', filters.endDate)
-    if (filters.gender && filters.gender !== 'all') params.append('gender', filters.gender)
-    if (filters.packageId && filters.packageId !== 'all') params.append('packageId', filters.packageId)
-
-    refetch().finally()
-  }
 
   const handleFilterChange = (key: string, value?: string) => {
     setFilters((prev) => ({
@@ -65,7 +51,6 @@ export default function FinancialReportsPage() {
     }))
   }
 
-  // Prepare data for charts and tables from packagesReport
   const revenueByGenderData = packagesReport?.revenueByGender
       ? Object.entries(packagesReport.revenueByGender).map(([name, value]) => ({
         name,
@@ -118,7 +103,6 @@ export default function FinancialReportsPage() {
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={applyFilters}>Apply Filters</Button>
         </div>
 
         <div className="md:grid max-md:space-y-4 gap-4 md:grid-cols-2 lg:grid-cols-4">

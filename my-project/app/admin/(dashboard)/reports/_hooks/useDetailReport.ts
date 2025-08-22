@@ -9,7 +9,7 @@ export const useDetailReport = (params: DetailReportFilters) => {
     const { data, loading, error, mutate, refetch } = useSWRFix<DetailedResponseDto>({
         key,
         fetcher: async () => {
-            const response = await getDetailReport();
+            const response = await getDetailReport(params);
             if (!response) {
                 throw new Error('Failed to fetch banner details');
             }

@@ -11,8 +11,13 @@ import Link from "next/link";
 import useBannerForm from "../_hooks/useBannerForm";
 import {useRef} from "react";
 import {Controller} from "react-hook-form";
+import {useBasicPages} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
+import Preloader from "@/components/shared/Preloader";
 
 export default function BannerAddPage() {
+
+    const { basicPages, isLoading:basicLoading } = useBasicPages();
+
     const fileInputRef = useRef<HTMLInputElement>(null);
     const {
         handleSubmit,
@@ -31,6 +36,20 @@ export default function BannerAddPage() {
         const file = event.target.files?.[0] || null;
         handleFileChange(file);
     };
+
+    if(basicLoading) return <div className="h-[60vh] flex justify-center items-center"><Preloader /></div>
+
+    if(!basicPages) return (
+        <div className="flex items-center flex-col justify-center h-64">
+            <p className="text-sm">No pages found. Please create a page first.</p>
+        </div>
+    )
+
+    const customPages = basicPages
+        .map(page => ({
+            title: page.Title,
+            url: page.Url,
+        }));
 
     return (
         <div className="flex flex-col gap-6 p-4 xl:p-6">
@@ -150,12 +169,11 @@ export default function BannerAddPage() {
                                     <SelectValue placeholder="Select Page" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="home">Homepage</SelectItem>
-                                    <SelectItem value="agenda">Agenda</SelectItem>
-                                    <SelectItem value="blog">Blog</SelectItem>
-                                    <SelectItem value="blog-details">Blog Details</SelectItem>
-                                    <SelectItem value="how-work">How Work</SelectItem>
-                                    <SelectItem value="registration">Registration</SelectItem>
+                                    {customPages.map(page => (
+                                        <SelectItem key={page.url} value={page.url}>
+                                            {page.title}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                             {errors.page && (

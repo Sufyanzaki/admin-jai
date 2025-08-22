@@ -27,7 +27,6 @@ import type React from "react";
 import {useState} from "react";
 import {useSearchParams} from "next/navigation";
 import {AttributeSelect} from "@/components/admin/ui/attribute-select";
-import {Button} from "@/components/admin/ui/button";
 
 const DEPARTMENT_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82ca9d"]
 
@@ -46,8 +45,6 @@ export default function ReportPage() {
     endDate: filters.endDate,
     relationStatus: filters.relationStatus
   });
-
-
 
   if(!analytics?.data){
     return (
@@ -155,9 +152,6 @@ export default function ReportPage() {
                 placeholder="Select relationship status"
             />
 
-            <Button type="submit" size="sm">
-              Apply
-            </Button>
           </form>
         </div>
 

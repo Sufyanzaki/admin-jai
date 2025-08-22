@@ -59,7 +59,7 @@ const DashboardPage = () => {
     {
       id: 4,
       title: "Premium Members",
-      count: stats?.premiumMembers || 0, // You might want to add this to your API response
+      count: stats?.premiumMembers || 0,
       description: "Suspended or blocked accounts",
       status: "",
       icon: Dock,
@@ -88,7 +88,7 @@ const DashboardPage = () => {
         <main className="flex-1 space-y-6 p-4 xl:p-6">
           <div className="flex flex-col space-y-2">
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Welcome back</h2>
-            <p className="text-muted-foreground">Here's what's happening today.</p>
+            <p className="text-muted-foreground">Here&#39;s what&#39;s happening today.</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -143,7 +143,7 @@ const DashboardPage = () => {
               <div className="md:grid max-md:space-y-4 gap-4 md:grid-cols-2">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Today's Users</CardTitle>
+                    <CardTitle>Today&#39;s Users</CardTitle>
                     <CardDescription>
                       You have {statsLoading ? (
                         <Skeleton className="inline-block h-4 w-4" />
@@ -193,7 +193,7 @@ const DashboardPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Performance Metrics</CardTitle>
-                  <CardDescription>Your platform's matching success and user engagement</CardDescription>
+                  <CardDescription>Your platform&#39;s matching success and user engagement</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {statsLoading ? (

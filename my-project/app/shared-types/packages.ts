@@ -8,4 +8,6 @@ export type PackageDto = {
     features: string;
     createdAt: string;
     updatedAt: string;
+
+    soldCount: number;
 }

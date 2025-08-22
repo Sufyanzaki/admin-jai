@@ -17,7 +17,7 @@ import {
     SelectItem,
 } from "@/components/admin/ui/select";
 import {ArrowLeft, Upload, X, Loader2} from "lucide-react";
-import {DateRangePicker} from "@/components/admin/date-range-picker";
+import {DatePicker} from "@/components/admin/date-range-picker";
 import Link from "next/link";
 import useEditBannerForm from "../../_hooks/useEditBannerForm";
 import { useParams } from "next/navigation";
@@ -127,31 +127,46 @@ export default function BannerEditPage() {
                         {/* Date Range Picker + CPM */}
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label>Start / End Date</Label>
+                                <Label>Start Date</Label>
                                 <Controller
-                                    name="dateRange"
+                                    name="startDate"
                                     control={control}
                                     render={({ field }) => (
-                                        <DateRangePicker
+                                        <DatePicker
                                             className="w-full [&>button]:w-full"
-                                            value={field.value as any}
-                                            onDateRangeChange={(startDate, endDate) => {
-                                                setValue('startDate', new Date(startDate));
-                                                setValue('endDate', new Date(endDate));
-                                                field.onChange({ from: new Date(startDate), to: new Date(endDate) });
+                                            value={field.value}
+                                            onDateChange={(date) => {
+                                                if (!date) return;
+                                                const parsedDate = new Date(date);
+                                                field.onChange(parsedDate);
                                             }}
                                         />
                                     )}
                                 />
-                                {(errors.startDate || errors.endDate) && (
-                                    <div className="space-y-1">
-                                        {errors.startDate && (
-                                            <p className="text-sm text-red-400">{errors.startDate.message}</p>
-                                        )}
-                                        {errors.endDate && (
-                                            <p className="text-sm text-red-400">{errors.endDate.message}</p>
-                                        )}
-                                    </div>
+                                {errors.startDate && (
+                                    <p className="text-sm text-red-400">{errors.startDate.message}</p>
+                                )}
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label>End Date</Label>
+                                <Controller
+                                    name="endDate"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            className="w-full [&>button]:w-full"
+                                            value={field.value}
+                                            onDateChange={(date) => {
+                                                if (!date) return;
+                                                const parsedDate = new Date(date);
+                                                field.onChange(parsedDate);
+                                            }}
+                                        />
+                                    )}
+                                />
+                                {errors.endDate && (
+                                    <p className="text-sm text-red-400">{errors.endDate.message}</p>
                                 )}
                             </div>
                             <div className="grid gap-2">

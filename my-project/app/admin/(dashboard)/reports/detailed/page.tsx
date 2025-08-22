@@ -1,10 +1,9 @@
 "use client"
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
-import { DatePicker } from "@/components/admin/date-range-picker"
+import {DatePicker} from "@/components/admin/date-range-picker"
 import {CalendarIcon, CheckCircleIcon, ClockIcon, XCircleIcon} from "lucide-react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select"
-import {Input} from "@/components/admin/ui/input"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
 import {Badge} from "@/components/admin/ui/badge"
 import {
@@ -25,14 +24,13 @@ import {
 import {ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/admin/ui/chart"
 import {useDetailReport} from "@/app/admin/(dashboard)/reports/_hooks/useDetailReport"
 import Preloader from "@/components/shared/Preloader"
-import {useRouter, useSearchParams} from "next/navigation"
+import {useSearchParams} from "next/navigation"
 import React, {useState} from "react"
 import {Button} from "@/components/admin/ui/button";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"]
 
 export default function DetailedReportsPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [filters, setFilters] = useState({
     startDate: searchParams.get('startDate') || '',
@@ -41,7 +39,7 @@ export default function DetailedReportsPage() {
     role: searchParams.get('role') || '',
   })
 
-  const { detailReport, detailReportLoading, refetch } = useDetailReport({
+  const { detailReport, detailReportLoading } = useDetailReport({
     startDate: filters.startDate,
     endDate: filters.endDate,
     status: filters.status,
@@ -55,19 +53,6 @@ export default function DetailedReportsPage() {
     }))
   }
 
-  const applyFilters = () => {
-    const params = new URLSearchParams()
-
-    if (filters.startDate) params.append('startDate', filters.startDate)
-    if (filters.endDate) params.append('endDate', filters.endDate)
-    if (filters.status) params.append('status', filters.status)
-    if (filters.role) params.append('role', filters.role)
-
-    router.push(`/admin/reports/detailed?${params.toString()}`)
-    refetch()
-  }
-
-  // Transform API data for charts
   const relationshipStatusData = detailReport?.data?.relationshipPercentages?.map(item => ({
     name: item.status,
     value: item.count,
@@ -118,13 +103,11 @@ export default function DetailedReportsPage() {
 
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
-        {/* Header */}
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Detailed Reports</h1>
           <p className="text-muted-foreground">Analyze user data, track trends, and generate detailed reports</p>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-2 md:flex-row md:items-center">
             <DatePicker
@@ -159,11 +142,9 @@ export default function DetailedReportsPage() {
                 <SelectItem value="inactive">Inactive</SelectItem>
               </SelectContent>
             </Select>
-            <Button onClick={applyFilters}>Apply Filters</Button>
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -237,7 +218,6 @@ export default function DetailedReportsPage() {
           </Card>
         </div>
 
-        {/* Charts Section */}
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="col-span-1">
             <CardHeader>
@@ -300,7 +280,6 @@ export default function DetailedReportsPage() {
           </Card>
         </div>
 
-        {/* More charts for religion and gender */}
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="col-span-1">
             <CardHeader>
@@ -361,7 +340,6 @@ export default function DetailedReportsPage() {
           </Card>
         </div>
 
-        {/* Recent Users Table */}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between gap-4 flex-wrap">

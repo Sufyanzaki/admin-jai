@@ -7,6 +7,7 @@ import Link from "next/link";
 import {usePackages} from "@/app/shared-hooks/usePackages";
 
 export function BestSelling() {
+
   const { packages, loading } = usePackages()
 
   if (loading || !packages) {
@@ -27,9 +28,11 @@ export function BestSelling() {
     )
   }
 
+    const sortedPkg = packages.sort((a, b) => b.soldCount - a.soldCount);
+
   return (
       <div className="space-y-4">
-        {packages.map((pkg) => (
+        {sortedPkg.slice(0,2).map((pkg) => (
             <div
                 key={pkg.id}
                 className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-lg border p-3 transition-all hover:bg-accent"
@@ -64,7 +67,7 @@ export function BestSelling() {
               </div>
               <div className="flex flex-col items-end space-y-2">
 
-                <Link href={`/admin/packages/${pkg.id}/view`} className="flex space-x-2">
+                <Link href={`/admin/packages`} className="flex space-x-2">
                   <Button size="sm" variant="outline">
                     View Details
                   </Button>
