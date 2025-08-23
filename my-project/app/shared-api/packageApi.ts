@@ -2,6 +2,12 @@ import {getRequest, patchRequest, postRequest} from "@/shared-lib";
 import {PackageDto} from "@/app/shared-types/packages";
 
 type Payload = Partial<PackageDto>;
+export type GetPackageDto = {
+    activePackages: number;
+    packages: PackageDto[];
+    totalEarnings: number;
+    totalSold: number;
+};
 
 export async function addPackage(payload: Payload) {
     return postRequest<Payload>({
@@ -20,8 +26,8 @@ export async function editPackage(payload: Payload) {
     });
 }
 
-export async function getAllPackages(): Promise<PackageDto[]> {
-    return getRequest<PackageDto[]>({
+export async function getAllPackages(): Promise<GetPackageDto> {
+    return getRequest<GetPackageDto>({
         url: "package",
         useAuth: true,
     });

@@ -1,9 +1,8 @@
 import {useSWRFix} from "@/shared-lib";
-import {PackageDto} from "@/app/shared-types/packages";
-import { getAllPackages } from "../shared-api/packageApi";
+import {getAllPackages, GetPackageDto} from "../shared-api/packageApi";
 
 export function usePackages() {
-  const { data, loading, error, mutate } = useSWRFix<PackageDto[]>({
+  const { data, loading, error, mutate } = useSWRFix<GetPackageDto>({
     key: "all-packages",
     fetcher: async () => {
       const response = await getAllPackages();
@@ -15,9 +14,12 @@ export function usePackages() {
   });
 
   return {
-    packages: data,
+    packages: data?.packages ?? [],
     loading,
     error,
     mutate,
+    totalEarnings: data?.totalEarnings ?? 0,
+    totalSold: data?.totalSold ?? 0,
+    activePackages: data?.activePackages ?? 0,
   };
 }

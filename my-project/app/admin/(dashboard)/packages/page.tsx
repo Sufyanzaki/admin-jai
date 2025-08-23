@@ -34,7 +34,7 @@ import {PackageDto} from "@/app/shared-types/packages";
 import {useSession} from "next-auth/react";
 
 export default function PackagesPage() {
-    const { packages, loading, error } = usePackages();
+    const { packages, loading, error, activePackages, totalSold, totalEarnings } = usePackages();
     const { data:session } = useSession();
     const { mutate: patchPackageStatus, loading: patching } = usePatchPackage();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -53,7 +53,6 @@ export default function PackagesPage() {
         }
     };
 
-    // Filter packages by search
     const filteredPackages = (packages ?? []).filter(pkg =>
         pkg.name.toLowerCase().includes(search.toLowerCase())
     );
@@ -72,9 +71,9 @@ export default function PackagesPage() {
         permissions = session.user.permissions.find(permission => permission.module === "packages");
     }
 
-    const canCreate = permissions?.canCreate ?? true;
-    const canEdit = permissions?.canEdit ?? true;
-    const canDelete = permissions?.canDelete ?? true;
+    const canCreate = permissions?.canCreate ?? false;
+    const canEdit = permissions?.canEdit ?? false;
+    const canDelete = permissions?.canDelete ?? false;
 
     return (
         <>
@@ -85,12 +84,14 @@ export default function PackagesPage() {
                         <p className="text-muted-foreground">Manage your subscription packages and pricing</p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Link href="/admin/packages/add">
-                            <Button>
-                                <Plus className="mr-2 h-4 w-4" />
-                                Add Package
-                            </Button>
-                        </Link>
+                        {canCreate && (
+                            <Link href="/admin/packages/add">
+                                <Button>
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Add Package
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
 
@@ -111,7 +112,7 @@ export default function PackagesPage() {
                             <Users className="size-8 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <h2 className="text-2xl xl:text-4xl font-bold mb-2">128</h2>
+                            <h2 className="text-2xl xl:text-4xl font-bold mb-2">{activePackages}</h2>
                             <p className="text-xs text-muted-foreground">+24 from last month</p>
                         </CardContent>
                     </Card>
@@ -121,7 +122,7 @@ export default function PackagesPage() {
                             <DollarSign className="size-8 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <h2 className="text-2xl xl:text-4xl font-bold mb-2">Є3,240</h2>
+                            <h2 className="text-2xl xl:text-4xl font-bold mb-2">{totalEarnings}</h2>
                             <p className="text-xs text-muted-foreground">+12% from last month</p>
                         </CardContent>
                     </Card>
@@ -159,7 +160,7 @@ export default function PackagesPage() {
                                             <TableHead>Duration</TableHead>
                                             <TableHead>Features</TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            {(canEdit || canDelete) && <TableHead className="text-right">Actions</TableHead>}
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody className="whitespace-nowrap">
@@ -186,36 +187,39 @@ export default function PackagesPage() {
                             {pkg.isActive ? "Active" : "Inactive"}
                           </span>
                                                 </TableCell>
-                                                <TableCell className="text-right">
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger asChild>
-                                                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                <span className="sr-only">Open menu</span>
-                                                                <MoreHorizontal className="h-4 w-4" />
-                                                            </Button>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end">
-                                                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                            {/*<DropdownMenuItem>*/}
-                                                            {/*    <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">*/}
-                                                            {/*        View details*/}
-                                                            {/*    </Link>*/}
-                                                            {/*</DropdownMenuItem>*/}
-                                                            <DropdownMenuItem>
-                                                                <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
-                                                                    Edit package
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuSeparator />
-                                                            <DropdownMenuItem
-                                                                onClick={() => openDeleteDialog(pkg)}
-                                                                className={pkg.isActive ? "text-red-600" : "text-green-600"}
-                                                            >
-                                                                {pkg.isActive ? "Deactivate" : "Activate"}
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                </TableCell>
+                                                {(canEdit || canDelete) && (
+                                                    <TableCell className="text-right">
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                                                    <span className="sr-only">Open menu</span>
+                                                                    <MoreHorizontal className="h-4 w-4" />
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end">
+                                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                {canEdit && (
+                                                                    <DropdownMenuItem>
+                                                                        <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
+                                                                            Edit package
+                                                                        </Link>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {canDelete && (
+                                                                    <>
+                                                                        <DropdownMenuSeparator />
+                                                                        <DropdownMenuItem
+                                                                            onClick={() => openDeleteDialog(pkg)}
+                                                                            className={pkg.isActive ? "text-red-600" : "text-green-600"}
+                                                                        >
+                                                                            {pkg.isActive ? "Deactivate" : "Activate"}
+                                                                        </DropdownMenuItem>
+                                                                    </>
+                                                                )}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
+                                                    </TableCell>
+                                                )}
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -231,7 +235,7 @@ export default function PackagesPage() {
                                             <TableHead>Duration</TableHead>
                                             <TableHead>Features</TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            {(canEdit || canDelete) && <TableHead className="text-right">Actions</TableHead>}
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody className="whitespace-nowrap">
@@ -254,41 +258,39 @@ export default function PackagesPage() {
                               Active
                             </span>
                                                     </TableCell>
-                                                    <TableCell className="text-right">
-                                                        <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
-                                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                    <span className="sr-only">Open menu</span>
-                                                                    <MoreHorizontal className="h-4 w-4" />
-                                                                </Button>
-                                                            </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end">
-                                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                                <DropdownMenuItem>
-                                                                    <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">
-                                                                        View details
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                                <DropdownMenuItem>
-                                                                    <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
-                                                                        Edit package
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                                {/*<DropdownMenuItem>*/}
-                                                                {/*    <Link href={`/admin/packages/${pkg.id}/subscribers`} className="flex w-full">*/}
-                                                                {/*        View subscribers*/}
-                                                                {/*    </Link>*/}
-                                                                {/*</DropdownMenuItem>*/}
-                                                                <DropdownMenuSeparator />
-                                                                <DropdownMenuItem
-                                                                    onClick={() => openDeleteDialog(pkg)}
-                                                                    className="text-red-600"
-                                                                >
-                                                                    Deactivate
-                                                                </DropdownMenuItem>
-                                                            </DropdownMenuContent>
-                                                        </DropdownMenu>
-                                                    </TableCell>
+                                                    {(canEdit || canDelete) && (
+                                                        <TableCell className="text-right">
+                                                            <DropdownMenu>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                                        <span className="sr-only">Open menu</span>
+                                                                        <MoreHorizontal className="h-4 w-4" />
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
+                                                                <DropdownMenuContent align="end">
+                                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                    {canEdit && (
+                                                                        <DropdownMenuItem>
+                                                                            <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
+                                                                                Edit package
+                                                                            </Link>
+                                                                        </DropdownMenuItem>
+                                                                    )}
+                                                                    {canDelete && (
+                                                                        <>
+                                                                            <DropdownMenuSeparator />
+                                                                            <DropdownMenuItem
+                                                                                onClick={() => openDeleteDialog(pkg)}
+                                                                                className="text-red-600"
+                                                                            >
+                                                                                Deactivate
+                                                                            </DropdownMenuItem>
+                                                                        </>
+                                                                    )}
+                                                                </DropdownMenuContent>
+                                                            </DropdownMenu>
+                                                        </TableCell>
+                                                    )}
                                                 </TableRow>
                                             ))}
                                     </TableBody>
@@ -304,7 +306,7 @@ export default function PackagesPage() {
                                             <TableHead>Duration</TableHead>
                                             <TableHead>Features</TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            {(canEdit || canDelete) && <TableHead className="text-right">Actions</TableHead>}
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody className="whitespace-nowrap">
@@ -327,41 +329,39 @@ export default function PackagesPage() {
                               Inactive
                             </span>
                                                     </TableCell>
-                                                    <TableCell className="text-right">
-                                                        <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
-                                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                    <span className="sr-only">Open menu</span>
-                                                                    <MoreHorizontal className="h-4 w-4" />
-                                                                </Button>
-                                                            </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end">
-                                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                                <DropdownMenuItem>
-                                                                    <Link href={`/admin/packages/${pkg.id}/view`} className="flex w-full">
-                                                                        View details
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                                <DropdownMenuItem>
-                                                                    <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
-                                                                        Edit package
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                                {/*<DropdownMenuItem>*/}
-                                                                {/*    <Link href={`/admin/packages/${pkg.id}/subscribers`} className="flex w-full">*/}
-                                                                {/*        View subscribers*/}
-                                                                {/*    </Link>*/}
-                                                                {/*</DropdownMenuItem>*/}
-                                                                <DropdownMenuSeparator />
-                                                                <DropdownMenuItem
-                                                                    onClick={() => openDeleteDialog(pkg)}
-                                                                    className="text-green-600"
-                                                                >
-                                                                    Activate
-                                                                </DropdownMenuItem>
-                                                            </DropdownMenuContent>
-                                                        </DropdownMenu>
-                                                    </TableCell>
+                                                    {(canEdit || canDelete) && (
+                                                        <TableCell className="text-right">
+                                                            <DropdownMenu>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                                        <span className="sr-only">Open menu</span>
+                                                                        <MoreHorizontal className="h-4 w-4" />
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
+                                                                <DropdownMenuContent align="end">
+                                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                    {canEdit && (
+                                                                        <DropdownMenuItem>
+                                                                            <Link href={`/admin/packages/${pkg.id}/edit`} className="flex w-full">
+                                                                                Edit package
+                                                                            </Link>
+                                                                        </DropdownMenuItem>
+                                                                    )}
+                                                                    {canDelete && (
+                                                                        <>
+                                                                            <DropdownMenuSeparator />
+                                                                            <DropdownMenuItem
+                                                                                onClick={() => openDeleteDialog(pkg)}
+                                                                                className="text-green-600"
+                                                                            >
+                                                                                Activate
+                                                                            </DropdownMenuItem>
+                                                                        </>
+                                                                    )}
+                                                                </DropdownMenuContent>
+                                                            </DropdownMenu>
+                                                        </TableCell>
+                                                    )}
                                                 </TableRow>
                                             ))}
                                     </TableBody>
