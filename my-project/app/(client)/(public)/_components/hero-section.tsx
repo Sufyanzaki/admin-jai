@@ -34,7 +34,7 @@ export function HeroSection() {
           <Container className="px-4 md:px-6">
             <div className="flex lg:flex-row justify-start lg:justify-between lg:items-center gap-6 pt-38 lg:pt-24 3xl:pt-0 lg:h-screen mb-2">
               <div className="text-white space-y-4 lg:space-y-6 ">
-                <h1 className="text-xl md:text-2xl lg:text-4xl lg:max-w-[30vw] xl:text-5xl font-bold leading-tight">
+                <h1 className="text-xl md:text-2xl lg:text-4xl lg:max-w-2/3 xl:text-5xl font-bold leading-tight">
                   {homeSettings?.bannerTitle}
                 </h1>
 

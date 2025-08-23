@@ -10,9 +10,9 @@ import { unescapeHtml } from '@/lib/utils';
 export default function CustomPage() {
 
     const params = useParams()
-    const key = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
+    const { slug } = params;
 
-    const { basicPage, isLoading, error } = useCustomPages(key)
+    const { basicPage, isLoading, error } = useCustomPages(slug as string)
 
     if (isLoading) {
         return (

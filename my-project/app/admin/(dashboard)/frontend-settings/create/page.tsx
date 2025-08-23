@@ -12,6 +12,8 @@ import {Controller} from "react-hook-form"
 import useBasicForm from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicForm";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
 
+const base = "https://admin-jai.vercel.app/"
+
 export default function CreatePage() {
     const {
         register,
@@ -68,9 +70,9 @@ export default function CreatePage() {
 
                         <div className="space-y-2">
                             <Label htmlFor="Url">URL*</Label>
-                            <div className="flex rounded-md shadow-sm">
-                                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-muted text-sm text-muted-foreground">
-                                  {process.env.NEXT_APP_BASE}/page/
+                            <div className="flex rounded-md items-center">
+                                <span className="block whitespace-nowrap px-3 rounded-l-md text-sm text-muted-foreground">
+                                  {base}/page/
                                 </span>
                                 <Input
                                     id="Url"
