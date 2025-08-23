@@ -3,6 +3,7 @@ import {MemberProfile} from "@/app/shared-types/member";
 
 export type UserPayload = Partial<MemberProfile> & {
   password?: string;
+  adminId?: string;
 }
 
 export async function postUser(payload: UserPayload): Promise<MemberProfile> {

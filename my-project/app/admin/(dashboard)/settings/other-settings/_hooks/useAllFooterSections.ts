@@ -2,7 +2,7 @@
 
 import {useSWRFix} from "@/shared-lib";
 import {FooterSectionDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
-import {getFooterSections} from "@/app/admin/(dashboard)/settings/other-settings/_api/footerApi";
+import {getFooterSections} from "@/app/shared-api/footerApi";
 
 export function useAllFooterSections() {
     const {

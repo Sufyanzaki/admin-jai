@@ -2,7 +2,7 @@ import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { mutate as globalMutate } from "swr";
 import { FooterSectionDto } from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
-import { deleteFooterSectionDetails } from "@/app/admin/(dashboard)/settings/other-settings/_api/footerApi";
+import { deleteFooterSectionDetails } from "@/app/shared-api/footerApi";
 import { useState } from "react";
 
 export const useFooterSectionDelete = () => {

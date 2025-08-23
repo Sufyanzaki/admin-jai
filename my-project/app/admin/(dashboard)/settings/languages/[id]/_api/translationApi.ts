@@ -14,9 +14,17 @@ type PostResponse = {
     updatedAt: string;
 };
 
-export async function getTranslationDetails(id: string): Promise<LanguageTranslationsDto> {
+export async function getTranslationDetails(id: string, page: number = 1, search?: string): Promise<LanguageTranslationsDto> {
+    const params = new URLSearchParams();
+    params.append('limit', '50');
+    params.append('page', page.toString());
+    
+    if (search) {
+        params.append('search', search);
+    }
+
     return await getRequest({
-        url: `setting/translation/${id}?limit=50`,
+        url: `setting/translation/${id}?${params.toString()}`,
         useAuth: true
     })
 }

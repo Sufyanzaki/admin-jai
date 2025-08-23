@@ -3,13 +3,13 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {patchFooterSettings} from "../_api/footerApi";
+import {patchFooterSettings} from "@/app/shared-api/footerApi";
 import {showError, showSuccess} from "@/shared-lib";
 import {imageUpload} from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
 import {useEffect, useState} from "react";
 import {useSWRConfig} from "swr";
-import {useFooterSettings} from "./useFooterSettings";
+import {useFooterSettings} from "@/app/shared-hooks/useFooterSettings";
 
 const footerFormSchema = z.object({
   footerLogo: z.any().optional(),

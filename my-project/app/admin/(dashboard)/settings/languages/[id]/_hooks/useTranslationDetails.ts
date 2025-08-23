@@ -3,14 +3,18 @@ import {useSession} from "next-auth/react";
 import {getTranslationDetails} from "@/app/admin/(dashboard)/settings/languages/[id]/_api/translationApi";
 import {LanguageTranslationsDto} from "@/app/admin/(dashboard)/settings/languages/[id]/_types/translation";
 
-export const useTranslationDetails = (id: string) => {
+export const useTranslationDetails = (id: string, page: number = 1, search?: string) => {
     const { data: session } = useSession();
 
+    const key = session?.token && id 
+        ? `translation-details-${id}-page-${page}${search ? `-search-${search}` : ''}` 
+        : '';
+
     const { data, loading, error, mutate } = useSWRFix<LanguageTranslationsDto>({
-        key: session?.token && id ? `translation-details-${id}` : '',
+        key,
         fetcher: async () => {
-            const response = await getTranslationDetails(id);
-            if (!response) throw new Error('Failed to fetch banner details');
+            const response = await getTranslationDetails(id, page, search);
+            if (!response) throw new Error('Failed to fetch translation details');
             return response;
         }
     });

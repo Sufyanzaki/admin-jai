@@ -4,7 +4,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {Button} from "@/components/admin/ui/button";
 import {Input} from "@/components/admin/ui/input";
 import {ArrowLeft, Save, Search} from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {useTranslationDetails} from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useTranslationDetails";
 import {useParams} from "next/navigation";
@@ -18,8 +18,20 @@ export default function LanguageTranslatePage() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
     const [page, setPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
-    const { response, responseLoading, error } = useTranslationDetails(id);
+    // Debounce search input
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+            setPage(1); // Reset to first page when searching
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    const { response, responseLoading, error } = useTranslationDetails(id, page, debouncedSearch);
 
     const {
         selectedRows,
@@ -29,13 +41,6 @@ export default function LanguageTranslatePage() {
         updateTranslations,
         isUpdating,
     } = useEditTranslation();
-
-    if(responseLoading) return (
-        <div className="flex items-center flex-col justify-center h-64">
-            <Preloader/>
-            <p className="text-sm">Loading...</p>
-        </div>
-    )
 
     if(error) return (
         <div className="text-red-500">Failed to load translations.</div>
@@ -77,7 +82,7 @@ export default function LanguageTranslatePage() {
             <Card>
                 <CardHeader>
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <CardTitle>{response?.translations?.translations.language || 'Language'}</CardTitle>
+                        <CardTitle>{response?.translations?.language || 'Language'}</CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                             <Button
                                 variant="secondary"
@@ -101,17 +106,19 @@ export default function LanguageTranslatePage() {
                             <div className="relative">
                                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Type Key"
+                                    placeholder="Search translations..."
                                     className="pl-8 w-40"
-                                    onChange={(e) => {
-                                        // Implement search functionality here
-                                    }}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                             </div>
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent>
+                {responseLoading ? <div className="flex items-center flex-col justify-center h-64">
+                    <Preloader/>
+                    <p className="text-sm">Loading...</p>
+                </div> : <CardContent>
                     <Table className="whitespace-nowrap">
                         <TableHeader>
                             <TableRow>
@@ -127,33 +134,41 @@ export default function LanguageTranslatePage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {tableData.map((row, index) => (
-                                <TableRow key={row.key} className="odd:bg-muted/40">
-                                    <TableCell>
-                                        <Checkbox
-                                            checked={selectedRows[row.key] || false}
-                                            onCheckedChange={() => toggleRowSelection(row.key)}
-                                        />
-                                    </TableCell>
-                                    <TableCell className="text-center">{index + 1}</TableCell>
-                                    <TableCell className="max-w-md">{row.key}</TableCell>
-                                    <TableCell>
-                                        <Input
-                                            type="text"
-                                            className="w-full text-center"
-                                            defaultValue={row.value as string}
-                                            onChange={(e) => handleValueChange(row.key, e.target.value)}
-                                        />
+                            {tableData.length > 0 ? (
+                                tableData.map((row, index) => (
+                                    <TableRow key={row.key} className="odd:bg-muted/40">
+                                        <TableCell>
+                                            <Checkbox
+                                                checked={selectedRows[row.key] || false}
+                                                onCheckedChange={() => toggleRowSelection(row.key)}
+                                            />
+                                        </TableCell>
+                                        <TableCell className="text-center">{index + 1}</TableCell>
+                                        <TableCell className="max-w-md">{row.key}</TableCell>
+                                        <TableCell>
+                                            <Input
+                                                type="text"
+                                                className="w-full text-center"
+                                                defaultValue={row.value as string}
+                                                onChange={(e) => handleValueChange(row.key, e.target.value)}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={4} className="text-center py-8">
+                                        {debouncedSearch ? 'No translations found matching your search.' : 'No translations available.'}
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )}
                         </TableBody>
                     </Table>
                     <PaginationSection
                         pagination={{ ...pagination, page }}
                         onPageChange={(newPage) => setPage(newPage)}
                     />
-                </CardContent>
+                </CardContent>}
             </Card>
         </div>
     );

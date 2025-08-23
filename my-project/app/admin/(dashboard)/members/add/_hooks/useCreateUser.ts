@@ -13,6 +13,7 @@ import {useSWRConfig} from "swr";
 import {GetAllMembersResponse} from "../../_types/member";
 import {patchUser, postUser} from "@/app/shared-api/userApi";
 import {MemberProfile} from "@/app/shared-types/member";
+import {useSession} from "next-auth/react";
 
 const createUserSchema = (requirePassword: boolean) => z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
@@ -38,7 +39,10 @@ const createUserSchema = (requirePassword: boolean) => z.object({
 export type CreateUserFormValues = z.infer<ReturnType<typeof createUserSchema>>;
 
 export default function useCreateUserForm() {
- const { mutate:globalMutate } = useSWRConfig(); 
+ const { mutate:globalMutate } = useSWRConfig();
+
+ const { data:session } = useSession();
+
   const params = useParams();
   const tracker = getUserTrackingId();
 
@@ -130,10 +134,12 @@ export default function useCreateUserForm() {
         if (isFile(arg.image)) imageUrl = await imageUpload(arg.image);
         else if (typeof arg.image === "string") imageUrl = arg.image;
 
+        const adminId = session?.user.id ? String(session.user.id) : undefined;
+
         if (id && allowEdit) {
           return await patchUser(id, { ...arg, image: imageUrl });
         } else {
-          return await postUser({ ...arg, image: imageUrl });
+          return await postUser({ ...arg, image: imageUrl, adminId } );
         }
       },
       {
