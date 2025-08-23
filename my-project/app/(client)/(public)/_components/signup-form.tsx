@@ -1,14 +1,15 @@
 "use client";
 
-import {Button} from "@/components/client/ux/button";
-import {Card, CardContent, CardHeader} from "@/components/client/ux/card";
-import {FacebookIcon, GoogleIcon} from "@/lib/icons";
-import {Container} from "@/components/client/ux/container";
+import { Button } from "@/components/client/ux/button";
+import { Card, CardContent, CardHeader } from "@/components/client/ux/card";
+import { FacebookIcon, GoogleIcon } from "@/lib/icons";
+import { Container } from "@/components/client/ux/container";
 import DesktopForm from "@/app/(client)/(public)/_components/desktop-form";
 import TabletForm from "@/app/(client)/(public)/_components/TabletForm";
-import {signIn} from "next-auth/react";
-
+import { signIn } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 export function SignupForm() {
+  const { t } = useTranslation();
 
   return (
     <>
@@ -17,10 +18,10 @@ export function SignupForm() {
         <Card className="w-full rounded-none lg:rounded-[5px] lg:max-w-md bg-white px-0 pt-1 pb-8 md:py-8 md:px-2 lg:p-1">
           <CardHeader className="grid grid-cols-2 gap-4">
             <Button
-                variant="outline"
-                size="lg"
-                className="w-full"
-                onClick={() => signIn("google", { callbackUrl: "/" })}
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
             >
               <div className="flex items-center justify-center space-x-2">
                 <GoogleIcon className="w-6 h-6" />
@@ -29,10 +30,10 @@ export function SignupForm() {
             </Button>
 
             <Button
-                variant="outline"
-                size="lg"
-                className="w-full"
-                onClick={() => signIn("facebook", { callbackUrl: "/" })}
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={() => signIn("facebook", { callbackUrl: "/" })}
             >
               <div className="flex items-center justify-center space-x-2">
                 <FacebookIcon className="w-6 h-6" />
@@ -40,7 +41,6 @@ export function SignupForm() {
               </div>
             </Button>
           </CardHeader>
-
           <CardContent>
             <DesktopForm />
             <p className="w-full text-[#919ba4] text-[12px] font-light leading-[20px]">

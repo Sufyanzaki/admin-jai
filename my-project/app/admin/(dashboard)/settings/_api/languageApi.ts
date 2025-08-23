@@ -15,7 +15,7 @@ export async function patchLanguageStatus({ id, isActive }: Payload): Promise<Ba
 export async function getLanguages(): Promise<BasicLanguageDto[]> {
     return getRequest({
         url: "setting/language",
-        useAuth: true,
+        useAuth: false,
     });
 }
 

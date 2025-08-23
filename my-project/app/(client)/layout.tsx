@@ -1,9 +1,11 @@
-import type {Metadata} from "next";
+import type { Metadata } from "next";
 import "./globals.css";
-import {Montserrat, Poppins} from "next/font/google";
+import { Montserrat, Poppins } from "next/font/google";
 import ClientProvider from "@/lib/client-provider";
-import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import "../../i18n";
+import TranslationsProvider from "@/shared-lib/translation-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,17 +31,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-    const session = await getServerSession(authOptions);
-    console.error(session);
+  const session = await getServerSession(authOptions);
+  console.error(session);
 
   return (
-      <html lang="en" className={`${poppins.variable} ${montserrat.variable}`}>
+    <html lang="en" className={`${poppins.variable} ${montserrat.variable}`}>
       <body className="font-pop">
-          <ClientProvider session={session}>
-              <main>
-                  {children}
-              </main>
-          </ClientProvider>
+        <ClientProvider session={session}>
+          <TranslationsProvider>
+            <main>
+              {children}
+            </main>
+          </TranslationsProvider>
+        </ClientProvider>
       </body>
     </html>
   );

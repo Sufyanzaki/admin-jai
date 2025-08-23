@@ -9,7 +9,7 @@ export function useLanguages() {
   const { data: session } = useSession();
 
   const { data, loading, error, mutate } = useSWRFix<BasicLanguageDto[]>({
-    key: session?.token ? "languages-list" : "",
+    key: session?.token ? "languages-list" : "languages",
     fetcher: async () => {
       return await getLanguages();
     },
