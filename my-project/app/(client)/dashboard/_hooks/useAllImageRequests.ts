@@ -1,10 +1,11 @@
-import { useSWRFix } from "@/shared-lib";
-import { getAllImageRequest, likesRecievedResponse } from "../_api/getAllImageRequest";
+import {useSWRFix} from "@/shared-lib";
+import {getAllImageRequest} from "../_api/getAllImageRequest";
+import {ApiResponseDto} from "@/app/(client)/dashboard/notifications/_types/notification";
 
 export enum ImageRequestStatus {
   PENDING = "PENDING",
   ACCEPTED = "APPROVED",
-  DECLINED = "DENIED",
+  DENIED = "DENIED",
 }
 
 export enum ImageRequestType {
@@ -13,12 +14,12 @@ export enum ImageRequestType {
 }
 
 export const useAllImageRequests = (type?: ImageRequestType,status?: ImageRequestStatus) => {
-  const { data, loading, error, mutate } = useSWRFix<likesRecievedResponse>({
-    key: ["image-requests"],
+  const { data, loading, error, mutate } = useSWRFix<ApiResponseDto>({
+    key: "image-requests",
     fetcher: async () => {
       const response = await getAllImageRequest({
        ...(type && {type}),
-        ...(status && { status }), // only include status if provided
+        ...(status && { status }),
       });
       if (!response) {
         throw new Error("Failed to fetch likes received");

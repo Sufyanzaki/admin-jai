@@ -58,11 +58,12 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
             <MessageListener
                 onMessage={(message) => {
                     chatMutate(
+                        // @ts-expect-error mutation
                         (prev) => {
                             if (!prev)
                                 return {
                                     messages: 1,
-                                    data: { messages: [message] },
+                                    data: { messages: [message], users: selectedChat.ChatUser},
                                     status: "success",
                                 };
                             return {
@@ -70,6 +71,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                 messages: prev.messages + 1,
                                 data: {
                                     messages: [...prev.data.messages, message],
+                                    users: selectedChat.ChatUser
                                 },
                             };
                         },

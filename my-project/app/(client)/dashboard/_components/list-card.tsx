@@ -1,16 +1,17 @@
 import Link from "next/link";
-import { Button } from "@/components/client/ux/button";
+import {Button} from "@/components/client/ux/button";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { MemberProfile } from "@/app/shared-types/member";
-import { useSendLike } from "../_hooks/useSendLike";
-import { useBlockUser } from "../_hooks/useBlockUser";
-import { useCreateChat } from "../chat/_hooks/useCreateChat";
-import { useRouter } from "next/navigation";
+import {MemberProfile} from "@/app/shared-types/member";
+import {useSendLike} from "../_hooks/useSendLike";
+import {useBlockUser} from "../_hooks/useBlockUser";
+import {useCreateChat} from "../chat/_hooks/useCreateChat";
+import {useRouter} from "next/navigation";
 
 export default function ListCard({ profile }: { profile: MemberProfile }) {
   const router = useRouter();
   const { trigger: sendLike, loading } = useSendLike();
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
+
   const { sendMessageRefetch } = useCreateChat();
 
   const handleSendMessage = async () => {
@@ -87,7 +88,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      blockUser(Number(profile.id));
+                      blockUser(Number(profile.id)).finally();
                     }}
                 >
                   {blockLoading ? "Blocking..." : "🚫 Block"}

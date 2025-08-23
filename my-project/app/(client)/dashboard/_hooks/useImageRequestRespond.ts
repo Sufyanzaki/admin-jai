@@ -1,7 +1,6 @@
 import {showError, showSuccess} from '@/shared-lib';
-import {postLike} from './../_api/postLike';
 import {useState} from "react";
-import { postImageRequestRespond } from '../_api/imageRequestApi';
+import {postImageRequestRespond} from '../_api/imageRequestApi';
 
 export const useImageRequestRespond = () => {
     const [loading, setLoading] = useState(false);
@@ -18,11 +17,8 @@ export const useImageRequestRespond = () => {
             }
             return res;
         } catch (err) {
-            showError({
-                message: error instanceof Error
-                    ? error.message
-                    : 'An error occurred while liking this profile'
-            });
+            // @ts-expect-error error
+            showError({message: err.message});
             setError(err as Error);
             throw err;
         } finally {

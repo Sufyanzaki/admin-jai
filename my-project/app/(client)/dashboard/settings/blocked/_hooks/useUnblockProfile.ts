@@ -16,17 +16,13 @@ export const useUnblockUser = () => {
             if (res) {
                 showSuccess('User Unblocked successfully!');
             }
-            mutate("blocked-profiles");
+            mutate("blocked-profiles").finally();
             return res;
-        } catch (err: any) {
+        } catch (err: unknown) {
             let message = 'An error occurred while Unblocking this profile';
 
             if (err instanceof Error) {
                 message = err.message;
-            } else if (err?.response?.data?.message) {
-                message = err.response.data.message; // axios-style
-            } else if (err?.message) {
-                message = err.message; // fetch or plain object
             }
 
             showError({ message });

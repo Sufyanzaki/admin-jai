@@ -12,16 +12,12 @@ export const useImageRequest = () => {
 
         try {
             const res = await postImageRequest({targetId});
-            if (res) {
-                showSuccess('Image Request sent successfully!');
-            }
+            if (res) throw new Error('Image Request sent successfully!');
+            showSuccess('Image Request sent successfully!');
             return res;
-        } catch (err) {
-            showError({
-                message: requestError instanceof Error
-                    ? requestError.message
-                    : 'An error occurred while liking this profile'
-            });
+        } catch (err : unknown) {
+            // @ts-expect-error err is unknown
+            showError({ message: err.message});
             setRequestError(err as Error);
             throw err;
         } finally {

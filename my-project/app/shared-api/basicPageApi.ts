@@ -32,7 +32,7 @@ export async function getBasicPagesById(id: string): Promise<BasicPageDto> {
 }
 
 export async function getBasicPagesByKey(key: string): Promise<BasicPageDto> {
-    return await getRequest<BasicPageDto>({ url: `setting/key-pages/${key}`, useAuth: true });
+    return await getRequest<BasicPageDto>({ url: `setting/basic-pages/by-url?url=${key}`, useAuth: true });
 }
 
 export async function deleteBasicPage(id: string): Promise<{ id: string, status: string }> {

@@ -1,16 +1,14 @@
 "use client"
 
-import { Container } from '@/components/client/ux/container'
+import {Container} from '@/components/client/ux/container'
 import React from 'react'
-import { useParams } from "next/navigation";
-import { useCustomPages } from "@/app/(client)/(public)/page/[slug]/_hooks/useCustomPages";
+import {useCustomPages} from "@/app/(client)/(public)/page/[slug]/_hooks/useCustomPages";
 import Preloader from "@/components/shared/Preloader";
-import { unescapeHtml } from '@/lib/utils';
+import {unescapeHtml} from '@/lib/utils';
 
 export default function CustomPage() {
 
-    const params = useParams()
-    const { slug } = params;
+    const slug = window.location.href;
 
     const { basicPage, isLoading, error } = useCustomPages(slug as string)
 
@@ -57,9 +55,7 @@ export default function CustomPage() {
                 <p className="text-lg">
                     Please check the URL and try again.
                 </p>
-                <div className="text-sm prose prose-lg max-w-none"
-                    dangerouslySetInnerHTML={{ __html: unescapeHtml(basicPage?.content ? basicPage?.content : "page content") }}
-                >   </div>
+                <div className="text-sm prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: unescapeHtml(basicPage?.content ? basicPage?.content : "page content") }}/>
             </Container>
         </section>
     )

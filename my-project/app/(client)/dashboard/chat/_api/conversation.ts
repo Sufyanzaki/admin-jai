@@ -45,10 +45,10 @@ export async function getChatDetails(id: string): Promise<ChatMessagesResponse> 
     })
 }
 
-export async function updateChat(id: string, props: Payload): Promise<BannerDto | undefined> {
-    const r = await patchRequest<Payload>({
-        url: `banner/${id}`,
-        data: props,
+export async function resetMessages(): Promise<undefined> {
+    const r = await patchRequest({
+        url: `chat/reset-message-count`,
+        data: {},
         useAuth: true
     });
     return r.response;

@@ -15,5 +15,5 @@ export type SendImageRequestData = {
 
 export type SendImageRequestResponse = {
     status: string;
-    data: sendImageRequestData[],
+    data: SendImageRequestData[],
 };

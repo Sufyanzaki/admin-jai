@@ -47,7 +47,7 @@ export function DashboardSidebar() {
               <Link href="/dashboard">
                 <ImageWrapper
                   width={230}
-                  height={230}
+                  height={22}
                   src="/dashboardLogo.png"
                   className="w-36"
                   alt="logo"

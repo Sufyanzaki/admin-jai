@@ -38,6 +38,8 @@ export function NotificationCard({ notification }: NotificationCardProps) {
     blockUser(Number(notification?.sender && notification?.sender.id)).finally();
   };
 
+  console.log(notification)
+
   return (
     <div className="w-full rounded-[5px] bg-white border border-gray-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">

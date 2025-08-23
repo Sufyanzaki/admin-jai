@@ -11,6 +11,7 @@ import {useGetAllChats} from "./_hooks/useGetAllChats";
 import Preloader from "@/components/shared/Preloader";
 import {Chat} from "./_types/allChats";
 import {useSession} from "next-auth/react";
+import {resetMessages} from "@/app/(client)/dashboard/chat/_api/conversation";
 
 export default function ChatPage() {
   const isAboveLaptop = !useLaptop();
@@ -31,6 +32,10 @@ export default function ChatPage() {
       if (chat) setSelectedChat(chat);
     }
   }, [chatId, allChats]);
+
+  useEffect(() => {
+    resetMessages().finally()
+  }, []);
 
   const handleProfileClick = () => {
     setShowProfile(true);

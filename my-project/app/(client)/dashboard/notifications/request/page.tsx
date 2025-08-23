@@ -1,10 +1,6 @@
 "use client";
-import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import {
-  ImageRequestStatus,
-  ImageRequestType,
-  useAllImageRequests,
-} from "../../_hooks/useAllImageRequests";
+import {ImageRequestStatus, ImageRequestType, useAllImageRequests,} from "../../_hooks/useAllImageRequests";
+import {ImageCard} from "@/app/(client)/dashboard/notifications/_components/Image-card";
 
 export default function RequestPage() {
   const { AllImagesRequests, AllImagesRequestsLoading} = useAllImageRequests(ImageRequestType.ACCEPTED, ImageRequestStatus.ACCEPTED);
@@ -13,10 +9,10 @@ export default function RequestPage() {
   }
   return (
     <div className="space-y-8">
-      {AllImagesRequests && AllImagesRequests?.length <= 0 && <p>No data to show</p>}
-      {AllImagesRequests && AllImagesRequests?.map((likeRec, index) => (
-        <NotificationCard notification={likeRec} key={index} />
-      ))}{" "}
+      {AllImagesRequests && AllImagesRequests.length <= 0 && <p>No data to show</p>}
+      {AllImagesRequests && AllImagesRequests.map((likeRec, index) => (
+        <ImageCard notification={likeRec} key={index} />
+      ))}
     </div>
   );
 }
