@@ -2,18 +2,20 @@ import Providers from "@/lib/provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
-import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import "@/app/admin/globals.css";
+import TranslationsProvider from "@/shared-lib/translation-provider";
+import { LanguageInitializer } from "@/lib/language-initializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Humsafar",
-    description: "Humsafar matrimonial app",
-    icons: {
-        icon: 'https://ticketprijs.nl/admin/assets/images/logo-alt.png',
-    },
+  title: "Humsafar",
+  description: "Humsafar matrimonial app",
+  icons: {
+    icon: 'https://ticketprijs.nl/admin/assets/images/logo-alt.png',
+  },
 };
 
 export default async function RootLayout({
@@ -22,12 +24,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-    const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers session={session}>{children}</Providers>
+        <Providers session={session}>
+          <TranslationsProvider>
+            <main>
+              <LanguageInitializer />
+              {children}
+            </main>
+          </TranslationsProvider>
+        </Providers>
       </body>
     </html>
   );

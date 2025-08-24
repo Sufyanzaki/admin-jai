@@ -53,7 +53,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-3">
                     <div className="text-black space-y-1 lg:space-y-4">
                         <h3 className="text-[22px] sm:text-2xl lg:text-3xl xl:text-[36px] font-semibold">
-                            {t("Welcome Back")}
+                            {t("Welcome back")}
                         </h3>
                         <p className="text-xs md:text-sm lg:text-base font-normal">
                             {t("Here's an overview of your account.")}

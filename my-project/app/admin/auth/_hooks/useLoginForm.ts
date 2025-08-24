@@ -6,20 +6,23 @@ import { showError } from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
 import { postLoginForm } from '@/app/shared-api/auth';
 import { setUserEmail } from "@/lib/access-token";
-
-const loginSchema = z.object({
-    email: z.string()
-        .min(1, "Email is required")
-        .email("Please enter a valid email address"),
-    password: z.string()
-        .min(6, "Password must be at least 6 characters"),
-});
-
-export type LoginFormValues = z.infer<typeof loginSchema>;
+import { useTranslation } from 'react-i18next';
 
 export default function useLoginForm() {
+    const { t } = useTranslation();
 
     const router = useRouter();
+
+    const loginSchema = z.object({
+        email: z.string()
+            .min(1, t("Email is required"))
+            .email(t("Please enter a valid email address")),
+        password: z.string()
+            .min(6, t("Password must be at least 6 characters")),
+    });
+
+    type LoginFormValues = z.infer<typeof loginSchema>;
+
 
     const { trigger } = useSWRMutation(
         'login',
@@ -31,7 +34,7 @@ export default function useLoginForm() {
                 if (error instanceof Error) {
                     showError({ message: error.message });
                 } else {
-                    showError({ message: 'An unknown error occurred.' });
+                    showError({ message: t('An unknown error occurred.') });
                 }
             }
         }
@@ -62,7 +65,7 @@ export default function useLoginForm() {
             const message =
                 typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string'
                     ? (error as { message: string }).message
-                    : 'An unexpected error occurred. Please try again.';
+                    : t('An unexpected error occurred. Please try again.');
             showError({ message });
         }
     };
