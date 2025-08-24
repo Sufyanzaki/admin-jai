@@ -1,35 +1,37 @@
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {useRouter} from "next/navigation";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import useSWRMutation from "swr/mutation";
-import {useEffect, useState} from "react";
-import {patchUser} from "@/app/shared-api/userApi";
-import {useSession} from "next-auth/react";
-import {MemberProfile} from "@/app/shared-types/member";
-import {imageUpload} from "@/admin-utils/utils/imageUpload";
-import {showError, showSuccess} from "@/shared-lib";
-import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
+import { useEffect, useState } from "react";
+import { patchUser } from "@/app/shared-api/userApi";
+import { useSession } from "next-auth/react";
+import { MemberProfile } from "@/app/shared-types/member";
+import { imageUpload } from "@/admin-utils/utils/imageUpload";
+import { showError, showSuccess } from "@/shared-lib";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
+import { useTranslation } from "react-i18next";
 
-const clientAccountSchema = z.object({
-    image: z
-        .any()
-        .refine((val) => val instanceof File || typeof val === "string", {
-            message: "Please provide a valid image",
-        }),
-    firstName: z.string().min(1, "First name is required"),
-    username: z.string().min(1, "User name is required"),
-    lastName: z.string().min(1, "Last name is required"),
-    gender: z.string().min(1, "Gender is required"),
-    dob: z.string().min(1, "Date of birth is required"),
-    email: z.string().email("Please enter a valid email"),
-});
 
-export type ClientAccountFormValues = z.infer<typeof clientAccountSchema>;
 
 export default function useClientAccount() {
-
+    const { t } = useTranslation();
     const { data: session } = useSession();
+
+    const clientAccountSchema = z.object({
+        image: z
+            .any()
+            .refine((val) => val instanceof File || typeof val === "string", {
+                message: t("Please provide a valid image"),
+            }),
+        firstName: z.string().min(1, t("First name is required")),
+        username: z.string().min(1, t("User name is required")),
+        lastName: z.string().min(1, t("Last name is required")),
+        gender: z.string().min(1, t("Gender is required")),
+        dob: z.string().min(1, t("Date of birth is required")),
+        email: z.string().email(t("Please enter a valid email")),
+    });
+    type ClientAccountFormValues = z.infer<typeof clientAccountSchema>;
 
     const router = useRouter();
     const [isUploading, setIsUploading] = useState(false)
@@ -40,7 +42,7 @@ export default function useClientAccount() {
     const { trigger } = useSWRMutation(
         "client-account",
         async (_: string, { arg }: { arg: Partial<MemberProfile> }) => {
-            if(!userId) throw new Error("User ID is undefined. Please log in again")
+            if (!userId) throw new Error(t("User ID is undefined. Please log in again"))
             return await patchUser(userId, arg);
         },
         {
@@ -48,7 +50,7 @@ export default function useClientAccount() {
                 if (error instanceof Error) {
                     showError({ message: error.message });
                 } else {
-                    showError({ message: "An unknown error occurred." });
+                    showError({ message: t("An unknown error occurred.") });
                 }
             },
         }
@@ -77,9 +79,9 @@ export default function useClientAccount() {
     });
 
     useEffect(() => {
-        if(!user) return;
+        if (!user) return;
 
-        const {image, firstName, username, lastName, gender, dob, email} = user;
+        const { image, firstName, username, lastName, gender, dob, email } = user;
 
         reset({
             image,
@@ -111,7 +113,7 @@ export default function useClientAccount() {
             router.push("/dashboard");
         } catch (error: unknown) {
             setIsUploading(false);
-            if(error instanceof Error) showError({ message: error.message });
+            if (error instanceof Error) showError({ message: error.message });
         }
     };
 

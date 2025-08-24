@@ -1,14 +1,15 @@
 "use client";
 
 import ImageWrapper from "@/components/client/image-wrapper";
-import {Button} from "@/components/client/ux/button";
-import {Mail, ShieldCheck} from "lucide-react";
-import {useBlockUser} from "../../_hooks/useBlockUser";
-import {useLikeResponse} from "../_hooks/useLikeResponse";
-import {useRouter} from "next/navigation";
-import {formatDate} from "date-fns";
-import {useSession} from "next-auth/react";
-import {RequestDto} from "@/app/(client)/dashboard/notifications/_types/notification";
+import { Button } from "@/components/client/ux/button";
+import { Mail, ShieldCheck } from "lucide-react";
+import { useBlockUser } from "../../_hooks/useBlockUser";
+import { useLikeResponse } from "../_hooks/useLikeResponse";
+import { useRouter } from "next/navigation";
+import { formatDate } from "date-fns";
+import { useSession } from "next-auth/react";
+import { RequestDto } from "@/app/(client)/dashboard/notifications/_types/notification";
+import { useTranslation } from "react-i18next";
 
 type NotificationCardProps = {
   notification: RequestDto;
@@ -16,7 +17,8 @@ type NotificationCardProps = {
 
 export function NotificationCard({ notification }: NotificationCardProps) {
   const router = useRouter();
-  const {data: session} = useSession()
+  const { t } = useTranslation();
+  const { data: session } = useSession()
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
   const { trigger } = useLikeResponse();
 
@@ -47,16 +49,16 @@ export function NotificationCard({ notification }: NotificationCardProps) {
           {notification?.sender && notification.status !== "ACCEPTED" && notification.sender?.id !== session?.user?.id ?
             <h3 className="font-medium text-sm sm:text-base">
 
-              You received a like from {notification.sender.firstName}
+              {t(" You received a likw from")} {notification.sender.firstName}
               {notification.sender.lastName}
             </h3> : notification.receiver ? <h3 className="font-medium text-sm sm:text-base">
-
-              You sent a like to {notification.sender.firstName}
+              {t(" You sent a like to")}
+              {notification.sender.firstName}
               {notification.sender.lastName}
             </h3> : notification.sender && notification.status === "ACCEPTED" &&
             <h3 className="font-medium text-sm sm:text-base">
-
-              You accepted a like from {notification.sender.firstName}
+              {t(" You received a request fromYou accepted a like from")}
+              {notification.sender.firstName}
               {notification.sender.lastName}
             </h3>}
 
@@ -97,7 +99,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     <ShieldCheck className="w-4 h-4 text-app-blue" />
                   )}
                 </div>
-                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red" } rounded-[5px] border-2 border-white`} />
+                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
                 <p className="text-xs sm:text-sm text-gray-700 font-medium">
                   {[
                     { label: "Age", value: `${notification.sender.age} Years` },
@@ -106,10 +108,10 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     { label: "Status", value: notification.sender.relationshipStatus },
                     { label: "Gender", value: notification.sender.gender },
                   ].map((item, index, arr) => (
-                      <span key={index}>
-      {item.label}: {item.value}
-                        {index < arr.length - 1 && " | "}
-    </span>
+                    <span key={index}>
+                      {item.label}: {item.value}
+                      {index < arr.length - 1 && " | "}
+                    </span>
                   ))}
                 </p>
 
@@ -127,7 +129,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     size="sm"
                     className="px-4 sm:px-6 w-full sm:w-auto"
                   >
-                    View Profile
+                    {t("View Profile")}
                   </Button>
                   <Button
                     onClick={handleReport}
@@ -135,7 +137,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     size="sm"
                     className="px-4 sm:px-6 w-full sm:w-auto"
                   >
-                    {blockLoading ? "Blocking.." : "Block This Profile"}
+                    {blockLoading ? t("Blocking..") : t("Block This Profile")}
                   </Button>
                 </div>
               </div>
@@ -148,7 +150,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                       size="sm"
                       className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
                     >
-                      Accept
+                      {t("Accept")}
                     </Button>
                     <Button
                       onClick={handleDecline}
@@ -156,7 +158,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                       variant="outline"
                       className="px-4 grow sm:grow-0"
                     >
-                      Decline
+                      {t("Decline")}
                     </Button>
                   </div>
                 </div>
@@ -169,7 +171,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                       size="sm"
                       className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
                     >
-                      Accept
+                      {t("Accept")}
                     </Button>
                   </div>
                 </div>}

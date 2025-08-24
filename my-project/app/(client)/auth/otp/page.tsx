@@ -1,3 +1,4 @@
+'use client'
 import OtpForm from "@/app/(client)/auth/otp/_components/otp-form";
 import { useTranslation } from "react-i18next";
 

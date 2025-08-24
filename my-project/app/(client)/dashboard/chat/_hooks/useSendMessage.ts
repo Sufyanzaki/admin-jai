@@ -1,5 +1,6 @@
 import { sendMessage } from "@/app/(client)/dashboard/chat/_api/conversation";
 import { useParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import useSWRMutation from "swr/mutation";
 
 type ChatDetails = {
@@ -7,6 +8,7 @@ type ChatDetails = {
 }
 
 export const useSendMessage = ({ chatID }: ChatDetails) => {
+    const { t } = useTranslation();
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
     const chatId = chatID ?? id;
@@ -16,7 +18,7 @@ export const useSendMessage = ({ chatID }: ChatDetails) => {
         async (_key, { arg }: { arg: { content: string } }) => {
             const response = await sendMessage({ chatId, ...arg });
             if (!response) {
-                throw new Error("Failed to send message");
+                throw new Error(t("Failed to send message"));
             }
             return response;
         }

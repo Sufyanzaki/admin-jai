@@ -1,18 +1,22 @@
-import {showError, showSuccess} from '@/shared-lib';
-import {postBlockUser} from '../_api/postBlockUser';
-import {mutate} from 'swr';
+import { showError, showSuccess } from '@/shared-lib';
+import { postBlockUser } from '../_api/postBlockUser';
+import { mutate } from 'swr';
 import z from 'zod';
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
 
-export const reportSchema = z.object({
-  reason: z.string().min(1, "please enter reason"),
-  additionDetail: z.string().optional(),
-});
-
-export type ComplaintFormValues = z.infer<typeof reportSchema>;
 
 export const useReportProfile = (blockedUserId: number) => {
+  const { t } = useTranslation();
+
+  const reportSchema = z.object({
+    reason: z.string().min(1, t("please enter reason")),
+    additionDetail: z.string().optional(),
+  });
+
+  type ComplaintFormValues = z.infer<typeof reportSchema>;
+
 
   const {
     register,
@@ -40,7 +44,7 @@ export const useReportProfile = (blockedUserId: number) => {
       mutate("blocked-profiles").finally();
       return res;
     } catch (err: unknown) {
-      let message = "An error occurred while blocking this profile";
+      let message = t("An error occurred while blocking this profile");
 
       if (err instanceof Error) {
         message = err.message;

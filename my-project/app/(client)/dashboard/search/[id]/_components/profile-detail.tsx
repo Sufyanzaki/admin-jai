@@ -2,26 +2,28 @@
 
 import { Button } from "@/components/client/ux/button";
 import { Badge } from "@/components/client/ux/badge";
-import {ArrowLeft, Lock, Shield, Star} from "lucide-react";
+import { ArrowLeft, Lock, Shield, Star } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/client/ux/tabs";
-import {MouseEvent, ReactNode, useState} from "react";
+import { MouseEvent, ReactNode, useState } from "react";
 import ImageWrapper from "@/components/client/image-wrapper";
 import ComplainModal from "@/components/client/complain-modal";
 import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 import { useSendLike } from "../../../_hooks/useSendLike";
 import { useCreateChat } from "@/app/(client)/dashboard/chat/_hooks/useCreateChat";
 import { MemberPersonalityBehavior } from "@/app/shared-types/member";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import {showConfirmation} from "@/shared-lib";
-import {useImageRequest} from "@/app/(client)/dashboard/_hooks/useImageRequest";
-import {cn} from "@/lib/utils";
+import { showConfirmation } from "@/shared-lib";
+import { useImageRequest } from "@/app/(client)/dashboard/_hooks/useImageRequest";
+import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export function ProfileDetail() {
+  const { t } = useTranslation();
   const router = useRouter();
   const params = useParams();
-  const {data:session} = useSession();
+  const { data: session } = useSession();
   const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
   const { user, userLoading } = useBasicInfo(id);
   const [openComplain, setOpenComplain] = useState(false);
@@ -44,7 +46,7 @@ export function ProfileDetail() {
   const handleImageRequest = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    showConfirmation(()=>requestTrigger(id));
+    showConfirmation(() => requestTrigger(id));
   };
 
   const handleBack = () => router.back();
@@ -78,7 +80,7 @@ export function ProfileDetail() {
   if (userLoading || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        Loading...
+        {t("Loading...")}
       </div>
     );
   }
@@ -116,44 +118,44 @@ export function ProfileDetail() {
     switch (true) {
       case blurForFreeMembers:
         return (
-            <div
-                className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
-                onClick={handleImageRequest}
-            >
-              <Lock />
-              Visible for Premium Members
-              <br />
-              <p className="text-xs font-normal">View Plan</p>
-            </div>
+          <div
+            className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
+            onClick={handleImageRequest}
+          >
+            <Lock />
+            {t("Visible for Premium Members")}
+            <br />
+            <p className="text-xs font-normal">View Plan</p>
+          </div>
         );
 
       case onlyMembersWithPhotoCanSee:
         return (
-            <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
-              <Lock />
-              Visible when You have photo
-            </div>
+          <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+            <Lock />
+            {t("Visible when You have photo")}
+          </div>
         );
 
       case onRequestOnly:
         return (
-            <div
-                className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold"
-                onClick={handleImageRequest}
-            >
-              <Lock />
-              Request for photo
-              <br />
-            </div>
+          <div
+            className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold"
+            onClick={handleImageRequest}
+          >
+            <Lock />
+            {t("Request for photo")}
+            <br />
+          </div>
         );
 
       case onlyVipCanSee:
         return (
-            <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
-              <Lock />
-              Only Vip members can see
-              <br />
-            </div>
+          <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
+            <Lock />
+            {t("Only Vip members can see")}
+            <br />
+          </div>
         );
 
       default:
@@ -196,12 +198,12 @@ export function ProfileDetail() {
             {user.isPremium && (
               <Badge className="bg-yellow-400 text-black h-9 py-1 px-4 rounded-[5px] font-semibold text-sm">
                 <Star className="!w-4 !h-4 mr-1" />
-                Gold
+                {t("Gold")}
               </Badge>
             )}
             <Badge className="bg-green-500 text-white h-9 py-1 px-4 rounded-[5px] font-semibold text-sm">
               <Shield className="!w-4 !h-4 mr-1" />
-              Verified
+              {t("Verified")}
             </Badge>
           </div>
         </div>
@@ -214,54 +216,54 @@ export function ProfileDetail() {
                   src={user.image || "/placeholder.svg"}
                   alt={user.firstName || "Profile"}
                   className={cn(
-                      "w-full h-full object-cover transition-opacity duration-500",
-                      blur && "blur-xs",
-                      loaded ? "opacity-100 z-0" : "opacity-0 z-0"
+                    "w-full h-full object-cover transition-opacity duration-500",
+                    blur && "blur-xs",
+                    loaded ? "opacity-100 z-0" : "opacity-0 z-0"
                   )}
                   onLoad={() => setIsLoaded(true)}
                 />
                 <img
-                    src="/dashboardLogo.png"
-                    alt="Loading placeholder"
-                    className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`}
+                  src="/dashboardLogo.png"
+                  alt="Loading placeholder"
+                  className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"}`}
                 />
                 {renderImageOverlay()}
               </div>
               {String(session?.user?.id) !== String(id) && <div className="space-y-2">
                 <div>
                   {user.isPremium ? <Button
-                      onClick={handleSendMessage}
-                      variant="theme"
-                      size="lg"
-                      disabled={messageLoading}
-                      className="w-full"
+                    onClick={handleSendMessage}
+                    variant="theme"
+                    size="lg"
+                    disabled={messageLoading}
+                    className="w-full"
                   >
                     {messageLoading ? "Processing" : "Send Message"}
                   </Button> : <Link href="/membership">
                     <Button
-                        variant="theme"
-                        size="lg"
-                        className="w-full"
+                      variant="theme"
+                      size="lg"
+                      className="w-full"
                     >
-                      Subscribe
+                      {t("Subscribe")}
                     </Button>
                   </Link>}
                 </div>
                 <Button
-                    onClick={handleSendWink}
-                    variant="theme"
-                    size="lg"
-                    disabled={loading}
-                    className="w-full"
+                  onClick={handleSendWink}
+                  variant="theme"
+                  size="lg"
+                  disabled={loading}
+                  className="w-full"
                 >
                   {loading ? "Sending Wink..." : "Send Wink"}
                 </Button>
                 <Button
-                    onClick={handleReportProfile}
-                    variant="ghost"
-                    className="w-full"
+                  onClick={handleReportProfile}
+                  variant="ghost"
+                  className="w-full"
                 >
-                  Report Profile
+                  {t("Report Profile")}
                 </Button>
               </div>}
             </div>
@@ -416,12 +418,12 @@ export function ProfileDetail() {
             {user.isPremium && (
               <Badge className="bg-yellow-400 text-black py-1 px-3 rounded-full text-xs font-semibold">
                 <Star className="w-3 h-3 mr-1" />
-                Gold
+                {t("Gold")}
               </Badge>
             )}
             <Badge className="bg-green-500 text-white py-1 px-3 rounded-full text-xs font-semibold">
               <Shield className="w-3 h-3 mr-1" />
-              Verified
+              {t("Verified")}
             </Badge>
           </div>
 
@@ -433,7 +435,7 @@ export function ProfileDetail() {
               size="sm"
               variant="theme"
             >
-              {messageLoading ? "Processing" : "Send Message"}
+              {messageLoading ? t("Processing") : t("Send Message")}
             </Button>
             <Button
               onClick={handleSendWink}
@@ -442,7 +444,7 @@ export function ProfileDetail() {
               size="sm"
               variant="theme"
             >
-              {loading ? "Sending..." : "Send Wink"}
+              {loading ? t("Sending...") : t("Send Wink")}
             </Button>
             <Button
               onClick={handleReportProfile}
@@ -450,20 +452,20 @@ export function ProfileDetail() {
               size="sm"
               variant="destructive"
             >
-              Report Profile
+              {t("Report Profile")}
             </Button>
           </div>
 
           <Tabs defaultValue="about" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="about" className="text-xs sm:text-sm">
-                About Me
+                {t("About Me")}
               </TabsTrigger>
               <TabsTrigger value="hobbies" className="text-xs sm:text-sm">
-                Hobbies & Interest
+                {t("Hobbies & Interest")}
               </TabsTrigger>
               <TabsTrigger value="character" className="text-xs sm:text-sm">
-                Character
+                {t("Character")}
               </TabsTrigger>
             </TabsList>
 
@@ -473,7 +475,7 @@ export function ProfileDetail() {
               </p>
 
               <div>
-                <h3 className="font-semibold text-lg mb-4">Profile Details</h3>
+                <h3 className="font-semibold text-lg mb-4">{t("Profile Details")}</h3>
                 <div className="space-y-3">
                   <DetailRow label="Username" value={user.username} />
                   <DetailRow label="Email" value={user.email} />
@@ -487,7 +489,7 @@ export function ProfileDetail() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-lg mb-4">What do I look like?</h3>
+                <h3 className="font-semibold text-lg mb-4">{t("What do I look like?")}</h3>
                 <div className="space-y-3">
                   {user.physicalAppearance && Object.entries(user.physicalAppearance).map(([label, value]) => (
                     <DetailRow
@@ -501,7 +503,7 @@ export function ProfileDetail() {
             </TabsContent>
 
             <TabsContent value="hobbies" className="space-y-4">
-              <h3 className="font-semibold text-lg">My Interests</h3>
+              <h3 className="font-semibold text-lg">{t("My Interests")}</h3>
               <div className="grid grid-cols-1 gap-3">
                 {user.hobbiesInterests && Object.entries(user.hobbiesInterests).map(([categoryKey, value]) => (
                   <div key={categoryKey} className="flex items-center gap-3 py-2">
@@ -517,7 +519,7 @@ export function ProfileDetail() {
             </TabsContent>
 
             <TabsContent value="character" className="space-y-4">
-              <h3 className="font-semibold text-lg">Character Traits</h3>
+              <h3 className="font-semibold text-lg">{t("Character Traits")}</h3>
               <div className="grid grid-cols-1 gap-3">
                 {getPersonalityTraits(user.personalityBehavior).map(trait => (
                   <PersonalityTrait key={trait} trait={trait} />

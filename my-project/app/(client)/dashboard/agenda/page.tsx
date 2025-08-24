@@ -3,20 +3,22 @@
 import { useAgenda } from '@/app/shared-hooks/useAgenda';
 import React from 'react'
 import Preloader from "@/components/shared/Preloader";
-import {unescapeHtml} from "@/lib/utils";
+import { unescapeHtml } from "@/lib/utils";
+import { useTranslation } from 'react-i18next';
 
 export default function Agenda() {
+    const { t } = useTranslation();
     const { agendaSettings, agendaLoading } = useAgenda();
 
-    if(agendaLoading) return (
+    if (agendaLoading) return (
         <div className="flex items-center justify-center min-h-60">
             <Preloader />
         </div>
     )
 
-    if(!agendaSettings) return (
+    if (!agendaSettings) return (
         <div className="flex items-center justify-center min-h-60">
-            <p className="text-gray-500">No agenda settings found.</p>
+            <p className="text-gray-500"> {t("No data found")}</p>
         </div>
     )
 
@@ -30,7 +32,7 @@ export default function Agenda() {
                     {agendaSettings.pageSubtitle}
                 </p>
             </div>
-            <div dangerouslySetInnerHTML={{__html: unescapeHtml(agendaSettings.content)}} />
+            <div dangerouslySetInnerHTML={{ __html: unescapeHtml(agendaSettings.content) }} />
         </div>
     )
 }

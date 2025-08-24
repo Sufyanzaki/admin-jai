@@ -16,39 +16,42 @@ import {
 } from "@/components/client/ux/sidebar";
 import { useTranslation } from "react-i18next";
 
+export const getNotificationItems = (t: (key: string) => string) => [
+    {
+        title: t("Received"),
+        icon: User,
+        href: "/dashboard/notifications/received",
+        count: 6,
+    },
+    {
+        title: t("Accepted"),
+        icon: Star,
+        href: "/dashboard/notifications/accepted",
+    },
+    {
+        title: t("Sent"),
+        icon: Send,
+        href: "/dashboard/notifications/sent",
+    },
+    {
+        title: t("Request"),
+        icon: MessageSquare,
+        href: "/dashboard/notifications/request",
+    },
+    {
+        title: t("Trash"),
+        icon: Trash2,
+        href: "/dashboard/notifications/trash",
+    },
+];
+
 export function NotificationSidebar() {
     const { t } = useTranslation();
     const pathname = usePathname();
     const { open, toggleSidebar } = useSidebar();
 
-    const notificationItems = [
-        {
-            title: t("Received"),
-            icon: User,
-            href: "/dashboard/notifications/received",
-            count: 6,
-        },
-        {
-            title: t("Accepted"),
-            icon: Star,
-            href: "/dashboard/notifications/accepted",
-        },
-        {
-            title: t("Sent"),
-            icon: Send,
-            href: "/dashboard/notifications/sent",
-        },
-        {
-            title: t("Request"),
-            icon: MessageSquare,
-            href: "/dashboard/notifications/request",
-        },
-        {
-            title: t("Trash"),
-            icon: Trash2,
-            href: "/dashboard/notifications/trash",
-        },
-    ];
+    const notificationItems = getNotificationItems(t);
+
 
     return (
         <div className={`${open ? "w-64" : ""}`}>
@@ -78,11 +81,10 @@ export function NotificationSidebar() {
                                             <SidebarMenuButton
                                                 asChild
                                                 isActive={isActive}
-                                                className={`flex items-center gap-3 px-3 py-3 font-medium text-sm rounded-[5px] transition-colors h-auto ${
-                                                    isActive
+                                                className={`flex items-center gap-3 px-3 py-3 font-medium text-sm rounded-[5px] transition-colors h-auto ${isActive
                                                         ? "bg-blue-50 text-blue-600 hover:bg-blue-50 hover:text-blue-600"
                                                         : "text-black hover:bg-gray-50 hover:text-black"
-                                                }`}
+                                                    }`}
                                             >
                                                 <Link href={item.href}>
                                                     <item.icon className="w-4 h-4" />

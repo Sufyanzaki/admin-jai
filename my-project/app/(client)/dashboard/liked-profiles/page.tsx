@@ -7,17 +7,19 @@ import { Switch } from '@/components/client/ux/switch';
 import { Grid3X3, List } from 'lucide-react';
 import ListCard from '../_components/list-card';
 import ProfileCard from '../_components/profile-card';
+import { useTranslation } from 'react-i18next';
 
 export default function LikedProfiles() {
+    const { t } = useTranslation();
     const [online, setOnline] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
     const { likesSent, likesSentLoading, error } = useLikesSent();
     if (likesSentLoading) {
-        return <p>Loading...</p>;
+        return <p> {t("Loading...")}</p>;
     }
     if (error) {
-        return <p>error getting notifications...
+        return <p> {t("Error getting notifications")}
             <p>{error?.message}</p>
         </p>;
     }
@@ -31,7 +33,7 @@ export default function LikedProfiles() {
                 <div className="flex-1 flex flex-col">
                     <header className="bg-white px-6 pt-6 pb-4">
                         <h1 className="text-[22px] sm:text-2xl lg:text-3xl xl:text-[36px] font-semibold">
-                            Profiles I Liked
+                            {t(" Profiles I Liked")}
                         </h1>
                     </header>
 
@@ -43,7 +45,7 @@ export default function LikedProfiles() {
                                     onCheckedChange={setOnline}
                                     className="data-[state=checked]:bg-app-blue"
                                 />
-                                <Label className="text-sm">Online</Label>
+                                <Label className="text-sm"> {t("Online")}</Label>
                             </div>
 
                             <div className="flex items-center gap-2">

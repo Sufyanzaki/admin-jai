@@ -7,7 +7,6 @@ import { Slider } from "@/components/client/ux/slider";
 import { RangeSlider } from "@/components/client/ux/range-slider";
 import LocationSearchInput from "@/components/client/location-search";
 import {
-  ExpectationsFormValues,
   useClientExpectationsForm,
 } from "@/app/(client)/dashboard/settings/expectation/_hooks/useClientExpectationsForm";
 import { MemberLocation } from "@/app/shared-types/member";
@@ -15,6 +14,26 @@ import { Controller } from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
 import { useTranslation } from "react-i18next";
+
+// A pure TypeScript type, no Zod involved
+export type ExpectationsFormValues = {
+  origin: string;
+  lookingFor: string;
+  ageFrom: number;
+  ageTo: number;
+  country: string;
+  city?: string;
+  state: string;
+  relationshipStatus: string;
+  education: string;
+  religion: string;
+  smoke: string;
+  drinking: string;
+  weight: string;
+  goingOut: string;
+  length: string;
+};
+
 
 type SelectField = {
   name: keyof ExpectationsFormValues;
@@ -54,10 +73,10 @@ export default function ExpectationPage() {
 
   if (isFetching) {
     return (
-        <div className="flex items-center flex-col justify-center h-64">
-          <Preloader />
-          <p className="text-sm">{t("Loading...")}</p>
-        </div>
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">{t("Loading...")}</p>
+      </div>
     );
   }
 
@@ -73,92 +92,92 @@ export default function ExpectationPage() {
   ];
 
   return (
-      <Suspense fallback={<div>{t("Loading...")}</div>}>
-        <form
-            onSubmit={handleSubmit((v) => onSubmit(v))}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {selectFields.map(({ name, label, placeholder, key }) => (
-              <div key={name}>
-                <Label>{label}</Label>
-                <Controller
-                    name={name}
-                    control={control}
-                    render={({ field }) => (
-                        <AttributeSelect
-                            attributeKey={key}
-                            value={field.value as string || undefined}
-                            onChange={(value) => setValue(name, value, { shouldDirty: true })}
-                            placeholder={placeholder}
-                        />
-                    )}
+    <Suspense fallback={<div>{t("Loading...")}</div>}>
+      <form
+        onSubmit={handleSubmit((v) => onSubmit(v))}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        {selectFields?.map(({ name, label, placeholder, key }) => (
+          <div key={name}>
+            <Label>{label}</Label>
+            <Controller
+              name={(name)}
+              control={control}
+              render={({ field }) => (
+                <AttributeSelect
+                  attributeKey={key}
+                  value={field.value as string || undefined}
+                  onChange={(value) => setValue(name, value, { shouldDirty: true })}
+                  placeholder={placeholder}
                 />
-                {errors[name] && (
-                    <p className="text-sm text-red-400">{errors[name]?.message as string}</p>
-                )}
-              </div>
-          ))}
-
-          <div className="relative">
-            <Label>{t("Age Range *")}</Label>
-            <RangeSlider min={18} max={100} value={ageRange} onChange={setAgeRange} unit={t("y/o")} />
-            {(errors.ageFrom || errors.ageTo) && (
-                <p className="text-sm text-red-400">
-                  {errors.ageFrom?.message || errors.ageTo?.message}
-                </p>
-            )}
-          </div>
-
-          <div className="relative">
-            <Label>{t("Height")}</Label>
-            <Slider
-                value={parseInt(watch("length") || "0")}
-                onValueChange={(value) => setValue("length", value.toString(), { shouldDirty: true })}
-                min={0}
-                max={300}
-                step={1}
-                unit={t("cm")}
-                className="mt-9 mb-2"
+              )}
             />
-            {errors.length && (
-                <p className="text-sm text-red-400">{errors.length.message}</p>
+            {errors[name] && (
+              <p className="text-sm text-red-400">{errors[name]?.message as string}</p>
             )}
           </div>
+        ))}
 
-          <div className="relative">
-            <Label>{t("Weight")}</Label>
-            <Slider
-                value={parseInt(watch("weight") || "0")}
-                onValueChange={(value) => setValue("weight", value.toString(), { shouldDirty: true })}
-                min={0}
-                max={300}
-                step={1}
-                unit={t("kg")}
-                className="mt-9 mb-2"
+        <div className="relative">
+          <Label>{t("Age Range *")}</Label>
+          <RangeSlider min={18} max={100} value={ageRange} onChange={setAgeRange} unit={t("y/o")} />
+          {(errors.ageFrom || errors.ageTo) && (
+            <p className="text-sm text-red-400">
+              {errors.ageFrom?.message || errors.ageTo?.message}
+            </p>
+          )}
+        </div>
+
+        <div className="relative">
+          <Label>{t("Height")}</Label>
+          <Slider
+            value={parseInt(watch("length") || "0")}
+            onValueChange={(value) => setValue("length", value.toString(), { shouldDirty: true })}
+            min={0}
+            max={300}
+            step={1}
+            unit={t("cm")}
+            className="mt-9 mb-2"
+          />
+          {errors.length && (
+            <p className="text-sm text-red-400">{errors.length.message}</p>
+          )}
+        </div>
+
+        <div className="relative">
+          <Label>{t("Weight")}</Label>
+          <Slider
+            value={parseInt(watch("weight") || "0")}
+            onValueChange={(value) => setValue("weight", value.toString(), { shouldDirty: true })}
+            min={0}
+            max={300}
+            step={1}
+            unit={t("kg")}
+            className="mt-9 mb-2"
+          />
+          {errors.weight && (
+            <p className="text-sm text-red-400">{errors.weight.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label>{t("Location")}</Label>
+          <div className="border border-app-border rounded-[5px] !h-13 py-1">
+            <LocationSearchInput
+              value={currentLocation}
+              onSelect={handleLocationSelect}
+              placeholder={t("Start typing your city or address")}
             />
-            {errors.weight && (
-                <p className="text-sm text-red-400">{errors.weight.message}</p>
-            )}
+            {(errors.state || errors.country) && <p className="text-sm text-red-500">{t("Invalid Address")}</p>}
           </div>
+        </div>
 
-          <div>
-            <Label>{t("Location")}</Label>
-            <div className="border border-app-border rounded-[5px] !h-13 py-1">
-              <LocationSearchInput
-                  value={currentLocation}
-                  onSelect={handleLocationSelect}
-                  placeholder={t("Start typing your city or address")}
-              />
-              {(errors.state || errors.country) && <p className="text-sm text-red-500">{t("Invalid Address")}</p>}
-            </div>
-          </div>
-
-          <div className="md:col-span-2 flex justify-end">
-            <Button type="submit" size="lg" variant="theme" disabled={!isDirty || isLoading}>
-              {isLoading ? t("Updating...") : t("Update")}
-            </Button>
-          </div>
-        </form>
-      </Suspense>
+        <div className="md:col-span-2 flex justify-end">
+          <Button type="submit" size="lg" variant="theme" disabled={!isDirty || isLoading}>
+            {isLoading ? t("Updating...") : t("Update")}
+          </Button>
+        </div>
+      </form>
+    </Suspense>
   );
 }

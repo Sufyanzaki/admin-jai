@@ -8,22 +8,25 @@ import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useSession } from "next-auth/react";
 import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
-import {patchEducationCareer} from "@/app/shared-api/educationCareerApi";
-import {patchLanguageInfo} from "@/app/shared-api/languageInfoApi";
+import { patchEducationCareer } from "@/app/shared-api/educationCareerApi";
+import { patchLanguageInfo } from "@/app/shared-api/languageInfoApi";
+import { useTranslation } from "react-i18next";
 
-const moreInfoSchema = z.object({
-    motherTongue: z.string().min(1, "Mother tongue is required"),
-    knownLanguages: z.array(z.string()).min(1, "Select at least one language"),
-    education: z.string().min(1, "Education is required"),
-    department: z.string().min(1, "Department is required"),
-    primarySpecialization: z.string().min(1, "Primary specialization is required"),
-});
-
-export type MoreInfoForm = z.infer<typeof moreInfoSchema>;
 
 export default function useMoreInfoForm() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
+
+    const moreInfoSchema = z.object({
+        motherTongue: z.string().min(1, t("Mother tongue is required")),
+        knownLanguages: z.array(z.string()).min(1, t("Select at least one language")),
+        education: z.string().min(1, t("Education is required")),
+        department: z.string().min(1, t("Department is required")),
+        primarySpecialization: z.string().min(1, t("Primary specialization is required")),
+    });
+
+    type MoreInfoForm = z.infer<typeof moreInfoSchema>;
 
     const { user, userLoading } = useBasicInfo(userId);
 
@@ -64,10 +67,10 @@ export default function useMoreInfoForm() {
         async (_, { arg }: { arg: MoreInfoForm }) => {
             if (!userId) throw new Error("User ID is undefined. Please log in again");
 
-            const {knownLanguages, motherTongue, education, department, primarySpecialization} = arg;
+            const { knownLanguages, motherTongue, education, department, primarySpecialization } = arg;
             const lang = knownLanguages.join(",");
-            await patchEducationCareer(userId, {education, department, primarySpecialization});
-            await patchLanguageInfo(userId, {knownLanguages: lang, motherTongue});
+            await patchEducationCareer(userId, { education, department, primarySpecialization });
+            await patchLanguageInfo(userId, { knownLanguages: lang, motherTongue });
             return true
         },
         {
@@ -76,7 +79,7 @@ export default function useMoreInfoForm() {
                 console.error("Update More Info error:", error);
             },
             onSuccess: () => {
-                showSuccess("More information updated successfully!");
+                showSuccess(t("More information updated successfully!"));
             },
             revalidate: false,
             populateCache: false,
@@ -87,7 +90,7 @@ export default function useMoreInfoForm() {
         try {
             const result = await trigger(values);
             if (result) {
-                showSuccess("More information updated successfully!");
+                showSuccess(t("More information updated successfully!"));
                 callback?.();
             }
         } catch (error: unknown) {

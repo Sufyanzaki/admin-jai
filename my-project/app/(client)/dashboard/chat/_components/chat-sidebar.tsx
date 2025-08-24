@@ -5,9 +5,10 @@ import ImageWrapper from "@/components/client/image-wrapper";
 import { useSession } from "next-auth/react";
 import { formatDate } from "date-fns";
 import { Chat } from "../_types/allChats";
-import {useProfile} from "@/app/shared-hooks/useProfile";
+import { useProfile } from "@/app/shared-hooks/useProfile";
 import Preloader from "@/components/shared/Preloader";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 
 interface ChatSidebarProps {
@@ -21,18 +22,19 @@ export function ChatSidebar({
   selectedChat,
   onSelectChat,
 }: ChatSidebarProps) {
+  const { t } = useTranslation();
   const { data: session } = useSession();
   const userId = session?.user?.id ? Number(session?.user?.id) : undefined;
-  const {response, userLoading} = useProfile();
+  const { response, userLoading } = useProfile();
 
-  if(userLoading) return(
-      <div className="flex items-center flex-col justify-center h-64">
-        <Preloader />
-        <p className="text-sm">Loading your chats</p>
-      </div>
+  if (userLoading) return (
+    <div className="flex items-center flex-col justify-center h-64">
+      <Preloader />
+      <p className="text-sm">Loading your chats</p>
+    </div>
   )
 
-  if(!response) return;
+  if (!response) return;
 
   return (
     <div className="w-full lg:w-80 bg-white border-r border-gray-200 flex flex-col py-3 lg:px-3">
@@ -68,7 +70,7 @@ export function ChatSidebar({
       <div className="flex-1 overflow-y-auto max-h-[86vh] scrollbar-hide-until-hover">
         {/* Chats Section */}
         <div className="scrollbar-hide-until-hover overflow-y-auto max-h-[70vh]">
-          <h3 className="text-sm font-semibold p-4 lg:p-3">Chats</h3>
+          <h3 className="text-sm font-semibold p-4 lg:p-3"> {t("Chats")}</h3>
           <div className="divide-y divide-gray-200">
             {chatData?.map((chat) => {
               const otherParticipant = chat?.ChatUser?.filter(user => Number(user.userId) !== userId);

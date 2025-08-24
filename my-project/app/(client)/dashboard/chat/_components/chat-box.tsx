@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import { MessageListener } from "@/client-utils/MessageListener";
 import { Chat } from "@/app/(client)/dashboard/chat/_types/allChats";
+import { useTranslation } from "react-i18next";
 
 type ChatBoxProps = {
     selectedChat: Chat;
@@ -21,7 +22,7 @@ type ChatBoxProps = {
 };
 
 export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) {
-
+    const { t } = useTranslation();
     const { chatDetails, chatLoading, chatMutate } = useChatDetails({ chatId: selectedChat.id });
 
     const { sending, sendMessageAction } = useSendMessage({ chatID: selectedChat.id });
@@ -35,7 +36,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
         return (
             <div className="flex items-center flex-col justify-center h-64 grow">
                 <Preloader />
-                <p className="text-sm">Loading chat...</p>
+                <p className="text-sm">{t("Loading chat...")}</p>
             </div>
         );
     }
@@ -63,7 +64,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                             if (!prev)
                                 return {
                                     messages: 1,
-                                    data: { messages: [message], users: selectedChat.ChatUser},
+                                    data: { messages: [message], users: selectedChat.ChatUser },
                                     status: "success",
                                 };
                             return {
@@ -162,7 +163,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                         })
                     ) : (
                         <div className="flex items-center justify-center h-full">
-                            <p className="text-gray-500">No messages yet</p>
+                            <p className="text-gray-500"> {t("No data found")}</p>
                         </div>
                     )}
                 </div>

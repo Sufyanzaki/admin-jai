@@ -38,7 +38,7 @@ export function DashboardHeader() {
     { label: t("My Matches"), href: "/dashboard/matches" },
     { label: t("My Visits"), href: "/dashboard/visits" },
     { label: t("Notification"), href: "/dashboard/notifications/received" },
-    { label: t("Liked Profile"), href: "/dashboard/notifications/received" },
+    { label: t("Liked Profile"), href: "/dashboard/liked-profiles" },
     { label: t("Messages"), href: "/dashboard/chat", badge: response?.user.messageCount, badgeColor: "bg-cyan-500" },
     { label: t("My Profile"), href: "/dashboard/settings/account" },
   ];

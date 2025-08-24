@@ -2,8 +2,10 @@ import { showError, showSuccess } from '@/shared-lib';
 import { useState } from "react";
 import { LikeStatus, useLikesReceived } from './useLikesReceived';
 import { postLikeResponse } from '../_api/likes';
+import { useTranslation } from 'react-i18next';
 
 export const useLikeResponse = () => {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const { mutate } = useLikesReceived(LikeStatus.PENDING);
@@ -13,9 +15,9 @@ export const useLikeResponse = () => {
         setError(null);
 
         try {
-            const res = await postLikeResponse({ status:action }, userId);
+            const res = await postLikeResponse({ status: action }, userId);
             if (res) {
-                showSuccess('Response sent successfully!');
+                showSuccess(t('Response sent successfully!'));
                 mutate().finally();
             }
             return res;
@@ -23,7 +25,7 @@ export const useLikeResponse = () => {
             showError({
                 message: error instanceof Error
                     ? error.message
-                    : 'An error occurred while liking this profile'
+                    : t('An error occurred while liking this profile')
             });
             setError(err as Error);
             throw err;

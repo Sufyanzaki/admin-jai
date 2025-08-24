@@ -1,3 +1,4 @@
+'use client'
 import { LoginForm } from "./_components/login-form";
 import type React from "react";
 import { useTranslation } from "react-i18next";

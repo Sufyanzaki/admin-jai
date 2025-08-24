@@ -1,6 +1,7 @@
-import {useSWRFix} from "@/shared-lib";
-import {getAllImageRequest} from "../_api/getAllImageRequest";
-import {ApiResponseDto} from "@/app/(client)/dashboard/notifications/_types/notification";
+import { useSWRFix } from "@/shared-lib";
+import { getAllImageRequest } from "../_api/getAllImageRequest";
+import { ApiResponseDto } from "@/app/(client)/dashboard/notifications/_types/notification";
+import { useTranslation } from "react-i18next";
 
 export enum ImageRequestStatus {
   PENDING = "PENDING",
@@ -13,16 +14,18 @@ export enum ImageRequestType {
   ACCEPTED = "received",
 }
 
-export const useAllImageRequests = (type?: ImageRequestType,status?: ImageRequestStatus) => {
+export const useAllImageRequests = (type?: ImageRequestType, status?: ImageRequestStatus) => {
+  const { t } = useTranslation();
+
   const { data, loading, error, mutate } = useSWRFix<ApiResponseDto>({
     key: "image-requests",
     fetcher: async () => {
       const response = await getAllImageRequest({
-       ...(type && {type}),
+        ...(type && { type }),
         ...(status && { status }),
       });
       if (!response) {
-        throw new Error("Failed to fetch likes received");
+        throw new Error(t("Failed to fetch likes received"));
       }
       return response;
     },

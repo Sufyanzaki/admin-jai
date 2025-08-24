@@ -3,6 +3,7 @@ import {Button} from "@/components/client/ux/button";
 import {X} from "lucide-react";
 import ImageWrapper from "@/components/client/image-wrapper";
 import {User} from "../_types/conversation";
+import { useTranslation } from "react-i18next";
 
 interface ProfileSidebarProps {
   user: User;
@@ -10,6 +11,7 @@ interface ProfileSidebarProps {
 }
 
 export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
+      const { t } = useTranslation();
   const basicInfo = [
     { label: "Username", value: user.username },
     { label: "Email", value: user.email },
@@ -25,7 +27,7 @@ export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
   return (
       <div className="w-screen md:w-80 bg-white border-l border-gray-200 flex flex-col">
         <div className="px-3 border-b border-gray-200 min-h-[65px] flex justify-between items-center gap-3">
-          <h2 className="text-base font-medium">Contact Info</h2>
+          <h2 className="text-base font-medium">{t("No data found")}</h2>
           <Button
               variant="ghost"
               size="sm"

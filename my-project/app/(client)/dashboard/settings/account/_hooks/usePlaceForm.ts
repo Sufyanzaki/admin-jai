@@ -1,27 +1,30 @@
 "use client";
 
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useEffect} from "react";
-import {useSession} from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import useSWRMutation from "swr/mutation";
-import {showError, showSuccess} from "@/shared-lib";
-import {updateUserTrackingId} from "@/lib/access-token";
-import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
-import {patchUserLocation, postUserLocation} from "@/app/shared-api/livingApi";
+import { showError, showSuccess } from "@/shared-lib";
+import { updateUserTrackingId } from "@/lib/access-token";
+import { useLiving } from "@/app/admin/(dashboard)/members/_hooks/useLiving";
+import { patchUserLocation, postUserLocation } from "@/app/shared-api/livingApi";
+import { useTranslation } from "react-i18next";
 
-const placeSchema = z.object({
-    city: z.string().optional(),
-    state: z.string().min(1, "State is required"),
-    country: z.string().min(1, "Country is required"),
-});
-
-type PlaceFormValues = z.infer<typeof placeSchema>;
 
 export default function usePlaceForm() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
+
+    const placeSchema = z.object({
+        city: z.string().optional(),
+        state: z.string().min(1, t("State is required")),
+        country: z.string().min(1, t("Country is required")),
+    });
+
+    type PlaceFormValues = z.infer<typeof placeSchema>;
 
     const {
         handleSubmit,
@@ -60,17 +63,17 @@ export default function usePlaceForm() {
             if (!userId) {
                 return showError({
                     message:
-                        "You need to initialize a new member profile before you can add other details. Go back to Basic Information to initialize a member.",
+                        t("You need to initialize a new member profile before you can add other details. Go back to Basic Information to initialize a member."),
                 });
             }
-            if(!living) await postUserLocation(userId, arg);
+            if (!living) await postUserLocation(userId, arg);
             else await patchUserLocation(userId, arg);
             return true;
         },
         {
             onError: (error: Error) => {
                 showError({
-                    message: error.message || "Failed to update place info",
+                    message: error.message || t("Failed to update place info"),
                 });
             },
             revalidate: false,
@@ -81,7 +84,7 @@ export default function usePlaceForm() {
     const onSubmit = async (values: PlaceFormValues, callback?: () => void) => {
         const result = await trigger(values);
         if (result) {
-            showSuccess("Place updated successfully!");
+            showSuccess(t("Place updated successfully!"));
             callback?.();
             updateUserTrackingId({ place: true });
         }

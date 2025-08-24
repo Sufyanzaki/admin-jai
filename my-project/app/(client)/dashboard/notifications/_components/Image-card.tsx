@@ -1,14 +1,15 @@
 "use client";
 
 import ImageWrapper from "@/components/client/image-wrapper";
-import {Button} from "@/components/client/ux/button";
-import {Mail, ShieldCheck} from "lucide-react";
-import {useBlockUser} from "../../_hooks/useBlockUser";
-import {useRouter} from "next/navigation";
-import {formatDate} from "date-fns";
-import {useSession} from "next-auth/react";
-import {RequestDto} from "@/app/(client)/dashboard/notifications/_types/notification";
-import {useImageRequestRespond} from "@/app/(client)/dashboard/_hooks/useImageRequestRespond";
+import { Button } from "@/components/client/ux/button";
+import { Mail, ShieldCheck } from "lucide-react";
+import { useBlockUser } from "../../_hooks/useBlockUser";
+import { useRouter } from "next/navigation";
+import { formatDate } from "date-fns";
+import { useSession } from "next-auth/react";
+import { RequestDto } from "@/app/(client)/dashboard/notifications/_types/notification";
+import { useImageRequestRespond } from "@/app/(client)/dashboard/_hooks/useImageRequestRespond";
+import { useTranslation } from "react-i18next";
 
 type NotificationCardProps = {
     notification: RequestDto;
@@ -16,7 +17,8 @@ type NotificationCardProps = {
 
 export function ImageCard({ notification }: NotificationCardProps) {
     const router = useRouter();
-    const {data: session} = useSession()
+    const { t } = useTranslation();
+    const { data: session } = useSession()
     const { trigger: blockUser, loading: blockLoading } = useBlockUser();
     const { trigger } = useImageRequestRespond();
 
@@ -45,18 +47,18 @@ export function ImageCard({ notification }: NotificationCardProps) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
                 <div className="">
                     <h3 className="font-medium text-sm sm:text-base">
-
-                        You received a request from {notification.sender.firstName}
+                        {t(" You received a request from")}
+                        {notification.sender.firstName}
                         {notification.sender.lastName}
                     </h3>
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-gray-500">
-          <span>
-            {notification.updatedAt
-                ? formatDate(notification.updatedAt, "dd-mm-yyyy")
-                : formatDate(notification.createdAt, "dd-mm-yyyy")}
-          </span>
+                    <span>
+                        {notification.updatedAt
+                            ? formatDate(notification.updatedAt, "dd-mm-yyyy")
+                            : formatDate(notification.createdAt, "dd-mm-yyyy")}
+                    </span>
                 </div>
             </div>
 
@@ -86,7 +88,7 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                         <ShieldCheck className="w-4 h-4 text-app-blue" />
                                     )}
                                 </div>
-                                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red" } rounded-[5px] border-2 border-white`} />
+                                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
                                 <p className="text-xs sm:text-sm text-gray-700 font-medium">
                                     {[
                                         { label: "Age", value: `${notification.sender.age} Years` },
@@ -96,9 +98,9 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                         { label: "Gender", value: notification.sender.gender },
                                     ].map((item, index, arr) => (
                                         <span key={index}>
-      {item.label}: {item.value}
+                                            {item.label}: {item.value}
                                             {index < arr.length - 1 && " | "}
-    </span>
+                                        </span>
                                     ))}
                                 </p>
 
@@ -116,7 +118,7 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                         size="sm"
                                         className="px-4 sm:px-6 w-full sm:w-auto"
                                     >
-                                        View Profile
+                                        {t("View Profile")}
                                     </Button>
                                     <Button
                                         onClick={handleReport}
@@ -124,20 +126,20 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                         size="sm"
                                         className="px-4 sm:px-6 w-full sm:w-auto"
                                     >
-                                        {blockLoading ? "Blocking.." : "Block This Profile"}
+                                        {blockLoading ? t("Blocking..") : t("Block This Profile")}
                                     </Button>
                                 </div>
                             </div>
                             {notification.sender && notification.status === "PENDING" && notification.sender.id !== session?.user?.id ?
                                 <div className="sm:text-right space-y-2">
-                                    <p className="text-xs">Someone invited you to Connect</p>
+                                    <p className="text-xs">{t("Someone invited you to Connect")}</p>
                                     <div className="flex gap-2 flex-wrap">
                                         <Button
                                             onClick={handleAccept}
                                             size="sm"
                                             className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
                                         >
-                                            Accept
+                                            {t("Accept")}
                                         </Button>
                                         <Button
                                             onClick={handleDecline}
@@ -145,7 +147,7 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                             variant="outline"
                                             className="px-4 grow sm:grow-0"
                                         >
-                                            Decline
+                                            {t("Decline")}
                                         </Button>
                                     </div>
                                 </div>
@@ -158,7 +160,7 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                             size="sm"
                                             className="bg-green-500 hover:bg-green-600 text-white px-4 grow sm:grow-0"
                                         >
-                                            Accept
+                                            {t("Accept")}
                                         </Button>
                                     </div>
                                 </div>}

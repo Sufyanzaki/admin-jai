@@ -5,11 +5,11 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
-import {patchPersonalityBehavior, postPersonalityBehavior} from "@/app/shared-api/personalityBehaviorApi";
-import {showError, showSuccess} from "@/shared-lib";
-import { mutate } from "swr";
+import { patchPersonalityBehavior, postPersonalityBehavior } from "@/app/shared-api/personalityBehaviorApi";
+import { showError, showSuccess } from "@/shared-lib";
+import { useTranslation } from "react-i18next";
 
 const personalityBehaviorSchema = z.object({
     simple: z.boolean(),
@@ -54,7 +54,8 @@ const personalityBehaviorSchema = z.object({
 export type PersonalityBehaviorFormValues = z.infer<typeof personalityBehaviorSchema>;
 
 export default function useBehaviorForm() {
-    const {data:session} = useSession();
+    const { t } = useTranslation();
+    const { data: session } = useSession();
     const userIdProps = session?.user?.id ? String(session.user.id) : undefined;
 
     const {
@@ -112,8 +113,8 @@ export default function useBehaviorForm() {
     const { personalityBehavior, personalityBehaviorLoading } = usePersonalityBehaviorInfo(userIdProps);
 
     useEffect(() => {
-        if(!personalityBehavior) return;
-        const {id, userId, ...other} = personalityBehavior;
+        if (!personalityBehavior) return;
+        const { id, userId, ...other } = personalityBehavior;
         reset(other);
     }, [personalityBehavior, reset]);
 
@@ -121,16 +122,16 @@ export default function useBehaviorForm() {
         "updatePersonalityBehavior",
         async (_: string, { arg }: { arg: PersonalityBehaviorFormValues }) => {
             const { ...payload } = arg;
-            if(!userIdProps) throw new Error("User ID is undefined. Please log in again");
+            if (!userIdProps) throw new Error(t("User ID is undefined. Please log in again"));
 
-            if(personalityBehavior) {
+            if (personalityBehavior) {
                 return await patchPersonalityBehavior(userIdProps, payload);
             }
             return await postPersonalityBehavior(userIdProps, payload);
         },
         {
             onSuccess: () => {
-                showSuccess("Personality & Behavior updated successfully!");
+                showSuccess(t("Personality & Behavior updated successfully!"));
             },
             onError: (error: Error) => {
                 showError({ message: error.message || "Failed to update personality/behavior info" });
@@ -147,7 +148,7 @@ export default function useBehaviorForm() {
                 callback?.();
             }
         } catch (error) {
-            console.error("Submission error:", error);
+            console.error(t("Submission error:"), error);
         }
     };
 

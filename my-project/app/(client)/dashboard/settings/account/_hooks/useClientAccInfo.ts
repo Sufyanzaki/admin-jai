@@ -1,30 +1,34 @@
 "use client";
 
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {showError, showSuccess} from "@/shared-lib";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {patchUser} from "@/app/shared-api/userApi";
-import {useSession} from "next-auth/react";
-import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
+import { patchUser } from "@/app/shared-api/userApi";
+import { useSession } from "next-auth/react";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
+import { useTranslation } from "react-i18next";
 
-const clientAccInfoSchema = z.object({
-    origin: z.string().min(1, "Origin is required"),
-    gender: z.string().min(1, "Gender is required"),
-    dob: z.string().min(1, "Date of birth is required"),
-    age: z.number().min(1, "Age is required"),
-    relationshipStatus: z.string().min(1, "Relationship status is required"),
-    lookingFor: z.string().min(1, "Looking for is required"),
-    children: z.string().optional(),
-});
 
-export type ClientAccInfoForm = z.infer<typeof clientAccInfoSchema>;
 
 export default function useClientAccInfo() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
+
+    const clientAccInfoSchema = z.object({
+        origin: z.string().min(1, t("Origin is required")),
+        gender: z.string().min(1, t("Gender is required")),
+        dob: z.string().min(1, t("Date of birth is required")),
+        age: z.number().min(1, t("Age is required")),
+        relationshipStatus: z.string().min(1, t("Relationship status is required")),
+        lookingFor: z.string().min(1, t("Looking for is required")),
+        children: z.string().optional(),
+    });
+
+    type ClientAccInfoForm = z.infer<typeof clientAccInfoSchema>;
 
     const { user, userLoading } = useBasicInfo(userId);
 
@@ -65,17 +69,17 @@ export default function useClientAccInfo() {
     const { trigger, isMutating } = useSWRMutation(
         "updateClientAccInfo",
         async (_, { arg }: { arg: ClientAccInfoForm }) => {
-            const {children, ...other} = arg;
+            const { children, ...other } = arg;
             if (!userId) throw new Error("User ID is undefined. Please log in again");
             return await patchUser(userId, other);
         },
         {
             onError: (error: Error) => {
                 showError({ message: error.message || "Failed to update" });
-                console.error("Update Client Account Info error:", error);
+                console.error(t("Update Client Account Info error:"), error);
             },
             onSuccess: () => {
-                showSuccess("Account info updated successfully!");
+                showSuccess(t("Account info updated successfully!"));
             },
             revalidate: false,
             populateCache: false,
@@ -86,7 +90,7 @@ export default function useClientAccInfo() {
         try {
             const result = await trigger(values);
             if (result) {
-                showSuccess("Account info updated successfully!");
+                showSuccess(t("Account info updated successfully!"));
                 callback?.();
             }
         } catch (error: unknown) {

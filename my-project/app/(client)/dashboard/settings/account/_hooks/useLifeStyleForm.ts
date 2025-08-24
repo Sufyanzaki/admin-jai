@@ -8,19 +8,22 @@ import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useSession } from "next-auth/react";
 import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
-import {patchLifeStyle, postLifeStyle} from "@/app/shared-api/lifeStyleApi";
+import { patchLifeStyle, postLifeStyle } from "@/app/shared-api/lifeStyleApi";
+import { useTranslation } from "react-i18next";
 
-const lifestyleSchema = z.object({
-    smoke: z.string().min(1, "Smoking preference is required"),
-    drinking: z.string().min(1, "Drinking preference is required"),
-    goingOut: z.string().min(1, "Going out preference is required"),
-});
-
-export type LifestyleForm = z.infer<typeof lifestyleSchema>;
 
 export default function useLifeStyleForm() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
+
+    const lifestyleSchema = z.object({
+        smoke: z.string().min(1, t("Smoking preference is required")),
+        drinking: z.string().min(1, t("Drinking preference is required")),
+        goingOut: z.string().min(1, t("Going out preference is required")),
+    });
+
+    type LifestyleForm = z.infer<typeof lifestyleSchema>;
 
     const { user, userLoading } = useBasicInfo(userId);
 
@@ -54,7 +57,7 @@ export default function useLifeStyleForm() {
         "updateLifestyle",
         async (_, { arg }: { arg: LifestyleForm }) => {
             if (!userId) throw new Error("User ID is undefined. Please log in again");
-            if(user?.lifestyle)  await patchLifeStyle(userId, arg);
+            if (user?.lifestyle) await patchLifeStyle(userId, arg);
             else await postLifeStyle(userId, arg);
             return true;
         },
@@ -64,7 +67,7 @@ export default function useLifeStyleForm() {
                 console.error("Update Lifestyle error:", error);
             },
             onSuccess: () => {
-                showSuccess("Lifestyle information updated successfully!");
+                showSuccess(t("Lifestyle information updated successfully!"));
             },
             revalidate: false,
             populateCache: false,
@@ -75,7 +78,7 @@ export default function useLifeStyleForm() {
         try {
             const result = await trigger(values);
             if (result) {
-                showSuccess("Lifestyle information updated successfully!");
+                showSuccess(t("Lifestyle information updated successfully!"));
                 callback?.();
             }
         } catch (error: unknown) {

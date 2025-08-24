@@ -9,9 +9,11 @@ import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
 import { useTodayMatches } from "../_hooks/useTodayMatches";
 import { Skeleton } from "@/components/admin/ui/skeleton";
 import { MemberProfile } from "@/app/shared-types/member";
+import { useTranslation } from "react-i18next";
 
 
 export default function MatchesPage() {
+  const { t } = useTranslation();
   const [online, setOnline] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const { matches, matchesLoading, matchesError } = useTodayMatches();
@@ -26,7 +28,7 @@ export default function MatchesPage() {
       <div className="flex-1 flex flex-col">
         <header className="bg-white px-6 pt-6 pb-4">
           <h1 className="text-[22px] sm:text-2xl lg:text-3xl xl:text-[36px] font-semibold">
-            My Matches
+            {t("My Matches")}
           </h1>
         </header>
 
@@ -38,7 +40,7 @@ export default function MatchesPage() {
                 onCheckedChange={setOnline}
                 className="data-[state=checked]:bg-app-blue"
               />
-              <Label className="text-sm">Online</Label>
+              <Label className="text-sm">{t("Online")}</Label>
             </div>
 
             <div className="flex items-center gap-2">
@@ -69,7 +71,7 @@ export default function MatchesPage() {
                 <div className="flex items-center justify-center h-screen">
                   <div className="text-center">
                     <h2 className="text-2xl font-bold text-red-600">
-                      Error loading Todays Matches
+                      {t("Error loading Todays Matches")}
                     </h2>
                     <p className="text-muted-foreground">{matchesError.message}</p>
                   </div>
@@ -93,7 +95,7 @@ export default function MatchesPage() {
                 <div className="flex items-center justify-center h-screen">
                   <div className="text-center">
                     <h2 className="text-2xl font-bold text-red-600">
-                      Error loading Todays Matches
+                      {t("Error loading Todays Matches")}
                     </h2>
                     <p className="text-muted-foreground">{matchesError.message}</p>
                   </div>

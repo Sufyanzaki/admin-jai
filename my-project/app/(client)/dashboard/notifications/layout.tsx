@@ -4,16 +4,20 @@ import { SidebarProvider } from "@/components/client/ux/sidebar";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  notificationItems,
+  getNotificationItems,
   NotificationSidebar,
 } from "@/app/(client)/dashboard/_components/notification-sidebar";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   const pathname = usePathname();
+  const notificationItems = getNotificationItems(t);
+
   return (
     <>
       <div className="hidden lg:block">
@@ -34,11 +38,10 @@ export default function NotificationLayout({
             return (
               <div
                 key={i}
-                className={`text-nowrap font-medium text-sm p-4 mb-2 rounded-[5px] transition-colors h-auto ${
-                  isActive
-                    ? "bg-blue-50 text-app-blue"
-                    : "text-black hover:bg-gray-50 hover:text-black border border-gray-50 shadow-none"
-                }`}
+                className={`text-nowrap font-medium text-sm p-4 mb-2 rounded-[5px] transition-colors h-auto ${isActive
+                  ? "bg-blue-50 text-app-blue"
+                  : "text-black hover:bg-gray-50 hover:text-black border border-gray-50 shadow-none"
+                  }`}
               >
                 <Link
                   href={item.href}

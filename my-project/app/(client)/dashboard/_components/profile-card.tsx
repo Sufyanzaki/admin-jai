@@ -15,9 +15,9 @@ import { useImageRequest } from "@/app/(client)/dashboard/_hooks/useImageRequest
 import { useTranslation } from "react-i18next";
 
 export default function ProfileCard({
-                                        profile,
-                                        blocked = false,
-                                    }: {
+    profile,
+    blocked = false,
+}: {
     profile: MemberProfile;
     blocked?: boolean;
 }) {
@@ -33,12 +33,12 @@ export default function ProfileCard({
     const isFreeMember = !response?.user.isPremium;
 
     const onlyMembersWithPhotoCanSee =
-        profile?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
+        profile?.PhotoSetting && profile?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
     const blurForFreeMembers =
-        profile?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
+        profile?.PhotoSetting && profile?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
     const onlyVipCanSee =
-        profile?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
-    const onRequestOnly = profile?.PhotoSetting[0]?.onRequestOnly;
+        profile?.PhotoSetting && profile?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
+    const onRequestOnly = profile?.PhotoSetting && profile?.PhotoSetting[0]?.onRequestOnly;
 
     const blur =
         onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
@@ -119,9 +119,8 @@ export default function ProfileCard({
                     <img
                         src="/dashboardLogo.png"
                         alt={t("Loading placeholder")}
-                        className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${
-                            loaded ? "opacity-0 z-0" : "opacity-100 z-10"
-                        }`}
+                        className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"
+                            }`}
                     />
 
                     {renderImageOverlay()}
@@ -136,9 +135,8 @@ export default function ProfileCard({
                     </p>
                 </div>
                 <div
-                    className={`absolute top-2 right-2 w-3 h-3 ${
-                        profile.isOnline ? "bg-app-green" : "bg-app-red"
-                    } rounded-[5px] border-2 border-white`}
+                    className={`absolute top-2 right-2 w-3 h-3 ${profile.isOnline ? "bg-app-green" : "bg-app-red"
+                        } rounded-[5px] border-2 border-white`}
                 ></div>
             </Link>
 

@@ -8,21 +8,25 @@ import { updateUserTrackingId } from "@/lib/access-token";
 import { useHobbiesInterestsInfo } from "@/app/shared-hooks/useHobbiesInterestsInfo";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import {toArray} from "@/lib/utils";
+import { toArray } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
-const hobbiesInterestsSchema = z.object({
-    sports: z.array(z.string()).min(1, "Select at least one sport"),
-    music: z.array(z.string()).min(1, "Select at least one music genre"),
-    kitchen: z.array(z.string()).min(1, "Select at least one kitchen hobby"),
-    reading: z.array(z.string()).min(1, "Select at least one reading category"),
-    tvShows: z.array(z.string()).min(1, "Select at least one TV show type"),
-});
 
-type HobbiesInterestsFormValues = z.infer<typeof hobbiesInterestsSchema>;
 
 export default function useHobbiesForm() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
+
+    const hobbiesInterestsSchema = z.object({
+        sports: z.array(z.string()).min(1, t("Select at least one sport")),
+        music: z.array(z.string()).min(1, t("Select at least one music genre")),
+        kitchen: z.array(z.string()).min(1, t("Select at least one kitchen hobby")),
+        reading: z.array(z.string()).min(1, t("Select at least one reading category")),
+        tvShows: z.array(z.string()).min(1, t("Select at least one TV show type")),
+    });
+
+    type HobbiesInterestsFormValues = z.infer<typeof hobbiesInterestsSchema>;
 
     const userIdProps = userId;
 
@@ -65,7 +69,7 @@ export default function useHobbiesForm() {
             if (!userId) {
                 return showError({
                     message:
-                        "You need to initialize a new member profile before you can add other details. Go back to Basic Information to initialize a member.",
+                        t("You need to initialize a new member profile before you can add other details. Go back to Basic Information to initialize a member."),
                 });
             }
             const hobbiesPayload = {
@@ -81,7 +85,7 @@ export default function useHobbiesForm() {
         {
             onError: (error: Error) => {
                 showError({
-                    message: error.message || "Failed to update hobbies/interests info",
+                    message: error.message || t("Failed to update hobbies/interests info"),
                 });
             },
             revalidate: false,
@@ -92,7 +96,7 @@ export default function useHobbiesForm() {
     const onSubmit = async (values: HobbiesInterestsFormValues, callback?: () => void) => {
         const result = await trigger(values);
         if (result) {
-            showSuccess("Hobbies & Interests updated successfully!");
+            showSuccess(t("Hobbies & Interests updated successfully!"));
             callback?.();
             updateUserTrackingId({ hobbiesAndInterest: true });
         }

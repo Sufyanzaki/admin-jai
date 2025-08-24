@@ -1,19 +1,21 @@
 "use client";
 
-import {ChatSidebar} from "./_components/chat-sidebar";
+import { ChatSidebar } from "./_components/chat-sidebar";
 import ChatBox from "./_components/chat-box";
-import {ProfileSidebar} from "./_components/profile-sidebar";
-import {useEffect, useState} from "react";
-import {useLaptop} from "@/hooks/use-mobile";
-import {useRouter, useSearchParams} from "next/navigation";
-import {MessageCircleDashed} from "lucide-react";
-import {useGetAllChats} from "./_hooks/useGetAllChats";
+import { ProfileSidebar } from "./_components/profile-sidebar";
+import { useEffect, useState } from "react";
+import { useLaptop } from "@/hooks/use-mobile";
+import { useRouter, useSearchParams } from "next/navigation";
+import { MessageCircleDashed } from "lucide-react";
+import { useGetAllChats } from "./_hooks/useGetAllChats";
 import Preloader from "@/components/shared/Preloader";
-import {Chat} from "./_types/allChats";
-import {useSession} from "next-auth/react";
-import {resetMessages} from "@/app/(client)/dashboard/chat/_api/conversation";
+import { Chat } from "./_types/allChats";
+import { useSession } from "next-auth/react";
+import { resetMessages } from "@/app/(client)/dashboard/chat/_api/conversation";
+import { useTranslation } from "react-i18next";
 
 export default function ChatPage() {
+  const { t } = useTranslation();
   const isAboveLaptop = !useLaptop();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,7 +58,7 @@ export default function ChatPage() {
     return (
       <div className="flex items-center flex-col justify-center h-64">
         <Preloader />
-        <p className="text-sm">Loading your chats information...</p>
+        <p className="text-sm">{t("Loading your chats information")}</p>
       </div>
     );
   }
@@ -65,7 +67,7 @@ export default function ChatPage() {
     return (
       <div className="flex items-center flex-col justify-center h-64 gap-3">
         <h2 className="text-2xl font-bold text-red-600">
-          Error loading your chats
+          {t("Error loading your chats")}
         </h2>
         <p className="text-muted-foreground">{allChatsError.message}</p>
       </div>
@@ -95,7 +97,7 @@ export default function ChatPage() {
             <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center h-full">
               <MessageCircleDashed className="text-app-blue w-12 h-12" />
               <h2 className="text-app-blue font-semibold text-xl">
-                Select to start chat!
+                {t(" Select to start chat")}
               </h2>
             </div>
           ) : (

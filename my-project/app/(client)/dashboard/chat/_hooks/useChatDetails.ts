@@ -1,14 +1,15 @@
-import {useSWRFix} from "@/shared-lib";
-import {getChatDetails} from "@/app/(client)/dashboard/chat/_api/conversation";
-import {useParams} from "next/navigation";
-import {ChatMessagesResponse} from "@/app/(client)/dashboard/chat/_types/message";
+import { useSWRFix } from "@/shared-lib";
+import { getChatDetails } from "@/app/(client)/dashboard/chat/_api/conversation";
+import { useParams } from "next/navigation";
+import { ChatMessagesResponse } from "@/app/(client)/dashboard/chat/_types/message";
+import { useTranslation } from "react-i18next";
 
 type ChatDetails = {
     chatId?: string;
 }
 
-export const useChatDetails = ({chatId}: ChatDetails) => {
-
+export const useChatDetails = ({ chatId }: ChatDetails) => {
+    const { t } = useTranslation();
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
     const chatIdFromUrl = chatId ?? id;
@@ -17,7 +18,7 @@ export const useChatDetails = ({chatId}: ChatDetails) => {
         key: `chat-details-${chatIdFromUrl}`,
         fetcher: async () => {
             const response = await getChatDetails(chatIdFromUrl);
-            if (!response) throw new Error('Failed to fetch chat details');
+            if (!response) throw new Error(t('Failed to fetch chat details'));
             return response;
         },
     });

@@ -15,9 +15,11 @@ import { useSession } from "next-auth/react";
 import { MessageListener } from "@/client-utils/MessageListener";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { ProfileSidebar } from "../_components/profile-sidebar";
-import {ChatMessage, ChatMessagesResponse } from "../_types/message";
+import { ChatMessage, ChatMessagesResponse } from "../_types/message";
+import { useTranslation } from "react-i18next";
 
 export default function ChatBoxPage() {
+    const { t } = useTranslation();
     const { chatDetails, chatLoading, chatMutate } = useChatDetails({});
     const { sending, sendMessageAction } = useSendMessage({});
     const router = useRouter();
@@ -51,12 +53,12 @@ export default function ChatBoxPage() {
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader />
-                <p className="text-sm">Loading chat...</p>
+                <p className="text-sm">{t("Loading chat")}</p>
             </div>
         );
     }
 
-    if(!chatDetails) return;
+    if (!chatDetails) return;
 
     const allParticipants = chatDetails.data.users ?? [];
     const otherParticipant = allParticipants.find(user => Number(user.id) !== Number(userId));
@@ -122,11 +124,10 @@ export default function ChatBoxPage() {
                                     className={`flex sm:overflow-x-hidden ${currentUser ? "justify-end" : "justify-start"}`}
                                 >
                                     <div
-                                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-[5px] ${
-                                            currentUser
-                                                ? "bg-[#1975D2] text-white"
-                                                : "text-gray-900 bg-[#F7F7F7]"
-                                        }`}
+                                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-[5px] ${currentUser
+                                            ? "bg-[#1975D2] text-white"
+                                            : "text-gray-900 bg-[#F7F7F7]"
+                                            }`}
                                     >
                                         {message.content && (
                                             <p className="text-sm whitespace-pre-wrap">
@@ -150,9 +151,8 @@ export default function ChatBoxPage() {
                                         })()}
 
                                         <p
-                                            className={`text-xs mt-1 ${
-                                                currentUser ? "text-blue-100" : "text-gray-500"
-                                            }`}
+                                            className={`text-xs mt-1 ${currentUser ? "text-blue-100" : "text-gray-500"
+                                                }`}
                                         >
                                             {formatDistanceToNow(new Date(message.createdAt), {
                                                 addSuffix: true,
@@ -164,7 +164,7 @@ export default function ChatBoxPage() {
                         })
                     ) : (
                         <div className="flex items-center justify-center h-full">
-                            <p className="text-gray-500">No messages yet</p>
+                            <p className="text-gray-500">{t("No messages yet")}</p>
                         </div>
                     )}
                 </div>
@@ -182,7 +182,7 @@ export default function ChatBoxPage() {
                                         />
                                     ) : (
                                         <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded text-xs text-gray-600">
-                                            File
+                                            {t("File")}
                                         </div>
                                     )}
                                     <button

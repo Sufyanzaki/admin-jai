@@ -1,18 +1,20 @@
 "use client";
 
-import {Button} from "@/components/client/ux/button";
-import {Label} from "@/components/client/ux/label";
-import {Switch} from "@/components/client/ux/switch";
-import {Grid3X3, List} from "lucide-react";
-import {useState} from "react";
+import { Button } from "@/components/client/ux/button";
+import { Label } from "@/components/client/ux/label";
+import { Switch } from "@/components/client/ux/switch";
+import { Grid3X3, List } from "lucide-react";
+import { useState } from "react";
 import ProfileCard from "../../_components/profile-card";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
-import {useSearchParams} from "next/navigation";
-import {paramsToSearchForm} from "../../_api/getSearch";
+import { useSearchParams } from "next/navigation";
+import { paramsToSearchForm } from "../../_api/getSearch";
 import { useSearch } from "../../_hooks/useSearch";
 import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
+import { useTranslation } from "react-i18next";
 
 export function SearchResults() {
+  const { t } = useTranslation();
   const [online, setOnline] = useState(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const searchParams = useSearchParams();
@@ -22,11 +24,11 @@ export function SearchResults() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return(
-      <p>Error</p>
+  if (error) return (
+    <p>{t("Error Searching...")}</p>
   );
 
-  if(!data) return <p>No data</p>
+  if (!data) return <p>{t("No data found")}</p>
 
   const filteredResults = data.data.results
 
@@ -35,7 +37,7 @@ export function SearchResults() {
       <div className="flex-1 flex flex-col">
         <header className="bg-white px-6 pt-6 pb-4">
           <h1 className="text-[22px] sm:text-2xl lg:text-3xl xl:text-[36px] font-semibold">
-            Search Profiles
+            {t("Search Profiles")}
           </h1>
         </header>
 
@@ -47,7 +49,7 @@ export function SearchResults() {
                 onCheckedChange={setOnline}
                 className="data-[state=checked]:bg-app-blue"
               />
-              <Label className="text-sm mb-1">Online</Label>
+              <Label className="text-sm mb-1">{t("Online")}</Label>
             </div>
 
             <div className="flex items-center gap-2">
@@ -86,15 +88,15 @@ export function SearchResults() {
             </div>
           )}
           <PaginationSection
-              pagination={{
-                page: data.data.page,
-                limit: data.data.limit,
-                total: data.data.total,
-                totalPages: data.data.totalPages,
-              }}
-              onPageChange={(newPage) => {
-                console.log("Go to page:", newPage);
-              }}
+            pagination={{
+              page: data.data.page,
+              limit: data.data.limit,
+              total: data.data.total,
+              totalPages: data.data.totalPages,
+            }}
+            onPageChange={(newPage) => {
+              console.log("Go to page:", newPage);
+            }}
           />
         </main>
       </div>
