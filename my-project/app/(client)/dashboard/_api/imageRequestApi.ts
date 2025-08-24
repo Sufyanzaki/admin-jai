@@ -5,9 +5,9 @@ export type SendRequest = {
     action: string,
 }
 
-export async function postImageRequestRespond(payload: SendRequest, userId: number): Promise<SendImageRequestResponse> {
+export async function postImageRequestRespond(payload: SendRequest, notificationId: number): Promise<SendImageRequestResponse> {
     const r = await postRequest<SendRequest>({
-        url: `users/image-request/${userId}/respond`,
+        url: `users/image-request/${notificationId}/respond`,
         data: payload,
         useAuth: true,
     });

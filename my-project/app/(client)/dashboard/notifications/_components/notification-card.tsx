@@ -10,12 +10,15 @@ import { formatDate } from "date-fns";
 import { useSession } from "next-auth/react";
 import { RequestDto } from "@/app/(client)/dashboard/notifications/_types/notification";
 import { useTranslation } from "react-i18next";
+import { Badge } from "@/components/client/ux/badge";
 
 type NotificationCardProps = {
   notification: RequestDto;
+  type?: string;
 };
 
-export function NotificationCard({ notification }: NotificationCardProps) {
+export function NotificationCard({ notification, type }: NotificationCardProps) {
+
   const router = useRouter();
   const { t } = useTranslation();
   const { data: session } = useSession()
@@ -44,7 +47,11 @@ export function NotificationCard({ notification }: NotificationCardProps) {
     <div className="w-full rounded-[5px] bg-white border border-gray-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
         <div className="">
-          {notification.receiver ? (
+          {type === "sent" && <h3 className="font-medium text-sm sm:text-base">
+            {t("You sent like to")} {notification.receiver.firstName}{" "}
+            {notification.receiver.lastName}
+          </h3>}
+          {notification.receiver && type !== "sent" ? (
               notification.status !== "ACCEPTED" && notification.receiver.id !== session?.user?.id ? (
                   <h3 className="font-medium text-sm sm:text-base">
                     {t("You received a like from")} {notification.receiver.firstName}{" "}
@@ -96,11 +103,27 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     <ShieldCheck className="w-4 h-4 text-app-blue" />
                   )}
                 </div>
-                <div className={`flex w-3 h-3 ${(notification.receiver.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
+                <div className="flex flex-wrap items-center">
+                  <div className={`flex w-3 h-3 ${(notification.receiver.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
+                  <Badge
+                      className={
+                          `px-2 rounded-[5px] ml-2 text-white ` +
+                          (notification.status === "ACCEPTED"
+                              ? "bg-green-500"
+                              : notification.status === "DECLINED"
+                                  ? "bg-red-500"
+                                  : notification.status === "PENDING"
+                                      ? "bg-yellow-500"
+                                      : "bg-app-blue")
+                      }
+                  >
+                    {notification.status}
+                  </Badge>
+                </div>
                 <p className="text-xs sm:text-sm text-gray-700 font-medium">
                   {[
                     { label: "Age", value: `${notification.receiver.age} Years` },
-                    { label: "DOB", value: notification.receiver.dob.split("T")[0] },
+                    { label: "DOB", value: notification.receiver.dob?.split("T")[0] },
                     { label: "Religion", value: notification.receiver.religion },
                     { label: "Status", value: notification.receiver.relationshipStatus },
                     { label: "Gender", value: notification.receiver.gender },
@@ -138,7 +161,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                   </Button>
                 </div>
               </div>
-              {notification.receiver && notification.status === "PENDING" && notification.receiver.id !== session?.user?.id ?
+              {(notification.receiver && type !== "sent" && notification.status === "PENDING" && notification.receiver.id !== session?.user?.id) ?
                 <div className="sm:text-right space-y-2">
                   <p className="text-xs">Someone invited you to Connect</p>
                   <div className="flex gap-2 flex-wrap">

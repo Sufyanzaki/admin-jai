@@ -30,7 +30,7 @@ export function FeatureComparison() {
                     <div className="space-y-1">
                       <div className="font-semibold">{pkg.name}</div>
                       <div className="text-sm text-muted-foreground">
-                        {t("${price} / ${validity} days", { price: pkg.price, validity: pkg.validity })}
+                        {pkg.price} / {pkg.validity}
                       </div>
                     </div>
                   </th>
@@ -46,7 +46,7 @@ export function FeatureComparison() {
                           key={`${pkg.id}-${feature}`}
                           className="text-center py-3 px-4"
                       >
-                        {pkg.features.includes(feature) ? (
+                        {pkg.features?.includes(feature) ? (
                             <Check className="w-5 h-5 text-green-500 mx-auto" />
                         ) : (
                             <X className="w-5 h-5 text-red-500 mx-auto" />

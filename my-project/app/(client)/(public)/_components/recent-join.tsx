@@ -17,7 +17,7 @@ export default function RecentJoin() {
 
     const members = users.map((u) => ({
         name: `${u.firstName} ${u.lastName}`,
-        location: `${u.living?.city}, ${u.living?.city} | ${u.living?.city}` || "",
+        location: u.location ? `${u.living?.city}, ${u.living?.city} | ${u.living?.city}` : null,
         image: u.image,
         badge: u.isPremium ? "Gold" : null,
     }));

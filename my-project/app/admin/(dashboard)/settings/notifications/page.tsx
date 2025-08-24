@@ -18,7 +18,7 @@ export default function NotificationsPage() {
   const { emailTemplates, loading, error } = useEmailTemplates();
   const [search, setSearch] = useState("");
 
-  const filteredTemplates = (emailTemplates ?? []).filter(template => {
+  const filteredTemplates = (emailTemplates?.templates ?? []).filter(template => {
     const subject = template.translations[0]?.subject || "";
     return (
       template.key.toLowerCase().includes(search.toLowerCase()) ||
@@ -55,7 +55,7 @@ export default function NotificationsPage() {
             <Mail className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">1,248</h2>
+            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{emailTemplates?.stats?.welcomeEmail ?? 0}</h2>
             <p className="text-xs text-muted-foreground">
               Sent this month
             </p>
@@ -67,7 +67,7 @@ export default function NotificationsPage() {
             <Mail className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">876</h2>
+            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{emailTemplates?.stats?.passwordReset ?? 0}</h2>
             <p className="text-xs text-muted-foreground">
               Sent this month
             </p>
@@ -79,7 +79,7 @@ export default function NotificationsPage() {
             <Mail className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">2,415</h2>
+            <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{emailTemplates?.stats?.orderConfirmation ?? 0}</h2>
             <p className="text-xs text-muted-foreground">
               Sent this month
             </p>

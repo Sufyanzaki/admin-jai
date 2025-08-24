@@ -4,7 +4,7 @@ import { Button } from "@/components/client/ux/button";
 import { Label } from "@/components/client/ux/label";
 import { Switch } from "@/components/client/ux/switch";
 import { Grid3X3, List } from "lucide-react";
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import ProfileCard from "../../_components/profile-card";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import { useSearchParams } from "next/navigation";
@@ -20,7 +20,13 @@ export function SearchResults() {
   const searchParams = useSearchParams();
   const formValues = paramsToSearchForm(searchParams);
 
-  const { data, error, isLoading } = useSearch(formValues)
+  const { data, error, isLoading, mutate } = useSearch(formValues)
+
+  useEffect(() => {
+    if (formValues) {
+      mutate().finally();
+    }
+  }, [searchParams.toString(), mutate]);
 
   if (isLoading) return <p>Loading...</p>;
 

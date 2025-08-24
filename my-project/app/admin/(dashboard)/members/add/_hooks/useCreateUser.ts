@@ -41,8 +41,6 @@ export type CreateUserFormValues = z.infer<ReturnType<typeof createUserSchema>>;
 export default function useCreateUserForm() {
  const { mutate:globalMutate } = useSWRConfig();
 
- const { data:session } = useSession();
-
   const params = useParams();
   const tracker = getUserTrackingId();
 
@@ -134,12 +132,10 @@ export default function useCreateUserForm() {
         if (isFile(arg.image)) imageUrl = await imageUpload(arg.image);
         else if (typeof arg.image === "string") imageUrl = arg.image;
 
-        const adminId = session?.user.id ? String(session.user.id) : undefined;
-
         if (id && allowEdit) {
           return await patchUser(id, { ...arg, image: imageUrl });
         } else {
-          return await postUser({ ...arg, image: imageUrl, adminId } );
+          return await postUser({ ...arg, image: imageUrl } );
         }
       },
       {

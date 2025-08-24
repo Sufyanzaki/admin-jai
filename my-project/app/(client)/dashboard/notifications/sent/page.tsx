@@ -29,7 +29,7 @@ export default function SentPage() {
       </div>}
 
       {likes && likes.map((likeRec, index) => (
-        <NotificationCard notification={likeRec} key={index} />
+        <NotificationCard notification={likeRec} key={index} type="sent" />
       ))}
     </div>
   );

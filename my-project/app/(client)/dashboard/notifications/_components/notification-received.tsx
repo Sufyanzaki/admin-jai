@@ -4,45 +4,43 @@ import ImageWrapper from "@/components/client/image-wrapper";
 import { Button } from "@/components/client/ux/button";
 import { Mail, ShieldCheck } from "lucide-react";
 import { useBlockUser } from "../../_hooks/useBlockUser";
+import { useLikeResponse } from "../_hooks/useLikeResponse";
 import { useRouter } from "next/navigation";
 import { formatDate } from "date-fns";
 import { useSession } from "next-auth/react";
 import { RequestDto } from "@/app/(client)/dashboard/notifications/_types/notification";
-import { useImageRequestRespond } from "@/app/(client)/dashboard/_hooks/useImageRequestRespond";
 import { useTranslation } from "react-i18next";
-import {useSWRConfig} from "swr";
+import { Badge } from "@/components/client/ux/badge";
 
 type NotificationCardProps = {
     notification: RequestDto;
+    type?: string;
 };
 
-export function ImageCard({ notification }: NotificationCardProps) {
-
-    const { mutate:globalMutate } = useSWRConfig();
+export function NotificationReceived({ notification }: NotificationCardProps) {
 
     const router = useRouter();
     const { t } = useTranslation();
     const { data: session } = useSession()
     const { trigger: blockUser, loading: blockLoading } = useBlockUser();
-    const { trigger } = useImageRequestRespond();
+    const { trigger } = useLikeResponse();
 
     const handleAccept = () => {
-        const action = "approve";
-        trigger(action, Number(notification?.id)).finally();
-        globalMutate((key) => typeof key === "string" && key.startsWith("image-requests")).finally();
+        const action = "ACCEPTED";
+        trigger(action, Number(notification.id)).finally();
     };
 
     const handleDecline = () => {
-        const action = "deny";
-        trigger(action, Number(notification?.id)).finally();
+        const action = "DECLINED";
+        trigger(action, Number(notification.id)).finally();
     };
 
     const handleViewProfile = () => {
-        router.push(`/dashboard/search/${notification?.sender?.id}`)
+        router.push(`/dashboard/search/${notification.sender.id}`)
     }
 
     const handleReport = () => {
-        blockUser(Number(notification?.sender && notification?.sender.id)).finally();
+        blockUser(Number(notification.sender && notification.sender.id)).finally();
     };
 
     return (
@@ -50,34 +48,30 @@ export function ImageCard({ notification }: NotificationCardProps) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
                 <div className="">
                     <h3 className="font-medium text-sm sm:text-base">
-                        {t(" You received a request from")} {" "}
-                        {notification.sender.firstName}
+                        {t("You received a like from")} {notification.sender.firstName}{" "}
                         {notification.sender.lastName}
                     </h3>
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <span>
-                        {notification.updatedAt
-                            ? formatDate(notification.updatedAt, "dd-mm-yyyy")
-                            : formatDate(notification.createdAt, "dd-mm-yyyy")}
-                    </span>
+          <span>
+            {notification.updatedAt
+                ? formatDate(notification.updatedAt, "dd-mm-yyyy")
+                : formatDate(notification.createdAt, "dd-mm-yyyy")}
+          </span>
                 </div>
             </div>
 
             <div className="space-y-4 px-4 py-6">
                 <div className="flex flex-col sm:flex-row gap-4">
                     <div className="relative flex-shrink-0 self-center sm:self-start">
-                        {notification.sender ? <ImageWrapper
-                            src={notification.sender.image || "/placeholder.svg"}
-                            alt={notification.sender.firstName}
-                            className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
-                        /> : notification.receiver && <ImageWrapper
-                            src={notification.receiver.image || "/placeholder.svg"}
-                            alt={notification.receiver.firstName}
-                            className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
-                        />}
-
+                        {notification.sender && (
+                            <ImageWrapper
+                                src={notification.sender.image || "/placeholder.svg"}
+                                alt={notification.sender.firstName}
+                                className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
+                            />
+                        )}
                     </div>
 
                     <div className="flex-1 space-y-4">
@@ -87,23 +81,39 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                     <h4 className="text-lg sm:text-xl font-semibold">
                                         {notification.sender.firstName} {" "} {notification.sender.lastName}
                                     </h4>
-                                    {(notification.sender.isPremium || notification.receiver.isPremium) && (
+                                    {(notification.sender.isPremium || notification.sender.isPremium) && (
                                         <ShieldCheck className="w-4 h-4 text-app-blue" />
                                     )}
                                 </div>
-                                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
+                                <div className="flex flex-wrap items-center">
+                                    <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
+                                    <Badge
+                                        className={
+                                            `px-2 rounded-[5px] ml-2 text-white ` +
+                                            (notification.status === "ACCEPTED"
+                                                ? "bg-green-500"
+                                                : notification.status === "DECLINED"
+                                                    ? "bg-red-500"
+                                                    : notification.status === "PENDING"
+                                                        ? "bg-yellow-500"
+                                                        : "bg-app-blue")
+                                        }
+                                    >
+                                        {notification.status}
+                                    </Badge>
+                                </div>
                                 <p className="text-xs sm:text-sm text-gray-700 font-medium">
                                     {[
                                         { label: "Age", value: `${notification.sender.age} Years` },
-                                        { label: "DOB", value: notification.sender.dob.split("T")[0] },
+                                        { label: "DOB", value: notification.sender.dob?.split("T")[0] },
                                         { label: "Religion", value: notification.sender.religion },
                                         { label: "Status", value: notification.sender.relationshipStatus },
                                         { label: "Gender", value: notification.sender.gender },
                                     ].map((item, index, arr) => (
                                         <span key={index}>
-                                            {item.label}: {item.value}
+                      {item.label}: {item.value}
                                             {index < arr.length - 1 && " | "}
-                                        </span>
+                    </span>
                                     ))}
                                 </p>
 
@@ -133,9 +143,9 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                     </Button>
                                 </div>
                             </div>
-                            {notification.sender && notification.status === "PENDING" && notification.sender.id !== session?.user?.id ?
+                            {(notification.sender && notification.status === "PENDING" && notification.sender.id !== session?.user?.id) ?
                                 <div className="sm:text-right space-y-2">
-                                    <p className="text-xs">{t("Someone invited you to Connect")}</p>
+                                    <p className="text-xs">Someone invited you to Connect</p>
                                     <div className="flex gap-2 flex-wrap">
                                         <Button
                                             onClick={handleAccept}
@@ -154,7 +164,7 @@ export function ImageCard({ notification }: NotificationCardProps) {
                                         </Button>
                                     </div>
                                 </div>
-                                : notification.sender && notification.status === "deny" &&
+                                : notification.sender && notification.status === "DECLINED" &&
                                 <div className="sm:text-right space-y-2">
                                     <p className="text-xs">She invited you to Connect</p>
                                     <div className="flex gap-2 flex-wrap">

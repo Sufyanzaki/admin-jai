@@ -5,7 +5,7 @@ export type PackageDto = {
     image: string;
     validity: number;
     isActive: boolean;
-    features: string;
+    features?: string;
     createdAt: string;
     updatedAt: string;
 

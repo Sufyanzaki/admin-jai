@@ -82,11 +82,11 @@ export function Footer(): JSX.Element {
     footerSections.push({
       title: t("Social"),
       links: [
-        { icon: <Instagram className="h-[5svh] w-[5svh]" />, href: "#" },
+        { icon: <Instagram className="h-[4svh] w-[4svh]" />, href: "#" },
         {
           icon: (
               <svg
-                  className="h-[5svh] w-[5svh]"
+                  className="h-[4svh] w-[4svh]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
               >
@@ -95,8 +95,8 @@ export function Footer(): JSX.Element {
           ),
           href: "#",
         },
-        { icon: <Twitter className="h-[5svh] w-[5svh]" />, href: "#" },
-        { icon: <Facebook className="h-[5svh] w-[5svh]" />, href: "#" },
+        { icon: <Twitter className="h-[4svh] w-[4svh]" />, href: "#" },
+        { icon: <Facebook className="h-[4svh] w-[4svh]" />, href: "#" },
       ] as SocialLink[],
     });
   }

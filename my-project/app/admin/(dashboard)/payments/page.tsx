@@ -172,7 +172,7 @@ export default function PaymentsPage() {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar>
-                            <AvatarImage src={"/user-2.png"} alt={`${pkg.user.firstName} ${pkg.user.lastName}`} />
+                            <AvatarImage src={pkg.user.image} alt={`${pkg.user.firstName} ${pkg.user.lastName}`} />
                             <AvatarFallback>
                               {pkg.user.firstName.charAt(0)}
                               {pkg.user.lastName.charAt(0)}

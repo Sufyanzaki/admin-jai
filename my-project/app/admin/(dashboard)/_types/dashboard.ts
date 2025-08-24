@@ -5,8 +5,11 @@ export type DashboardStats = {
     premiumMembers: number;
     freeMembers: number;
     todayMembers: number;
+    membersLastMonth: number;
+    membersThisMonth: number;
     monthlyRegistrations: MonthlyRegistration[];
     todayRegisteredUsers: MemberProfile[];
+    growthRateMessage: string;
 }
 
 export type MonthlyRegistration = {

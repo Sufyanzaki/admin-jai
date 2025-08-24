@@ -199,7 +199,9 @@ const DashboardPage = () => {
                   {statsLoading ? (
                       <Skeleton className="h-[400px] w-full" />
                   ) : (
-                      <MemberStats monthlyData={stats?.monthlyRegistrations || []} />
+                      <>
+                        {stats && <MemberStats stats={stats} />}
+                      </>
                   )}
                 </CardContent>
               </Card>

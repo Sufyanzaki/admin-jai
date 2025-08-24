@@ -1,28 +1,29 @@
 "use client"
 
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/tabs"
-import { useState } from "react"
+import {Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card"
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs"
+import {useState} from "react"
+import {MemberProfile} from "@/app/shared-types/member";
+import {DashboardStats} from "@/app/admin/(dashboard)/_types/dashboard";
 
 type MonthlyData = {
-  month: string;
-  count: number;
-};
-
-type TooltipState = {
-  show: boolean;
-  x: number;
-  y: number;
-  data: MonthlyData | null;
-};
-
-type MemberStatsProps = {
-  monthlyData?: MonthlyData[];
+  month: string
+  count: number
 }
 
-export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
-  // Transform month names to short format (Jan, Feb, etc.)
+type TooltipState = {
+  show: boolean
+  x: number
+  y: number
+  data: MonthlyData | null
+}
+
+type MemberStatsProps = {
+  stats: DashboardStats
+}
+
+export default function MemberStats({ stats }: MemberStatsProps) {
   const transformData = (data: MonthlyData[]): MonthlyData[] => {
     return data.map(item => ({
       month: item.month.substring(0, 3),
@@ -30,9 +31,8 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
     }))
   }
 
-  const chartData = transformData(monthlyData)
+  const chartData = transformData(stats.monthlyRegistrations)
 
-  // Calculate Y-axis labels based on the data
   const maxCount = Math.max(...chartData.map(item => item.count), 40)
   const yAxisStep = Math.ceil(maxCount / 5)
   const yAxisLabels = Array.from(
@@ -40,7 +40,12 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
       (_, i) => i * yAxisStep
   ).reverse()
 
-  const [tooltip, setTooltip] = useState<TooltipState>({ show: false, x: 0, y: 0, data: null })
+  const [tooltip, setTooltip] = useState<TooltipState>({
+    show: false,
+    x: 0,
+    y: 0,
+    data: null
+  })
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>, data: MonthlyData) => {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -56,14 +61,8 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
     setTooltip({ show: false, x: 0, y: 0, data: null })
   }
 
-  // Calculate statistics
-  const totalUsers = monthlyData.reduce((sum, item) => sum + item.count, 0)
-  const lastMonthCount = monthlyData[monthlyData.length - 1]?.count || 0
-  const prevMonthCount = monthlyData[monthlyData.length - 2]?.count || 0
-  const monthlyChange = lastMonthCount - prevMonthCount
-  const monthlyChangePercent = prevMonthCount > 0
-      ? ((monthlyChange / prevMonthCount) * 100).toFixed(1)
-      : '0.0'
+  // derived stats
+  const monthlyChange = stats.membersThisMonth - stats.membersLastMonth
 
   return (
       <Tabs defaultValue="visits">
@@ -107,7 +106,7 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
                               <div
                                   className="relative cursor-pointer flex flex-col justify-end mb-2 sm:mb-3"
                                   style={{ height: "260px" }}
-                                  onMouseEnter={(e) => handleMouseEnter(e, data)}
+                                  onMouseEnter={e => handleMouseEnter(e, data)}
                                   onMouseLeave={handleMouseLeave}
                               >
                                 <div
@@ -140,7 +139,7 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
                     style={{
                       left: `${tooltip.x}px`,
                       top: `${tooltip.y}px`,
-                      transform: 'translate(-50%, -100%)'
+                      transform: "translate(-50%, -100%)"
                     }}
                 >
                   <div className="font-semibold">{tooltip.data.month}</div>
@@ -163,18 +162,19 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
                 <CardTitle className="text-sm font-medium">Total Users</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{totalUsers}</div>
+                <div className="text-2xl font-bold">{stats.totalMembers}</div>
                 <p className="text-xs text-muted-foreground">All registered users</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Last Month</CardTitle>
+                <CardTitle className="text-sm font-medium">This Month</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{lastMonthCount}</div>
+                <div className="text-2xl font-bold">{stats.membersThisMonth}</div>
                 <p className="text-xs text-muted-foreground">
-                  {monthlyChange >= 0 ? '+' : ''}{monthlyChange} from previous
+                  {monthlyChange >= 0 ? "+" : ""}
+                  {monthlyChange} from last month
                 </p>
               </CardContent>
             </Card>
@@ -183,10 +183,7 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
                 <CardTitle className="text-sm font-medium">Growth Rate</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {monthlyChangePercent}%
-                </div>
-                <p className="text-xs text-muted-foreground">Month over month</p>
+                <div className="text-2xl font-medium">{stats.growthRateMessage}</div>
               </CardContent>
             </Card>
           </div>
@@ -199,8 +196,8 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
                 <XAxis dataKey="month" />
                 <YAxis domain={[0, maxCount]} />
                 <Tooltip
-                    formatter={(value) => [value, "New Users"]}
-                    labelFormatter={(label) => `Month: ${label}`}
+                    formatter={value => [value, "New Users"]}
+                    labelFormatter={label => `Month: ${label}`}
                 />
                 <Line
                     type="monotone"
@@ -219,14 +216,12 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {chartData.reduce((max, item) =>
-                          item.count > max.count ? item : max,
-                      chartData[0]).month
-                  }
+                  {chartData.reduce(
+                      (max, item) => (item.count > max.count ? item : max),
+                      chartData[0]
+                  ).month}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Highest registration month
-                </p>
+                <p className="text-xs text-muted-foreground">Highest registration month</p>
               </CardContent>
             </Card>
             <Card>
@@ -237,9 +232,7 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
                 <div className="text-2xl font-bold">
                   {Math.max(...chartData.map(item => item.count), 0)}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Most registrations in one month
-                </p>
+                <p className="text-xs text-muted-foreground">Most registrations in one month</p>
               </CardContent>
             </Card>
             <Card>
@@ -248,11 +241,9 @@ export default function MemberStats({ monthlyData = [] }: MemberStatsProps) {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {(totalUsers / monthlyData.length).toFixed(1)}
+                  {(stats.totalMembers / chartData.length).toFixed(1)}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Average new users per month
-                </p>
+                <p className="text-xs text-muted-foreground">Average new users per month</p>
               </CardContent>
             </Card>
           </div>

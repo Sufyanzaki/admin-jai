@@ -3,6 +3,7 @@
 import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
 import { LikeStatus, useLikesReceived } from "../_hooks/useLikesReceived";
 import { useTranslation } from "react-i18next";
+import {NotificationAccept} from "@/app/(client)/dashboard/notifications/_components/notification-accept";
 
 export default function NotificationsPage() {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ export default function NotificationsPage() {
         </div>
       </div>}
       {likesAccepted && likesAccepted?.map((likeRec, index) => (
-        <NotificationCard notification={likeRec} key={index} />
+        <NotificationAccept notification={likeRec} key={index} />
       ))}
     </div>
   );

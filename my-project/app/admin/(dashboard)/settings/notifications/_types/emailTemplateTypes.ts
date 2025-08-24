@@ -12,4 +12,13 @@ export interface EmailTemplateDto {
   createdAt: string;
   updatedAt: string;
   translations: EmailTemplateTranslationDto[];
-} 
+}
+
+export type EmailTemplateResponse = {
+  templates: EmailTemplateDto[],
+  stats?: {
+    welcomeEmail: number;
+    passwordReset: number;
+    orderConfirmation: number;
+  }
+}

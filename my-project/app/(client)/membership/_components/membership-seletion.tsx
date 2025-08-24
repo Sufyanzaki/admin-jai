@@ -59,11 +59,11 @@ export function MembershipSelection() {
                   <div key={plan.id} className="w-full relative space-y-2">
                     <div className="border border-app-border rounded-sm py-5 ">
                       <div className="absolute -top-2 -right-2 bg-app-light-pink text-white text-xs px-3 py-1 rounded-full font-medium">
-                        {t("${validity} Days", { validity: plan.validity })}
+                        {plan.validity}
                       </div>
 
                       <div className="text-3xl font-bold text-[#343A40]">
-                        {t("${price}", { price: plan.price })}
+                        {plan.price}
                       </div>
                     </div>
                     <div className="text-start text-sm">{t(plan.name)}</div>

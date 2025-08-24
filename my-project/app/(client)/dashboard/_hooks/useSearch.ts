@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export function useSearch(params: SearchFormValues) {
     const { t } = useTranslation();
-    const { data, loading, error } = useSWRFix<SearchApiResponse>({
+    const { data, loading, error, mutate } = useSWRFix<SearchApiResponse>({
         key: params ? `searchResults-${params}}` : "",
         fetcher: async () => {
             const response = await fetchSearch(params);
@@ -21,5 +21,6 @@ export function useSearch(params: SearchFormValues) {
         data,
         isLoading: loading,
         error,
+        mutate
     };
 }

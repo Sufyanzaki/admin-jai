@@ -9,12 +9,12 @@ export const useImageRequestRespond = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    const trigger = async (action: string, userId: number) => {
+    const trigger = async (action: string, notificationId: number) => {
         setLoading(true);
         setError(null);
 
         try {
-            const res = await postImageRequestRespond({ action }, userId);
+            const res = await postImageRequestRespond({ action }, notificationId);
             if (res) {
                 showSuccess(t('Response sent successfully!'));
             }

@@ -148,57 +148,57 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                 </div>
               </div>
               {/* Date & Admin Settings */}
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-semibold">Format Settings</h3>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="date-format">Date Format</Label>
-                    <Controller
-                      name="dateFormat"
-                      control={control}
-                      render={({ field }) => (
-                        <Select
-                          value={field.value}
-                          onValueChange={field.onChange}
-                        >
-                          <SelectTrigger key={field.value}>
-                            <SelectValue placeholder="Select format" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="DD-MM-YYYY">
-                              DD-MM-YYYY
-                            </SelectItem>
-                            <SelectItem value="MM-DD-YYYY">
-                              MM-DD-YYYY
-                            </SelectItem>
-                            <SelectItem value="YYYY-MM-DD">
-                              YYYY-MM-DD
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      )}
-                    />
-                    {errors.dateFormat && (
-                      <p className="text-sm text-red-500">
-                        {errors.dateFormat.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="admin-page-title">Admin Panel Title</Label>
-                    <Input
-                      id="admin-page-title"
-                      placeholder="Admin Dashboard"
-                      {...register("adminPanelTitle")}
-                    />
-                    {errors.adminPanelTitle && (
-                      <p className="text-sm text-red-500">
-                        {errors.adminPanelTitle.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
+              {/*<div className="space-y-4 rounded-lg border p-4">*/}
+              {/*  <h3 className="text-lg font-semibold">Format Settings</h3>*/}
+              {/*  <div className="space-y-4">*/}
+              {/*    <div className="space-y-2">*/}
+              {/*      <Label htmlFor="date-format">Date Format</Label>*/}
+              {/*      <Controller*/}
+              {/*        name="dateFormat"*/}
+              {/*        control={control}*/}
+              {/*        render={({ field }) => (*/}
+              {/*          <Select*/}
+              {/*            value={field.value}*/}
+              {/*            onValueChange={field.onChange}*/}
+              {/*          >*/}
+              {/*            <SelectTrigger key={field.value}>*/}
+              {/*              <SelectValue placeholder="Select format" />*/}
+              {/*            </SelectTrigger>*/}
+              {/*            <SelectContent>*/}
+              {/*              <SelectItem value="DD-MM-YYYY">*/}
+              {/*                DD-MM-YYYY*/}
+              {/*              </SelectItem>*/}
+              {/*              <SelectItem value="MM-DD-YYYY">*/}
+              {/*                MM-DD-YYYY*/}
+              {/*              </SelectItem>*/}
+              {/*              <SelectItem value="YYYY-MM-DD">*/}
+              {/*                YYYY-MM-DD*/}
+              {/*              </SelectItem>*/}
+              {/*            </SelectContent>*/}
+              {/*          </Select>*/}
+              {/*        )}*/}
+              {/*      />*/}
+              {/*      {errors.dateFormat && (*/}
+              {/*        <p className="text-sm text-red-500">*/}
+              {/*          {errors.dateFormat.message}*/}
+              {/*        </p>*/}
+              {/*      )}*/}
+              {/*    </div>*/}
+              {/*    <div className="space-y-2">*/}
+              {/*      <Label htmlFor="admin-page-title">Admin Panel Title</Label>*/}
+              {/*      <Input*/}
+              {/*        id="admin-page-title"*/}
+              {/*        placeholder="Admin Dashboard"*/}
+              {/*        {...register("adminPanelTitle")}*/}
+              {/*      />*/}
+              {/*      {errors.adminPanelTitle && (*/}
+              {/*        <p className="text-sm text-red-500">*/}
+              {/*          {errors.adminPanelTitle.message}*/}
+              {/*        </p>*/}
+              {/*      )}*/}
+              {/*    </div>*/}
+              {/*  </div>*/}
+              {/*</div>*/}
             </div>
             {/* Right Column */}
             <div className="space-y-6">
@@ -245,92 +245,92 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                 </div>
               </div>
               {/* Admin Appearance */}
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-semibold">Admin Appearance</h3>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>Login Background</Label>
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <div className="h-24 w-32 rounded-lg border flex items-center justify-center bg-muted/50 overflow-hidden">
-                          {loginImagePreview ? (
-                            <Image
-                              src={loginImagePreview}
-                              alt="Login Background"
-                              fill
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <Upload className="h-6 w-6 text-muted-foreground" />
-                          )}
-                        </div>
-                        {loginImagePreview && (
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="sm"
-                            className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
-                            onClick={removeLoginImage}
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        )}
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            type="button"
-                            onClick={() =>
-                              document.getElementById("admin-bg")?.click()
-                            }
-                          >
-                            Upload Background
-                          </Button>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          Recommended: 1920×1080px JPG/PNG
-                        </p>
-                        <Controller
-                          name="loginImage"
-                          control={control}
-                          render={() => (
-                            <input
-                              type="file"
-                              id="admin-bg"
-                              className="hidden"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleLoginImageChange(file);
-                                }
-                              }}
-                            />
-                          )}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="admin-page-paragraph">
-                      Welcome Message
-                    </Label>
-                    <Textarea
-                      id="admin-page-paragraph"
-                      placeholder="Welcome to the admin panel..."
-                      rows={3}
-                      {...register("loginMessage")}
-                    />
-                    {errors.loginMessage && (
-                      <p className="text-sm text-red-500">
-                        {errors.loginMessage.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
+              {/*<div className="space-y-4 rounded-lg border p-4">*/}
+              {/*  <h3 className="text-lg font-semibold">Admin Appearance</h3>*/}
+              {/*  <div className="space-y-4">*/}
+              {/*    <div className="space-y-2">*/}
+              {/*      <Label>Login Background</Label>*/}
+              {/*      <div className="flex items-center gap-4">*/}
+              {/*        <div className="relative">*/}
+              {/*          <div className="h-24 w-32 rounded-lg border flex items-center justify-center bg-muted/50 overflow-hidden">*/}
+              {/*            {loginImagePreview ? (*/}
+              {/*              <Image*/}
+              {/*                src={loginImagePreview}*/}
+              {/*                alt="Login Background"*/}
+              {/*                fill*/}
+              {/*                className="h-full w-full object-cover"*/}
+              {/*              />*/}
+              {/*            ) : (*/}
+              {/*              <Upload className="h-6 w-6 text-muted-foreground" />*/}
+              {/*            )}*/}
+              {/*          </div>*/}
+              {/*          {loginImagePreview && (*/}
+              {/*            <Button*/}
+              {/*              type="button"*/}
+              {/*              variant="destructive"*/}
+              {/*              size="sm"*/}
+              {/*              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"*/}
+              {/*              onClick={removeLoginImage}*/}
+              {/*            >*/}
+              {/*              <X className="h-3 w-3" />*/}
+              {/*            </Button>*/}
+              {/*          )}*/}
+              {/*        </div>*/}
+              {/*        <div className="flex-1 space-y-2">*/}
+              {/*          <div className="flex gap-2">*/}
+              {/*            <Button*/}
+              {/*              variant="outline"*/}
+              {/*              size="sm"*/}
+              {/*              type="button"*/}
+              {/*              onClick={() =>*/}
+              {/*                document.getElementById("admin-bg")?.click()*/}
+              {/*              }*/}
+              {/*            >*/}
+              {/*              Upload Background*/}
+              {/*            </Button>*/}
+              {/*          </div>*/}
+              {/*          <p className="text-xs text-muted-foreground">*/}
+              {/*            Recommended: 1920×1080px JPG/PNG*/}
+              {/*          </p>*/}
+              {/*          <Controller*/}
+              {/*            name="loginImage"*/}
+              {/*            control={control}*/}
+              {/*            render={() => (*/}
+              {/*              <input*/}
+              {/*                type="file"*/}
+              {/*                id="admin-bg"*/}
+              {/*                className="hidden"*/}
+              {/*                accept="image/*"*/}
+              {/*                onChange={(e) => {*/}
+              {/*                  const file = e.target.files?.[0];*/}
+              {/*                  if (file) {*/}
+              {/*                    handleLoginImageChange(file);*/}
+              {/*                  }*/}
+              {/*                }}*/}
+              {/*              />*/}
+              {/*            )}*/}
+              {/*          />*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    </div>*/}
+              {/*    <div className="space-y-2">*/}
+              {/*      <Label htmlFor="admin-page-paragraph">*/}
+              {/*        Welcome Message*/}
+              {/*      </Label>*/}
+              {/*      <Textarea*/}
+              {/*        id="admin-page-paragraph"*/}
+              {/*        placeholder="Welcome to the admin panel..."*/}
+              {/*        rows={3}*/}
+              {/*        {...register("loginMessage")}*/}
+              {/*      />*/}
+              {/*      {errors.loginMessage && (*/}
+              {/*        <p className="text-sm text-red-500">*/}
+              {/*          {errors.loginMessage.message}*/}
+              {/*        </p>*/}
+              {/*      )}*/}
+              {/*    </div>*/}
+              {/*  </div>*/}
+              {/*</div>*/}
             </div>
           </div>
           {canEdit &&  <div className="flex justify-end gap-4 pt-4">

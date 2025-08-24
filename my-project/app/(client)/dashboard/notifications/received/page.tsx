@@ -1,8 +1,8 @@
 "use client";
 
-import { NotificationCard } from "@/app/(client)/dashboard/notifications/_components/notification-card";
-import { LikeStatus, useLikesReceived } from "../_hooks/useLikesReceived";
-import { useTranslation } from "react-i18next";
+import {LikeStatus, useLikesReceived} from "../_hooks/useLikesReceived";
+import {useTranslation} from "react-i18next";
+import {NotificationReceived} from "@/app/(client)/dashboard/notifications/_components/notification-received";
 
 export default function ReceivedPage() {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ export default function ReceivedPage() {
       </div>}
 
       {likesReceived && likesReceived.map((likeRec, index) => (
-        <NotificationCard notification={likeRec} key={index} />
+        <NotificationReceived notification={likeRec} key={index} />
       ))}
     </div>
   );

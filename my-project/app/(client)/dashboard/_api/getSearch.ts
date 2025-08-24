@@ -27,6 +27,7 @@ export function paramsToSearchForm(params: URLSearchParams): SearchFormValues {
 
 export async function fetchSearch(params: SearchFormValues): Promise<SearchApiResponse | undefined> {
   const query = searchFormToParams(params);
+
   return await getRequest<SearchApiResponse>({
     url: `users/search?${query.toString()}`,
     useAuth: true,

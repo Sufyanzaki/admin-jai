@@ -1,10 +1,9 @@
 import {useSWRFix} from "@/shared-lib";
-import {BannerDto} from "@/app/admin/(dashboard)/marketing/banners/_types/bannerTypes";
-import {getActivity} from "@/app/admin/(dashboard)/profile/_api/getActivity";
+import {ActivityResponse, getActivity} from "@/app/admin/(dashboard)/profile/_api/getActivity";
 
 export const useActivity = () => {
 
-    const { data, loading, error, mutate } = useSWRFix<BannerDto>({
+    const { data, loading, error, mutate } = useSWRFix<ActivityResponse>({
         key: `activity-log`,
         fetcher: async () => {
             const response = await getActivity();
@@ -14,7 +13,7 @@ export const useActivity = () => {
     });
 
     return {
-        data,
+        data: data?.activities ?? [],
         loading,
         error,
         mutate
