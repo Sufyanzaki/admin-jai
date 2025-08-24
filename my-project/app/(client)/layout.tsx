@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import "../../i18n";
 import TranslationsProvider from "@/shared-lib/translation-provider";
+import { LanguageInitializer } from "@/lib/language-initializer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default async function RootLayout({
         <ClientProvider session={session}>
           <TranslationsProvider>
             <main>
+               <LanguageInitializer /> 
               {children}
             </main>
           </TranslationsProvider>

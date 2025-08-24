@@ -130,6 +130,14 @@ export type MemberPhysicalAppearance = {
     language: string;
 }
 
+export type MemberActiveLanguage = {
+    code: string;
+    createdAt:string;
+    id: number;
+    isActive: boolean;
+    name: string;
+    updatedAt: string;
+}
 
 export type MemberProfile = {
     id: string;
@@ -159,6 +167,8 @@ export type MemberProfile = {
     isPremium: boolean;
     createdAt: string;
     updatedAt: string;
+    activeLanguageId: number;
+    activeLanguage: MemberActiveLanguage;
 
     route: null | string;
 
@@ -178,7 +188,7 @@ export type MemberProfile = {
 
     PhotoSetting: PhotoDto[];
 
-    allow?:{
+    allow?: {
         permissions: string[];
     }
 }
