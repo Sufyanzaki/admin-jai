@@ -8,23 +8,26 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { postChatSetting } from "../_api/chatSettingApi";
 import useChatVideoSetting from "./useChatVideoSetting";
+import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
-const chatSettingSchema = z.object({
-  messageLength: z.coerce.number().min(1, "Message length is required"),
-  displayName: z.string().min(1, "Display name is required"),
-  enableImages: z.boolean(),
-  enableVideos: z.boolean(),
-  enableFiles: z.boolean(),
-  fileExtensions: z.string().min(1, "File extensions are required"),
-  fileSizeLimit: z.coerce.number().min(1, "File size limit is required"),
-  noticeStyle: z.string().min(1, "Notice style is required"),
-  pageNoticeMessage: z.string().min(1, "Notice message is required"),
-});
-
-export type ChatSettingFormValues = z.infer<typeof chatSettingSchema>;
 
 export default function useChatSettingForm() {
+  const { t } = useTranslation();
+
+  const chatSettingSchema = z.object({
+    messageLength: z.coerce.number().min(1, t("Message length is required")),
+    displayName: z.string().min(1, t("Display name is required")),
+    enableImages: z.boolean(),
+    enableVideos: z.boolean(),
+    enableFiles: z.boolean(),
+    fileExtensions: z.string().min(1, t("File extensions are required")),
+    fileSizeLimit: z.coerce.number().min(1, t("File size limit is required")),
+    noticeStyle: z.string().min(1, t("Notice style is required")),
+    pageNoticeMessage: z.string().min(1, t("Notice message is required")),
+  });
+
+  type ChatSettingFormValues = z.infer<typeof chatSettingSchema>;
 
   const { data, loading } = useChatVideoSetting();
 
@@ -35,7 +38,7 @@ export default function useChatSettingForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
         console.error("Chat setting error:", error);
       },
       revalidate: false,
@@ -73,10 +76,10 @@ export default function useChatSettingForm() {
 
   const onSubmit = async (values: ChatSettingFormValues, callback?: (data: any) => void) => {
     const result = await trigger(values);
-      if (result) {
-        showSuccess("Chat settings updated successfully!");
-        callback?.(result);
-      }
+    if (result) {
+      showSuccess(t("Chat settings updated successfully!"));
+      callback?.(result);
+    }
   };
 
   return {

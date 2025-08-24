@@ -10,8 +10,10 @@ import {useParams} from "next/navigation";
 import {unescapeHtml} from "@/lib/utils"
 import Preloader from "@/components/shared/Preloader";
 import useBlogById from "@/app/shared-hooks/useBlogById";
+import { useTranslation } from "react-i18next";
 
 export default function BlogListDetails() {
+  const { t } = useTranslation();
   const params = useParams();
   const id = params.id as string;
   const { blog, loading, error } = useBlogById(id);
@@ -20,12 +22,12 @@ export default function BlogListDetails() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader/>
-          <p className="text-sm">Loading Blogs...</p>
+          <p className="text-sm">{t("Loading Blogs...")}</p>
         </div>
     )
   }
   if (error || !blog) {
-    return <div className="flex items-center justify-center h-64 text-red-500">Blog not found</div>;
+    return <div className="flex items-center justify-center h-64 text-red-500">{t("Blog not found")}</div>;
   }
 
   return (
@@ -37,23 +39,23 @@ export default function BlogListDetails() {
             </Button>
           </Link>
           <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">{blog.title}</h2>
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Published</Badge>
+          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">{t("Published")}</Badge>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Category ID</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("Category ID")}</CardTitle>
               <Bookmark className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{blog.categoryId}</div>
-              <p className="text-xs text-muted-foreground">Category ID for this blog</p>
+              <p className="text-xs text-muted-foreground">{t("Category ID for this blog")}</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Created</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("Created")}</CardTitle>
               <Calendar className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -61,7 +63,7 @@ export default function BlogListDetails() {
                 {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : ''}
               </div>
               <p className="text-xs text-muted-foreground">
-                {blog.createdAt ? `${Math.floor((new Date().getTime() - new Date(blog.createdAt).getTime()) / (1000 * 60 * 60 * 24))} days ago` : ''}
+                {blog.createdAt ? `${Math.floor((new Date().getTime() - new Date(blog.createdAt).getTime()) / (1000 * 60 * 60 * 24))} ${t("days ago")}` : ''}
               </p>
             </CardContent>
           </Card>
@@ -70,34 +72,34 @@ export default function BlogListDetails() {
         <div className="md:grid gap-4 max-md:space-y-4 md:grid-cols-3">
           <Card className="md:col-span-1">
             <CardHeader>
-              <CardTitle>Blog Information</CardTitle>
-              <CardDescription>Details about this blog post</CardDescription>
+              <CardTitle>{t("Blog Information")}</CardTitle>
+              <CardDescription>{t("Details about this blog post")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2">
                 <Bookmark className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Category ID: {blog.categoryId}</span>
+                <span className="text-sm">{t("Category ID")}: {blog.categoryId}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
-                Created: {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : ''}
+                {t("Created")}: {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : ''}
               </span>
               </div>
               <div className="pt-4">
-                <h4 className="mb-2 text-sm font-medium">Meta Title</h4>
+                <h4 className="mb-2 text-sm font-medium">{t("Meta Title")}</h4>
                 <p className="text-xs text-muted-foreground">{blog.metaTitle}</p>
               </div>
               <div className="flex gap-2 pt-4 flex-wrap">
                 <Link href={`/admin/blogs/list/edit/${blog.id}`}>
                   <Button variant="outline" size="sm">
                     <Edit className="mr-2 h-4 w-4" />
-                    Edit Blog
+                    {t("Edit Blog")}
                   </Button>
                 </Link>
                 <Button size="sm">
                   <Share2 className="mr-2 h-4 w-4" />
-                  Share
+                  {t("Share")}
                 </Button>
               </div>
             </CardContent>
@@ -105,14 +107,14 @@ export default function BlogListDetails() {
 
           <Card className="md:col-span-2">
             <CardHeader>
-              <CardTitle>Blog Content</CardTitle>
-              <CardDescription>Full content and details</CardDescription>
+              <CardTitle>{t("Blog Content")}</CardTitle>
+              <CardDescription>{t("Full content and details")}</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="content">
                 <TabsList className="mb-4">
-                  <TabsTrigger value="content">Content</TabsTrigger>
-                  <TabsTrigger value="seo">SEO</TabsTrigger>
+                  <TabsTrigger value="content">{t("Content")}</TabsTrigger>
+                  <TabsTrigger value="seo">{t("SEO")}</TabsTrigger>
                 </TabsList>
                 <TabsContent value="content" className="space-y-4">
                   <div className="rounded-md overflow-hidden mb-4 w-40 h-40">
@@ -132,15 +134,15 @@ export default function BlogListDetails() {
                 </TabsContent>
                 <TabsContent value="seo" className="space-y-4">
                   <div className="space-y-2">
-                    <h4 className="font-medium">Meta Title</h4>
+                    <h4 className="font-medium">{t("Meta Title")}</h4>
                     <p className="text-sm">{blog.metaTitle}</p>
                   </div>
                   <div className="space-y-2">
-                    <h4 className="font-medium">Meta Description</h4>
+                    <h4 className="font-medium">{t("Meta Description")}</h4>
                     <p className="text-sm">{blog.metaDescription}</p>
                   </div>
                   <div className="space-y-2">
-                    <h4 className="font-medium">Keywords</h4>
+                    <h4 className="font-medium">{t("Keywords")}</h4>
                     <div className="flex flex-wrap gap-2">
                       {blog.metaKeywords.split(",").map((keyword: string, i: number) => (
                           <Badge key={i} variant="outline">

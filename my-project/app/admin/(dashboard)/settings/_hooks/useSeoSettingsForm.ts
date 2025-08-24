@@ -11,17 +11,22 @@ import { showSuccess } from "@/shared-lib";
 import { patchSeoSettings } from "../_api/seoSettings";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { useSeoSettings } from "@/app/admin/(dashboard)/settings/_hooks/useSeoSettings";
+import { useTranslation } from "react-i18next";
 
-export const seoSettingsSchema = z.object({
-  metaTitle: z.string().min(1, "Meta title is required"),
-  metaDescription: z.string().min(1, "Meta description is required"),
-  metaKeywords: z.string().min(1, "Keywords are required"),
-  metaImage: z.union([z.string(), z.instanceof(File), z.null()]).optional(),
-});
-
-export type SeoSettingsFormValues = z.infer<typeof seoSettingsSchema>;
 
 export default function useSeoSettingsForm() {
+
+  const { t } = useTranslation();
+
+  const seoSettingsSchema = z.object({
+    metaTitle: z.string().min(1, t("Meta title is required")),
+    metaDescription: z.string().min(1, t("Meta description is required")),
+    metaKeywords: z.string().min(1, t("Keywords are required")),
+    metaImage: z.union([z.string(), z.instanceof(File), z.null()]).optional(),
+  });
+
+  type SeoSettingsFormValues = z.infer<typeof seoSettingsSchema>;
+
   const {
     handleSubmit,
     setValue,
@@ -63,7 +68,7 @@ export default function useSeoSettingsForm() {
         try {
           metaImageUrl = await imageUpload(arg.metaImage);
         } catch (error: unknown) {
-          if(error instanceof Error) showError({ message: error.message });
+          if (error instanceof Error) showError({ message: error.message });
           throw error;
         }
       } else if (typeof arg.metaImage === "string") {
@@ -83,7 +88,7 @@ export default function useSeoSettingsForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t("Failed to save SEO settings") });
         console.error("SEO settings error:", error);
       },
       revalidate: false,
@@ -94,7 +99,7 @@ export default function useSeoSettingsForm() {
   const onSubmit = async (values: SeoSettingsFormValues) => {
     const result = await trigger(values);
     if (result) {
-      showSuccess("SEO settings saved successfully!");
+      showSuccess(t("SEO settings saved successfully!"));
     }
   };
 

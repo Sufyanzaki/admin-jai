@@ -1,17 +1,20 @@
 import { useSWRFix } from "@/shared-lib";
 import { getBannerDetails } from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import { useSession } from "next-auth/react";
-import {BannerDto} from "@/app/admin/(dashboard)/marketing/banners/_types/bannerTypes";
+import { BannerDto } from "@/app/admin/(dashboard)/marketing/banners/_types/bannerTypes";
+import { useTranslation } from "react-i18next";
 
 export const useBannerDetails = (id: string) => {
+  const { t } = useTranslation();
+
   const { data: session } = useSession();
-  
+
   const { data, loading, error, mutate } = useSWRFix<BannerDto>({
     key: session?.token && id ? `banner-details-${id}` : '',
     fetcher: async () => {
       const response = await getBannerDetails(id);
       if (!response) {
-        throw new Error('Failed to fetch banner details');
+        throw new Error(t('Failed to fetch banner details'));
       }
       return response;
     }

@@ -4,6 +4,7 @@ import type React from "react"
 import {useEffect, useRef, useState} from "react"
 import {Info, MessageCircleIcon, MoreVertical, Paperclip, Phone, Plus, Search, Send, Smile, Video} from "lucide-react"
 import {Button} from "@/components/admin/ui/button"
+import { useTranslation } from "react-i18next";
 import {Input} from "@/components/admin/ui/input"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/admin/ui/avatar"
 import {Badge} from "@/components/admin/ui/badge"
@@ -148,6 +149,7 @@ const messages = [
 ]
 
 export default function ChatPage() {
+  const { t } = useTranslation();
   const [activeConversation, setActiveConversation] = useState(conversations[0])
   const [messageInput, setMessageInput] = useState("")
   const [searchInput, setSearchInput] = useState("")
@@ -187,22 +189,22 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col gap-3">
-      <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden"> <MessageCircleIcon className="h-4 w-4" /> Open Chat</Button>
+  <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden"> <MessageCircleIcon className="h-4 w-4" /> {t("Open Chat")}</Button>
       <div className="flex flex-1 overflow-hidden relative">
         {/* Sidebar with conversations */}
         <div className={cn("w-full sm:w-80 xxl:w-96 border-r duration-300 bg-background max-md:absolute max-md:left-0 max-md:top-0 max-md:h-full max-md:z-50", isSidebarOpen ? "translate-x-0" : "max-md:-translate-x-full")}>
           <div className="p-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Messages</h2>
+              <h2 className="text-lg font-semibold">{t("Messages")}</h2>
               <Button variant="ghost" size="icon">
                 <Plus className="h-5 w-5" />
-                <span className="sr-only">New conversation</span>
+                <span className="sr-only">{t("New conversation")}</span>
               </Button>
             </div>
             <div className="relative mt-2">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search conversations"
+                placeholder={t("Search conversations")}
                 className="pl-8"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
@@ -254,7 +256,7 @@ export default function ChatPage() {
                       <p className="truncate text-sm text-muted-foreground">{conversation.lastMessage}</p>
                       {conversation.unread > 0 && (
                         <Badge variant="default" className="ml-auto">
-                          {conversation.unread}
+                          {t("Unread")}: {conversation.unread}
                         </Badge>
                       )}
                     </div>
@@ -293,7 +295,7 @@ export default function ChatPage() {
               <div className="py-2">
                 <div className="flex items-center gap-2">
                   <h3 className="font-medium text-sm lg:text-base">{activeConversation.name}</h3>
-                  {activeConversation.online && <span className="text-xs text-green-500">Online</span>}
+                  {activeConversation.online && <span className="text-xs text-green-500">{t("Online")}</span>}
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {activeConversation.isGroup ? `${activeConversation.members} members` : activeConversation.role}
@@ -306,10 +308,10 @@ export default function ChatPage() {
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" className="max-md:hidden">
                       <Phone className="h-5 w-5" />
-                      <span className="sr-only">Voice call</span>
+                      <span className="sr-only">{t("Voice call")}</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Voice call</TooltipContent>
+                  <TooltipContent>{t("Voice call")}</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <TooltipProvider>
@@ -317,10 +319,10 @@ export default function ChatPage() {
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" className="max-md:hidden">
                       <Video className="h-5 w-5" />
-                      <span className="sr-only">Video call</span>
+                      <span className="sr-only">{t("Video call")}</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Video call</TooltipContent>
+                  <TooltipContent>{t("Video call")}</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <TooltipProvider>
@@ -328,10 +330,10 @@ export default function ChatPage() {
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" className="max-md:hidden">
                       <Info className="h-5 w-5" />
-                      <span className="sr-only">Conversation info</span>
+                      <span className="sr-only">{t("Conversation info")}</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Conversation info</TooltipContent>
+                  <TooltipContent>{t("Conversation info")}</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <TooltipProvider>
@@ -339,10 +341,10 @@ export default function ChatPage() {
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" className="max-md:hidden">
                       <MoreVertical className="h-5 w-5" />
-                      <span className="sr-only">More options</span>
+                      <span className="sr-only">{t("More options")}</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>More options</TooltipContent>
+                  <TooltipContent>{t("More options")}</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
@@ -410,11 +412,11 @@ export default function ChatPage() {
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="icon" className="shrink-0">
                 <Paperclip className="h-5 w-5" />
-                <span className="sr-only">Attach file</span>
+                <span className="sr-only">{t("Attach file")}</span>
               </Button>
               <div className="relative flex-1">
                 <Input
-                  placeholder="Type a message..."
+                  placeholder={t("Type a message...")}
                   className="min-h-10 pr-10"
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
@@ -422,12 +424,12 @@ export default function ChatPage() {
                 />
                 <Button variant="ghost" size="icon" className="absolute bottom-0 right-0 top-0">
                   <Smile className="h-5 w-5" />
-                  <span className="sr-only">Emoji</span>
+                  <span className="sr-only">{t("Emoji")}</span>
                 </Button>
               </div>
               <Button className="shrink-0" size="icon" onClick={handleSendMessage} disabled={!messageInput.trim()}>
                 <Send className="h-5 w-5" />
-                <span className="sr-only">Send</span>
+                <span className="sr-only">{t("Send")}</span>
               </Button>
             </div>
           </div>

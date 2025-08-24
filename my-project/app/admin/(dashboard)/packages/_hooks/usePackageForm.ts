@@ -5,22 +5,26 @@ import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import {addPackage} from "@/app/shared-api/packageApi";
-
-const packageSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  price: z.coerce.number().min(0, "Price is required"),
-  validity: z.coerce.number().min(0, "Validity is required"),
-  image: z.union([z.string(), z.instanceof(File), z.null()]),
-  isActive: z.boolean().default(true),
-  features: z.array(z.string().min(1, "Feature cannot be empty")).min(1, "At least one feature is required"),
-});
-
-export type PackageFormValues = z.infer<typeof packageSchema>;
-
+import { addPackage } from "@/app/shared-api/packageApi";
+import { useTranslation } from "react-i18next";
 
 
 export default function usePackageForm() {
+  
+  const { t } = useTranslation();
+
+  const packageSchema = z.object({
+    name: z.string().min(1, t("Name is required")),
+    price: z.coerce.number().min(0, t("Price is required")),
+    validity: z.coerce.number().min(0, t("Validity is required")),
+    image: z.union([z.string(), z.instanceof(File), z.null()]),
+    isActive: z.boolean().default(true),
+    features: z.array(z.string().min(1, t("Feature cannot be empty"))).min(1, t("At least one feature is required")),
+  });
+
+  type PackageFormValues = z.infer<typeof packageSchema>;
+
+
   const {
     handleSubmit,
     control,
@@ -63,7 +67,7 @@ export default function usePackageForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t("Failed to add package") });
         console.error("Package creation error:", error);
       },
       revalidate: false,
@@ -74,7 +78,7 @@ export default function usePackageForm() {
   const onSubmit = async (values: PackageFormValues) => {
     const result = await trigger(values);
     if (result) {
-      showSuccess("Package added successfully!");
+      showSuccess(t("Package added successfully!"));
       reset();
     }
   };

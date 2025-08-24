@@ -3,9 +3,11 @@ import useSWRMutation from "swr/mutation";
 import {deleteStaff} from "@/app/admin/(dashboard)/staff/_api/staffApi";
 import {showError, showSuccess} from "@/shared-lib";
 import {StaffListResponse} from "@/app/admin/(dashboard)/staff/_types/staff";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 export const useDeleteStaff = () => {
+    const { t } = useTranslation();
     const { mutate: globalMutate } = useSWRConfig();
     const [deletingIds, setDeletingIds] = useState<string[]>([]);
 
@@ -15,10 +17,10 @@ export const useDeleteStaff = () => {
             return await deleteStaff(arg.id);
         },
         {
-            onSuccess: () => showSuccess("Staff member deleted successfully!"),
+            onSuccess: () => showSuccess(t("Staff member deleted successfully!")),
             onError: (error) => {
                 globalMutate((key) => Array.isArray(key) && key[0] === "staff-members").finally();
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
             }
         }
     );

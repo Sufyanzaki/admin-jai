@@ -9,8 +9,10 @@ import { useDashboardFooterForm } from "../_hooks/useDashboardFooterForm";
 import Preloader from "@/components/shared/Preloader";
 import { useBasicPages } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
 import {MultiOptionSelect} from "@/components/admin/ui/combo-box";
+import { useTranslation } from "react-i18next";
 
 export default function UserDashboardFooterForm({canEdit}: { canEdit: boolean}) {
+  const { t } = useTranslation();
   const { basicPages, isLoading:basicLoading } = useBasicPages();
 
   const {
@@ -33,7 +35,7 @@ export default function UserDashboardFooterForm({canEdit}: { canEdit: boolean}) 
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading Dashboard Settings</p>
+          <p className="text-sm">{t("Loading Dashboard Settings")}</p>
         </div>
     )
   }
@@ -53,16 +55,16 @@ export default function UserDashboardFooterForm({canEdit}: { canEdit: boolean}) 
           <CardHeader>
             <CardTitle className="flex items-center">
               <Building className="mr-2 h-5 w-5" />
-              User Dashboard Footer Section
+              {t("User Dashboard Footer Section")}
             </CardTitle>
             <CardDescription>
-              Customize the footer content shown on the user dashboard, including links, contact info, and disclaimers.
+              {t("Customize the footer content shown on the user dashboard, including links, contact info, and disclaimers.")}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
               <Label htmlFor="section-page" className="text-base font-medium">
-                Section Page
+                {t("Section Page")}
               </Label>
 
               <MultiOptionSelect
@@ -79,7 +81,7 @@ export default function UserDashboardFooterForm({canEdit}: { canEdit: boolean}) 
             </div>
             {canEdit && <div className="flex justify-end pt-6">
               <Button type="submit" className="px-8" disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Configuration"}
+                {isLoading ? t("Saving...") : t("Save Configuration")}
               </Button>
             </div>}
           </CardContent>

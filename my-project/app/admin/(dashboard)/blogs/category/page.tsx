@@ -19,10 +19,12 @@ import useDeleteBlogCategory from "./_hooks/useDeleteBlogCategory";
 import {useSWRConfig} from "swr";
 import EditCategoryModal from "./_components/EditCategoryModal";
 import Preloader from "@/components/shared/Preloader";
-import {BlogCategoryDto} from "@/app/shared-types/blog";
+import {CategoryDto} from "@/app/shared-types/blog";
 import {useSession} from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
 export default function BlogCategoryManagement() {
+    const { t } = useTranslation();
 
     const { data:session } = useSession();
 
@@ -33,7 +35,7 @@ export default function BlogCategoryManagement() {
 
     const { mutate: globalMutate } = useSWRConfig();
 
-    const filteredCategories = categories.filter((cat: BlogCategoryDto) =>
+    const filteredCategories = categories.filter((cat: CategoryDto) =>
         cat.name.toLowerCase().includes(search.toLowerCase())
     )
 
@@ -52,8 +54,8 @@ export default function BlogCategoryManagement() {
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div className="space-y-2">
-                        <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">Manage Categories</h1>
-                        <p className="text-muted-foreground">Manage and track all categories in the app</p>
+                        <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">{t("Manage Categories")}</h1>
+                        <p className="text-muted-foreground">{t("Manage and track all categories in the app")}</p>
                     </div>
                 </div>
             </div>
@@ -63,13 +65,13 @@ export default function BlogCategoryManagement() {
                     <CardHeader>
                         <div className="flex justify-between items-center">
                             <div>
-                                <CardTitle>Blog Categories</CardTitle>
-                                <CardDescription>Manage your blog categories</CardDescription>
+                                <CardTitle>{t("Blog Categories")}</CardTitle>
+                                <CardDescription>{t("Manage your blog categories")}</CardDescription>
                             </div>
                             <div className="relative w-64">
                                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search categories..."
+                                    placeholder={t("Search categories...")}
                                     className="pl-8"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
@@ -81,22 +83,22 @@ export default function BlogCategoryManagement() {
                         {loading ? (
                             <div className="flex items-center justify-center flex-col h-32">
                                 <Preloader />
-                                <p>Loading categories</p>
+                                <p>{t("Loading categories")}</p>
                             </div>
                         ) : error ? (
                             <div className="flex items-center justify-center h-32 text-red-500">
-                                Error loading categories
+                                {t("Error loading categories")}
                             </div>
                         ) : (
                             <Table>
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead className="w-[50px]">#</TableHead>
-                                        <TableHead>Category</TableHead>
-                                        <TableHead>Posts</TableHead>
-                                        <TableHead>Status</TableHead>
+                                        <TableHead>{t("Category")}</TableHead>
+                                        <TableHead>{t("Posts")}</TableHead>
+                                        <TableHead>{t("Status")}</TableHead>
                                         {(canEdit || canDelete) && (
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead className="text-right">{t("Actions")}</TableHead>
                                         )}
                                     </TableRow>
                                 </TableHeader>
@@ -111,7 +113,7 @@ export default function BlogCategoryManagement() {
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge variant={category.isActive ? "default" : "secondary"}>
-                                                        {category.isActive ? "active" : "inactive"}
+                                                        {category.isActive ? t("active") : t("inactive")}
                                                     </Badge>
                                                 </TableCell>
                                                 {(canEdit || canDelete) && (
@@ -119,7 +121,7 @@ export default function BlogCategoryManagement() {
                                                         <DropdownMenu>
                                                             <DropdownMenuTrigger asChild>
                                                                 <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                    <span className="sr-only">Open menu</span>
+                                                                    <span className="sr-only">{t("Open menu")}</span>
                                                                     <MoreHorizontal className="h-4 w-4" />
                                                                 </Button>
                                                             </DropdownMenuTrigger>
@@ -133,7 +135,7 @@ export default function BlogCategoryManagement() {
                                                                         }}
                                                                     >
                                                                         <Pencil className="mr-2 h-4 w-4" />
-                                                                        Edit
+                                                                        {t("Edit")}
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {canDelete && (
@@ -142,12 +144,12 @@ export default function BlogCategoryManagement() {
                                                                         onClick={async () => {
                                                                             setDeletingId(category.id);
                                                                             await deleteCategoryById(category.id);
-                                                                            await globalMutate('blog-categories', (current: BlogCategoryDto[] = []) => current.filter(cat => cat.id !== category.id), false);
+                                                                            await globalMutate('blog-categories', (current: CategoryDto[] = []) => current.filter(cat => cat.id !== category.id), false);
                                                                             setDeletingId(null);
                                                                         }}
                                                                     >
                                                                         <Trash className="mr-2 h-4 w-4" />
-                                                                        Delete
+                                                                        {t("Delete")}
                                                                     </DropdownMenuItem>
                                                                 )}
                                                             </DropdownMenuContent>
@@ -159,7 +161,7 @@ export default function BlogCategoryManagement() {
                                     ) : (
                                         <TableRow>
                                             <TableCell colSpan={5} className="text-center h-24">
-                                                No categories found
+                                                {t("No categories found")}
                                             </TableCell>
                                         </TableRow>
                                     )}
@@ -173,8 +175,8 @@ export default function BlogCategoryManagement() {
                 {canCreate && (
                     <Card>
                         <CardHeader>
-                            <CardTitle>Add New Category</CardTitle>
-                            <CardDescription>Create a new blog category</CardDescription>
+                            <CardTitle>{t("Add New Category")}</CardTitle>
+                            <CardDescription>{t("Create a new blog category")}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <AddCategoryForm />

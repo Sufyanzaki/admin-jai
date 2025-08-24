@@ -1,9 +1,9 @@
+import { CategoryDto } from '@/app/shared-types/blog';
 import { useSWRFix } from "@/shared-lib";
-import {BlogCategoryDto} from "@/app/shared-types/blog";
 import {getAllBlogCategories} from "@/app/shared-api/blogCategoryApi";
 
 export const useBlogCategories = () => {
-    const { data, loading, error, mutate } = useSWRFix<BlogCategoryDto[]>({
+    const { data, loading, error, mutate } = useSWRFix<CategoryDto[]>({
         key: 'blog-categories',
         fetcher: getAllBlogCategories
     });

@@ -8,22 +8,26 @@ import { patchEducationCareer, postEducationCareer } from "@/app/shared-api/educ
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useEducationCareerInfo } from "@/app/shared-hooks/useEducationCareerInfo";
 import { useEffect, useMemo } from "react";
-import {useParams} from "next/navigation";
-
-const educationCareerSchema = z.object({
-  primarySpecialization: z.string().min(1, "Primary specialization is required"),
-  secondarySpecialization: z.string().min(1, "Secondary specialization is required"),
-  qualifications: z.string().min(1, "Qualifications are required"),
-  experience: z.string().min(1, "Experience is required"),
-  education: z.string().min(1, "Education is required"),
-  certifications: z.string().min(1, "Certifications are required"),
-  department: z.string().min(1, "Department is required"),
-  position: z.string().min(1, "Position is required"),
-});
-
-export type EducationCareerFormValues = z.infer<typeof educationCareerSchema>;
+import { useTranslation } from "react-i18next";
+import { useParams } from "next/navigation";
 
 export default function useEducationCareerForm() {
+
+  const { t } = useTranslation();
+
+  const educationCareerSchema = z.object({
+    primarySpecialization: z.string().min(1, t("Primary specialization is required")),
+    secondarySpecialization: z.string().min(1, t("Secondary specialization is required")),
+    qualifications: z.string().min(1, t("Qualifications are required")),
+    experience: z.string().min(1, t("Experience is required")),
+    education: z.string().min(1, t("Education is required")),
+    certifications: z.string().min(1, t("Certifications are required")),
+    department: z.string().min(1, t("Department is required")),
+    position: z.string().min(1, t("Position is required")),
+  });
+
+  type EducationCareerFormValues = z.infer<typeof educationCareerSchema>;
+
 
   const params = useParams();
   const { educationCareer, educationCareerLoading } = useEducationCareerInfo();
@@ -87,7 +91,7 @@ export default function useEducationCareerForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message || "Failed to update education/career info" });
+        showError({ message: error.message ? t(error.message) : t("Failed to update education/career info") });
       },
       revalidate: false,
       populateCache: false,
@@ -97,7 +101,7 @@ export default function useEducationCareerForm() {
   const onSubmit = async (values: EducationCareerFormValues, callback?: () => void) => {
     const result = await trigger(values);
     if (result) {
-      showSuccess("Education & Career updated successfully!");
+      showSuccess(t("Education & Career updated successfully!"));
       callback?.();
       updateUserTrackingId({ educationAndCareer: true });
     }

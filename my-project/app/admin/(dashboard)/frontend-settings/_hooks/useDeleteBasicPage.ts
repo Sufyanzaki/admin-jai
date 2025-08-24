@@ -4,8 +4,10 @@ import useSWRMutation from "swr/mutation";
 import { deleteBasicPage } from "@/app/shared-api/basicPageApi";
 import { mutate as globalMutate } from "swr";
 import { BasicPageDto } from "@/app/admin/(dashboard)/frontend-settings/_types/basicPage";
+import { useTranslation } from "react-i18next";
 
 export const useDeleteBasicPage = () => {
+    const { t } = useTranslation();
     const { trigger, isMutating, error } = useSWRMutation(
         "deleteBasicPage",
         async (key: string, { arg }: { arg: string }) => {
@@ -14,7 +16,7 @@ export const useDeleteBasicPage = () => {
         {
             onSuccess: async (data) => {
                 const id = data.id;
-                showSuccess("Page deleted successfully!");
+                showSuccess(t("Page deleted successfully!"));
                 globalMutate(
                     "basic-pages-settings",
                     (current: BasicPageDto[] = []) =>

@@ -9,7 +9,8 @@ import useSWRMutation from "swr/mutation";
 import { useBasicInfo } from '../../../../shared-hooks/useBasicInfo';
 import { patchUserStatus } from '@/app/shared-api/userApi';
 import { useEffect } from 'react';
-import {MemberProfile} from "@/app/shared-types/member";
+import { MemberProfile } from "@/app/shared-types/member";
+import { useTranslation } from 'react-i18next';
 
 const memberStatusSchema = z.object({
   isActive: z.boolean(),
@@ -18,8 +19,10 @@ const memberStatusSchema = z.object({
 export type MemberStatusFormValues = z.infer<typeof memberStatusSchema>;
 
 export default function useUpdateMemberStatusForm() {
+  const { t } = useTranslation();
+
   const { user, mutate } = useBasicInfo();
-  
+
   const typedUser = user as MemberProfile;
 
   const { trigger, isMutating } = useSWRMutation(
@@ -71,10 +74,10 @@ export default function useUpdateMemberStatusForm() {
 
       if (result) {
         await mutate();
-        showSuccess('Member status updated successfully!');
+        showSuccess(t('Member status updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         showError({ message: error.message });
         console.error('Member status update error:', error);
       }

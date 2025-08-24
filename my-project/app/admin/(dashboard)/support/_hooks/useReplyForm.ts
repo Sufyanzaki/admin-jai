@@ -1,36 +1,38 @@
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {showError, showSuccess} from "@/shared-lib";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { showError, showSuccess } from "@/shared-lib";
+import { useTranslation } from "react-i18next";
 import useSWRMutation from 'swr/mutation';
-import {sendReply} from "@/app/shared-api/supportApi";
-import {useSWRConfig} from "swr";
-import {AdminSupportTicketDto} from "@/app/(client)/dashboard/settings/support/_types/support";
+import { sendReply } from "@/app/shared-api/supportApi";
+import { useSWRConfig } from "swr";
+import { AdminSupportTicketDto } from "@/app/(client)/dashboard/settings/support/_types/support";
 
-const replySchema = z.object({
-    message: z.string()
-        .min(1, "Message is required")
-        .max(1000, "Message must be less than 1000 characters"),
-});
-
-export type ReplyFormValues = z.infer<typeof replySchema>;
 
 export default function useReplyForm(ticketId?: string) {
+    const { t } = useTranslation();
+    const { mutate } = useSWRConfig();
 
-    const {mutate} = useSWRConfig();
+    const replySchema = z.object({
+        message: z.string()
+            .min(1, t("Message is required"))
+            .max(1000, t("Message must be less than 1000 characters")),
+    });
+
+    type ReplyFormValues = z.infer<typeof replySchema>;
 
     const { trigger, isMutating } = useSWRMutation(
         `tickets-${ticketId}`,
         async (_: string, { arg }: { arg: ReplyFormValues }) => {
-            if(!ticketId) throw new Error( 'Ticket ID is required to send a reply.' )
-            return await sendReply({ticketId, ...arg});
+            if (!ticketId) throw new Error(t('Ticket ID is required to send a reply.'))
+            return await sendReply({ ticketId, ...arg });
         },
         {
             onError: (error: unknown) => {
                 if (error instanceof Error) {
                     showError({ message: error.message });
                 } else {
-                    showError({ message: 'An unknown error occurred.' });
+                    showError({ message: t('An unknown error occurred.') });
                 }
             }
         }
@@ -44,15 +46,15 @@ export default function useReplyForm(ticketId?: string) {
     } = useForm<ReplyFormValues>({
         resolver: zodResolver(replySchema),
         defaultValues: {
-            message: 'Thank you for your inquiry. We are looking into this issue and will get back to you shortly.',
+            message: t('Thank you for your inquiry. We are looking into this issue and will get back to you shortly.'),
         },
         mode: 'onBlur'
     });
 
-    const onSubmit = async (values: ReplyFormValues, callback: ()=>void) => {
+    const onSubmit = async (values: ReplyFormValues, callback: () => void) => {
         try {
             await trigger({ message: values.message });
-            showSuccess("Reply sent successfully!");
+            showSuccess(t("Reply sent successfully!"));
             callback();
 
             mutate(
@@ -75,14 +77,14 @@ export default function useReplyForm(ticketId?: string) {
                         : [];
                 },
                 false
-            ).finally(() => {});
+            ).finally(() => { });
 
             reset();
         } catch (error: unknown) {
             const message =
                 typeof error === 'object' && error !== null && 'message' in error && typeof (error).message === 'string'
                     ? (error as { message: string }).message
-                    : 'An unexpected error occurred. Please try again.';
+                    : t('An unexpected error occurred. Please try again.');
             showError({ message });
         }
     };

@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { ArrowLeft, Edit, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/admin/ui/button";
@@ -14,6 +15,7 @@ import Preloader from "@/components/shared/Preloader";
 import {useSession} from "next-auth/react";
 
 export default function CategoryPage() {
+    const { t } = useTranslation();
 
     const { data: session } = useSession();
 
@@ -63,33 +65,33 @@ export default function CategoryPage() {
                     <Button variant="outline" size="icon" asChild>
                         <Link href="/admin/faq">
                             <ArrowLeft className="h-4 w-4" />
-                            <span className="sr-only">Back</span>
+                            <span className="sr-only">{t("Back")}</span>
                         </Link>
                     </Button>
 
                     <div className="flex flex-col space-y-2">
-                        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Manage Categories</h1>
+                        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">{t('Manage Categories')}</h1>
                         <p className="text-muted-foreground">
-                            Create and manage categories for organizing your FAQ content
+                            {t('Create and manage categories for organizing your FAQ content')}
                         </p>
                     </div>
                 </div>
                 <div className="flex gap-2">
                     <Button asChild variant="secondary">
-                        <Link href="/admin/faq">Back</Link>
+                        <Link href="/admin/faq">{t('Back')}</Link>
                     </Button>
                     <Button onClick={() => setOpen(true)} disabled={!canCreate}>
                         <Plus className="mr-2 h-4 w-4" />
-                        Add New
+                        {t('Add New')}
                     </Button>
                 </div>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Categories</CardTitle>
+                    <CardTitle>{t('Categories')}</CardTitle>
                     <CardDescription>
-                        Organize and manage user profile categories such as religion, caste, profession, and lifestyle preferences.
+                        {t('Organize and manage user profile categories such as religion, caste, profession, and lifestyle preferences.')}
                     </CardDescription>
                 </CardHeader>
 
@@ -97,15 +99,15 @@ export default function CategoryPage() {
                     {isLoading ? (
                         <div className="flex items-center flex-col justify-center h-64">
                             <Preloader/>
-                            <p className="text-sm">Loading...</p>
+                            <p className="text-sm">{t('Loading...')}</p>
                         </div>
                     ) : categories && categories.length > 0 ? (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[300px]">ID</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead className="w-[120px] text-right">Actions</TableHead>
+                                    <TableHead className="w-[300px]">{t('ID')}</TableHead>
+                                    <TableHead>{t('Name')}</TableHead>
+                                    <TableHead className="w-[120px] text-right">{t('Actions')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -123,7 +125,7 @@ export default function CategoryPage() {
                                                     disabled={!canEdit}
                                                 >
                                                     <Edit className="h-4 w-4" />
-                                                    <span className="sr-only">Edit FAQ</span>
+                                                    <span className="sr-only">{t('Edit FAQ')}</span>
                                                 </Button>
                                                 <Button
                                                     variant="outline"
@@ -137,7 +139,7 @@ export default function CategoryPage() {
                                                     ) : (
                                                         <Trash2 className="h-4 w-4" />
                                                     )}
-                                                    <span className="sr-only">Delete FAQ</span>
+                                                    <span className="sr-only">{t('Delete FAQ')}</span>
                                                 </Button>
                                             </div>
                                         </TableCell>
@@ -147,7 +149,7 @@ export default function CategoryPage() {
                         </Table>
                     ) : (
                         <div className="text-center py-10">
-                            <p className="text-muted-foreground">No Categories found matching your search</p>
+                            <p className="text-muted-foreground">{t('No Categories found matching your search')}</p>
                         </div>
                     )}
                 </CardContent>

@@ -9,20 +9,21 @@ import { Activity, Clock, DollarSign, Edit, FileText, Filter, MoreHorizontal, Pl
 import Link from "next/link";
 
 export default function ServicesPage() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-5 p-4 xl:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
-          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Services Offered</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Services Offered")}</h2>
           <p className="text-muted-foreground">
-            Manage all matchmaking services such as premium plans, profile promotions, and personalized match support.
+            {t("Manage all matchmaking services such as premium plans, profile promotions, and personalized match support.")}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/admin/services/add">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Add Service
+              {t("Add Service")}
             </Button>
           </Link>
         </div>
@@ -31,42 +32,42 @@ export default function ServicesPage() {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Services</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("Total Services")}</CardTitle>
             <Stethoscope className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">86</div>
-            <p className="text-xs text-muted-foreground">Across 12 departments</p>
+            <p className="text-xs text-muted-foreground">{t("Across 12 departments")}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Most Popular</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("Most Popular")}</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">General Checkup</div>
-            <p className="text-xs text-muted-foreground">248 appointments this month</p>
+            <div className="text-2xl font-bold">{t("General Checkup")}</div>
+            <p className="text-xs text-muted-foreground">{t("248 appointments this month")}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Duration</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("Average Duration")}</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45 min</div>
-            <p className="text-xs text-muted-foreground">Across all services</p>
+            <div className="text-2xl font-bold">{t("45 min")}</div>
+            <p className="text-xs text-muted-foreground">{t("Across all services")}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("Monthly Revenue")}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$128,450</div>
-            <p className="text-xs text-muted-foreground">+12% from last month</p>
+            <div className="text-2xl font-bold">{t("$128,450")}</div>
+            <p className="text-xs text-muted-foreground">{t("+12% from last month")}</p>
           </CardContent>
         </Card>
       </div>
@@ -75,52 +76,52 @@ export default function ServicesPage() {
         <CardHeader>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <CardTitle>Service Directory</CardTitle>
-              <CardDescription>Browse and manage all services offered by your clinic</CardDescription>
+              <CardTitle>{t("Service Directory")}</CardTitle>
+              <CardDescription>{t("Browse and manage all services offered by your clinic")}</CardDescription>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input type="search" placeholder="Search services..." className="w-full pl-8 md:w-[250px]" />
+                <Input type="search" placeholder={t("Search services...")} className="w-full pl-8 md:w-[250px]" />
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full sm:w-auto">
                     <Filter className="mr-2 h-4 w-4" />
-                    Filter
+                    {t("Filter")}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[200px]">
-                  <DropdownMenuLabel>Filter By</DropdownMenuLabel>
+                  <DropdownMenuLabel>{t("Filter By")}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <span>Price: Low to High</span>
+                    <span>{t("Price: Low to High")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <span>Price: High to Low</span>
+                    <span>{t("Price: High to Low")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <span>Duration: Shortest</span>
+                    <span>{t("Duration: Shortest")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <span>Duration: Longest</span>
+                    <span>{t("Duration: Longest")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <span>Popularity</span>
+                    <span>{t("Popularity")}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <Select defaultValue="all">
                 <SelectTrigger className="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Department" />
+                  <SelectValue placeholder={t("Department")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Departments</SelectItem>
-                  <SelectItem value="cardiology">Cardiology</SelectItem>
-                  <SelectItem value="neurology">Neurology</SelectItem>
-                  <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                  <SelectItem value="orthopedics">Orthopedics</SelectItem>
-                  <SelectItem value="dermatology">Dermatology</SelectItem>
+                  <SelectItem value="all">{t("All Departments")}</SelectItem>
+                  <SelectItem value="cardiology">{t("Cardiology")}</SelectItem>
+                  <SelectItem value="neurology">{t("Neurology")}</SelectItem>
+                  <SelectItem value="pediatrics">{t("Pediatrics")}</SelectItem>
+                  <SelectItem value="orthopedics">{t("Orthopedics")}</SelectItem>
+                  <SelectItem value="dermatology">{t("Dermatology")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -129,19 +130,19 @@ export default function ServicesPage() {
         <CardContent>
           <Tabs defaultValue="all" className="w-full">
             <TabsList className="mb-4">
-              <TabsTrigger value="all">All Services</TabsTrigger>
-              <TabsTrigger value="diagnostic">Diagnostic</TabsTrigger>
-              <TabsTrigger value="treatment">Treatment</TabsTrigger>
-              <TabsTrigger value="preventive">Preventive</TabsTrigger>
+              <TabsTrigger value="all">{t("All Services")}</TabsTrigger>
+              <TabsTrigger value="diagnostic">{t("Diagnostic")}</TabsTrigger>
+              <TabsTrigger value="treatment">{t("Treatment")}</TabsTrigger>
+              <TabsTrigger value="preventive">{t("Preventive")}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="all" className="space-y-8">
               {departmentServices.map((dept) => (
                 <div key={dept.id} className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold">{dept.name}</h3>
+                    <h3 className="text-xl font-semibold">{t(dept.name)}</h3>
                     <Badge variant="outline" className="text-xs">
-                      {dept.services.length} Services
+                      {dept.services.length} {t("Services")}
                     </Badge>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -228,14 +229,16 @@ export default function ServicesPage() {
   );
 }
 
+import { useTranslation } from "react-i18next";
 function ServiceCard({ service }: { service: any }) {
+  const { t } = useTranslation();
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-4 pb-2">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-base">{service.name}</CardTitle>
-            <CardDescription className="text-xs mt-1">{service.description}</CardDescription>
+            <CardTitle className="text-base">{t(service.name)}</CardTitle>
+            <CardDescription className="text-xs mt-1">{t(service.description)}</CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -245,18 +248,18 @@ function ServiceCard({ service }: { service: any }) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
               <DropdownMenuItem>
                 <Edit className="mr-2 h-4 w-4" />
-                <span>Edit Service</span>
+                <span>{t("Edit Service")}</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <FileText className="mr-2 h-4 w-4" />
-                <span>View Details</span>
+                <span>{t("View Details")}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-600">
-                <span>Deactivate</span>
+                <span>{t("Deactivate")}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -264,18 +267,18 @@ function ServiceCard({ service }: { service: any }) {
       </CardHeader>
       <CardContent className="p-4 pt-0">
         <div className="mt-2 flex flex-wrap gap-2">
-          <Badge variant="secondary" className="text-xs">
-            <Clock className="mr-1 h-3 w-3" />
-            {service.duration}
-          </Badge>
-          <Badge variant="secondary" className="text-xs">
-            <DollarSign className="mr-1 h-3 w-3" />
-            {service.price}
-          </Badge>
-          <Badge variant="outline" className="text-xs">
-            <Tag className="mr-1 h-3 w-3" />
-            {service.type}
-          </Badge>
+            <Badge variant="secondary" className="text-xs">
+              <Clock className="mr-1 h-3 w-3" />
+              {t(service.duration)}
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              <DollarSign className="mr-1 h-3 w-3" />
+              {t(service.price)}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              <Tag className="mr-1 h-3 w-3" />
+              {t(service.type)}
+            </Badge>
         </div>
       </CardContent>
     </Card>
@@ -285,15 +288,15 @@ function ServiceCard({ service }: { service: any }) {
 const departmentServices = [
   {
     id: "dept-1",
-    name: "Cardiology",
+  name: "Cardiology",
     services: [
       {
         id: "service-1",
-        name: "Electrocardiogram (ECG)",
-        description: "Recording of the electrical activity of the heart",
-        duration: "30 min",
-        price: "$120",
-        type: "Diagnostic",
+  name: "Electrocardiogram (ECG)",
+  description: "Recording of the electrical activity of the heart",
+  duration: "30 min",
+  price: "$120",
+  type: "Diagnostic",
       },
       {
         id: "service-2",

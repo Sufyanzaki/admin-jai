@@ -1,6 +1,7 @@
 "use client";
 
 import { CardContent } from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/admin/ui/separator";
 import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
 import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
@@ -10,6 +11,7 @@ interface PartnerExpectationProps {
 }
 
 export default function PartnerExpectation({ memberId }: PartnerExpectationProps) {
+  const { t } = useTranslation();
   const { expectations, expectationLoading, error } = usePartnerExpectations();
 
   if (expectationLoading) {
@@ -17,7 +19,7 @@ export default function PartnerExpectation({ memberId }: PartnerExpectationProps
       <CardContent>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          <span className="ml-2 text-sm text-muted-foreground">Loading partner expectation information...</span>
+          <span className="ml-2 text-sm text-muted-foreground">{t('Loading partner expectation information...')}</span>
         </div>
       </CardContent>
     );
@@ -27,7 +29,7 @@ export default function PartnerExpectation({ memberId }: PartnerExpectationProps
     return (
       <CardContent>
         <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">No partner expectation information available</p>
+          <p className="text-sm text-muted-foreground">{t('No partner expectation information available')}</p>
         </div>
       </CardContent>
     );
@@ -82,7 +84,7 @@ export default function PartnerExpectation({ memberId }: PartnerExpectationProps
               return (
                 <div key={key}>
                   <div className="grid grid-cols-2 py-1">
-                    <span className="font-medium text-muted-foreground">{key}</span>
+                    <span className="font-medium text-muted-foreground">{t(key)}</span>
                     <span className="text-right font-semibold text-primary">
                       {value}
                     </span>

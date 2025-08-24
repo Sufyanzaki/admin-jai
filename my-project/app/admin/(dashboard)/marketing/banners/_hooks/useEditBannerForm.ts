@@ -1,46 +1,16 @@
 "use client"
 
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
-import {updateBanner} from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
+import { updateBanner } from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import useSWRMutation from "swr/mutation";
 import { useEffect } from "react";
 import { useBannerDetails } from "./useBannerDetails";
-import {imageUpload} from "@/admin-utils/utils/imageUpload";
+import { imageUpload } from "@/admin-utils/utils/imageUpload";
 
-const editBannerSchema = z.object({
-    name: z.string()
-        .min(1, "Banner name is required")
-        .min(2, "Banner name must be at least 2 characters"),
-    link: z.string()
-        .min(1, "Link is required")
-        .url("Please enter a valid URL"),
-    bannerImage: z.union([
-        z.string().min(1, "Banner image is required"),
-        z.instanceof(File, { message: "Banner image is required" })
-    ]),
-    startDate: z.date({
-        required_error: "Start date is required",
-    }),
-    endDate: z.date({
-        required_error: "End date is required",
-    }),
-    cpm: z.number()
-        .min(0, "CPM must be a positive number"),
-    page: z.string()
-        .min(1, "Page selection is required"),
-    isActive: z.boolean()
-        .default(true),
-    dateRange: z.any().optional(), // For the DateRangePicker controller
-}).refine((data) => data.startDate < data.endDate, {
-    message: "End date must be after start date",
-    path: ["endDate"],
-});
-
-export type EditBannerFormValues = z.infer<typeof editBannerSchema>;
 
 type UpdateBannerProps = {
     name: string;
@@ -54,6 +24,40 @@ type UpdateBannerProps = {
 }
 
 export default function useEditBannerForm(id: string) {
+
+    const { t } = require('react-i18next');
+    const editBannerSchema = z.object({
+        name: z.string()
+            .min(1, t("Banner name is required"))
+            .min(2, t("Banner name must be at least 2 characters")),
+        link: z.string()
+            .min(1, t("Link is required"))
+            .url(t("Please enter a valid URL")),
+        bannerImage: z.union([
+            z.string().min(1, t("Banner image is required")),
+            z.instanceof(File, { message: t("Banner image is required") })
+        ]),
+        startDate: z.date({
+            required_error: t("Start date is required"),
+        }),
+        endDate: z.date({
+            required_error: t("End date is required"),
+        }),
+        cpm: z.number()
+            .min(0, t("CPM must be a positive number")),
+        page: z.string()
+            .min(1, t("Page selection is required")),
+        isActive: z.boolean()
+            .default(true),
+        dateRange: z.any().optional(), // For the DateRangePicker controller
+    }).refine((data) => data.startDate < data.endDate, {
+        message: t("End date must be after start date"),
+        path: ["endDate"],
+    });
+
+    type EditBannerFormValues = z.infer<typeof editBannerSchema>;
+
+
     const { banner, bannerLoading } = useBannerDetails(id);
     const { trigger, isMutating } = useSWRMutation(
         'updateBanner',
@@ -62,7 +66,7 @@ export default function useEditBannerForm(id: string) {
         },
         {
             onError: (error: Error) => {
-                showError({message: error.message});
+                showError({ message: t(error.message) });
                 console.error('Banner update error:', error);
             }
         }
@@ -91,7 +95,7 @@ export default function useEditBannerForm(id: string) {
         mode: 'onBlur'
     });
     useEffect(() => {
-        if(!banner) return;
+        if (!banner) return;
         reset({
             name: banner.name,
             link: banner.link,
@@ -124,11 +128,11 @@ export default function useEditBannerForm(id: string) {
                 isActive: values.isActive,
             });
             if (result) {
-                showSuccess('Banner updated successfully!');
+                showSuccess(t('Banner updated successfully!'));
                 callback?.();
             }
         } catch (error: unknown) {
-            if(error instanceof Error) showError({message: error.message});
+            if (error instanceof Error) showError({ message: t(error.message) });
         }
     };
     return {

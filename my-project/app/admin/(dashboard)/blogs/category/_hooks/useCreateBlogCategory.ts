@@ -8,26 +8,27 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useSWRConfig } from "swr";
 import {createBlogCategory} from "@/app/shared-api/blogCategoryApi";
-import {BlogCategoryDto} from "@/app/shared-types/blog";
+import {CategoryDto} from "@/app/shared-types/blog";
 import {FaqDto} from "@/app/shared-types/faq";
 
-const createCategorySchema = z.object({
-    name: z.string().min(1, "Category name is required")
+const createCategorySchema = (t: any) => z.object({
+    name: z.string().min(1, t("Category name is required"))
 });
 
-export type CreateCategoryFormValues = z.infer<typeof createCategorySchema>;
+export type CreateCategoryFormValues = z.infer<ReturnType<typeof createCategorySchema>>;
 
 export default function useCreateBlogCategory() {
+    const { t } = require('react-i18next');
     const { mutate: globalMutate } = useSWRConfig();
     const { trigger, isMutating } = useSWRMutation(
         'createBlogCategory',
-        async (_: string, { arg }: { arg: Partial<BlogCategoryDto> }) => {
+        async (_: string, { arg }: { arg: Partial<CategoryDto> }) => {
             return await createBlogCategory(arg);
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
-                console.error('Category creation error:', error);
+                showError({ message: t(error.message) });
+                console.error(t('Category creation error:'), error);
             }
         }
     );
@@ -37,22 +38,22 @@ export default function useCreateBlogCategory() {
         formState: { errors, isSubmitting },
         register,
         reset,
-    } = useForm<CreateCategoryFormValues>({
-        resolver: zodResolver(createCategorySchema),
+    } = useForm<z.infer<ReturnType<typeof createCategorySchema>>>({
+        resolver: zodResolver(createCategorySchema(t)),
         defaultValues: {
             name: '',
         },
         mode: 'onBlur'
     });
 
-    const onSubmit = async (values: CreateCategoryFormValues, callback?: () => void) => {
+    const onSubmit = async (values: z.infer<ReturnType<typeof createCategorySchema>>, callback?: () => void) => {
         const result = await trigger({ name: values.name });
         if (result) {
-            showSuccess('Category created successfully!');
+            showSuccess(t('Category created successfully!'));
             reset();
             globalMutate(
                 'blog-categories',
-                (current: BlogCategoryDto[] = []) => {
+                (current: CategoryDto[] = []) => {
                 return [
                     ...current,
                     {
@@ -76,4 +77,4 @@ export default function useCreateBlogCategory() {
         isLoading: isSubmitting || isMutating,
         register,
     };
-} 
+}

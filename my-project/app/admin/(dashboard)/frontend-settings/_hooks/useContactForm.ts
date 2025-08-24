@@ -8,29 +8,33 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {useContact} from "@/app/shared-hooks/useContact";
+import { useContact } from "@/app/shared-hooks/useContact";
 import { patchContactPageSettings } from '@/app/shared-api/contactApi';
 
-const contactFormSchema = z.object({
-  contactName: z.string().min(1, 'Contact name is required'),
-  contactBannerImage: z.any().optional(), // Accept File or string
-  bannerTitle: z.string().min(1, 'Banner title is required'),
-  bannerSubTitle: z.string().min(1, 'Banner subtitle is required'),
-  bannerDescription: z.string().min(1, 'Banner description is required'),
-  addressName: z.string().min(1, 'Address name is required'),
-  addressValue: z.string().min(1, 'Address value is required'),
-  phoneName: z.string().min(1, 'Phone name is required'),
-  phoneValue: z.string().min(1, 'Phone value is required'),
-  emailName: z.string().min(1, 'Email name is required'),
-  emailValue: z.string().min(1, 'Email value is required'),
-  contactFormTitle: z.string().min(1, 'Contact form title is required'),
-  contactFormDescription: z.string().min(1, 'Contact form description is required'),
-  showOnHeader: z.boolean(),
-});
 
-type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function useContactForm() {
+
+  const { t } = require('react-i18next');
+  const contactFormSchema = z.object({
+    contactName: z.string().min(1, t('Contact name is required')),
+    contactBannerImage: z.any().optional(), // Accept File or string
+    bannerTitle: z.string().min(1, t('Banner title is required')),
+    bannerSubTitle: z.string().min(1, t('Banner subtitle is required')),
+    bannerDescription: z.string().min(1, t('Banner description is required')),
+    addressName: z.string().min(1, t('Address name is required')),
+    addressValue: z.string().min(1, t('Address value is required')),
+    phoneName: z.string().min(1, t('Phone name is required')),
+    phoneValue: z.string().min(1, t('Phone value is required')),
+    emailName: z.string().min(1, t('Email name is required')),
+    emailValue: z.string().min(1, t('Email value is required')),
+    contactFormTitle: z.string().min(1, t('Contact form title is required')),
+    contactFormDescription: z.string().min(1, t('Contact form description is required')),
+    showOnHeader: z.boolean(),
+  });
+
+  type ContactFormValues = z.infer<typeof contactFormSchema>;
+
   const { contactSettings, mutate, contactLoading } = useContact();
   const [isUploading, setIsUploading] = useState(false); // New state for image upload
 
@@ -62,16 +66,16 @@ export default function useContactForm() {
   });
 
   const { trigger, isMutating } = useSWRMutation(
-      'updateContactSettings',
-      async (url: string, { arg }: { arg: ContactFormValues }) => {
-        return await patchContactPageSettings(arg);
-      },
-      {
-        onError: (error: Error) => {
-          showError({ message: error.message });
-          console.error('Contact settings update error:', error);
-        }
+    'updateContactSettings',
+    async (url: string, { arg }: { arg: ContactFormValues }) => {
+      return await patchContactPageSettings(arg);
+    },
+    {
+      onError: (error: Error) => {
+        showError({ message: t(error.message) });
+        console.error('Contact settings update error:', error);
       }
+    }
   );
 
   // Reset form with fetched data
@@ -115,11 +119,11 @@ export default function useContactForm() {
       const result = await trigger(payload);
       if (result) {
         await mutate();
-        showSuccess('Contact settings updated successfully!');
+        showSuccess(t('Contact settings updated successfully!'));
       }
     } catch (error) {
       setIsUploading(false);
-      showError({ message: 'Failed to upload image' });
+  showError({ message: t('Failed to upload image') });
       console.error('Image upload error:', error);
     }
   };

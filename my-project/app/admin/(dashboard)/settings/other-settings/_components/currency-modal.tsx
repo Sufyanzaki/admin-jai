@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DialogFooter } from "@/components/admin/ui/dialog";
 import { Button } from "@/components/admin/ui/button";
 import { Save } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
 import useCurrencyForm from "../_hooks/useCurrencyForm";
 
@@ -14,6 +15,7 @@ type CurrencyModalProps = {
 };
 
 export default function CurrencyModal({ setOpenAddDialog }: CurrencyModalProps) {
+    const { t } = useTranslation();
 
     const {
         register,
@@ -29,22 +31,22 @@ export default function CurrencyModal({ setOpenAddDialog }: CurrencyModalProps) 
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <Label htmlFor="currencyName">Currency Name *</Label>
+                        <Label htmlFor="currencyName">{t("Currency Name *")}</Label>
                         <Input
                             id="currencyName"
                             {...register("currencyName")}
-                            placeholder="e.g. US Dollar"
+                            placeholder={t("e.g. US Dollar")}
                         />
                         {errors.currencyName && (
                             <p className="text-sm text-red-500">{errors.currencyName.message}</p>
                         )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="currencyCode">Currency Code *</Label>
+                        <Label htmlFor="currencyCode">{t("Currency Code *")}</Label>
                         <Input
                             id="currencyCode"
                             {...register("currencyCode")}
-                            placeholder="e.g. USD"
+                            placeholder={t("e.g. USD")}
                         />
                         {errors.currencyCode && (
                             <p className="text-sm text-red-500">{errors.currencyCode.message}</p>
@@ -53,18 +55,18 @@ export default function CurrencyModal({ setOpenAddDialog }: CurrencyModalProps) 
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <Label htmlFor="symbol">Symbol</Label>
+                        <Label htmlFor="symbol">{t("Symbol")}</Label>
                         <Input
                             id="symbol"
                             {...register("symbol")}
-                            placeholder="e.g. $"
+                            placeholder={t("e.g. $")}
                         />
                         {errors.symbol && (
                             <p className="text-sm text-red-500">{errors.symbol.message}</p>
                         )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="textDirection">Text Direction</Label>
+                        <Label htmlFor="textDirection">{t("Text Direction")}</Label>
                         <Controller
                             control={control}
                             name="textDirection"
@@ -74,11 +76,11 @@ export default function CurrencyModal({ setOpenAddDialog }: CurrencyModalProps) 
                                     value={field.value}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select direction" />
+                                        <SelectValue placeholder={t("Select direction")} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="ltr">Left-to-Right (LTR)</SelectItem>
-                                        <SelectItem value="rtl">Right-to-Left (RTL)</SelectItem>
+                                        <SelectItem value="ltr">{t("Left-to-Right (LTR)")}</SelectItem>
+                                        <SelectItem value="rtl">{t("Right-to-Left (RTL)")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             )}
@@ -96,11 +98,11 @@ export default function CurrencyModal({ setOpenAddDialog }: CurrencyModalProps) 
                     onClick={() => setOpenAddDialog(false)}
                     disabled={isLoading}
                 >
-                    Cancel
+                    {t("Cancel")}
                 </Button>
                 <Button type="submit" disabled={isLoading}>
                     <Save className="mr-2 h-4 w-4" />
-                    {isLoading ? "Saving..." : "Save Currency"}
+                    {isLoading ? t("Saving...") : t("Save Currency")}
                 </Button>
             </DialogFooter>
         </form>

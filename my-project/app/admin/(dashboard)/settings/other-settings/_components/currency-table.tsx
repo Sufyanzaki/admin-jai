@@ -16,6 +16,7 @@ import { Badge } from "@/components/admin/ui/badge";
 import { Settings, Settings2, Plus, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 import Preloader from "@/components/shared/Preloader";
+import { useTranslation } from "react-i18next";
 import { useCurrencies } from "../_hooks/useCurrencies";
 import { useDeleteCurrency } from "../_hooks/useDeleteCurrency";
 import CurrencyModal from "@/app/admin/(dashboard)/settings/other-settings/_components/currency-modal";
@@ -29,6 +30,7 @@ type CurrencyTableProps = {
 }
 
 export default function CurrencyTable({ canEdit, canCreate, canDelete }: CurrencyTableProps) {
+    const { t } = useTranslation();
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -47,13 +49,13 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader />
-                <p className="text-sm">Currency Info</p>
+                <p className="text-sm">{t("Currency Info")}</p>
             </div>
         );
     }
 
     if (error) {
-        return <div className="p-6 text-red-500">Failed to load currencies.</div>;
+        return <div className="p-6 text-red-500">{t("Failed to load currencies.")}</div>;
     }
 
     const handleEdit = (id: string) => {
@@ -73,21 +75,21 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                         <div>
                             <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
                                 <Settings className="h-5 w-5" />
-                                Currency Configuration
+                                {t("Currency Configuration")}
                             </CardTitle>
-                            <CardDescription>Manage your system settings and appearance</CardDescription>
+                            <CardDescription>{t("Manage your system settings and appearance")}</CardDescription>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {canEdit && (
                                 <Button variant="outline" onClick={() => setOpenFormatDialog(true)} className="w-full sm:w-auto">
                                     <Settings2 className="mr-2 h-4 w-4" />
-                                    Set Format
+                                    {t("Set Format")}
                                 </Button>
                             )}
                             {canCreate && (
                                 <Button onClick={() => setOpenAddDialog(true)} className="w-full sm:w-auto">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Add Currency
+                                    {t("Add Currency")}
                                 </Button>
                             )}
                         </div>
@@ -95,7 +97,7 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                 </CardHeader>
 
                 {!currencies?.length ? (
-                    <div className="p-6 text-muted-foreground">No currencies found.</div>
+                    <div className="p-6 text-muted-foreground">{t("No currencies found.")}</div>
                 ) : (
                     <CardContent className="p-0">
                         <div className="rounded-lg border">
@@ -103,11 +105,11 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                                 <TableHeader className="bg-muted/50">
                                     <TableRow>
                                         <TableHead className="w-[80px]">#</TableHead>
-                                        <TableHead>Currency</TableHead>
-                                        <TableHead>Code</TableHead>
-                                        <TableHead>RTL</TableHead>
+                                        <TableHead>{t("Currency")}</TableHead>
+                                        <TableHead>{t("Code")}</TableHead>
+                                        <TableHead>{t("RTL")}</TableHead>
                                         {(canEdit || canDelete) && (
-                                            <TableHead className="w-[120px] text-right">Actions</TableHead>
+                                            <TableHead className="w-[120px] text-right">{t("Actions")}</TableHead>
                                         )}
                                     </TableRow>
                                 </TableHeader>
@@ -131,14 +133,14 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                                                             <DropdownMenuTrigger asChild>
                                                                 <Button variant="ghost" className="h-8 w-8 p-0 ml-auto">
                                                                     <MoreHorizontal className="h-4 w-4" />
-                                                                    <span className="sr-only">Open menu</span>
+                                                                    <span className="sr-only">{t("Open menu")}</span>
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end" className="w-[160px]">
                                                                 {canEdit && (
                                                                     <DropdownMenuItem onClick={() => handleEdit(currency.id)}>
                                                                         <Pencil className="mr-2 h-4 w-4" />
-                                                                        Edit
+                                                                        {t("Edit")}
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {canEdit && canDelete && <DropdownMenuSeparator />}
@@ -148,7 +150,7 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                                                                         onClick={() => deleteMemberById(currency.id)}
                                                                     >
                                                                         <Trash2 className="mr-2 h-4 w-4" />
-                                                                        Delete
+                                                                        {t("Delete")}
                                                                     </DropdownMenuItem>
                                                                 )}
                                                             </DropdownMenuContent>
@@ -169,8 +171,8 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                 <Dialog open={openFormatDialog} onOpenChange={setOpenFormatDialog}>
                     <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
-                            <DialogTitle>Currency Format Settings</DialogTitle>
-                            <DialogDescription>Configure how currency values are displayed</DialogDescription>
+                            <DialogTitle>{t("Currency Format Settings")}</DialogTitle>
+                            <DialogDescription>{t("Configure how currency values are displayed")}</DialogDescription>
                         </DialogHeader>
                         <FormatForm currencies={currencies} setOpenFormatDialog={setOpenFormatDialog} />
                     </DialogContent>
@@ -181,8 +183,8 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                 <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
                     <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
-                            <DialogTitle>Add New Currency</DialogTitle>
-                            <DialogDescription>Add a new currency to your system</DialogDescription>
+                            <DialogTitle>{t("Add New Currency")}</DialogTitle>
+                            <DialogDescription>{t("Add a new currency to your system")}</DialogDescription>
                         </DialogHeader>
                         <CurrencyModal setOpenAddDialog={setOpenAddDialog} />
                     </DialogContent>
@@ -196,8 +198,8 @@ export default function CurrencyTable({ canEdit, canCreate, canDelete }: Currenc
                 >
                     <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
-                            <DialogTitle>Edit Currency</DialogTitle>
-                            <DialogDescription>Edit currency settings</DialogDescription>
+                            <DialogTitle>{t("Edit Currency")}</DialogTitle>
+                            <DialogDescription>{t("Edit currency settings")}</DialogDescription>
                         </DialogHeader>
                         <CurrencyEditModal
                             id={editDialog.id!}

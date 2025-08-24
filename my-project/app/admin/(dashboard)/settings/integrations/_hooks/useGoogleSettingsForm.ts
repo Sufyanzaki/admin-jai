@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
@@ -10,15 +11,20 @@ import { showSuccess } from '@/shared-lib';
 import { patchGoogleSettings, PatchGoogleSettingsProps } from '../_api/patchGoogleSettings';
 import useGoogleSettings from './useGoogleSettings';
 
-const googleSettingsSchema = z.object({
-  clientId: z.string().min(1, { message: 'Client ID is required' }),
-  clientSecret: z.string().min(1, { message: 'Client SECRET is required' }),
-  isActive: z.boolean(),
-});
-
-export type GoogleSettingsFormValues = z.infer<typeof googleSettingsSchema>;
-
 export default function useGoogleSettingsForm() {
+
+
+  const { t } = useTranslation();
+
+  const googleSettingsSchema = z.object({
+    clientId: z.string().min(1, { message: t('Client ID is required') }),
+    clientSecret: z.string().min(1, { message: t('Client SECRET is required') }),
+    isActive: z.boolean(),
+  });
+
+  type GoogleSettingsFormValues = z.infer<typeof googleSettingsSchema>;
+
+
   const { data: existingData, isLoading: isLoadingData } = useGoogleSettings();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -28,7 +34,7 @@ export default function useGoogleSettingsForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t('Failed to update Google settings.') });
       },
     }
   );
@@ -63,14 +69,14 @@ export default function useGoogleSettingsForm() {
 
   const onSubmit = async (values: GoogleSettingsFormValues) => {
     const result = await trigger({
-        clientId: values.clientId,
-        clientSecret: values.clientSecret,
-        isActive: values.isActive,
-      });
-      
-      if (result) {
-        showSuccess('Google settings updated successfully!');
-      }
+      clientId: values.clientId,
+      clientSecret: values.clientSecret,
+      isActive: values.isActive,
+    });
+
+    if (result) {
+  showSuccess(t('Google settings updated successfully!'));
+    }
   };
 
   return {

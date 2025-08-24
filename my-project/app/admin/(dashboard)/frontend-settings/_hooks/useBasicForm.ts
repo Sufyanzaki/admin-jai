@@ -1,29 +1,32 @@
 'use client';
 
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import useSWRMutation from "swr/mutation";
 import { useState } from 'react';
-import {imageUpload} from '@/admin-utils/utils/imageUpload';
-import {showError, showSuccess} from "@/shared-lib";
-import {postBasicPage} from '@/app/shared-api/basicPageApi';
+import { imageUpload } from '@/admin-utils/utils/imageUpload';
+import { showError, showSuccess } from "@/shared-lib";
+import { postBasicPage } from '@/app/shared-api/basicPageApi';
 
-const basicFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    Url: z.string().min(1, 'URL is required'),
-    content: z.string().min(1, 'Content is required'),
-    metaTitle: z.string().min(1, 'Meta title is required'),
-    metaDescription: z.string().min(1, 'Meta description is required'),
-    keywords: z.string().min(1, 'Keywords are required'),
-    metaImage: z.any().optional(),
-    pageType: z.enum(['Public', 'Private', 'Draft']),
-    isActive: z.boolean()
-});
 
-type BasicFormValues = z.infer<typeof basicFormSchema>;
 
 export default function useBasicForm() {
+
+    const { t } = require('react-i18next');
+    const basicFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        Url: z.string().min(1, t('URL is required')),
+        content: z.string().min(1, t('Content is required')),
+        metaTitle: z.string().min(1, t('Meta title is required')),
+        metaDescription: z.string().min(1, t('Meta description is required')),
+        keywords: z.string().min(1, t('Keywords are required')),
+        metaImage: z.any().optional(),
+        pageType: z.enum(['Public', 'Private', 'Draft']),
+        isActive: z.boolean()
+    });
+
+    type BasicFormValues = z.infer<typeof basicFormSchema>;
     const [isUploading, setIsUploading] = useState(false);
 
     const {
@@ -50,11 +53,11 @@ export default function useBasicForm() {
 
     const { trigger, isMutating } = useSWRMutation('createBasicPage',
         async (url: string, { arg }: { arg: BasicFormValues }) => {
-            return await postBasicPage({...arg, Url: `${process.env.NEXT_APP_BASE}/page/${arg.Url}`});
+            return await postBasicPage({ ...arg, Url: `${process.env.NEXT_APP_BASE}/page/${arg.Url}` });
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('Basic page update error:', error);
             }
         }
@@ -77,12 +80,12 @@ export default function useBasicForm() {
 
             const result = await trigger(payload);
             if (result) {
-                showSuccess(`Basic page added successfully!`);
+                showSuccess(t('Basic page added successfully!'));
             }
         } catch (error: unknown) {
-            if(error instanceof Error){
+            if (error instanceof Error) {
                 setIsUploading(false);
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
             }
         }
     };

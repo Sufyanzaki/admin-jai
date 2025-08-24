@@ -1,6 +1,7 @@
 "use client";
 
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/admin/ui/button";
 import { Label } from "@/components/admin/ui/label";
 import { Switch } from "@/components/admin/ui/switch";
@@ -10,6 +11,7 @@ import Preloader from "@/components/shared/Preloader";
 import { SimpleEditor } from "@/components/admin/tiptap-templates/simple/simple-editor";
 
 export default function CookiesForm({canEdit} : {canEdit: boolean}) {
+    const { t } = useTranslation();
     const {
         handleSubmit,
         onSubmit,
@@ -26,7 +28,7 @@ export default function CookiesForm({canEdit} : {canEdit: boolean}) {
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader />
-                <p className="text-sm">Loading...</p>
+                <p className="text-sm">{t("Loading...")}</p>
             </div>
         )
     }
@@ -34,7 +36,7 @@ export default function CookiesForm({canEdit} : {canEdit: boolean}) {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="flex items-center justify-between">
-                <Label htmlFor="showAgreement">Show cookie agreement</Label>
+                <Label htmlFor="showAgreement">{t("Show cookie agreement")}</Label>
                 <Switch
                     id="showAgreement"
                     checked={showAgreement}
@@ -43,7 +45,7 @@ export default function CookiesForm({canEdit} : {canEdit: boolean}) {
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="cookieText">Cookie Agreement Text</Label>
+                <Label htmlFor="cookieText">{t("Cookie Agreement Text")}</Label>
                 <Controller
                     name="cookieText"
                     control={control}
@@ -65,7 +67,7 @@ export default function CookiesForm({canEdit} : {canEdit: boolean}) {
 
             {canEdit && <div className="flex justify-end pt-6">
                 <Button type="submit" className="px-8" disabled={isLoading}>
-                    {isLoading ? "Saving..." : "Save Settings"}
+                    {isLoading ? t("Saving...") : t("Save Settings")}
                 </Button>
             </div>}
         </form>

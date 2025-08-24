@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/admin/ui/button";
+import { useTranslation } from "react-i18next";
 import { CardContent } from "@/components/admin/ui/card";
 import { Input } from "@/components/admin/ui/input";
 import { Textarea } from "@/components/admin/ui/textarea";
@@ -11,7 +12,8 @@ import { useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 
-export default function SEOForm({canEdit}: {canEdit: boolean}) {
+export default function SEOForm({ canEdit }: { canEdit: boolean }) {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     onSubmit,
@@ -66,122 +68,122 @@ export default function SEOForm({canEdit}: {canEdit: boolean}) {
 
   if (isFetchingSeo) {
     return (
-        <div className="flex items-center flex-col justify-center h-64">
-          <Preloader />
-          <p className="text-sm">Loading SEO</p>
-        </div>
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">{t("Loading SEO")}</p>
+      </div>
     );
   }
 
   return (
-      <CardContent className="space-y-6 pt-6">
-        <form className="grid gap-6 w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
-            <Label htmlFor="metaTitle">Meta Title</Label>
-            <Input
-                id="metaTitle"
-                placeholder="Humsafar - Home"
-                {...register("metaTitle")}
-            />
-            {errors.metaTitle && (
-                <div className="text-red-500 text-sm">
-                  {errors.metaTitle.message}
-                </div>
-            )}
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="metaDescription">Meta Description</Label>
-            <Textarea
-                id="metaDescription"
-                placeholder="Humsafar - Home"
-                {...register("metaDescription")}
-            />
-            {errors.metaDescription && (
-                <div className="text-red-500 text-sm">
-                  {errors.metaDescription.message}
-                </div>
-            )}
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="keywords">Meta Keywords</Label>
-            <Textarea
-                id="keywords"
-                placeholder="Humsafar, travel, guide"
-                className="resize-none"
-                {...register("metaKeywords")}
-            />
-            <p className="text-xs text-muted-foreground">
-              Separate with commas
-            </p>
-            {errors.metaKeywords && (
-                <div className="text-red-500 text-sm">
-                  {errors.metaKeywords.message}
-                </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Meta Image</h3>
-            <div className="relative">
-              <div className="flex h-32 w-32 items-center justify-center rounded-md border border-dashed">
-                <label
-                    htmlFor="meta-image-upload"
-                    className="flex flex-col items-center space-y-2 cursor-pointer"
-                >
-                  {imagePreview ? (
-                      <Image
-                          src={imagePreview}
-                          alt="Preview"
-                          width={128}
-                          height={128}
-                          className="h-full w-full object-cover rounded-md"
-                          onError={() => setImagePreview(null)}
-                      />
-                  ) : (
-                      <Upload className="h-8 w-8 text-muted-foreground" />
-                  )}
-                  <input
-                      type="file"
-                      id="meta-image-upload"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                  />
-                  <span className="text-xs text-muted-foreground">
-                  Upload image
-                </span>
-                </label>
-              </div>
-              {imagePreview && (
-                  <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
-                      onClick={handleRemoveImage}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-              )}
+    <CardContent className="space-y-6 pt-6">
+      <form className="grid gap-6 w-full" onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid gap-2">
+          <Label htmlFor="metaTitle">{t("Meta Title")}</Label>
+          <Input
+            id="metaTitle"
+            placeholder={t("Humsafar - Home")}
+            {...register("metaTitle")}
+          />
+          {errors.metaTitle && (
+            <div className="text-red-500 text-sm">
+              {errors.metaTitle.message}
             </div>
-            {errors.metaImage && (
-                <div className="text-red-500 text-sm">
-                  {errors.metaImage.message}
-                </div>
-            )}
-            <p className="text-xs text-muted-foreground">
-              Recommended: 1200x630px, Max 2MB
-            </p>
-          </div>
+          )}
+        </div>
 
-          {canEdit && <div className="flex justify-end pt-6">
-            <Button className="px-8" type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save Configuration"}
-            </Button>
-          </div>}
-        </form>
-      </CardContent>
+        <div className="grid gap-2">
+          <Label htmlFor="metaDescription">{t("Meta Description")}</Label>
+          <Textarea
+            id="metaDescription"
+            placeholder={t("Humsafar - Home")}
+            {...register("metaDescription")}
+          />
+          {errors.metaDescription && (
+            <div className="text-red-500 text-sm">
+              {errors.metaDescription.message}
+            </div>
+          )}
+        </div>
+
+        <div className="grid gap-2">
+          <Label htmlFor="keywords">{t("Meta Keywords")}</Label>
+          <Textarea
+            id="keywords"
+            placeholder={t("Humsafar, travel, guide")}
+            className="resize-none"
+            {...register("metaKeywords")}
+          />
+          <p className="text-xs text-muted-foreground">
+            {t("Separate with commas")}
+          </p>
+          {errors.metaKeywords && (
+            <div className="text-red-500 text-sm">
+              {errors.metaKeywords.message}
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">{t("Meta Image")}</h3>
+          <div className="relative">
+            <div className="flex h-32 w-32 items-center justify-center rounded-md border border-dashed">
+              <label
+                htmlFor="meta-image-upload"
+                className="flex flex-col items-center space-y-2 cursor-pointer"
+              >
+                {imagePreview ? (
+                  <Image
+                    src={imagePreview}
+                    alt="Preview"
+                    width={128}
+                    height={128}
+                    className="h-full w-full object-cover rounded-md"
+                    onError={() => setImagePreview(null)}
+                  />
+                ) : (
+                  <Upload className="h-8 w-8 text-muted-foreground" />
+                )}
+                <input
+                  type="file"
+                  id="meta-image-upload"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+                <span className="text-xs text-muted-foreground">
+                  {t("Upload image")}
+                </span>
+              </label>
+            </div>
+            {imagePreview && (
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                onClick={handleRemoveImage}
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+          {errors.metaImage && (
+            <div className="text-red-500 text-sm">
+              {errors.metaImage.message}
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground">
+            {t("Recommended: 1200x630px, Max 2MB")}
+          </p>
+        </div>
+
+        {canEdit && <div className="flex justify-end pt-6">
+          <Button className="px-8" type="submit" disabled={isLoading}>
+            {isLoading ? t("Saving...") : t("Save Configuration")}
+          </Button>
+        </div>}
+      </form>
+    </CardContent>
   );
 }

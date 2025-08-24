@@ -10,8 +10,10 @@ import {useEmailTemplates} from "./_hooks/useEmailTemplates";
 import {useState} from "react";
 import Preloader from "@/components/shared/Preloader"
 import { useSession } from "next-auth/react"
+import { useTranslation } from "react-i18next";
 
 export default function NotificationsPage() {
+  const { t } = useTranslation();
 
   const {data: session} = useSession();
 
@@ -39,58 +41,58 @@ export default function NotificationsPage() {
         <Button variant="outline" size="icon" asChild className="h-8 w-8">
           <Link href="/admin/settings">
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
+            <span className="sr-only">{t("Back")}</span>
           </Link>
         </Button>
         <div>
-          <h1 className="text-2xl font-bold">Notification Settings</h1>
-          <p className="text-sm text-muted-foreground">Configure email, SMS, and in-app notifications</p>
+          <h1 className="text-2xl font-bold">{t("Notification Settings")}</h1>
+          <p className="text-sm text-muted-foreground">{t("Configure email, SMS, and in-app notifications")}</p>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card className="bg-background">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Welcome Email</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">{t("Welcome Email")}</CardTitle>
             <Mail className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{emailTemplates?.stats?.welcomeEmail ?? 0}</h2>
             <p className="text-xs text-muted-foreground">
-              Sent this month
+              {t("Sent this month")}
             </p>
           </CardContent>
         </Card>
         <Card className="bg-background">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Password Reset</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">{t("Password Reset")}</CardTitle>
             <Mail className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{emailTemplates?.stats?.passwordReset ?? 0}</h2>
             <p className="text-xs text-muted-foreground">
-              Sent this month
+              {t("Sent this month")}
             </p>
           </CardContent>
         </Card>
         <Card className="bg-background">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm xl:text-lg font-medium">Order Confirmation</CardTitle>
+            <CardTitle className="text-sm xl:text-lg font-medium">{t("Order Confirmation")}</CardTitle>
             <Mail className="size-8 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{emailTemplates?.stats?.orderConfirmation ?? 0}</h2>
             <p className="text-xs text-muted-foreground">
-              Sent this month
+              {t("Sent this month")}
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <h1 className="text-2xl font-bold">Email Templates</h1>
+  <h1 className="text-2xl font-bold">{t("Email Templates")}</h1>
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-2">
-          <Input type="search" placeholder="Search templates..." className="w-[300px]" value={search} onChange={e => setSearch(e.target.value)} />
+          <Input type="search" placeholder={t("Search templates...")} className="w-[300px]" value={search} onChange={e => setSearch(e.target.value)} />
         </div>
       </div>
 
@@ -99,19 +101,19 @@ export default function NotificationsPage() {
           {loading ? (
             <div className="flex items-center flex-col justify-center h-64">
               <Preloader/>
-              <p className="text-sm">Loading Templates</p>
+              <p className="text-sm">{t("Loading Templates")}</p>
             </div>
           ) : error ? (
-            <div className="p-6 text-red-500">Failed to load templates.</div>
+            <div className="p-6 text-red-500">{t("Failed to load templates.")}</div>
           ) : (
           <Table className="whitespace-nowrap">
             <TableHeader>
               <TableRow>
-                <TableHead>Template Name</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead className="hidden md:table-cell">Last Updated</TableHead>
-                <TableHead>Status</TableHead>
-                {canEdit && <TableHead className="text-right">Actions</TableHead>}
+                <TableHead>{t("Template Name")}</TableHead>
+                <TableHead>{t("Subject")}</TableHead>
+                <TableHead className="hidden md:table-cell">{t("Last Updated")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                {canEdit && <TableHead className="text-right">{t("Actions")}</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody className="whitespace-nowrap">
@@ -122,13 +124,13 @@ export default function NotificationsPage() {
                     <TableCell className="hidden md:table-cell">{template.updatedAt?.slice(0, 10)}</TableCell>
                     <TableCell>
                       <Badge variant={template.isActive ? "default" : "secondary"}>
-                        {template.isActive ? "Active" : "Inactive"}
+                        {template.isActive ? t("Active") : t("Inactive")}
                       </Badge>
                     </TableCell>
                     {canEdit &&  <TableCell className="text-right">
                       <Link href={`/admin/settings/notifications/${template.id}`} className="inline-flex items-center justify-center p-2 rounded hover:bg-muted transition">
                         <PencilIcon className="h-4 w-4 text-muted-foreground" />
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">{t("Edit")}</span>
                       </Link>
                     </TableCell>}
                   </TableRow>

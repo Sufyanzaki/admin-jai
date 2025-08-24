@@ -8,48 +8,51 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {patchRegistrationPageSettings} from "@/app/shared-api/registerationApi";
-import {useRegistration} from "@/app/shared-hooks/useRegistration";
+import { patchRegistrationPageSettings } from "@/app/shared-api/registerationApi";
+import { useRegistration } from "@/app/shared-hooks/useRegistration";
 
-const registrationFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    Url: z.string().min(1, 'URL is required'),
-    showOnHeader: z.boolean(),
-    isActive: z.boolean(),
-    bannerImage: z.any().optional(),
-
-    step1Title: z.string().min(1, 'Step 1 title is required'),
-    step1Description: z.string().min(1, 'Step 1 description is required'),
-
-    step2Title: z.string().min(1, 'Step 2 title is required'),
-    step2Description: z.string().min(1, 'Step 2 description is required'),
-
-    step3Title: z.string().min(1, 'Step 3 title is required'),
-    step3Description: z.string().min(1, 'Step 3 description is required'),
-
-    step4Title: z.string().min(1, 'Step 4 title is required'),
-    step4Description: z.string().min(1, 'Step 4 description is required'),
-
-    myImageTitle: z.string().min(1, 'Image title is required'),
-    myImageDescription: z.string().min(1, 'Image description is required'),
-
-    myDescriptionTitle: z.string().min(1, 'Description title is required'),
-    myDescriptionPlaceholder: z.string().min(1, 'Description placeholder is required'),
-
-    step5Title: z.string().min(1, 'Step 5 title is required'),
-    step5Description: z.string().min(1, 'Step 5 description is required'),
-
-    step6Title: z.string().min(1, 'Step 6 title is required'),
-    step6Description: z.string().min(1, 'Step 6 description is required'),
-
-    step7Title: z.string().min(1, 'Step 7 title is required'),
-    step7Description: z.string().min(1, 'Step 7 description is required'),
-});
-
-type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
 
 export default function useRegistrationForm() {
-    const { registrationSettings, mutate, loading } = useRegistration();
+
+    const { t } = require('react-i18next');
+    const registrationFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        Url: z.string().min(1, t('URL is required')),
+        showOnHeader: z.boolean(),
+        isActive: z.boolean(),
+        bannerImage: z.any().optional(),
+
+        step1Title: z.string().min(1, t('Step 1 title is required')),
+        step1Description: z.string().min(1, t('Step 1 description is required')),
+
+        step2Title: z.string().min(1, t('Step 2 title is required')),
+        step2Description: z.string().min(1, t('Step 2 description is required')),
+
+        step3Title: z.string().min(1, t('Step 3 title is required')),
+        step3Description: z.string().min(1, t('Step 3 description is required')),
+
+        step4Title: z.string().min(1, t('Step 4 title is required')),
+        step4Description: z.string().min(1, t('Step 4 description is required')),
+
+        myImageTitle: z.string().min(1, t('Image title is required')),
+        myImageDescription: z.string().min(1, t('Image description is required')),
+
+        myDescriptionTitle: z.string().min(1, t('Description title is required')),
+        myDescriptionPlaceholder: z.string().min(1, t('Description placeholder is required')),
+
+        step5Title: z.string().min(1, t('Step 5 title is required')),
+        step5Description: z.string().min(1, t('Step 5 description is required')),
+
+        step6Title: z.string().min(1, t('Step 6 title is required')),
+        step6Description: z.string().min(1, t('Step 6 description is required')),
+
+        step7Title: z.string().min(1, t('Step 7 title is required')),
+        step7Description: z.string().min(1, t('Step 7 description is required')),
+    });
+
+    type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
+
+    const { registrationSettings, mutate, registrationLoading } = useRegistration();
 
     const {
         register,
@@ -95,7 +98,7 @@ export default function useRegistrationForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('Registration settings update error:', error);
             }
         }
@@ -147,7 +150,7 @@ export default function useRegistrationForm() {
         const result = await trigger(payload);
         if (result) {
             await mutate();
-            showSuccess('Registration settings updated successfully!');
+            showSuccess(t('Registration settings updated successfully!'));
         }
     };
 
@@ -160,6 +163,6 @@ export default function useRegistrationForm() {
         errors,
         isLoading: isMutating,
         onSubmit,
-        loading
+        registrationLoading
     };
 }

@@ -66,7 +66,7 @@ export default function useActiveLanguage() {
             await trigger({ activeLanguageId: values.activeLanguageId });
             const selected = languages?.find(l => Number(l.id) === values.activeLanguageId);
             if (selected) {
-                console.log("Setting i18n to:", selected);
+                console.log("Setting i18n to:", selected?.code);
                 i18n.changeLanguage(selected.code); 
             }
             mutate();

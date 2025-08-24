@@ -1,15 +1,17 @@
-import {useSWRFix} from "@/shared-lib";
-import {AnalyticsFilters, getAnalytics} from "@/app/admin/(dashboard)/reports/_api/reportApi";
-import {AnalyticsResponseDto} from "@/app/admin/(dashboard)/reports/_types/report";
+import { useSWRFix } from "@/shared-lib";
+import { AnalyticsFilters, getAnalytics } from "@/app/admin/(dashboard)/reports/_api/reportApi";
+import { AnalyticsResponseDto } from "@/app/admin/(dashboard)/reports/_types/report";
+import { useTranslation } from "react-i18next";
 
 export const useAnalytics = (params: AnalyticsFilters) => {
+    const { t } = useTranslation();
     const key = `analytics-${JSON.stringify(params || {})}`;
     const { data, loading, error, mutate, refetch } = useSWRFix<AnalyticsResponseDto>({
         key: `analytics-${key}`,
         fetcher: async () => {
             const response = await getAnalytics(params);
             if (!response) {
-                throw new Error('Failed to fetch banner details');
+                throw new Error(t('Failed to fetch banner details'));
             }
             return response;
         }

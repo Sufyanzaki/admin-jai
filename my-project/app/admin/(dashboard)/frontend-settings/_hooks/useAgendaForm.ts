@@ -8,28 +8,30 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {useAgenda} from "@/app/shared-hooks/useAgenda";
-import {patchAgendaSettings} from "@/app/shared-api/agendaApi";
+import { useAgenda } from "@/app/shared-hooks/useAgenda";
+import { patchAgendaSettings } from "@/app/shared-api/agendaApi";
 
-const agendaFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    pageTitle: z.string().min(1, 'Page title is required'),
-    pageSubtitle: z.string().min(1, 'Page subtitle is required'),
-    titleContentSection: z.string().min(1, 'Content section title is required'),
-    link: z.string().min(1, 'Link is required'),
-    content: z.string().min(1, 'Content is required'),
-    metaTitle: z.string().min(1, 'Meta title is required'),
-    metaDescription: z.string().min(1, 'Meta description is required'),
-    keywords: z.string().min(1, 'Keywords are required'),
-    metaImage: z.any().optional(),
-    pageType: z.string().min(1, 'Page type is required'),
-    showOnHeader: z.boolean()
-});
-
-type AgendaFormValues = z.infer<typeof agendaFormSchema>;
 
 export default function useAgendaForm() {
     const { agendaSettings, mutate } = useAgenda();
+
+    const { t } = require('react-i18next');
+    const agendaFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        pageTitle: z.string().min(1, t('Page title is required')),
+        pageSubtitle: z.string().min(1, t('Page subtitle is required')),
+        titleContentSection: z.string().min(1, t('Content section title is required')),
+        link: z.string().min(1, t('Link is required')),
+        content: z.string().min(1, t('Content is required')),
+        metaTitle: z.string().min(1, t('Meta title is required')),
+        metaDescription: z.string().min(1, t('Meta description is required')),
+        keywords: z.string().min(1, t('Keywords are required')),
+        metaImage: z.any().optional(),
+        pageType: z.string().min(1, t('Page type is required')),
+        showOnHeader: z.boolean()
+    });
+
+    type AgendaFormValues = z.infer<typeof agendaFormSchema>;
 
     const {
         register,
@@ -66,7 +68,7 @@ export default function useAgendaForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('Agenda settings update error:', error);
             }
         }
@@ -109,10 +111,10 @@ export default function useAgendaForm() {
             const result = await trigger(payload);
             if (result) {
                 await mutate();
-                showSuccess('Agenda settings updated successfully!');
+                showSuccess(t('Agenda settings updated successfully!'));
             }
         } catch (error) {
-            showError({ message: "Upload failed. Please try again." });
+            showError({ message: t("Upload failed. Please try again.") });
         } finally {
             setIsUploading(false);
         }

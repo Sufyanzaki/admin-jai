@@ -1,6 +1,7 @@
 "use client";
 
 import {Button} from "@/components/admin/ui/button";
+import { useTranslation } from "react-i18next";
 import {Tabs, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
 import {ArrowLeft} from "lucide-react";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 
 export default function EditMemberPage() {
+  const { t } = useTranslation();
 
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("personal");
@@ -28,12 +30,12 @@ export default function EditMemberPage() {
           <Button variant="outline" size="icon" asChild>
             <Link href="/admin/members">
               <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Back</span>
+              <span className="sr-only">{t("Back")}</span>
             </Link>
           </Button>
           <div className="space-y-2">
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Edit Member</h1>
-            <p className="text-muted-foreground">Edit a member to your app.</p>
+            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t('Edit Member')}</h1>
+            <p className="text-muted-foreground">{t('Edit a member to your app.')}</p>
           </div>
         </div>
 
@@ -44,15 +46,15 @@ export default function EditMemberPage() {
             onValueChange={setActiveTab}
         >
           <TabsList>
-            <TabsTrigger value="personal">Basic Information</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="professional">Education & Career</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="behavior">Personality & Behavior</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="partner">Partner Expectation</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="life_style">Life Style</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="hobbies">Hobbies & Interest</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="languages">Languages</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="living">Living</TabsTrigger>
-            <TabsTrigger disabled={fetchFinish} value="about_me">About Me</TabsTrigger>
+            <TabsTrigger value="personal">{t('Basic Information')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="professional">{t('Education & Career')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="behavior">{t('Personality & Behavior')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="partner">{t('Partner Expectation')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="life_style">{t('Life Style')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="hobbies">{t('Hobbies & Interest')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="languages">{t('Languages')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="living">{t('Living')}</TabsTrigger>
+            <TabsTrigger disabled={fetchFinish} value="about_me">{t('About Me')}</TabsTrigger>
           </TabsList>
 
           {/* Only render the active tab */}

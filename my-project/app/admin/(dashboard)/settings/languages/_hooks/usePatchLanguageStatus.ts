@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { mutate as globalMutate } from "swr";
-import {patchLanguageStatus} from "@/app/admin/(dashboard)/settings/_api/languageApi";
-import {BasicLanguageDto} from "@/app/shared-types/basic-languages";
+import { patchLanguageStatus } from "@/app/admin/(dashboard)/settings/_api/languageApi";
+import { BasicLanguageDto } from "@/app/shared-types/basic-languages";
+import { useTranslation } from "react-i18next";
 
 export function usePatchLanguageStatus() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [patchingId, setPatchingId] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export function usePatchLanguageStatus() {
         false
       ).finally();
     } catch (err: unknown) {
-      if(err instanceof Error) setError(err.message || "Failed to update status");
+      if (err instanceof Error) setError(err.message || t("Failed to update status"));
     } finally {
       setLoading(false);
       setPatchingId(null);

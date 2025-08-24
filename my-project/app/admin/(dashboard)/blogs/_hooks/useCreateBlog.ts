@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
@@ -11,26 +12,27 @@ import {useSWRConfig} from "swr";
 
 type ImageField = File | string | undefined;
 
-const createBlogSchema = z.object({
-    title: z.string().min(1, "Title is required"),
-    slug: z.string().min(1, "Slug is required"),
+const createBlogSchema = (t: any) => z.object({
+    title: z.string().min(1, t("Title is required")),
+    slug: z.string().min(1, t("Slug is required")),
     categoryId: z
-        .number({ required_error: "Category is required" })
+        .number({ required_error: t("Category is required") })
         .refine(val => val !== 0, {
-            message: "Please select a category",
+            message: t("Please select a category"),
         }),
     bannerImage: z.union([z.instanceof(File), z.string()]).optional(),
-    shortDescription: z.string().min(1, "Short description is required"),
-    description: z.string().min(1, "Description is required"),
-    metaTitle: z.string().min(1, "Meta title is required"),
+    shortDescription: z.string().min(1, t("Short description is required")),
+    description: z.string().min(1, t("Description is required")),
+    metaTitle: z.string().min(1, t("Meta title is required")),
     metaImage: z.union([z.instanceof(File), z.string()]).optional(),
-    metaDescription: z.string().min(1, "Meta description is required"),
-    metaKeywords: z.string().min(1, "Meta keywords are required"),
+    metaDescription: z.string().min(1, t("Meta description is required")),
+    metaKeywords: z.string().min(1, t("Meta keywords are required")),
 });
 
-export type CreateBlogFormValues = z.infer<typeof createBlogSchema>;
+export type CreateBlogFormValues = z.infer<ReturnType<typeof createBlogSchema>>;
 
 export default function useCreateBlog() {
+    const { t } = useTranslation();
 
     const { mutate } = useSWRConfig();
 
@@ -41,7 +43,7 @@ export default function useCreateBlog() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
             }
         }
     );
@@ -54,8 +56,8 @@ export default function useCreateBlog() {
         setValue,
         control,
         watch
-    } = useForm<CreateBlogFormValues>({
-        resolver: zodResolver(createBlogSchema),
+    } = useForm<z.infer<ReturnType<typeof createBlogSchema>>>({
+        resolver: zodResolver(createBlogSchema(t)),
         defaultValues: {
             title: '',
             slug: '',
@@ -80,15 +82,15 @@ export default function useCreateBlog() {
             try {
                 return await imageUpload(image);
             } catch (error) {
-                console.error('Image upload failed:', error);
-                throw new Error('Failed to upload image');
+                console.error(t('Image upload failed:'), error);
+                throw new Error(t('Failed to upload image'));
             }
         }
 
-        throw new Error('Image upload function not provided');
+        throw new Error(t('Image upload function not provided'));
     };
 
-    const onSubmit = async (values: CreateBlogFormValues, callback?: () => void) => {
+    const onSubmit = async (values: z.infer<ReturnType<typeof createBlogSchema>>, callback?: () => void) => {
         try {
             // Process images in parallel
             const [bannerImageUrl, metaImageUrl] = await Promise.all([
@@ -106,13 +108,13 @@ export default function useCreateBlog() {
                 mutate('blogs', (current: BlogDto[] | undefined) => {
                     return current ? [result, ...current] : [result];
                 }, false).finally()
-                showSuccess('Blog created successfully!');
+                showSuccess(t('Blog created successfully!'));
                 reset();
                 callback?.();
             }
         } catch (error: unknown) {
             if(error instanceof Error){
-                showError({message: error.message})
+                showError({message: t(error.message)})
             }
         }
     };

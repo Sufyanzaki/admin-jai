@@ -12,16 +12,17 @@ import MemberStats from "@/components/admin/members/member-stats"
 
 const DashboardPage = () => {
   const { stats, statsLoading, error } = useDashboard();
+  const { t } = require('react-i18next');
 
   const cardData = [
     {
       id: 1,
-      title: "Total Members",
+      title: t("Total Members"),
       count: stats?.totalMembers || 0,
-      description: "All registered members",
+      description: t("All registered members"),
       status: "",
       icon: Users,
-      buttonText: "View All Members",
+      buttonText: t("View All Members"),
       borderColor: "border-blue-100 dark:border-blue-900/60",
       iconBg: "bg-blue-100 dark:bg-blue-900/50",
       iconColor: "text-blue-600 dark:text-blue-400",
@@ -30,12 +31,12 @@ const DashboardPage = () => {
     },
     {
       id: 2,
-      title: "Today Members",
+      title: t("Today Members"),
       count: stats?.todayMembers || 0,
-      description: "Members with premium subscriptions",
+      description: t("Members with premium subscriptions"),
       status: "",
       icon: Star,
-      buttonText: "Manage Memberships",
+      buttonText: t("Manage Memberships"),
       borderColor: "border-emerald-100 dark:border-emerald-900/60",
       iconBg: "bg-emerald-100 dark:bg-emerald-900/50",
       iconColor: "text-emerald-600 dark:text-emerald-400",
@@ -44,12 +45,12 @@ const DashboardPage = () => {
     },
     {
       id: 3,
-      title: "Free Members",
+      title: t("Free Members"),
       count: stats?.freeMembers || 0,
-      description: "Members with free accounts",
+      description: t("Members with free accounts"),
       status: "",
       icon: User,
-      buttonText: "View Free Members",
+      buttonText: t("View Free Members"),
       borderColor: "border-amber-100 dark:border-amber-900/60",
       iconBg: "bg-amber-100 dark:bg-amber-900/50",
       iconColor: "text-amber-600 dark:text-amber-400",
@@ -58,12 +59,12 @@ const DashboardPage = () => {
     },
     {
       id: 4,
-      title: "Premium Members",
+      title: t("Premium Members"),
       count: stats?.premiumMembers || 0,
-      description: "Suspended or blocked accounts",
+      description: t("Suspended or blocked accounts"),
       status: "",
       icon: Dock,
-      buttonText: "Manage Memberships",
+      buttonText: t("Manage Memberships"),
       borderColor: "border-rose-100 dark:border-rose-900/60",
       iconBg: "bg-rose-100 dark:bg-rose-900/50",
       iconColor: "text-rose-600 dark:text-rose-400",
@@ -76,7 +77,7 @@ const DashboardPage = () => {
     return (
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-red-600">Error loading dashboard</h2>
+            <h2 className="text-2xl font-bold text-red-600">{t("Error loading dashboard")}</h2>
             <p className="text-muted-foreground">{error.message}</p>
           </div>
         </div>
@@ -87,8 +88,8 @@ const DashboardPage = () => {
       <div className="flex min-h-screen w-full flex-col">
         <main className="flex-1 space-y-6 p-4 xl:p-6">
           <div className="flex flex-col space-y-2">
-            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Welcome back</h2>
-            <p className="text-muted-foreground">Here&#39;s what&#39;s happening today.</p>
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">{t("Welcome back")}</h2>
+            <p className="text-muted-foreground">{t("Here's what's happening today.")}</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -134,22 +135,22 @@ const DashboardPage = () => {
 
           <Tabs defaultValue="stats" className="space-y-4">
             <TabsList className="grid grid-cols-3 md:w-[340px]">
-              <TabsTrigger value="stats">Stats</TabsTrigger>
-              <TabsTrigger value="new-users">New Users</TabsTrigger>
-              <TabsTrigger value="best-selling">Best Selling</TabsTrigger>
+              <TabsTrigger value="stats">{t("Stats")}</TabsTrigger>
+              <TabsTrigger value="new-users">{t("New Users")}</TabsTrigger>
+              <TabsTrigger value="best-selling">{t("Best Selling")}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="new-users" className="space-y-4">
               <div className="md:grid max-md:space-y-4 gap-4 md:grid-cols-2">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Today&#39;s Users</CardTitle>
+                    <CardTitle>{t("Today's Users")}</CardTitle>
                     <CardDescription>
-                      You have {statsLoading ? (
+                      {t("You have")} {statsLoading ? (
                         <Skeleton className="inline-block h-4 w-4" />
                     ) : (
                         stats?.todayMembers || 0
-                    )} new users added
+                    )} {t("new users added")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -171,8 +172,8 @@ const DashboardPage = () => {
               <div className="md:grid max-md:space-y-4 gap-4 md:grid-cols-1">
                 <Card className="">
                   <CardHeader>
-                    <CardTitle>Best Selling</CardTitle>
-                    <CardDescription>Top packages of this year</CardDescription>
+                    <CardTitle>{t("Best Selling")}</CardTitle>
+                    <CardDescription>{t("Top packages of this year")}</CardDescription>
                   </CardHeader>
                   <CardContent className="!pt-0">
                     {statsLoading ? (
@@ -192,8 +193,8 @@ const DashboardPage = () => {
             <TabsContent value="stats" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Performance Metrics</CardTitle>
-                  <CardDescription>Your platform&#39;s matching success and user engagement</CardDescription>
+                  <CardTitle>{t("Performance Metrics")}</CardTitle>
+                  <CardDescription>{t("Your platform's matching success and user engagement")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {statsLoading ? (

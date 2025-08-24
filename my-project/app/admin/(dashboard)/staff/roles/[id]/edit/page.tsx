@@ -16,7 +16,9 @@ import useEditRoleForm from "../../_hook/useEditRoleForm"
 import Preloader from "@/components/shared/Preloader";
 import {permissionTypes, roleMenuItems} from "../../../const/permissions"
 
+import { useTranslation } from "react-i18next";
 export default function EditRolePage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation();
   const { id } = use(params)
   const {
     handleSubmit,
@@ -32,12 +34,12 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader/>
-          <p className="text-sm">Loading role</p>
+          <p className="text-sm">{t("Loading role")}</p>
         </div>
     )
   }
   if (error) {
-    return <div className="p-8 text-center text-red-500">Failed to load role.</div>;
+  return <div className="p-8 text-center text-red-500">{t("Failed to load role.")}</div>;
   }
 
   return (
@@ -46,44 +48,44 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
           <Button variant="outline" size="icon" asChild className="h-8 w-8">
             <Link href={`/admin/staff/roles`}>
               <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Back</span>
+              <span className="sr-only">{t("Back")}</span>
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Edit Role</h1>
-            <p className="text-sm text-muted-foreground">Modify role details and permissions</p>
+            <h1 className="text-2xl font-bold">{t("Edit Role")}</h1>
+            <p className="text-sm text-muted-foreground">{t("Modify role details and permissions")}</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit(data => onSubmit(data))}>
           <Card className="bg-background">
             <CardHeader>
-              <CardTitle>Role Information</CardTitle>
-              <CardDescription>Basic information about the role</CardDescription>
+              <CardTitle>{t("Role Information")}</CardTitle>
+              <CardDescription>{t("Basic information about the role")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Role Name</Label>
-                  <Controller
-                      name="name"
-                      control={control}
-                      render={({ field }) => (
-                          <Input id="name" placeholder="Enter role name" {...field} />
-                      )}
-                  />
+          <Label htmlFor="name">{t("Role Name")}</Label>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <Input id="name" placeholder={t("Enter role name")} {...field} />
+            )}
+          />
                   {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Controller
-                    name="description"
-                    control={control}
-                    render={({ field }) => (
-                        <Textarea id="description" placeholder="Role Description" {...field} />
-                    )}
-                />
+          <Label htmlFor="description">{t("Description")}</Label>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <Textarea id="description" placeholder={t("Role Description")} {...field} />
+            )}
+          />
                 {errors.description && <span className="text-red-500 text-xs">{errors.description.message}</span>}
               </div>
               <div className="flex items-center space-x-2">
@@ -94,21 +96,21 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
                         <Switch id="isDefault" checked={field.value} onCheckedChange={field.onChange} />
                     )}
                 />
-                <Label htmlFor="isDefault">Set as default role</Label>
+                <Label htmlFor="isDefault">{t("Set as default role")}</Label>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-background mt-6">
             <CardHeader>
-              <CardTitle>Permissions</CardTitle>
-              <CardDescription>Configure access permissions for this role</CardDescription>
+              <CardTitle>{t("Permissions")}</CardTitle>
+              <CardDescription>{t("Configure access permissions for this role")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {roleMenuItems.map((module, modIdx) => (
                   <div key={module.id} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label className="text-base font-medium">{module.title}</Label>
+                      <Label className="text-base font-medium">{t(module.title)}</Label>
                       <div className="flex gap-8 justify-start items-center">
                         {module.permissions.map((permKey) => {
                           const permConfig = permissionTypes.find((p) => p.key === permKey);
@@ -126,7 +128,7 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
                                             onCheckedChange={field.onChange}
                                         />
                                         <Label htmlFor={`${module.id}-${permConfig.label}`} className="capitalize">
-                                          {permConfig.label}
+                                          {t(permConfig.label)}
                                         </Label>
                                       </div>
                                   )}
@@ -142,7 +144,7 @@ export default function EditRolePage({ params }: { params: Promise<{ id: string 
             <CardFooter className="flex justify-end flex-wrap gap-2">
               <Button type="submit" disabled={isSubmitting}>
                 <Save className="mr-2 h-4 w-4" />
-                {isSubmitting ? "Saving..." : "Save Changes"}
+                {isSubmitting ? t("Saving...") : t("Save Changes")}
               </Button>
             </CardFooter>
           </Card>

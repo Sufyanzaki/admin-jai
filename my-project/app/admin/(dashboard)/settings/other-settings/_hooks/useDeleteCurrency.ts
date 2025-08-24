@@ -3,8 +3,10 @@ import useSWRMutation from "swr/mutation";
 import {showError, showSuccess} from "@/shared-lib";
 import {useState} from "react";
 import {Currency, deleteCurrency} from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
+import { useTranslation } from "react-i18next";
 
 export const useDeleteCurrency = () => {
+  const { t } = useTranslation();
   const { mutate:globalMutate } = useSWRConfig();
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
 
@@ -14,10 +16,10 @@ export const useDeleteCurrency = () => {
         return await deleteCurrency(arg.id);
       },
       {
-        onSuccess: () => showSuccess("Member deleted successfully!"),
+        onSuccess: () => showSuccess(t("Member deleted successfully!")),
         onError: (error) => {
           globalMutate("currencies");
-          showError({ message: error.message });
+          showError({ message: t(error.message) });
         }
       }
   );

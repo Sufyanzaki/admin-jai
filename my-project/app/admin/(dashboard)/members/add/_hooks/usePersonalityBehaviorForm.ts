@@ -7,9 +7,10 @@ import {patchPersonalityBehavior, postPersonalityBehavior} from "@/app/shared-ap
 import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
 import {usePersonalityBehaviorInfo} from "@/app/shared-hooks/usePersonalityBehaviorInfo";
 import {useEffect, useMemo} from "react";
+import { useTranslation } from "react-i18next";
 import {useParams} from "next/navigation";
 
-const personalityBehaviorSchema = z.object({
+const usePersonalityBehaviorFormSchema = (t: any) => z.object({
   simple: z.boolean(),
   musical: z.boolean(),
   conservative: z.boolean(),
@@ -49,9 +50,10 @@ const personalityBehaviorSchema = z.object({
   relaxed: z.boolean(),
 });
 
-export type PersonalityBehaviorFormValues = z.infer<typeof personalityBehaviorSchema>;
+export type PersonalityBehaviorFormValues = z.infer<ReturnType<typeof usePersonalityBehaviorFormSchema>>;
 
 export default function usePersonalityBehaviorForm() {
+  const { t } = useTranslation();
 
   const params = useParams();
   const tracker = getUserTrackingId();
@@ -74,7 +76,7 @@ export default function usePersonalityBehaviorForm() {
     control,
     watch,
   } = useForm<PersonalityBehaviorFormValues>({
-    resolver: zodResolver(personalityBehaviorSchema),
+    resolver: zodResolver(usePersonalityBehaviorFormSchema(t)),
     defaultValues: {
       simple: false,
       musical: false,
@@ -132,14 +134,14 @@ export default function usePersonalityBehaviorForm() {
     async (_: string, { arg }: { arg: PersonalityBehaviorFormValues }) => {
       const { ...payload } = arg;
     
-      if(!id) return showError({message : "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member"});
+      if(!id) return showError({message : t("You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member")});
       
       if (id && allowEdit) return await patchPersonalityBehavior(id, payload);
       else return await postPersonalityBehavior(id, payload);
     
     },
     {
-      onError: (error: Error) => showError({ message: error.message || "Failed to update personality/behavior info" }),
+      onError: (error: Error) => showError({ message: error.message ? t(error.message) : t("Failed to update personality/behavior info") }),
       revalidate: false,
       populateCache: false,
     }
@@ -148,7 +150,7 @@ export default function usePersonalityBehaviorForm() {
   const onSubmit = async (values: PersonalityBehaviorFormValues, callback?: () => void) => {
     const result = await trigger(values);
       if (result) {
-        showSuccess("Personality & Behavior updated successfully!");
+        showSuccess(t("Personality & Behavior updated successfully!"));
         callback?.();
         updateUserTrackingId({ personalityAndBehavior: true });
       }
@@ -166,4 +168,4 @@ export default function usePersonalityBehaviorForm() {
     onSubmit,
     personalityBehaviorLoading,
   };
-} 
+}

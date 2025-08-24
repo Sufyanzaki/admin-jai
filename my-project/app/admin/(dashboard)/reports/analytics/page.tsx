@@ -1,11 +1,11 @@
 "use client";
 
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
-import {DatePicker} from "@/components/admin/date-range-picker";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table";
-import {HeartIcon, MessageCircleIcon, TrendingUpIcon, UserPlusIcon, UsersIcon} from "lucide-react";
-import {Input} from "@/components/admin/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card";
+import { DatePicker } from "@/components/admin/date-range-picker";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/admin/ui/table";
+import { HeartIcon, MessageCircleIcon, TrendingUpIcon, UserPlusIcon, UsersIcon } from "lucide-react";
+import { Input } from "@/components/admin/ui/input";
 import {
   Bar,
   BarChart,
@@ -19,18 +19,20 @@ import {
   XAxis,
   YAxis
 } from "recharts";
-import {ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/admin/ui/chart";
-import {Progress} from "@/components/admin/ui/progress";
-import {useAnalytics} from "@/app/admin/(dashboard)/reports/_hooks/useAnalytics";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/admin/ui/chart";
+import { Progress } from "@/components/admin/ui/progress";
+import { useAnalytics } from "@/app/admin/(dashboard)/reports/_hooks/useAnalytics";
 import Preloader from "@/components/shared/Preloader";
 import type React from "react";
-import {useState} from "react";
-import {useSearchParams} from "next/navigation";
-import {AttributeSelect} from "@/components/admin/ui/attribute-select";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { AttributeSelect } from "@/components/admin/ui/attribute-select";
 
 const DEPARTMENT_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82ca9d"]
 
 export default function ReportPage() {
+  const { t } = useTranslation();
 
   const searchParams = useSearchParams();
 
@@ -46,12 +48,12 @@ export default function ReportPage() {
     relationStatus: filters.relationStatus
   });
 
-  if(!analytics?.data){
+  if (!analytics?.data) {
     return (
-        <div className="flex items-center flex-col justify-center h-64">
-          <Preloader />
-          <p className="text-sm">Loading</p>
-        </div>
+      <div className="flex items-center flex-col justify-center h-64">
+        <Preloader />
+        <p className="text-sm">{t('Loading')}</p>
+      </div>
     )
   }
 
@@ -130,298 +132,298 @@ export default function ReportPage() {
   }
 
   return (
-      <div className="flex flex-col gap-6 p-4 xl:p-6">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Analytics Reports</h1>
-          </div>
+    <div className="flex flex-col gap-6 p-4 xl:p-6">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">{t('Analytics Reports')}</h1>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <form className="flex flex-col gap-4 md:flex-row md:items-center" onSubmit={() => refetch()}>
-            <DatePicker
-                onDateChange={(date) => {
-                  handleFilterChange("startDate", date || "")
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <form className="flex flex-col gap-4 md:flex-row md:items-center" onSubmit={() => refetch()}>
+          <DatePicker
+            onDateChange={(date) => {
+              handleFilterChange("startDate", date || "")
+            }}
+          />
+
+          <AttributeSelect
+            attributeKey="relationStatus"
+            value={filters.relationStatus || undefined}
+            onChange={handleRelationStatusChange}
+            placeholder={t('Select relationship status')}
+          />
+
+        </form>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {analyticsCards.map((item, index) => (
+          <Card key={index}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="mb-2 tracking-tight text-sm xl:text-lg font-medium">{t(item.title)}</CardTitle>
+              {item.icon}
+            </CardHeader>
+            <CardContent>
+              <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{item.value}</h2>
+              <p className="text-xs text-muted-foreground">
+                <span className={item.changeColor}>{item.change}</span> {t(item.subtitle)}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {analyticLoading ? <div className="h-64"><Preloader /></div> : <>
+        <div className="md:grid max-md:space-y-6 gap-6 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Gender Distribution')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  visits: {
+                    label: "Total Visits",
+                    color: "hsl(var(--chart-1))",
+                  },
+                  newPatients: {
+                    label: "New Patients",
+                    color: "hsl(var(--chart-2))",
+                  },
                 }}
-            />
-
-            <AttributeSelect
-                attributeKey="relationStatus"
-                value={filters.relationStatus || undefined}
-                onChange={handleRelationStatusChange}
-                placeholder="Select relationship status"
-            />
-
-          </form>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {analyticsCards.map((item, index) => (
-              <Card key={index}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="mb-2 tracking-tight text-sm xl:text-lg font-medium">{item.title}</CardTitle>
-                  {item.icon}
-                </CardHeader>
-                <CardContent>
-                  <h2 className="text-2xl xl:text-4xl mb-2 font-bold">{item.value}</h2>
-                  <p className="text-xs text-muted-foreground">
-                    <span className={item.changeColor}>{item.change}</span> {item.subtitle}
-                  </p>
-                </CardContent>
-              </Card>
-          ))}
-        </div>
-
-        {analyticLoading ? <div className="h-64"><Preloader /></div> : <>
-          <div className="md:grid max-md:space-y-6 gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gender Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
+                className="h-[300px] w-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={genderDistributionData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={true}
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      paddingAngle={2}
+                    >
+                      {genderDistributionData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={DEPARTMENT_COLORS[index % DEPARTMENT_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      content={<ChartTooltipContent />}
+                      wrapperStyle={{
+                        backgroundColor: 'white',
+                        padding: '8px',
+                        borderRadius: '4px',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                      }}
+                    />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Age Distribution')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  visits: {
+                    label: "Visits",
+                    color: "hsl(var(--chart-1))",
+                  },
+                }}
+                className="h-[300px] w-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={ageDistributionData}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fontSize: 12 }}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Legend wrapperStyle={{ fontSize: 12 }} />
+                    <Bar
+                      dataKey="value"
+                      fill="hsl(var(--chart-1))"
+                      name="Users"
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Country Distribution')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[300px] w-full">
                 <ChartContainer
-                    config={{
-                      visits: {
-                        label: "Total Visits",
-                        color: "hsl(var(--chart-1))",
-                      },
-                      newPatients: {
-                        label: "New Patients",
-                        color: "hsl(var(--chart-2))",
-                      },
-                    }}
-                    className="h-[300px] w-full"
+                  config={{
+                    value: {
+                      label: "Users",
+                      color: "hsl(var(--chart-1))",
+                    },
+                  }}
+                  className="h-full w-full"
                 >
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                          data={genderDistributionData}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={true}
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                          paddingAngle={2}
+                        data={countryDistributionData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={true}
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        paddingAngle={2}
                       >
-                        {genderDistributionData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={DEPARTMENT_COLORS[index % DEPARTMENT_COLORS.length]} />
+                        {countryDistributionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={DEPARTMENT_COLORS[index % DEPARTMENT_COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip
-                          content={<ChartTooltipContent />}
-                          wrapperStyle={{
-                            backgroundColor: 'white',
-                            padding: '8px',
-                            borderRadius: '4px',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                          }}
+                        content={<ChartTooltipContent />}
+                        wrapperStyle={{
+                          backgroundColor: 'white',
+                          padding: '8px',
+                          borderRadius: '4px',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        }}
                       />
-                      <Legend />
+                      <Legend
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 </ChartContainer>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Age Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer
-                    config={{
-                      visits: {
-                        label: "Visits",
-                        color: "hsl(var(--chart-1))",
-                      },
-                    }}
-                    className="h-[300px] w-full"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                        data={ageDistributionData}
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis
-                          dataKey="name"
-                          tick={{ fontSize: 12 }}
-                          interval="preserveStartEnd"
-                      />
-                      <YAxis tick={{ fontSize: 12 }} />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Legend wrapperStyle={{ fontSize: 12 }} />
-                      <Bar
-                          dataKey="value"
-                          fill="hsl(var(--chart-1))"
-                          name="Users"
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Country Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] w-full">
-                  <ChartContainer
-                      config={{
-                        value: {
-                          label: "Users",
-                          color: "hsl(var(--chart-1))",
-                        },
-                      }}
-                      className="h-full w-full"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                            data={countryDistributionData}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={true}
-                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
-                            paddingAngle={2}
-                        >
-                          {countryDistributionData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={DEPARTMENT_COLORS[index % DEPARTMENT_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                            content={<ChartTooltipContent />}
-                            wrapperStyle={{
-                              backgroundColor: 'white',
-                              padding: '8px',
-                              borderRadius: '4px',
-                              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                            }}
-                        />
-                        <Legend
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Top Cities')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {topCitiesData.length > 0 ? (
+                topCitiesData.map(({ city, percent }, idx) => (
+                  <div key={idx} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-medium">{city}</div>
+                      <div className="text-sm text-muted-foreground">{percent}%</div>
+                    </div>
+                    <Progress value={Number(percent)} className="h-2 [&>*]:bg-green-500" />
+                  </div>
+                ))
+              ) : (
+                <div className="text-center text-muted-foreground py-8">
+                  {t('No city data available')}
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Cities</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {topCitiesData.length > 0 ? (
-                    topCitiesData.map(({ city, percent }, idx) => (
-                        <div key={idx} className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <div className="text-sm font-medium">{city}</div>
-                            <div className="text-sm text-muted-foreground">{percent}%</div>
-                          </div>
-                          <Progress value={Number(percent)} className="h-2 [&>*]:bg-green-500" />
-                        </div>
-                    ))
-                ) : (
-                    <div className="text-center text-muted-foreground py-8">
-                      No city data available
-                    </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-          <div className="flex flex-col gap-4">
-            <Tabs defaultValue="links">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="links">Links</TabsTrigger>
-                <TabsTrigger value="countries">Countries</TabsTrigger>
-              </TabsList>
+        <div className="flex flex-col gap-4">
+          <Tabs defaultValue="links">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="links">{t('Links')}</TabsTrigger>
+              <TabsTrigger value="countries">{t('Countries')}</TabsTrigger>
+            </TabsList>
 
-              <TabsContent value="links">
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-4 flex-wrap">
-                      <div>
-                        <CardTitle>Links</CardTitle>
-                        <CardDescription>Website URLs and their visit statistics</CardDescription>
-                      </div>
+            <TabsContent value="links">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    <div>
+                      <CardTitle>{t('Links')}</CardTitle>
+                      <CardDescription>{t('Website URLs and their visit statistics')}</CardDescription>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <Table className="whitespace-nowrap">
-                      <TableHeader>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Table className="whitespace-nowrap">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{t('URL')}</TableHead>
+                        <TableHead>{t('Count')}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {analyticDetails.pagesViews?.length > 0 ? (
+                        analytics.data.pagesViews.map((page, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-medium">{page.pageLink}</TableCell>
+                            <TableCell>{page.count}</TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
                         <TableRow>
-                          <TableHead>URL</TableHead>
-                          <TableHead>Count</TableHead>
+                          <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                            {t('No page view data available')}
+                          </TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {analyticDetails.pagesViews?.length > 0 ? (
-                            analytics.data.pagesViews.map((page, index) => (
-                                <TableRow key={index}>
-                                  <TableCell className="font-medium">{page.pageLink}</TableCell>
-                                  <TableCell>{page.count}</TableCell>
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                              <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
-                                No page view data available
-                              </TableCell>
-                            </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              <TabsContent value="countries">
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-4 flex-wrap">
-                      <div>
-                        <CardTitle>Countries</CardTitle>
-                        <CardDescription>Visitor distribution by country</CardDescription>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Input placeholder="Search countries..." className="h-8 w-[150px] lg:w-[250px]" />
-                      </div>
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="countries">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    <div>
+                      <CardTitle>{t('Countries')}</CardTitle>
+                      <CardDescription>{t('Visitor distribution by country')}</CardDescription>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <Table className="whitespace-nowrap">
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Country</TableHead>
-                          <TableHead>Sessions</TableHead>
-                          <TableHead>Percentage</TableHead>
-                          <TableHead>Trend</TableHead>
+                    <div className="flex items-center gap-2">
+                      <Input placeholder={t('Search countries...')} className="h-8 w-[150px] lg:w-[250px]" />
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Table className="whitespace-nowrap">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{t('Country')}</TableHead>
+                        <TableHead>{t('Sessions')}</TableHead>
+                        <TableHead>{t('Percentage')}</TableHead>
+                        <TableHead>{t('Trend')}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {countryDistributionData.map((country, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">{country.name}</TableCell>
+                          <TableCell>{country.value}</TableCell>
+                          <TableCell>{country.percentage}%</TableCell>
+                          <TableCell>
+                            <TrendingUpIcon className="h-4 w-4 text-green-500" />
+                          </TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {countryDistributionData.map((country, index) => (
-                            <TableRow key={index}>
-                              <TableCell className="font-medium">{country.name}</TableCell>
-                              <TableCell>{country.value}</TableCell>
-                              <TableCell>{country.percentage}%</TableCell>
-                              <TableCell>
-                                <TrendingUpIcon className="h-4 w-4 text-green-500" />
-                              </TableCell>
-                            </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </>}
-      </div>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </>}
+    </div>
   );
 }

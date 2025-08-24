@@ -9,24 +9,27 @@ import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { useVee } from '@/app/shared-hooks/useVee';
-import {patchVeeSettings} from "@/app/shared-api/veeApi";
+import { patchVeeSettings } from "@/app/shared-api/veeApi";
 
-const veeFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    PageContentitle: z.string().min(1, 'Page content title is required'),
-    link: z.string().min(1, 'Link is required'),
-    content: z.string().min(1, 'Content is required'),
-    metaTitle: z.string().min(1, 'Meta title is required'),
-    metaDescription: z.string().min(1, 'Meta description is required'),
-    keywords: z.string().min(1, 'Keywords are required'),
-    metaImage: z.any().optional(),
-    pageType: z.string().min(1, 'Page type is required'),
-    pageName: z.string().min(1, 'Page name is required'),
-});
-
-type VeeFormValues = z.infer<typeof veeFormSchema>;
 
 export default function useVeeForm() {
+
+    const { t } = require('react-i18next');
+    const veeFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        PageContentitle: z.string().min(1, t('Page content title is required')),
+        link: z.string().min(1, t('Link is required')),
+        content: z.string().min(1, t('Content is required')),
+        metaTitle: z.string().min(1, t('Meta title is required')),
+        metaDescription: z.string().min(1, t('Meta description is required')),
+        keywords: z.string().min(1, t('Keywords are required')),
+        metaImage: z.any().optional(),
+        pageType: z.string().min(1, t('Page type is required')),
+        pageName: z.string().min(1, t('Page name is required')),
+    });
+
+    type VeeFormValues = z.infer<typeof veeFormSchema>;
+
     const { veeData, mutate, veeLoading } = useVee();
     const [isUploading, setIsUploading] = useState(false);
 
@@ -61,7 +64,7 @@ export default function useVeeForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('Vee settings update error:', error);
             }
         }
@@ -102,11 +105,11 @@ export default function useVeeForm() {
             const result = await trigger(payload);
             if (result) {
                 await mutate();
-                showSuccess('Vee page settings updated successfully!');
+                showSuccess(t('Vee page settings updated successfully!'));
             }
         } catch (error) {
             setIsUploading(false);
-            showError({ message: 'Failed to upload image' });
+            showError({ message: t('Failed to upload image') });
             console.error('Image upload error:', error);
         }
     };

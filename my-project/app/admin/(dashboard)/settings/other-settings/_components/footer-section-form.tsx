@@ -6,12 +6,14 @@ import {Button} from "@/components/admin/ui/button";
 import {useBasicPages} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPages";
 import Preloader from "@/components/shared/Preloader";
 import {useFooterSectionForm} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFooterSectionForm";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     callback: ()=>void;
 }
 
 export default function FooterSectionForm({callback}:Props){
+    const { t } = useTranslation();
 
     const { basicPages, isLoading } = useBasicPages();
 
@@ -21,7 +23,7 @@ export default function FooterSectionForm({callback}:Props){
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader/>
-                <p className="text-sm">Loading Pages</p>
+                <p className="text-sm">{t("Loading Pages")}</p>
             </div>
         )
     }
@@ -45,10 +47,10 @@ export default function FooterSectionForm({callback}:Props){
         <form onSubmit={handleSubmit(v => onSubmit(v, callback)) }>
             <div className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="section-name">Section Name</Label>
+                    <Label htmlFor="section-name">{t("Section Name")}</Label>
                     <Input
                         id="section-name"
-                        placeholder="Enter section name"
+                        placeholder={t("Enter section name")}
                         {...register("sectionName")}
                     />
                     {errors.sectionName && (
@@ -56,7 +58,7 @@ export default function FooterSectionForm({callback}:Props){
                     )}
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="section-page">Section Page</Label>
+                    <Label htmlFor="section-page">{t("Section Page")}</Label>
                     <MultiOptionSelect
                         options={customPages}
                         selected={selectedPages}
@@ -71,7 +73,7 @@ export default function FooterSectionForm({callback}:Props){
             </div>
 
             <DialogFooter className="mt-4">
-                <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Saving" : "Save Configuration"}</Button>
+                <Button type="submit" disabled={isSubmitting}>{isSubmitting ? t("Saving") : t("Save Configuration")}</Button>
             </DialogFooter>
         </form>
     )

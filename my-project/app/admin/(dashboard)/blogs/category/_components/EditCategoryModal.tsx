@@ -7,9 +7,11 @@ import { useBlogCategories } from "../../../../../shared-hooks/useBlogCategories
 import {useEffect, useMemo} from "react";
 import React from "react";
 import { useSWRConfig } from "swr";
-import {BlogCategoryDto} from "@/app/shared-types/blog";
+import {CategoryDto} from "@/app/shared-types/blog";
+import { useTranslation } from "react-i18next";
 
 export default function EditCategoryModal() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
@@ -46,7 +48,7 @@ export default function EditCategoryModal() {
   const handleEditSubmit = async (values: { name: string }) => {
     await onSubmit(values, () => {
       if (editId) {
-        globalMutate('blog-categories', (current: BlogCategoryDto[] = []) =>
+        globalMutate('blog-categories', (current: CategoryDto[] = []) =>
           current.map(cat => String(cat.id) === editId ? { ...cat, name: values.name } : cat), false
         );
       }
@@ -58,8 +60,8 @@ export default function EditCategoryModal() {
     <Dialog open={!!editId} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Category</DialogTitle>
-          <DialogDescription>Update the name of this blog category</DialogDescription>
+          <DialogTitle>{t("Edit Category")}</DialogTitle>
+          <DialogDescription>{t("Update the name of this blog category")}</DialogDescription>
         </DialogHeader>
         {category ? (
           <form
@@ -68,7 +70,7 @@ export default function EditCategoryModal() {
           >
             <div className="flex gap-6 items-center">
               <label htmlFor="edit-category-name" className="text-right">
-                Name
+                {t("Name")}
               </label>
               <Input
                 id="edit-category-name"
@@ -79,19 +81,19 @@ export default function EditCategoryModal() {
               />
             </div>
             {errors.name && (
-              <div className="col-span-4 text-red-500 text-sm">{errors.name.message}</div>
+              <div className="col-span-4 text-red-500 text-sm">{errors.name.message || ""}</div>
             )}
             <DialogFooter>
               <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading}>
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
+                {isLoading ? t("Saving...") : t("Save Changes")}
               </Button>
             </DialogFooter>
           </form>
         ) : (
-          <div className="py-8 text-center text-muted-foreground">Category not found.</div>
+          <div className="py-8 text-center text-muted-foreground">{t("Category not found.")}</div>
         )}
       </DialogContent>
     </Dialog>

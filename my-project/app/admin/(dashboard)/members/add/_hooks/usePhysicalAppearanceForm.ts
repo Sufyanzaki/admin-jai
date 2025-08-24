@@ -8,22 +8,27 @@ import { postPhysicalAppearance, patchPhysicalAppearance } from "@/app/shared-ap
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { usePhysicalAppearanceInfo } from "@/app/shared-hooks/usePhysicalAppearanceInfo";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "next/navigation";
 
-const physicalAppearanceSchema = z.object({
-  height: z.string().min(1, "Height is required"),
-  eyeColor: z.string().min(1, "Eye color is required"),
-  hairColor: z.string().min(1, "Hair color is required"),
-  bodyType: z.string().min(1, "Body type is required"),
-  weight: z.string().min(1, "Weight is required"),
-  appearance: z.string().min(1, "Appearance is required"),
-  clothing: z.string().min(1, "Clothing is required"),
-  intelligence: z.string().min(1, "Intelligence is required"),
-});
-
-export type PhysicalAppearanceFormValues = z.infer<typeof physicalAppearanceSchema>;
-
 export default function usePhysicalAppearanceForm() {
+
+
+  const { t } = useTranslation();
+
+  const physicalAppearanceSchema = z.object({
+    height: z.string().min(1, t("Height is required")),
+    eyeColor: z.string().min(1, t("Eye color is required")),
+    hairColor: z.string().min(1, t("Hair color is required")),
+    bodyType: z.string().min(1, t("Body type is required")),
+    weight: z.string().min(1, t("Weight is required")),
+    appearance: z.string().min(1, t("Appearance is required")),
+    clothing: z.string().min(1, t("Clothing is required")),
+    intelligence: z.string().min(1, t("Intelligence is required")),
+  });
+
+  type PhysicalAppearanceFormValues = z.infer<typeof physicalAppearanceSchema>;
+
 
   const params = useParams();
   const tracker = getUserTrackingId();
@@ -80,14 +85,14 @@ export default function usePhysicalAppearanceForm() {
     "updatePhysicalAppearance",
     async (_: string, { arg }: { arg: PhysicalAppearanceFormValues }) => {
 
-      if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member" });
+      if (!id) return showError({ message: t("You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member") });
 
       if (id && allowEdit) return await patchPhysicalAppearance(id, arg);
       else return await postPhysicalAppearance(id, arg);
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message || "Failed to update physical appearance info" });
+        showError({ message: error.message ? t(error.message) : t("Failed to update physical appearance info") });
       },
       revalidate: false,
       populateCache: false,
@@ -96,11 +101,11 @@ export default function usePhysicalAppearanceForm() {
 
   const onSubmit = async (values: PhysicalAppearanceFormValues, callback?: () => void) => {
     const result = await trigger(values);
-      if (result) {
-        showSuccess("Physical appearance info updated successfully!");
-        callback?.();
-        updateUserTrackingId({ aboutMe: true });
-      }
+    if (result) {
+      showSuccess(t("Physical appearance info updated successfully!"));
+      callback?.();
+      updateUserTrackingId({ aboutMe: true });
+    }
   };
 
   return {

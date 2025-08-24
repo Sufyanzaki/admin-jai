@@ -1,24 +1,26 @@
 import { useForm, Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useSWRMutation from "swr/mutation";
 import { patchProfileAttribute } from "../_api/patchProfileAttribute";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
-import { useProfileAttributeInfo } from "./useProfileAttributeInfo";
 import { useEffect } from "react";
 import { useSWRConfig } from "swr";
-import { ProfileAttributeResponse } from "../_api/getProfileAttribute";
+import { ProfileAttributeResponse } from "@/app/shared-types/attribute";
 
-const attributeSchema = z.object({
-  options: z.string().min(1, "At least one value is required"),
-  isVisible: z.boolean(),
-  inputValue: z.string().optional().default("")
-});
-
-export type AttributeFormValues = z.infer<typeof attributeSchema>;
 
 export function useProfileAttributeForm(attribute: ProfileAttributeResponse) {
+  const { t } = useTranslation();
+  const attributeSchema = z.object({
+    options: z.string().min(1, ("At least one value is required")),
+    isVisible: z.boolean(),
+    inputValue: z.string().optional().default("")
+  });
+
+  type AttributeFormValues = z.infer<typeof attributeSchema>;
+
   const {
     handleSubmit,
     setValue,
@@ -35,7 +37,7 @@ export function useProfileAttributeForm(attribute: ProfileAttributeResponse) {
     mode: "onBlur",
   });
 
-  const { mutate } = useSWRConfig();    
+  const { mutate } = useSWRConfig();
 
   useEffect(() => {
     if (attribute) {
@@ -72,7 +74,7 @@ export function useProfileAttributeForm(attribute: ProfileAttributeResponse) {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
       },
       revalidate: false,
       populateCache: false,
@@ -82,7 +84,7 @@ export function useProfileAttributeForm(attribute: ProfileAttributeResponse) {
   const onSubmit = async (values: AttributeFormValues) => {
     const result = await trigger(values);
     if (result) {
-      showSuccess("Profile attribute updated successfully!");
+      showSuccess(t("Profile attribute updated successfully!"));
       mutate(`profile-attributes`);
     }
   };

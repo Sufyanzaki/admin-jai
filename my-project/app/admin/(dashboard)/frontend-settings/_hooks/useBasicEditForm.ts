@@ -5,32 +5,33 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import useSWRMutation from "swr/mutation";
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {showError, showSuccess} from "@/shared-lib";
-import {patchBasicPage} from '@/app/shared-api/basicPageApi';
-import {useParams} from "next/navigation";
-import {useBasicPage} from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPage";
-import {useEffect} from "react";
-
-const basicFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    Url: z.string().url('Invalid URL format').min(1, 'URL is required'),
-    content: z.string().min(1, 'Content is required'),
-    metaTitle: z.string().min(1, 'Meta title is required'),
-    metaDescription: z.string().min(1, 'Meta description is required'),
-    keywords: z.string().min(1, 'Keywords are required'),
-    metaImage: z.any().optional(),
-    pageType: z.string().min(1, 'Type is required'),
-    isActive: z.boolean()
-});
-
-type BasicFormValues = z.infer<typeof basicFormSchema>;
+import { showError, showSuccess } from "@/shared-lib";
+import { patchBasicPage } from '@/app/shared-api/basicPageApi';
+import { useParams } from "next/navigation";
+import { useBasicPage } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPage";
+import { useEffect } from "react";
 
 export default function useBasicEditForm() {
+
+    const { t } = require('react-i18next');
+    const basicFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        Url: z.string().url(t('Invalid URL format')).min(1, t('URL is required')),
+        content: z.string().min(1, t('Content is required')),
+        metaTitle: z.string().min(1, t('Meta title is required')),
+        metaDescription: z.string().min(1, t('Meta description is required')),
+        keywords: z.string().min(1, t('Keywords are required')),
+        metaImage: z.any().optional(),
+        pageType: z.string().min(1, t('Type is required')),
+        isActive: z.boolean()
+    });
+
+    type BasicFormValues = z.infer<typeof basicFormSchema>;
 
     const params = useParams();
     const id = params.id as string;
 
-    const { basicPage, isLoading:pageLoading } = useBasicPage(id);
+    const { basicPage, isLoading: pageLoading } = useBasicPage(id);
 
     const {
         register,
@@ -57,16 +58,16 @@ export default function useBasicEditForm() {
 
     useEffect(() => {
 
-        if(!basicPage) return;
+        if (!basicPage) return;
 
         reset({
             Title: basicPage.Title,
-            Url:basicPage.Url ,
-            content:basicPage.content ,
-            metaTitle:basicPage.metaTitle ,
-            metaDescription:basicPage.metaDescription ,
-            keywords:basicPage.keywords ,
-            metaImage:basicPage.metaImage ,
+            Url: basicPage.Url,
+            content: basicPage.content,
+            metaTitle: basicPage.metaTitle,
+            metaDescription: basicPage.metaDescription,
+            keywords: basicPage.keywords,
+            metaImage: basicPage.metaImage,
             pageType: basicPage.pageType,
             isActive: basicPage.isActive
         })
@@ -74,11 +75,11 @@ export default function useBasicEditForm() {
 
     const { trigger, isMutating } = useSWRMutation('patchBasicPage',
         async (url: string, { arg }: { arg: BasicFormValues }) => {
-            return await patchBasicPage({...arg, id})
+            return await patchBasicPage({ ...arg, id })
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('Basic page update error:', error);
             }
         }
@@ -98,7 +99,7 @@ export default function useBasicEditForm() {
 
         const result = await trigger(payload);
         if (result) {
-            showSuccess(`Page updated successfully!`);
+            showSuccess(t('Page updated successfully!'));
         }
     };
 

@@ -2,25 +2,30 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import useSWRMutation from 'swr/mutation';
 import { showError } from '@/shared-lib';
 import { showSuccess } from '@/shared-lib';
 import { patchSmtp } from '../_api/smtp';
 import useSmtp from './useSmtp';
 
-const smtpSchema = z.object({
-  host: z.string().min(1, { message: 'Host is required' }),
-  port: z.number().min(1, { message: 'Port is required' }).max(65535, { message: 'Port must be between 1 and 65535' }),
-  username: z.string().min(1, { message: 'Username is required' }),
-  password: z.string().min(1, { message: 'Password is required' }),
-  encryption: z.string().min(1, { message: 'Encryption is required' }),
-  fromAddress: z.string().email({ message: 'From Address must be a valid email' }),
-  fromName: z.string().min(1, { message: 'From Name is required' }),
-});
-
-export type SmtpFormValues = z.infer<typeof smtpSchema>;
-
 export default function useSmtpForm() {
+
+  const { t } = useTranslation();
+
+  const smtpSchema = z.object({
+    host: z.string().min(1, { message: t('Host is required') }),
+    port: z.number().min(1, { message: t('Port is required') }).max(65535, { message: t('Port must be between 1 and 65535') }),
+    username: z.string().min(1, { message: t('Username is required') }),
+    password: z.string().min(1, { message: t('Password is required') }),
+    encryption: z.string().min(1, { message: t('Encryption is required') }),
+    fromAddress: z.string().email({ message: t('From Address must be a valid email') }),
+    fromName: z.string().min(1, { message: t('From Name is required') }),
+  });
+
+  type SmtpFormValues = z.infer<typeof smtpSchema>;
+
+
   const { data: existingData, isLoading: isLoadingData } = useSmtp();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -30,7 +35,7 @@ export default function useSmtpForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t('Failed to update SMTP settings.') });
       },
     }
   );
@@ -75,10 +80,10 @@ export default function useSmtpForm() {
     try {
       const result = await trigger(values);
       if (result) {
-        showSuccess('SMTP settings updated successfully!');
+  showSuccess(t('SMTP settings updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || 'Failed to update SMTP settings.' });
+  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update SMTP settings.') });
     }
   };
 

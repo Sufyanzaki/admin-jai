@@ -12,6 +12,7 @@ import {Button} from "@/components/admin/ui/button";
 import Link from "next/link";
 import {ArrowLeft, Loader2} from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useBannerDetails } from "../_hooks/useBannerDetails";
 import { format } from "date-fns";
 import { useParams } from "next/navigation";
@@ -20,12 +21,13 @@ export default function BannerInformationCard() {
     const params = useParams();
     const id = params.id as string;
     const { banner, bannerLoading, error } = useBannerDetails(id);
+    const { t } = useTranslation();
 
     const formatDate = (dateString: string) => {
         try {
             return format(new Date(dateString), 'dd-MM-yyyy HH:mm');
         } catch {
-            return 'Invalid Date';
+            return t('Invalid Date');
         }
     };
 
@@ -35,7 +37,7 @@ export default function BannerInformationCard() {
                 <div className="flex items-center justify-center h-64">
                     <div className="flex items-center gap-2">
                         <Loader2 className="h-6 w-6 animate-spin" />
-                        <span>Loading banner details...</span>
+                        <span>{t('Loading banner details...')}</span>
                     </div>
                 </div>
             </div>
@@ -47,7 +49,7 @@ export default function BannerInformationCard() {
             <div className="flex flex-col gap-6 p-4 xl:p-6">
                 <div className="flex items-center justify-center h-64">
                     <div className="text-center">
-                        <p className="text-red-500 mb-2">Error loading banner details</p>
+                        <p className="text-red-500 mb-2">{t('Error loading banner details')}</p>
                         <p className="text-sm text-muted-foreground">{error.message}</p>
                     </div>
                 </div>
@@ -60,9 +62,9 @@ export default function BannerInformationCard() {
             <div className="flex flex-col gap-6 p-4 xl:p-6">
                 <div className="flex items-center justify-center h-64">
                     <div className="text-center">
-                        <p className="text-muted-foreground mb-2">Banner not found</p>
+                        <p className="text-muted-foreground mb-2">{t('Banner not found')}</p>
                         <Button asChild>
-                            <Link href="/admin/marketing/banners">Back to Banners</Link>
+                            <Link href="/admin/marketing/banners">{t('Back to Banners')}</Link>
                         </Button>
                     </div>
                 </div>
@@ -76,20 +78,20 @@ export default function BannerInformationCard() {
                 <Button variant="outline" size="icon" asChild>
                     <Link href="/admin/marketing/banners">
                         <ArrowLeft className="h-4 w-4" />
-                        <span className="sr-only">Back</span>
+                        <span className="sr-only">{t("Back")}</span>
                     </Link>
                 </Button>
 
                 <div className="space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">View Banner</h2>
-                    <p className="text-muted-foreground">Upload banner and define scheduling details</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t('View Banner')}</h2>
+                    <p className="text-muted-foreground">{t('Upload banner and define scheduling details')}</p>
                 </div>
             </div>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
                     <div>
-                        <CardTitle>Banner Information</CardTitle>
-                        <CardDescription>Details about this banner</CardDescription>
+                        <CardTitle>{t('Banner Information')}</CardTitle>
+                        <CardDescription>{t('Details about this banner')}</CardDescription>
                     </div>
                     <Badge
                         variant={banner.isActive ? "default" : "secondary"}
@@ -99,21 +101,21 @@ export default function BannerInformationCard() {
                                 : "bg-gray-500 text-white"
                         }
                     >
-                        {banner.isActive ? "Active" : "Inactive"}
+                        {banner.isActive ? t("Active") : t("Inactive")}
                     </Badge>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
                     {[
-                        { label: "Banner ID", value: banner.id },
-                        { label: "Name", value: banner.name },
-                        { label: "Link", value: <Link href={banner.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{banner.link}</Link> },
-                        { label: "CPM", value: `$${banner.cpm.toFixed(2)}` },
-                        { label: "Start Date", value: formatDate(banner.startDate) },
-                        { label: "End Date", value: formatDate(banner.endDate) },
-                        { label: "Page Displayed", value: banner.page },
-                        { label: "Created At", value: formatDate(banner.createdAt) },
-                        { label: "Banner Image", value: <Link href={banner.bannerImage} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">View Image</Link> },
+                        { label: t("Banner ID"), value: banner.id },
+                        { label: t("Name"), value: banner.name },
+                        { label: t("Link"), value: <Link href={banner.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{banner.link}</Link> },
+                        { label: t("CPM"), value: `$${banner.cpm.toFixed(2)}` },
+                        { label: t("Start Date"), value: formatDate(banner.startDate) },
+                        { label: t("End Date"), value: formatDate(banner.endDate) },
+                        { label: t("Page Displayed"), value: banner.page },
+                        { label: t("Created At"), value: formatDate(banner.createdAt) },
+                        { label: t("Banner Image"), value: <Link href={banner.bannerImage} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{t('View Image')}</Link> },
                     ].map((item, index) => (
                         <div
                             key={index}

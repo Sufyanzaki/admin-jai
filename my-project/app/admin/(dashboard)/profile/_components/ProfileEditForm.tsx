@@ -7,8 +7,10 @@ import { Input } from "@/components/admin/ui/input";
 import { Button } from "@/components/admin/ui/button";
 import { Camera, X } from "lucide-react";
 import useProfileForm from "@/app/admin/(dashboard)/profile/_hooks/useProfileForm";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) {
+  const { t } = useTranslation();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +43,7 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <Label>Profile Picture</Label>
+  <Label>{t('Profile Picture')}</Label>
         <div className="flex items-center gap-4">
           <div className="relative">
             <Avatar className="h-20 w-20">
@@ -78,11 +80,11 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
             />
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
-                Click the camera icon to upload a new profile picture
+                {t('Click the camera icon to upload a new profile picture')}
               </p>
               {imagePreview && (
                 <p className="text-xs text-green-600">
-                  ✓ Image selected and ready to upload
+                  ✓ {t('Image selected and ready to upload')}
                 </p>
               )}
             </div>
@@ -94,40 +96,40 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
       <form onSubmit={handleSubmit((data) => onSubmit(data, onFinish))} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
+            <Label htmlFor="firstName">{t('First Name')}</Label>
             <Input 
               id="firstName" 
               {...register("firstName")}
-              placeholder="Enter your first name"
+              placeholder={t('Enter your first name')}
             />
             {errors.firstName && (
-              <p className="text-sm text-red-500">{errors.firstName.message}</p>
+              <p className="text-sm text-red-500">{errors.firstName.message || ""}</p>
             )}
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
+            <Label htmlFor="lastName">{t('Last Name')}</Label>
             <Input 
               id="lastName" 
               {...register("lastName")}
-              placeholder="Enter your last name"
+              placeholder={t('Enter your last name')}
             />
             {errors.lastName && (
-              <p className="text-sm text-red-500">{errors.lastName.message}</p>
+              <p className="text-sm text-red-500">{errors.lastName.message || ""}</p>
             )}
           </div>
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t('Email')}</Label>
           <Input 
             id="email" 
             type="email" 
             {...register("email")}
-            placeholder="Enter your email address"
+            placeholder={t('Enter your email address')}
           />
           {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
+            <p className="text-sm text-red-500">{errors.email.message || ""}</p>
           )}
         </div>
 
@@ -137,7 +139,7 @@ export default function ProfileEditForm({ onFinish }: { onFinish: () => void }) 
           className="w-full" 
           disabled={isLoading}
         >
-          {isLoading ? "Saving..." : "Save Changes"}
+          {isLoading ? t('Saving...') : t('Save Changes')}
         </Button>
       </form>
     </div>

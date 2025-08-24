@@ -1,6 +1,7 @@
 "use client"
 
 import {Button} from "@/components/admin/ui/button";
+import { useTranslation } from "react-i18next";
 import {Card, CardHeader, CardTitle} from "@/components/admin/ui/card";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
 import {ChevronLeft, Edit} from "lucide-react";
@@ -67,6 +68,7 @@ const userProfile = [
   ];
 
 export default function MemberProfilePage({ params }: { params: Promise<{ id: string }>}) {
+  const { t } = useTranslation();
 
     const { id:memberId } =  React.use(params);
 
@@ -76,10 +78,10 @@ export default function MemberProfilePage({ params }: { params: Promise<{ id: st
                 <Button variant="outline" size="icon" asChild>
                     <Link href="/admin/members">
                         <ChevronLeft className="h-4 w-4" />
-                        <span className="sr-only">Back to doctors</span>
+                        <span className="sr-only">{t("Back to doctors")}</span>
                     </Link>
                 </Button>
-                <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Member Profile</h1>
+                <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t('Member Profile')}</h1>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -95,17 +97,17 @@ export default function MemberProfilePage({ params }: { params: Promise<{ id: st
                         <Tabs defaultValue={userProfile[0].id} className="w-full">
                             <CardHeader className="xxl:pb-0 space-y-6">
                                 <div className="flex items-center gap-4 justify-between flex-col sm:flex-row">
-                                    <CardTitle className="text-xl font-semibold">Member Information</CardTitle>
+                                    <CardTitle className="text-xl font-semibold">{t('Member Information')}</CardTitle>
                                     <Button variant="default" asChild>
                                         <Link href="/admin/members/1/edit">
                                             <Edit className="h-4 w-4" />
-                                            <span>Edit Profile</span>
+                                            <span>{t('Edit Profile')}</span>
                                         </Link>
                                     </Button>
                                 </div>
                                 <TabsList className="flex">
                                     {userProfile.map((tab) => (
-                                        <TabsTrigger key={tab.id} className="px-4 py-2" value={tab.id}>{tab.section}</TabsTrigger>
+                                        <TabsTrigger key={tab.id} className="px-4 py-2" value={tab.id}>{t(tab.section)}</TabsTrigger>
                                     ))}
                                 </TabsList>
                             </CardHeader>

@@ -8,38 +8,40 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect } from 'react';
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import {useHome} from "@/app/shared-hooks/useHome";
-import {patchHomePageSettings} from "@/app/shared-api/homeApi";
-
-const homeFormSchema = z.object({
-  Title: z.string().min(1, "Title is required"),
-  Url: z.string().min(1, "URL is required"),
-  bannerTitle: z.string().min(1, "Banner title is required"),
-  bannerSubTitle: z.string().min(1, "Banner subtitle is required"),
-  bannerImage: z.any().optional(), // Can be File or string
-  faqsTitle: z.string().min(1, "FAQs title is required"),
-  faqsSubTitle: z.string().min(1, "FAQs subtitle is required"),
-  faqsDescription: z.string().min(1, "FAQs description is required"),
-  faqname: z.string().min(1, "FAQ name is required"),
-  faqlatestTitle: z.string().min(1, "Latest title is required"),
-  faqlatestSubTitle: z.string().min(1, "Latest subtitle is required"),
-  blogTitle: z.string().min(1, "Blog title is required"),
-  datingSiteTitle: z.string().min(1, "Dating site title is required"),
-  datingSiteImageTitle1: z.string().min(1, "Dating site image title 1 is required"),
-  datingSiteImage1: z.any().optional(), // Can be File or string
-  datingSiteImageTitle2: z.string().min(1, "Dating site image title 2 is required"),
-  datingSiteImage2: z.any().optional(), // Can be File or string
-  datingSiteImageTitle3: z.string().min(1, "Dating site image title 3 is required"),
-  datingSiteImage3: z.any().optional(), // Can be File or string
-  datingSiteImageTitle4: z.string().min(1, "Dating site image title 4 is required"),
-  datingSiteImage4: z.any().optional(), // Can be File or string
-  showOnHeader: z.boolean().default(false),
-});
-
-export type HomeFormValues = z.infer<typeof homeFormSchema>;
+import { useHome } from "@/app/shared-hooks/useHome";
+import { patchHomePageSettings } from "@/app/shared-api/homeApi";
 
 export default function useHomeForm() {
   const { homeSettings, homeLoading, mutate } = useHome();
+
+
+  const { t } = require('react-i18next');
+  const homeFormSchema = z.object({
+    Title: z.string().min(1, t("Title is required")),
+    Url: z.string().min(1, t("URL is required")),
+    bannerTitle: z.string().min(1, t("Banner title is required")),
+    bannerSubTitle: z.string().min(1, t("Banner subtitle is required")),
+    bannerImage: z.any().optional(), // Can be File or string
+    faqsTitle: z.string().min(1, t("FAQs title is required")),
+    faqsSubTitle: z.string().min(1, t("FAQs subtitle is required")),
+    faqsDescription: z.string().min(1, t("FAQs description is required")),
+    faqname: z.string().min(1, t("FAQ name is required")),
+    faqlatestTitle: z.string().min(1, t("Latest title is required")),
+    faqlatestSubTitle: z.string().min(1, t("Latest subtitle is required")),
+    blogTitle: z.string().min(1, t("Blog title is required")),
+    datingSiteTitle: z.string().min(1, t("Dating site title is required")),
+    datingSiteImageTitle1: z.string().min(1, t("Dating site image title 1 is required")),
+    datingSiteImage1: z.any().optional(), // Can be File or string
+    datingSiteImageTitle2: z.string().min(1, t("Dating site image title 2 is required")),
+    datingSiteImage2: z.any().optional(), // Can be File or string
+    datingSiteImageTitle3: z.string().min(1, t("Dating site image title 3 is required")),
+    datingSiteImage3: z.any().optional(), // Can be File or string
+    datingSiteImageTitle4: z.string().min(1, t("Dating site image title 4 is required")),
+    datingSiteImage4: z.any().optional(), // Can be File or string
+    showOnHeader: z.boolean().default(false),
+  });
+
+  type HomeFormValues = z.infer<typeof homeFormSchema>;
 
   const { trigger, isMutating } = useSWRMutation(
     'updateHomeSettings',
@@ -48,7 +50,7 @@ export default function useHomeForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
         console.error('Home settings update error:', error);
       }
     }
@@ -161,10 +163,10 @@ export default function useHomeForm() {
       const result = await trigger(payload);
       if (result) {
         await mutate();
-        showSuccess('Home settings updated successfully!');
+        showSuccess(t('Home settings updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof  Error) showError({ message: error.message });
+  if (error instanceof Error) showError({ message: t(error.message) });
     }
   };
 

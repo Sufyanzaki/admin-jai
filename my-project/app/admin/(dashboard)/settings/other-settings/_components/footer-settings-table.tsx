@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Settings, Plus, MoreVertical, Pencil, Trash } from "lucide-react";
 import {useAllFooterSections} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useAllFooterSections";
 import Preloader from "@/components/shared/Preloader";
+import { useTranslation } from "react-i18next";
 import React, {useState, useEffect} from "react";
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/admin/ui/dialog";
 import FooterSectionForm from "@/app/admin/(dashboard)/settings/other-settings/_components/footer-section-form";
@@ -21,6 +22,7 @@ interface FooterSettingsFormProps {
 }
 
 export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: FooterSettingsFormProps) {
+  const { t } = useTranslation();
 
   const [openFooterDialog, setOpenFooterDialog] = useState(false);
   const [editingSection, setEditingSection] = useState<FooterSectionDto | null>(null);
@@ -67,7 +69,7 @@ export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: F
   if(sectionsLoading) return (
       <div className="flex items-center flex-col justify-center h-64">
         <Preloader />
-        <p className="text-sm">Loading your sections...</p>
+        <p className="text-sm">{t("Loading your sections...")}</p>
       </div>
   )
 
@@ -81,10 +83,10 @@ export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: F
               <div>
                 <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
                   <Settings className="h-5 w-5" />
-                  Footer Section
+                  {t("Footer Section")}
                 </CardTitle>
                 <CardDescription>
-                  Manage your system settings and appearance
+                  {t("Manage your system settings and appearance")}
                 </CardDescription>
               </div>
 
@@ -93,7 +95,7 @@ export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: F
                   className="w-full sm:w-auto"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                Add New
+                {t("Add New")}
               </Button>}
             </div>
           </CardHeader>
@@ -103,9 +105,9 @@ export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: F
                 <TableHeader>
                   <TableRow>
                     <TableHead>#</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Pages</TableHead>
-                    <TableHead className="text-right">Action</TableHead>
+                    <TableHead>{t("Name")}</TableHead>
+                    <TableHead>{t("Pages")}</TableHead>
+                    <TableHead className="text-right">{t("Action")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -124,11 +126,11 @@ export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: F
                             <DropdownMenuContent align="end">
                               {canEdit &&  <DropdownMenuItem onClick={() => handleEdit(item.id)}>
                                 <Pencil className="w-4 h-4 mr-2" />
-                                Edit
+                                {t("Edit")}
                               </DropdownMenuItem>}
                               {canDelete &&   <DropdownMenuItem onClick={()=>deletePageById(item.id)}>
                                 <Trash className="w-4 h-4 mr-2 text-red-500" />
-                                <span className="text-red-500">Delete</span>
+                                <span className="text-red-500">{t("Delete")}</span>
                               </DropdownMenuItem>}
                             </DropdownMenuContent>
                           </DropdownMenu>}
@@ -145,13 +147,13 @@ export default function FooterSettingsTable({ canEdit, canDelete, canCreate }: F
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>
-                {editingSection ? "Edit Footer Section" : "Add Footer Section"}
+                {editingSection ? t("Edit Footer Section") : t("Add Footer Section")}
               </DialogTitle>
               <DialogDescription>
-                {editingSection
-                    ? `Update the details for "${editingSection.sectionName}" section.`
-                    : "Provide the name and page associated with this section."
-                }
+        {editingSection
+          ? t(`Update the details for "${editingSection.sectionName}" section.`)
+          : t("Provide the name and page associated with this section.")
+        }
               </DialogDescription>
             </DialogHeader>
             <FooterSectionForm callback={handleCloseDialog} />

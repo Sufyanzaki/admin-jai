@@ -14,10 +14,12 @@ import useEditBlog from "../../../_hooks/useEditBlog";
 import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
+import { useTranslation } from "react-i18next";
 
 export default function EditBlogPage() {
+    const { t } = useTranslation();
     const params = useParams();
-    const id = params.id as string | number;
+    const id = params.id as string;
     const { categories = [], loading: categoriesLoading } = useBlogCategories();
 
     const {
@@ -36,12 +38,12 @@ export default function EditBlogPage() {
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader/>
-                <p className="text-sm">Loading Blogs...</p>
+                <p className="text-sm">{t("Loading Blogs...")}</p>
             </div>
         )
     }
     if (blogError || !blog) {
-        return <div className="flex items-center justify-center h-64 text-red-500">Blog not found</div>;
+        return <div className="flex items-center justify-center h-64 text-red-500">{t("Blog not found")}</div>;
     }
     return (
         <div className="flex flex-col gap-4 p-4 xl:p-6">
@@ -54,35 +56,35 @@ export default function EditBlogPage() {
                 </Button>
 
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight mb-2">Edit Blog</h1>
-                    <p className="text-muted-foreground">Update and manage your existing blog content</p>
+                    <h1 className="text-2xl font-bold tracking-tight mb-2">{t("Edit Blog")}</h1>
+                    <p className="text-muted-foreground">{t("Update and manage your existing blog content")}</p>
                 </div>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Blogs Details</CardTitle>
-                    <CardDescription>View and manage all blog in your fleet</CardDescription>
+                    <CardTitle>{t("Blogs Details")}</CardTitle>
+                    <CardDescription>{t("View and manage all blog in your fleet")}</CardDescription>
                 </CardHeader>
 
                 <CardContent>
                     <form className="grid grid-cols-2 gap-6" onSubmit={handleSubmit((values) => { onSubmit(values); })}>
                         {/* Blog Title */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="title">Blog Title *</Label>
-                            <Input id="title" placeholder="Blog Title" required {...register('title')} />
-                            {errors.title && <div className="text-red-500 text-sm">{errors.title.message}</div>}
+                            <Label htmlFor="title">{t("Blog Title")} *</Label>
+                            <Input id="title" placeholder={t("Blog Title")} required {...register('title')} />
+                            {errors.title && <div className="text-red-500 text-sm">{errors.title.message || ""}</div>}
                         </div>
 
                         {/* Category */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="category">Category *</Label>
+                            <Label htmlFor="category">{t("Category")} *</Label>
                             <Controller
                                 control={control}
                                 name="categoryId"
                                 render={({ field }) => (
                                     field.value === undefined || field.value === null ? (
-                                        <div className="flex items-center h-10">Loading...</div>
+                                        <div className="flex items-center h-10">{t("Loading...")}</div>
                                     ) : (
                                         <Select
                                             required
@@ -91,7 +93,7 @@ export default function EditBlogPage() {
                                             onValueChange={val => field.onChange(Number(val))}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder={categoriesLoading ? "Loading..." : "Select"} />
+                                                <SelectValue placeholder={categoriesLoading ? t("Loading...") : t("Select")} />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {categories.map((cat) => (
@@ -102,19 +104,19 @@ export default function EditBlogPage() {
                                     )
                                 )}
                             />
-                            {errors.categoryId && <div className="text-red-500 text-sm">{errors.categoryId.message}</div>}
+                            {errors.categoryId && <div className="text-red-500 text-sm">{errors.categoryId.message || ""}</div>}
                         </div>
 
                         {/* Slug */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="slug">Slug *</Label>
-                            <Input id="slug" placeholder="Slug" required {...register('slug')} />
-                            {errors.slug && <div className="text-red-500 text-sm">{errors.slug.message}</div>}
+                            <Label htmlFor="slug">{t("Slug")} *</Label>
+                            <Input id="slug" placeholder={t("Slug")} required {...register('slug')} />
+                            {errors.slug && <div className="text-red-500 text-sm">{errors.slug.message || ""}</div>}
                         </div>
 
                         {/* Banner */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="banner">Banner (1300x650)</Label>
+                            <Label htmlFor="banner">{t("Banner (1300x650)")}</Label>
                             <Controller
                                 control={control}
                                 name="bannerImage"
@@ -126,13 +128,13 @@ export default function EditBlogPage() {
                                         <div className="space-y-2">
                                             {isUrl && (
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-muted-foreground">Current: {value.split('/').pop()}</span>
+                                                    <span className="text-xs text-muted-foreground">{t("Current")}: {value.split('/').pop()}</span>
                                                     <img src={value} alt="Banner" className="h-10 rounded" />
                                                 </div>
                                             )}
                                             {isFile && (
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-muted-foreground">Selected: {value.name}</span>
+                                                    <span className="text-xs text-muted-foreground">{t("Selected")}: {value.name}</span>
                                                 </div>
                                             )}
                                             <Input
@@ -149,14 +151,14 @@ export default function EditBlogPage() {
 
                         {/* Short Description */}
                         <div className="space-y-2 col-span-2">
-                            <Label htmlFor="short-description">Short Description *</Label>
-                            <Textarea id="short-description" placeholder="Short Description" rows={4} required {...register('shortDescription')} />
-                            {errors.shortDescription && <div className="text-red-500 text-sm">{errors.shortDescription.message}</div>}
+                            <Label htmlFor="short-description">{t("Short Description")} *</Label>
+                            <Textarea id="short-description" placeholder={t("Short Description")} rows={4} required {...register('shortDescription')} />
+                            {errors.shortDescription && <div className="text-red-500 text-sm">{errors.shortDescription.message || ""}</div>}
                         </div>
 
                         {/* Description */}
                         <div className="space-y-2 col-span-2">
-                            <Label htmlFor="description">Description</Label>
+                            <Label htmlFor="description">{t("Description")}</Label>
                             <Controller
                                 control={control}
                                 name="description"
@@ -167,19 +169,19 @@ export default function EditBlogPage() {
                                     />
                                 )}
                             />
-                            {errors.description && <div className="text-red-500 text-sm">{errors.description.message}</div>}
+                            {errors.description && <div className="text-red-500 text-sm">{errors.description.message || ""}</div>}
                         </div>
 
                         {/* Meta Title */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="meta-title">Meta Title</Label>
-                            <Input id="meta-title" placeholder="Meta Title" {...register('metaTitle')} />
-                            {errors.metaTitle && <div className="text-red-500 text-sm">{errors.metaTitle.message}</div>}
+                            <Label htmlFor="meta-title">{t("Meta Title")}</Label>
+                            <Input id="meta-title" placeholder={t("Meta Title")} {...register('metaTitle')} />
+                            {errors.metaTitle && <div className="text-red-500 text-sm">{errors.metaTitle.message || ""}</div>}
                         </div>
 
                         {/* Meta Image */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="meta-image">Meta Image</Label>
+                            <Label htmlFor="meta-image">{t("Meta Image")}</Label>
                             <Controller
                                 control={control}
                                 name="metaImage"
@@ -191,13 +193,13 @@ export default function EditBlogPage() {
                                         <div className="space-y-2">
                                             {isUrl && (
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-muted-foreground">Current: {value.split('/').pop()}</span>
+                                                    <span className="text-xs text-muted-foreground">{t("Current")}: {value.split('/').pop()}</span>
                                                     <img src={value} alt="Meta Image" className="h-10 rounded" />
                                                 </div>
                                             )}
                                             {isFile && (
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-muted-foreground">Selected: {value.name}</span>
+                                                    <span className="text-xs text-muted-foreground">{t("Selected")}: {value.name}</span>
                                                 </div>
                                             )}
                                             <Input
@@ -214,21 +216,21 @@ export default function EditBlogPage() {
 
                         {/* Meta Description */}
                         <div className="col-span-2 space-y-2">
-                            <Label htmlFor="meta-description">Meta Description</Label>
-                            <Textarea id="meta-description" placeholder="Meta Description" rows={4} {...register('metaDescription')} />
-                            {errors.metaDescription && <div className="text-red-500 text-sm">{errors.metaDescription.message}</div>}
+                            <Label htmlFor="meta-description">{t("Meta Description")}</Label>
+                            <Textarea id="meta-description" placeholder={t("Meta Description")} rows={4} {...register('metaDescription')} />
+                            {errors.metaDescription && <div className="text-red-500 text-sm">{errors.metaDescription.message || ""}</div>}
                         </div>
 
                         {/* Meta Keywords */}
                         <div className="col-span-2 space-y-2">
-                            <Label htmlFor="meta-keywords">Meta Keywords</Label>
-                            <Input id="meta-keywords" placeholder="Meta Keywords" {...register('metaKeywords')} />
-                            {errors.metaKeywords && <div className="text-red-500 text-sm">{errors.metaKeywords.message}</div>}
+                            <Label htmlFor="meta-keywords">{t("Meta Keywords")}</Label>
+                            <Input id="meta-keywords" placeholder={t("Meta Keywords")} {...register('metaKeywords')} />
+                            {errors.metaKeywords && <div className="text-red-500 text-sm">{errors.metaKeywords.message || ""}</div>}
                         </div>
 
                         {/* Action Buttons */}
                         <div className="col-span-2 flex justify-end space-x-4 pt-4">
-                            <Button type="submit" disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</Button>
+                            <Button type="submit" disabled={isLoading}>{isLoading ? t('Saving...') : t('Save')}</Button>
                         </div>
                     </form>
                 </CardContent>

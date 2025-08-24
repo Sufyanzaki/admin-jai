@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { useState } from "react";
 import Preloader from "@/components/shared/Preloader";
 import useAbusiveWordsForm from "@/app/admin/(dashboard)/settings/other-settings/_hooks/usePatchAbusiveWords";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   canEdit: boolean;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
+  const { t } = useTranslation();
   const {
     abusiveWords,
     addChip,
@@ -46,7 +48,7 @@ export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading Words</p>
+          <p className="text-sm">{t("Loading Words")}</p>
         </div>
     );
   }
@@ -59,7 +61,7 @@ export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
             {canCreate && (
                 <div className="flex gap-2">
                   <Input
-                      placeholder="Add value..."
+                      placeholder={t("Add value...")}
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyPress}
@@ -76,7 +78,7 @@ export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
                       disabled={!inputValue.trim()}
                       variant="outline"
                   >
-                    Add
+                    {t("Add")}
                   </Button>
                 </div>
             )}
@@ -89,7 +91,7 @@ export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
             {chips.length > 0 && (
                 <div className="space-y-3">
                   <Label className="text-sm font-medium text-muted-foreground">
-                    Current values:
+                    {t("Current values:")}
                   </Label>
                   <div className="flex flex-wrap gap-2">
                     {chips.map((value, index) => (
@@ -100,7 +102,7 @@ export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
                                   type="button"
                                   onClick={() => removeChip(value)}
                                   className="hover:bg-primary/30 rounded-md p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
-                                  aria-label={`Remove ${value}`}
+                                  aria-label={t(`Remove ${value}`)}
                               >
                                 <X className="h-3.5 w-3.5" />
                               </button>
@@ -122,7 +124,7 @@ export default function AbusiveCard({ canEdit, canDelete, canCreate }: Props) {
                   className="px-8"
                   variant="default"
               >
-                {isLoading ? "Saving..." : "Save Configuration"}
+                {isLoading ? t("Saving...") : t("Save Configuration")}
               </Button>
             </CardFooter>
         )}

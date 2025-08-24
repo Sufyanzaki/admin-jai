@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/admin/ui/badge";
 import { Button } from "@/components/admin/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +22,7 @@ import { useBlogStatus } from "@/app/admin/(dashboard)/blogs/_hooks/useBlogStatu
 import PaginationSection from "@/components/admin/Pagination";
 
 export default function BlogListPage() {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const { blogs = [], loading, error, stats, pagination } = useBlogs(null, currentPage);
   const { deleteBlogById, isItemDeleting } = useDeleteBlog();
@@ -45,14 +47,14 @@ export default function BlogListPage() {
       <div className="flex flex-col gap-4 p-4 xl:p-6">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">Blog List</h1>
-            <p className="text-muted-foreground">Manage and track all blogs in the fleet</p>
+            <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">{t("Blog List")}</h1>
+            <p className="text-muted-foreground">{t("Manage and track all blogs in the fleet")}</p>
           </div>
           {canCreate && (
               <Button className="w-full md:w-auto" asChild>
                 <Link className="flex items-center" href="/admin/blogs/create">
                   <Plus className="mr-2 h-4 w-4" />
-                  New Blog
+                  {t("New Blog")}
                 </Link>
               </Button>
           )}
@@ -61,49 +63,49 @@ export default function BlogListPage() {
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Blogs</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("Total Blogs")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold">{stats?.totalBlogs}</div>
                 <Notebook className="size-8 text-muted-foreground" />
               </div>
-              <p className="text-xs text-muted-foreground">+1 from last month</p>
+              <p className="text-xs text-muted-foreground">{t("+1 from last month")}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Active Blogs</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("Active Blogs")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold">{stats?.activeBlogs}</div>
                 <CheckCircle className="size-8 text-green-500" />
               </div>
-              <p className="text-xs text-muted-foreground">Currently visible and updated</p>
+              <p className="text-xs text-muted-foreground">{t("Currently visible and updated")}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Inactive Blogs</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("Inactive Blogs")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold">{stats?.inactiveBlogs}</div>
                 <Ban className="size-8 text-red-500" />
               </div>
-              <p className="text-xs text-muted-foreground">Hidden or unpublished blogs</p>
+              <p className="text-xs text-muted-foreground">{t("Hidden or unpublished blogs")}</p>
             </CardContent>
           </Card>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Blogs Table</CardTitle>
+            <CardTitle>{t("Blogs Table")}</CardTitle>
             <CardDescription>
-              View and manage all blogs in your fleet
+              {t("View and manage all blogs in your fleet")}
               {pagination && pagination.totalPages > 1 && (
                   <span className="ml-2 text-sm">
                 (Page {pagination.page} of {pagination.totalPages})
@@ -116,27 +118,27 @@ export default function BlogListPage() {
               {loading ? (
                   <div className="flex items-center flex-col justify-center h-64">
                     <Preloader />
-                    <p className="text-sm">Loading Blogs...</p>
+                    <p className="text-sm">{t("Loading Blogs...")}</p>
                   </div>
               ) : error ? (
-                  <div className="flex items-center justify-center h-32 text-red-500">Error loading blogs</div>
+                  <div className="flex items-center justify-center h-32 text-red-500">{t("Error loading blogs")}</div>
               ) : blogs.length === 0 ? (
                   <div className="flex items-center justify-center h-32">
-                    No blogs found.
+                    {t("No blogs found.")}
                   </div>
               ) : (
                   <>
                     <Table className="whitespace-nowrap">
                       <TableHeader>
                         <TableRow>
-                          <TableHead>ID</TableHead>
-                          <TableHead>Title</TableHead>
-                          <TableHead className="hidden md:table-cell">Category</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Status</TableHead>
-                          {(canEdit || canDelete) && (
-                              <TableHead className="text-right">Actions</TableHead>
-                          )}
+              <TableHead>{t("ID")}</TableHead>
+              <TableHead>{t("Title")}</TableHead>
+              <TableHead className="hidden md:table-cell">{t("Category")}</TableHead>
+              <TableHead>{t("Date")}</TableHead>
+              <TableHead>{t("Status")}</TableHead>
+              {(canEdit || canDelete) && (
+                <TableHead className="text-right">{t("Actions")}</TableHead>
+              )}
                         </TableRow>
                       </TableHeader>
                       <TableBody className="whitespace-nowrap">
@@ -155,7 +157,7 @@ export default function BlogListPage() {
                                     variant={blog.isActive ? "default" : "secondary"}
                                     className={blog.isActive ? "bg-green-500" : "bg-red-500 text-white"}
                                 >
-                                  {blog.isActive ? "Active" : "Inactive"}
+                                  {blog.isActive ? t("Active") : t("Inactive")}
                                 </Badge>
                               </TableCell>
                               {(canEdit || canDelete) && (
@@ -172,13 +174,13 @@ export default function BlogListPage() {
                                           <DropdownMenuContent align="end">
                                             <DropdownMenuItem asChild>
                                               <Link href={`/admin/blogs/list/${blog.id}`}>
-                                                <Eye className="mr-2 h-4 w-4" /> View
+                                                <Eye className="mr-2 h-4 w-4" /> {t("View")}
                                               </Link>
                                             </DropdownMenuItem>
                                             {canEdit && (
                                                 <DropdownMenuItem asChild>
                                                   <Link href={`/admin/blogs/list/edit/${blog.id}`}>
-                                                    <Pencil className="mr-2 h-4 w-4" /> Edit
+                                                    <Pencil className="mr-2 h-4 w-4" /> {t("Edit")}
                                                   </Link>
                                                 </DropdownMenuItem>
                                             )}
@@ -191,12 +193,12 @@ export default function BlogListPage() {
                                                   {blog.isActive ? (
                                                       <>
                                                         <Ban className="mr-2 h-4 w-4 text-red-500" />
-                                                        Set Inactive
+                                                        {t("Set Inactive")}
                                                       </>
                                                   ) : (
                                                       <>
                                                         <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
-                                                        Set Active
+                                                        {t("Set Active")}
                                                       </>
                                                   )}
                                                 </DropdownMenuItem>
@@ -206,7 +208,7 @@ export default function BlogListPage() {
                                                     className="text-red-600"
                                                     onClick={() => deleteBlogById(blog.id)}
                                                 >
-                                                  <Trash className="mr-2 h-4 w-4" /> Delete
+                                                  <Trash className="mr-2 h-4 w-4" /> {t("Delete")}
                                                 </DropdownMenuItem>
                                             )}
                                           </DropdownMenuContent>

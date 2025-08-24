@@ -1,12 +1,14 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avatar";
 import { Briefcase, Calendar, Mail, MapPin, Phone, Stethoscope } from "lucide-react";
 import { Badge } from "@/components/admin/ui/badge";
 import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 
 export default function BasicInfo() {
+  const { t } = useTranslation();
   const { user: basicInfo, userLoading: loading, error } = useBasicInfo();
 
   if (loading) {
@@ -15,7 +17,7 @@ export default function BasicInfo() {
         <CardHeader className="flex flex-col items-center text-center p-6 space-y-4">
           <div className="animate-spin rounded-full h-24 w-24 border-b-2 border-primary"></div>
           <div className="space-y-1">
-            <CardTitle className="text-xl font-semibold">Loading...</CardTitle>
+            <CardTitle className="text-xl font-semibold">{t('Loading...')}</CardTitle>
           </div>
         </CardHeader>
       </Card>
@@ -27,7 +29,7 @@ export default function BasicInfo() {
       <Card className="md:col-span-1 rounded-2xl overflow-hidden">
         <CardHeader className="flex flex-col items-center text-center p-6 space-y-4">
           <div className="space-y-1">
-            <CardTitle className="text-xl font-semibold">{error.message}</CardTitle>
+            <CardTitle className="text-xl font-semibold">{error?.message || t('No basic info')}</CardTitle>
           </div>
         </CardHeader>
       </Card>
@@ -71,42 +73,42 @@ export default function BasicInfo() {
                 : "bg-red-600 text-white"
             }`}
           >
-            {typedBasicInfo.isActive ? "Active" : "Inactive"}
+            {typedBasicInfo.isActive ? t("Active") : t("Inactive")}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-3 text-sm text-muted-foreground px-6 pb-6">
         <div className="flex items-center gap-2">
           <Mail className="h-4 w-4" />
-          <span>{typedBasicInfo.email || "N/A"}</span>
+          <span>{typedBasicInfo.email || t("N/A")}</span>
         </div>
         <div className="flex items-center gap-2">
           <Phone className="h-4 w-4" />
-          <span>{typedBasicInfo.phone || "N/A"}</span>
+          <span>{typedBasicInfo.phone || t("N/A")}</span>
         </div>
         <div className="flex items-center gap-2">
           <MapPin className="h-4 w-4" />
           <span>
-            {typedBasicInfo.location || "N/A"}
+            {typedBasicInfo.location || t("N/A")}
             {typedBasicInfo.origin && `, ${typedBasicInfo.origin}`}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <Calendar className="h-4 w-4" />
           <span>
-            Joined {typedBasicInfo.createdAt 
+            {t('Joined')} {typedBasicInfo.createdAt 
               ? new Date(typedBasicInfo.createdAt).toLocaleDateString() 
-              : "N/A"
+              : t("N/A")
             }
           </span>
         </div>
         <div className="flex items-center gap-2">
           <Briefcase className="h-4 w-4" />
-          <span>{getExperienceYears()}</span>
+          <span>{t(getExperienceYears())}</span>
         </div>
         <div className="flex items-center gap-2">
           <Stethoscope className="h-4 w-4" />
-          <span>{typedBasicInfo.department || "N/A"}</span>
+          <span>{typedBasicInfo.department || t("N/A")}</span>
         </div>
       </CardContent>
     </Card>

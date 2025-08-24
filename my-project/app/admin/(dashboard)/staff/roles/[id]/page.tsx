@@ -19,7 +19,9 @@ import useRoleById from "../_hook/useRoleById"
 import { RoleDto, Permission } from "../add/_types/roleTypes"
 import Preloader from "@/components/shared/Preloader";
 
+import { useTranslation } from "react-i18next";
 export default function RoleDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation();
   const { id } = use(params)
   const { role, loading, error } = useRoleById(id);
 
@@ -27,12 +29,12 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader/>
-          <p className="text-sm">Loading</p>
+          <p className="text-sm">{t("Loading")}</p>
         </div>
     )
   }
   if (error || !role) {
-    return <div className="p-8 text-center text-red-500">Failed to load role.</div>;
+  return <div className="p-8 text-center text-red-500">{t("Failed to load role.")}</div>;
   }
 
   function isPermissionArray(
@@ -47,12 +49,12 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
         <Button variant="outline" size="icon" asChild className="h-8 w-8">
           <Link href="/admin/staff/roles">
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
+            <span className="sr-only">{t("Back")}</span>
           </Link>
         </Button>
         <div>
-          <h1 className="text-2xl font-bold">{role.name} Role</h1>
-          <p className="text-sm text-muted-foreground">View and manage role details and permissions</p>
+          <h1 className="text-2xl font-bold">{role.name} {t("Role")}</h1>
+          <p className="text-sm text-muted-foreground">{t("View and manage role details and permissions")}</p>
         </div>
       </div>
 
@@ -60,12 +62,12 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
         <Card className="flex-1 bg-background">
           <CardHeader>
             <div className="flex items-center justify-between flex-wrap gap-4">
-              <CardTitle>Role Details</CardTitle>
+              <CardTitle>{t("Role Details")}</CardTitle>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" asChild>
                   <Link href={`/admin/staff/roles/${id}/edit`}>
                     <Edit className="mr-2 h-4 w-4" />
-                    Edit Role
+                    {t("Edit Role")}
                   </Link>
                 </Button>
               </div>
@@ -74,20 +76,20 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="space-y-1">
-                <p className="text-sm font-medium">Role Name</p>
+                <p className="text-sm font-medium">{t("Role Name")}</p>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">{role.name}</Badge>
-                  {role.isDefault && <Badge>Default</Badge>}
+                  {role.isDefault && <Badge>{t("Default")}</Badge>}
                 </div>
               </div>
               <div className="space-y-1 text-right">
-                <p className="text-sm font-medium">Users Assigned</p>
+                <p className="text-sm font-medium">{t("Users Assigned")}</p>
                 <div className="flex items-center justify-end gap-2">
                   <Badge variant="secondary">-</Badge>
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={`/admin/staff/roles/${role.id}/users`}>
                       <Users className="mr-2 h-4 w-4" />
-                      View Users
+                      {t("View Users")}
                     </Link>
                   </Button>
                 </div>
@@ -95,7 +97,7 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
             </div>
 
             <div className="space-y-1">
-              <p className="text-sm font-medium">Description</p>
+              <p className="text-sm font-medium">{t("Description")}</p>
               <p className="text-sm text-muted-foreground">{role.description}</p>
             </div>
 
@@ -124,8 +126,8 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
 
         <Card className="flex-1 bg-background">
           <CardHeader>
-            <CardTitle>Permission Summary</CardTitle>
-            <CardDescription>Overview of permissions granted to this role</CardDescription>
+              <CardTitle>{t("Permission Summary")}</CardTitle>
+              <CardDescription>{t("Overview of permissions granted to this role")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -179,12 +181,12 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <CardTitle>Permission Matrix</CardTitle>
-              <CardDescription>Detailed view of all permissions for this role</CardDescription>
+              <CardTitle>{t("Permission Matrix")}</CardTitle>
+              <CardDescription>{t("Detailed view of all permissions for this role")}</CardDescription>
             </div>
             <Button variant="outline" size="sm">
               <Download className="mr-2 h-4 w-4" />
-              Export Permissions
+              {t("Export Permissions")}
             </Button>
           </div>
         </CardHeader>
@@ -192,11 +194,11 @@ export default function RoleDetailsPage({ params }: { params: Promise<{ id: stri
           <Table className="whitespace-nowrap">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[200px]">Module</TableHead>
-                <TableHead>View</TableHead>
-                <TableHead>Create</TableHead>
-                <TableHead>Edit</TableHead>
-                <TableHead>Delete</TableHead>
+                <TableHead className="w-[200px]">{t("Module")}</TableHead>
+                <TableHead>{t("View")}</TableHead>
+                <TableHead>{t("Create")}</TableHead>
+                <TableHead>{t("Edit")}</TableHead>
+                <TableHead>{t("Delete")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="whitespace-nowrap">

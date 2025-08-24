@@ -22,11 +22,13 @@ import {ChartContainer, ChartTooltipContent} from "@/components/admin/ui/chart"
 import {usePackageReport} from "@/app/admin/(dashboard)/reports/_hooks/usePackageReport";
 import {useSearchParams} from "next/navigation";
 import React, {useState} from "react";
+import { useTranslation } from "react-i18next";
 import {AttributeSelect} from "@/components/admin/ui/attribute-select";
 import {usePackages} from "@/app/shared-hooks/usePackages";
 import Preloader from "@/components/shared/Preloader";
 
 export default function FinancialReportsPage() {
+  const { t } = useTranslation();
   const { packages } = usePackages()
   const searchParams = useSearchParams()
 
@@ -65,7 +67,7 @@ export default function FinancialReportsPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading</p>
+          <p className="text-sm">{t('Loading')}</p>
         </div>
     )
   }
@@ -73,8 +75,8 @@ export default function FinancialReportsPage() {
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Financial Reports</h1>
-          <p className="text-muted-foreground">Track revenue, expenses, and financial performance metrics</p>
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">{t('Financial Reports')}</h1>
+          <p className="text-muted-foreground">{t('Track revenue, expenses, and financial performance metrics')}</p>
         </div>
 
         <div className="flex flex-col gap-2 md:flex-row md:items-center w-fit">
@@ -94,10 +96,10 @@ export default function FinancialReportsPage() {
               onValueChange={(value) => handleFilterChange('packageId', value)}
           >
             <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Package" />
+              <SelectValue placeholder={t('Package')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Packages</SelectItem>
+              <SelectItem value="all">{t('All Packages')}</SelectItem>
               {(packages ?? []).map((item) => (
                   <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
               ))}
@@ -108,7 +110,7 @@ export default function FinancialReportsPage() {
         <div className="md:grid max-md:space-y-4 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Total Revenue</CardTitle>
+                <CardTitle className="text-sm xl:text-lg font-medium">{t('Total Revenue')}</CardTitle>
               <DollarSignIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -120,8 +122,8 @@ export default function FinancialReportsPage() {
                       {packagesReport.yearDifferencePercent}%
                 </span>
                 ) : (
-                    <span>No comparison data</span>
-                )} from last year
+                    <span>{t("No comparison data")}</span>
+                )} {t("from last year")}
               </p>
               <div className="mt-4 h-1 w-full rounded-md bg-secondary">
                 <div
@@ -133,19 +135,19 @@ export default function FinancialReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Active Packages</CardTitle>
+                <CardTitle className="text-sm xl:text-lg font-medium">{t('Active Packages')}</CardTitle>
               <WalletIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{packagesReport.activePackages}</div>
               <p className="text-xs text-muted-foreground">
-                Currently active subscriptions
+                {t("Currently active subscriptions")}
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">This Month</CardTitle>
+                <CardTitle className="text-sm xl:text-lg font-medium">{t('This Month')}</CardTitle>
               <TrendingUpIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -156,14 +158,14 @@ export default function FinancialReportsPage() {
                   {((packagesReport.thisMonthPayments - packagesReport.lastMonthPayments) / packagesReport.lastMonthPayments * 100).toFixed(1)}%
                 </span>
                 ) : (
-                    <span>No last month data</span>
-                )} from last month
+                    <span>{t("No last month data")}</span>
+                )} {t("from last month")}
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Revenue by Gender</CardTitle>
+                <CardTitle className="text-sm xl:text-lg font-medium">{t('Revenue by Gender')}</CardTitle>
               <CreditCardIcon className="size-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="text-sm space-y-2">
@@ -181,8 +183,8 @@ export default function FinancialReportsPage() {
           <div className="md:grid max-md:space-y-4 gap-4 md:grid-cols-2">
             <Card className="col-span-1">
               <CardHeader>
-                <CardTitle>Monthly Revenue</CardTitle>
-                <CardDescription>Revenue trends over time</CardDescription>
+                <CardTitle>{t('Monthly Revenue')}</CardTitle>
+                <CardDescription>{t('Revenue trends over time')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="w-full h-[300px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -237,8 +239,8 @@ export default function FinancialReportsPage() {
             </Card>
             <Card className="col-span-1">
               <CardHeader>
-                <CardTitle>Revenue by Gender</CardTitle>
-                <CardDescription>Distribution of revenue by gender</CardDescription>
+                <CardTitle>{t('Revenue by Gender')}</CardTitle>
+                <CardDescription>{t('Distribution of revenue by gender')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-[300px] w-full">
@@ -289,8 +291,8 @@ export default function FinancialReportsPage() {
             <CardHeader>
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div>
-                  <CardTitle>Recent Purchases</CardTitle>
-                  <CardDescription>Last 10 package purchases</CardDescription>
+                  <CardTitle>{t('Recent Purchases')}</CardTitle>
+                  <CardDescription>{t('Last 10 package purchases')}</CardDescription>
                 </div>
               </div>
             </CardHeader>
@@ -298,11 +300,11 @@ export default function FinancialReportsPage() {
               <Table className="whitespace-nowrap">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Package</TableHead>
-                    <TableHead>Purchase Date</TableHead>
-                    <TableHead className="text-right">Price</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('User')}</TableHead>
+                    <TableHead>{t('Package')}</TableHead>
+                    <TableHead>{t('Purchase Date')}</TableHead>
+                    <TableHead className="text-right">{t('Price')}</TableHead>
+                    <TableHead>{t('Status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="whitespace-nowrap">
@@ -324,7 +326,7 @@ export default function FinancialReportsPage() {
                             ? 'bg-green-100 text-green-800'
                             : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {purchase.status}
+                          {t(purchase.status)}
                     </span>
                         </TableCell>
                       </TableRow>

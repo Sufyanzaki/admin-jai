@@ -3,24 +3,26 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {BlogCategoryDto} from "@/app/shared-types/blog";
+import {CategoryDto} from "@/app/shared-types/blog";
 import {editBlogCategory} from "@/app/shared-api/blogCategoryApi";
+import { useTranslation } from "react-i18next";
 
-const editCategorySchema = z.object({
-    name: z.string().min(1, "Category name is required")
+const editCategorySchema = (t: any) => z.object({
+    name: z.string().min(1, t("Category name is required"))
 });
 
-export type EditCategoryFormValues = z.infer<typeof editCategorySchema>;
+export type EditCategoryFormValues = z.infer<ReturnType<typeof editCategorySchema>>;
 
 export default function useEditBlogCategory(id: string, initialName: string) {
+    const { t } = useTranslation();
     const { trigger, isMutating } = useSWRMutation(
         'editBlogCategory',
-        async (_: string, { arg }: { arg: Partial<BlogCategoryDto> }) => {
+        async (_: string, { arg }: { arg: Partial<CategoryDto> }) => {
             return await editBlogCategory(id, arg);
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
             }
         }
     );
@@ -31,18 +33,18 @@ export default function useEditBlogCategory(id: string, initialName: string) {
         register,
         reset,
         setValue,
-    } = useForm<EditCategoryFormValues>({
-        resolver: zodResolver(editCategorySchema),
+    } = useForm<z.infer<ReturnType<typeof editCategorySchema>>>({
+        resolver: zodResolver(editCategorySchema(t)),
         defaultValues: {
             name: initialName,
         },
         mode: 'onBlur'
     });
 
-    const onSubmit = async (values: EditCategoryFormValues, callback?: () => void) => {
+    const onSubmit = async (values: z.infer<ReturnType<typeof editCategorySchema>>, callback?: () => void) => {
         const result = await trigger({ name: values.name });
         if (result) {
-            showSuccess('Category updated successfully!');
+            showSuccess(t('Category updated successfully!'));
             callback?.();
         }
     };
@@ -56,4 +58,4 @@ export default function useEditBlogCategory(id: string, initialName: string) {
         reset,
         setValue,
     };
-} 
+}

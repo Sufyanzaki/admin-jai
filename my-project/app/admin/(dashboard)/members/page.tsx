@@ -6,27 +6,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/admin/ui/
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import useAllMembers from "./_hooks/useAllMembers";
 import { useDebounce } from "@/hooks/useDebounce";
 
-import {useDeleteMember} from "@/app/shared-hooks/useDeleteMember";
-import {useUpdateMemberStatus} from "@/app/admin/(dashboard)/members/_hooks/useUpdateMemberStatus";
+import { useDeleteMember } from "@/app/shared-hooks/useDeleteMember";
+import { useUpdateMemberStatus } from "@/app/admin/(dashboard)/members/_hooks/useUpdateMemberStatus";
 import MembersFilters from "@/components/admin/members/members-filters";
 import MembersTable from "@/components/admin/members/members-table";
 import MembersGrid from "@/components/admin/members/members-grid";
 import PaginationSection from "@/components/admin/Pagination";
 import MembersOverview from "@/components/admin/members/members-overview";
 import DeleteMemberDialog from "@/components/admin/members/delete-member-dialog";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function StaffPage() {
+  const { t } = useTranslation();
 
-  const { data:session } = useSession();
+  const { data: session } = useSession();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState({key: '', value:false});
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState({ key: '', value: false });
   const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
@@ -43,7 +45,7 @@ export default function StaffPage() {
     search: debouncedSearchQuery || undefined,
     status: selectedStatuses.length === 1 ? selectedStatuses[0].toLowerCase() : undefined,
     gender: selectedGender.length === 1 ? selectedGender[0] : undefined,
-    isPremium: selectedMemberships.length === 1  ? (selectedMemberships[0] === "Premium")  : undefined,
+    isPremium: selectedMemberships.length === 1 ? (selectedMemberships[0] === t("Premium")) : undefined,
   };
 
   const { data: membersData, error, isLoading } = useAllMembers(params);
@@ -53,17 +55,17 @@ export default function StaffPage() {
   const members = membersData?.users || [];
   const stats = membersData?.stats;
 
-  const statuses = ["Active", "Inactive"];
-  const membershipOptions = ["Premium", "Free member"];
-  const genderOptions = ["Male", "Female", "Other"];
+  const statuses = [t("Active"), t("Inactive")];
+  const membershipOptions = [t("Premium"), t("Free member")];
+  const genderOptions = [t("Male"), t("Female"), t("Other")];
   const activeFilters = selectedMemberships.length + selectedStatuses.length + selectedGender.length;
 
   const handleBulkSelectChange = (value: string) => {
     setBulkSelectValue(value);
     if (value === "active") {
-      setSelectedStatuses(["Active"]);
+      setSelectedStatuses([t("Active")]);
     } else if (value === "inactive") {
-      setSelectedStatuses(["Inactive"]);
+      setSelectedStatuses([t("Inactive")]);
     } else {
       setSelectedStatuses([]);
     }
@@ -111,7 +113,7 @@ export default function StaffPage() {
   };
 
   const handleDeleteConfirm = () => {
-    deleteMemberById(deleteDialogOpen.key).finally(() => setDeleteDialogOpen({key: '', value:false}));
+    deleteMemberById(deleteDialogOpen.key).finally(() => setDeleteDialogOpen({ key: '', value: false }));
   };
 
   if (error) {
@@ -119,8 +121,8 @@ export default function StaffPage() {
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <p className="text-red-500 mb-4">Error loading members</p>
-            <Button onClick={() => window.location.reload()}>Retry</Button>
+            <p className="text-red-500 mb-4">{t("Error loading members")}</p>
+            <Button onClick={() => window.location.reload()}>{t("Retry")}</Button>
           </div>
         </div>
       </div>
@@ -142,8 +144,8 @@ export default function StaffPage() {
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
-            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Members Management</h2>
-            <p className="text-muted-foreground">Manage staff, roles, and permissions</p>
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Members Management")}</h2>
+            <p className="text-muted-foreground">{t("Manage staff, roles, and permissions")}</p>
           </div>
           <div className="flex items-center flex-wrap gap-2">
             <Button
@@ -153,7 +155,7 @@ export default function StaffPage() {
             >
               <Link href="/admin/members/add">
                 <UserPlus className="mr-2 h-4 w-4" />
-                Add New Member
+                {t("Add New Member")}
               </Link>
             </Button>
           </div>
@@ -163,7 +165,7 @@ export default function StaffPage() {
           <Card className="md:col-span-3">
             <CardHeader className="flex flex-col lg:flex-row items-start md:items-center justify-between gap-4 flex-wrap">
               <div>
-                <CardTitle>Members List</CardTitle>
+                <CardTitle>{t("Members List")}</CardTitle>
               </div>
               <MembersFilters
                 searchQuery={searchQuery}
@@ -189,8 +191,8 @@ export default function StaffPage() {
             <CardContent>
               <Tabs defaultValue="list" className="w-full">
                 <TabsList className="mb-4 grid w-full grid-cols-2">
-                  <TabsTrigger value="list">List View</TabsTrigger>
-                  <TabsTrigger value="grid">Grid View</TabsTrigger>
+                  <TabsTrigger value="list">{t("List View")}</TabsTrigger>
+                  <TabsTrigger value="grid">{t("Grid View")}</TabsTrigger>
                 </TabsList>
                 <TabsContent value="list" className="mt-0">
                   <MembersTable
@@ -199,7 +201,7 @@ export default function StaffPage() {
                     checkedAll={checkedAll}
                     onCheckAll={handleCheckAll}
                     onSingleCheck={handleSingleCheck}
-                    onDeleteClick={canDeleteMember ? (id) => setDeleteDialogOpen({value: true, key: id}) : () => {}}
+                    onDeleteClick={canDeleteMember ? (id) => setDeleteDialogOpen({ value: true, key: id }) : () => { }}
                     onStatusChange={canEditMember ? updateMemberStatus : undefined}
                     isItemDeleting={isItemDeleting}
                     isItemUpdating={isItemUpdating}
@@ -214,7 +216,7 @@ export default function StaffPage() {
                     currentPage={currentPage}
                     totalPages={membersData?.pagination?.totalPages}
                     onPageChange={setCurrentPage}
-                    onDeleteClick={canDeleteMember ? (id) => setDeleteDialogOpen({value: true, key: id}) : () => {}}
+                    onDeleteClick={canDeleteMember ? (id) => setDeleteDialogOpen({ value: true, key: id }) : () => { }}
                     onStatusChange={canEditMember ? updateMemberStatus : undefined}
                     isItemDeleting={isItemDeleting}
                     isItemUpdating={isItemUpdating}
@@ -239,7 +241,7 @@ export default function StaffPage() {
 
       <DeleteMemberDialog
         open={deleteDialogOpen}
-        onOpenChange={value=>setDeleteDialogOpen({...deleteDialogOpen, value: value})}
+        onOpenChange={value => setDeleteDialogOpen({ ...deleteDialogOpen, value: value })}
         onConfirm={handleDeleteConfirm}
       />
     </>

@@ -11,24 +11,27 @@ import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { patchTermsConditionsSettings } from '@/app/shared-api/tosApi';
 import { useTOS } from '@/app/shared-hooks/useTOS';
 
-const tosFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    Url: z.string().min(1, 'URL is required'),
-    showOnHeader: z.boolean(),
-    isActive: z.boolean(),
-    pageSectiontitle: z.string().min(1, 'Section title is required'),
-    link: z.string().min(1, 'Link is required'),
-    content: z.string().min(1, 'Content is required'),
-    metaTitle: z.string().min(1, 'Meta title is required'),
-    metaDescription: z.string().min(1, 'Meta description is required'),
-    keywords: z.string().min(1, 'Keywords are required'),
-    metaImage: z.any().optional(),
-    pageType: z.literal('terms'),
-});
-
-type TOSFormValues = z.infer<typeof tosFormSchema>;
-
 export default function useTOSForm() {
+
+
+    const { t } = require('react-i18next');
+    const tosFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        Url: z.string().min(1, t('URL is required')),
+        showOnHeader: z.boolean(),
+        isActive: z.boolean(),
+        pageSectiontitle: z.string().min(1, t('Section title is required')),
+        link: z.string().min(1, t('Link is required')),
+        content: z.string().min(1, t('Content is required')),
+        metaTitle: z.string().min(1, t('Meta title is required')),
+        metaDescription: z.string().min(1, t('Meta description is required')),
+        keywords: z.string().min(1, t('Keywords are required')),
+        metaImage: z.any().optional(),
+        pageType: z.literal('terms'),
+    });
+
+    type TOSFormValues = z.infer<typeof tosFormSchema>;
+
     const { tosSettings, mutate, tosLoading } = useTOS();
     const [isUploading, setIsUploading] = useState(false); // New state for image upload
 
@@ -65,7 +68,7 @@ export default function useTOSForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('TOS settings update error:', error);
             }
         }
@@ -109,11 +112,11 @@ export default function useTOSForm() {
             const result = await trigger(payload);
             if (result) {
                 await mutate();
-                showSuccess('Terms of Service settings updated successfully!');
+                showSuccess(t('Terms of Service settings updated successfully!'));
             }
         } catch (error) {
             setIsUploading(false);
-            showError({ message: 'Failed to upload image' });
+            showError({ message: t('Failed to upload image') });
             console.error('Image upload error:', error);
         }
     };

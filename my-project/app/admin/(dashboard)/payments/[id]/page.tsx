@@ -9,7 +9,7 @@ import {ArrowLeft, CreditCard, Download, FileText, Mail, Printer, Receipt, Check
 import Link from "next/link";
 import { use } from "react";
 
-// Sample invoices data - this would normally come from an API or database
+import { useTranslation } from "react-i18next";
 const invoices = [
     {
         id: "INV-001",
@@ -110,6 +110,7 @@ const invoices = [
 ];
 
 export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+    const { t } = useTranslation();
     // Find the invoice with the matching ID
     const {id} = use(params)
     const invoice = invoices.find((inv) => inv.id === id) || invoices[0];
@@ -127,31 +128,31 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
                     <Button variant="outline" size="icon" asChild>
                         <Link href="/admin/payments">
                             <ArrowLeft className="h-4 w-4" />
-                            <span className="sr-only">Back</span>
+                            <span className="sr-only">{t("Back")}</span>
                         </Link>
                     </Button>
                     <div className="space-y-2">
-                        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Payment Receipt</h1>
+                        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">{t('Payment Receipt')}</h1>
                         <p className="text-sm text-muted-foreground">{invoice.id} • RCP-007-2024</p>
                     </div>
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                    <Button variant="outline" size="sm">
-                        <Download className="mr-2 h-4 w-4" />
-                        Download
-                    </Button>
-                    <Button variant="outline" size="sm">
-                        <Printer className="mr-2 h-4 w-4" />
-                        Print
-                    </Button>
-                    <Button variant="outline" size="sm">
-                        <Mail className="mr-2 h-4 w-4" />
-                        Email Receipt
-                    </Button>
-                    <Button size="sm">
-                        <FileText className="mr-2 h-4 w-4" />
-                        View Invoice
-                    </Button>
+                        <Button variant="outline" size="sm">
+                            <Download className="mr-2 h-4 w-4" />
+                            {t('Download')}
+                        </Button>
+                        <Button variant="outline" size="sm">
+                            <Printer className="mr-2 h-4 w-4" />
+                            {t('Print')}
+                        </Button>
+                        <Button variant="outline" size="sm">
+                            <Mail className="mr-2 h-4 w-4" />
+                            {t('Email Receipt')}
+                        </Button>
+                        <Button size="sm">
+                            <FileText className="mr-2 h-4 w-4" />
+                            {t('View Invoice')}
+                        </Button>
                 </div>
             </div>
 
@@ -161,13 +162,13 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
                 <Card>
                     <CardHeader>
                         <div className="flex items-center justify-between">
-                            <CardTitle>Payment Details</CardTitle>
+                            <CardTitle>{t('Payment Details')}</CardTitle>
                             <Badge variant="outline" className="flex items-center gap-1">
                                 <CheckCircle className="h-3 w-3" />
-                                Pending
+                                {t('Pending')}
                             </Badge>
                         </div>
-                        <CardDescription>Transaction information</CardDescription>
+                        <CardDescription>{t('Transaction information')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-3">
@@ -206,8 +207,8 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
                 {/* Patient Information Card */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Patient Information</CardTitle>
-                        <CardDescription>Patient details and contact information</CardDescription>
+                        <CardTitle>{t('Patient Information')}</CardTitle>
+                        <CardDescription>{t('Patient details and contact information')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex items-center gap-3">
@@ -241,8 +242,8 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
             {/* Invoice Details Section */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Invoice Details</CardTitle>
-                    <CardDescription>Information about the related invoice</CardDescription>
+                    <CardTitle>{t('Invoice Details')}</CardTitle>
+                    <CardDescription>{t('Information about the related invoice')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="details" className="w-full">
@@ -344,11 +345,11 @@ export default function InvoiceDetailsPage({ params }: { params: Promise<{ id: s
                     <div className="space-y-8">
                         <div className="flex gap-2">
                             <Info className="h-5 w-5 text-orange-600 mt-0.5" />
-                            <h3 className="text-orange-900 font-semibold">Payment Pending</h3>
+                            <h3 className="text-orange-900 font-semibold">{t('Payment Pending')}</h3>
                         </div>
                         <div className="flex-1">
                             <p className="text-orange-700 text-sm mt-2">
-                                Your prescription for Lisinopril will expire in 7 days. Please schedule a follow-up appointment for renewal.
+                                {t('Your prescription for Lisinopril will expire in 7 days. Please schedule a follow-up appointment for renewal.')}
                             </p>
                             <div className="mt-4">
                                 <Button variant="outline">

@@ -15,7 +15,9 @@ import useRoleForm from "../_hook/useRoleForm";
 import React from "react";
 import {permissionTypes, roleMenuItems} from "../../const/permissions"
 
+import { useTranslation } from "react-i18next";
 export default function AddRolePage() {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     onSubmit,
@@ -45,42 +47,42 @@ export default function AddRolePage() {
         <Button variant="outline" size="icon" asChild className="h-8 w-8">
           <Link href={`/admin/staff/roles`}>
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
+            <span className="sr-only">{t("Back")}</span>
           </Link>
         </Button>
         <div>
-          <h1 className="text-2xl font-bold">Add Role</h1>
-          <p className="text-sm text-muted-foreground">Modify role details and permissions</p>
+          <h1 className="text-2xl font-bold">{t("Add Role")}</h1>
+          <p className="text-sm text-muted-foreground">{t("Modify role details and permissions")}</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card className="bg-background">
           <CardHeader>
-            <CardTitle>Role Information</CardTitle>
-            <CardDescription>Basic information about the role</CardDescription>
+            <CardTitle>{t("Role Information")}</CardTitle>
+            <CardDescription>{t("Basic information about the role")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="name">Role Name</Label>
+                <Label htmlFor="name">{t("Role Name")}</Label>
                 <Controller
                   name="name"
                   control={control}
                   render={({ field }) => (
-                    <Input id="name" placeholder="Enter role name" {...field} />
+                    <Input id="name" placeholder={t("Enter role name")} {...field} />
                   )}
                 />
                 {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t("Description")}</Label>
               <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
-                  <Textarea id="description" placeholder="Role Description" {...field} />
+                  <Textarea id="description" placeholder={t("Role Description")} {...field} />
                 )}
               />
               {errors.description && <span className="text-red-500 text-xs">{errors.description.message}</span>}
@@ -93,21 +95,21 @@ export default function AddRolePage() {
                   <Switch id="isDefault" checked={field.value} onCheckedChange={field.onChange} />
                 )}
               />
-              <Label htmlFor="isDefault">Set as default role</Label>
+              <Label htmlFor="isDefault">{t("Set as default role")}</Label>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-background mt-6">
           <CardHeader>
-            <CardTitle>Permissions</CardTitle>
-            <CardDescription>Configure access permissions for this role</CardDescription>
+            <CardTitle>{t("Permissions")}</CardTitle>
+            <CardDescription>{t("Configure access permissions for this role")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {roleMenuItems.map((module, modIdx) => (
                 <div key={module.id} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label className="text-base font-medium">{module.title}</Label>
+                    <Label className="text-base font-medium">{t(module.title)}</Label>
                     <div className="flex gap-8 justify-start items-center">
                       {module.permissions.map((permKey) => {
                         const permConfig = permissionTypes.find((p) => p.key === permKey);
@@ -125,7 +127,7 @@ export default function AddRolePage() {
                                           onCheckedChange={field.onChange}
                                       />
                                       <Label htmlFor={`${module.id}-${permConfig.label}`} className="capitalize">
-                                        {permConfig.label}
+                                        {t(permConfig.label)}
                                       </Label>
                                     </div>
                                 )}
@@ -142,7 +144,7 @@ export default function AddRolePage() {
           <CardFooter className="flex justify-end flex-wrap gap-2">
             <Button type="submit" disabled={isLoading}>
               <Save className="mr-2 h-4 w-4" />
-              {isLoading ? "Saving..." : "Save Changes"}
+              {isLoading ? t("Saving...") : t("Save Changes")}
             </Button>
           </CardFooter>
         </Card>

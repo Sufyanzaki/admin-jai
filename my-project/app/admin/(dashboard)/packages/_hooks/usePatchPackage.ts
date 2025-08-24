@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { mutate as globalMutate } from "swr";
-import {PackageDto} from "@/app/shared-types/packages";
-import {patchPackage} from "@/app/shared-api/packageApi";
+import { PackageDto } from "@/app/shared-types/packages";
+import { patchPackage } from "@/app/shared-api/packageApi";
+import { useTranslation } from "react-i18next";
 
 export function usePatchPackage() {
+  const { t } = useTranslation();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +27,7 @@ export function usePatchPackage() {
         current ? { ...current, isActive } : current, false
       );
     } catch (err: unknown) {
-      if(err instanceof Error) setError(err.message || "Failed to update status");
+      if (err instanceof Error) setError(err.message || t("Failed to update status"));
     } finally {
       setLoading(false);
     }

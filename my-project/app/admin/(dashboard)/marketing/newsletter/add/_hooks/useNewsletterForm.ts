@@ -6,15 +6,17 @@ import { showSuccess } from "@/shared-lib";
 import { postNewsletter } from "../_api/postNewsletter";
 import { useState } from "react";
 
-const newsletterSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  content: z.string().min(1, "Content is required"),
-  emails: z.string().min(1, "Emails are required"),
-});
-
-export type NewsletterFormValues = z.infer<typeof newsletterSchema>;
-
 export default function useNewsletterForm() {
+
+  const { t } = require('react-i18next');
+  const newsletterSchema = z.object({
+    title: z.string().min(1, t("Title is required")),
+    content: z.string().min(1, t("Content is required")),
+    emails: z.string().min(1, t("Emails are required")),
+  });
+
+   type NewsletterFormValues = z.infer<typeof newsletterSchema>;
+
   const [isLoading, setIsLoading] = useState(false);
   const {
     handleSubmit,
@@ -37,11 +39,11 @@ export default function useNewsletterForm() {
     try {
       const result = await postNewsletter(values);
       if (result) {
-        showSuccess("Newsletter created successfully!");
+        showSuccess(t("Newsletter created successfully!"));
         reset();
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || "Failed to create newsletter" });
+  if (error instanceof Error) showError({ message: t(error.message || "Failed to create newsletter") });
     } finally {
       setIsLoading(false);
     }

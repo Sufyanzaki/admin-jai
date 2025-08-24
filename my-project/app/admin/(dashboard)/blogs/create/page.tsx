@@ -12,8 +12,10 @@ import { useBlogCategories } from "../../../../shared-hooks/useBlogCategories";
 import useCreateBlog from "../_hooks/useCreateBlog";
 import { Controller } from "react-hook-form";
 import {SimpleEditor} from "@/components/admin/tiptap-templates/simple/simple-editor";
+import { useTranslation } from "react-i18next";
 
 export default function AddBlogPage() {
+    const { t } = useTranslation();
 
     const { categories = [], loading: categoriesLoading } = useBlogCategories();
 
@@ -33,21 +35,21 @@ export default function AddBlogPage() {
                     <Button variant="outline" size="icon" asChild>
                         <Link href="/admin/blogs/list">
                             <ArrowLeft className="h-4 w-4" />
-                            <span className="sr-only">Back</span>
+                            <span className="sr-only">{t("Back")}</span>
                         </Link>
                     </Button>
 
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight mb-2">Add Blog</h1>
-                        <p className="text-muted-foreground">Create and publish new blog content</p>
+                        <h1 className="text-2xl font-bold tracking-tight mb-2">{t("Add Blog")}</h1>
+                        <p className="text-muted-foreground">{t("Create and publish new blog content")}</p>
                     </div>
                 </div>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Blogs Details</CardTitle>
-                    <CardDescription>View and manage all blog in your fleet</CardDescription>
+                    <CardTitle>{t("Blogs Details")}</CardTitle>
+                    <CardDescription>{t("View and manage all blog in your fleet")}</CardDescription>
                 </CardHeader>
 
                 <CardContent>
@@ -56,13 +58,14 @@ export default function AddBlogPage() {
                         onSubmit={handleSubmit(values => onSubmit(values))}
                     >
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="title">Blog Title *</Label>
-                            <Input id="title" placeholder="Blog Title" required {...register('title')} />
-                            {errors.title && <div className="text-red-500 text-sm">{errors.title.message}</div>}
+                            <Label htmlFor="title">{t("Blog Title")} *</Label>
+                            <Input id="title" placeholder={t("Blog Title")}
+                                required {...register('title')} />
+                            {errors.title && <div className="text-red-500 text-sm">{errors.title.message || ""}</div>}
                         </div>
 
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="category">Category *</Label>
+                            <Label htmlFor="category">{t("Category")} *</Label>
                             <Controller
                                 control={control}
                                 name="categoryId"
@@ -74,7 +77,7 @@ export default function AddBlogPage() {
                                         onValueChange={val => field.onChange(Number(val))}
                                     >
                                 <SelectTrigger>
-                                            <SelectValue placeholder={categoriesLoading ? "Loading..." : "Select"} />
+                                            <SelectValue placeholder={categoriesLoading ? t("Loading...") : t("Select")}/>
                                 </SelectTrigger>
                                 <SelectContent>
                                             {categories.map((cat) => (
@@ -84,19 +87,20 @@ export default function AddBlogPage() {
                             </Select>
                                 )}
                             />
-                            {errors.categoryId && <div className="text-red-500 text-sm">{errors.categoryId.message}</div>}
+                            {errors.categoryId && <div className="text-red-500 text-sm">{errors.categoryId.message || ""}</div>}
                         </div>
 
                         {/* Slug */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="slug">Slug *</Label>
-                            <Input id="slug" placeholder="Slug" required {...register('slug')} />
-                            {errors.slug && <div className="text-red-500 text-sm">{errors.slug.message}</div>}
+                            <Label htmlFor="slug">{t("Slug")} *</Label>
+                            <Input id="slug" placeholder={t("Slug")}
+                                required {...register('slug')} />
+                            {errors.slug && <div className="text-red-500 text-sm">{errors.slug.message || ""}</div>}
                         </div>
 
                         {/* Banner */}
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="banner">Banner (1300x650)</Label>
+                            <Label htmlFor="banner">{t("Banner (1300x650)")}</Label>
                             <Controller
                                 control={control}
                                 name="bannerImage"
@@ -112,14 +116,15 @@ export default function AddBlogPage() {
                         </div>
 
                         <div className="space-y-2 col-span-2">
-                            <Label htmlFor="short-description">Short Description *</Label>
-                            <Textarea id="short-description" placeholder="Short Description" rows={4} required {...register('shortDescription')} />
-                            {errors.shortDescription && <div className="text-red-500 text-sm">{errors.shortDescription.message}</div>}
+                            <Label htmlFor="short-description">{t("Short Description")} *</Label>
+                            <Textarea id="short-description" placeholder={t("Short Description")}
+                                rows={4} required {...register('shortDescription')} />
+                            {errors.shortDescription && <div className="text-red-500 text-sm">{errors.shortDescription.message || ""}</div>}
                         </div>
 
                         {/* Description */}
                         <div className="space-y-2 col-span-2">
-                            <Label htmlFor="description">Description</Label>
+                            <Label htmlFor="description">{t("Description")}</Label>
                             <Controller
                                 control={control}
                                 name="description"
@@ -130,17 +135,18 @@ export default function AddBlogPage() {
                                     />
                                 )}
                             />
-                            {errors.description && <div className="text-red-500 text-sm">{errors.description.message}</div>}
+                            {errors.description && <div className="text-red-500 text-sm">{errors.description.message || ""}</div>}
                         </div>
 
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="meta-title">Meta Title</Label>
-                            <Input id="meta-title" placeholder="Meta Title" {...register('metaTitle')} />
-                            {errors.metaTitle && <div className="text-red-500 text-sm">{errors.metaTitle.message}</div>}
+                            <Label htmlFor="meta-title">{t("Meta Title")}</Label>
+                            <Input id="meta-title" placeholder={t("Meta Title")}
+                                {...register('metaTitle')} />
+                            {errors.metaTitle && <div className="text-red-500 text-sm">{errors.metaTitle.message || ""}</div>}
                         </div>
 
                         <div className="flex-1 space-y-2">
-                            <Label htmlFor="meta-image">Meta Image</Label>
+                            <Label htmlFor="meta-image">{t("Meta Image")}</Label>
                             <Controller
                                 control={control}
                                 name="metaImage"
@@ -156,19 +162,21 @@ export default function AddBlogPage() {
                         </div>
 
                         <div className="col-span-2 space-y-2">
-                            <Label htmlFor="meta-description">Meta Description</Label>
-                            <Textarea id="meta-description" placeholder="Meta Description" rows={4} {...register('metaDescription')} />
-                            {errors.metaDescription && <div className="text-red-500 text-sm">{errors.metaDescription.message}</div>}
+                            <Label htmlFor="meta-description">{t("Meta Description")}</Label>
+                            <Textarea id="meta-description" placeholder={t("Meta Description")}
+                                rows={4} {...register('metaDescription')} />
+                            {errors.metaDescription && <div className="text-red-500 text-sm">{errors.metaDescription.message || ""}</div>}
                         </div>
 
                         <div className="col-span-2 space-y-2">
-                            <Label htmlFor="meta-keywords">Meta Keywords</Label>
-                            <Input id="meta-keywords" placeholder="Meta Keywords" {...register('metaKeywords')} />
-                            {errors.metaKeywords && <div className="text-red-500 text-sm">{errors.metaKeywords.message}</div>}
+                            <Label htmlFor="meta-keywords">{t("Meta Keywords")}</Label>
+                            <Input id="meta-keywords" placeholder={t("Meta Keywords")}
+                                {...register('metaKeywords')} />
+                            {errors.metaKeywords && <div className="text-red-500 text-sm">{errors.metaKeywords.message || ""}</div>}
                         </div>
 
                         <div className="col-span-2 flex justify-end space-x-4 pt-4">
-                            <Button type="submit" disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</Button>
+                            <Button type="submit" disabled={isLoading}>{isLoading ? t('Saving...') : t('Save')}</Button>
                         </div>
                     </form>
                 </CardContent>

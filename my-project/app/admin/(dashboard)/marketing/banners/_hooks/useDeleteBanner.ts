@@ -3,9 +3,12 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useBanners } from "./useBanners";
+import { useTranslation } from "react-i18next";
 
 export const useDeleteBanner = () => {
     const { mutate } = useBanners();
+    const { t } = useTranslation();
+
 
     const { trigger, isMutating, error } = useSWRMutation(
         "deleteBanner",
@@ -14,7 +17,7 @@ export const useDeleteBanner = () => {
         },
         {
             onSuccess: async () => {
-                showSuccess("Banner deleted successfully!");
+                showSuccess(t("Banner deleted successfully!"));
                 await mutate(); // Revalidate banners list
             },
             onError: (error: Error) => {

@@ -2,21 +2,26 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import useSWRMutation from 'swr/mutation';
 import { showError } from '@/shared-lib';
 import { showSuccess } from '@/shared-lib';
 import { patchCaptcha } from '../_api/captcha';
 import useCaptcha from './useCaptcha';
 
-const captchaSchema = z.object({
-  siteKey: z.string().min(1, { message: 'Site Key is required' }),
-  siteSecret: z.string().min(1, { message: 'Site Secret is required' }),
-  isActive: z.boolean(),
-});
-
-export type CaptchaFormValues = z.infer<typeof captchaSchema>;
 
 export default function useCaptchaForm() {
+
+  const { t } = useTranslation();
+
+  const captchaSchema = z.object({
+    siteKey: z.string().min(1, { message: t('Site Key is required') }),
+    siteSecret: z.string().min(1, { message: t('Site Secret is required') }),
+    isActive: z.boolean(),
+  });
+
+  type CaptchaFormValues = z.infer<typeof captchaSchema>;
+
   const { data: existingData, isLoading: isLoadingData } = useCaptcha();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -26,7 +31,7 @@ export default function useCaptchaForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t('Failed to update captcha settings.') });
       },
     }
   );
@@ -63,10 +68,10 @@ export default function useCaptchaForm() {
     try {
       const result = await trigger(values);
       if (result) {
-        showSuccess('Captcha settings updated successfully!');
+  showSuccess(t('Captcha settings updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || 'Failed to update captcha settings.' });
+  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update captcha settings.') });
     }
   };
 

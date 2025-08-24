@@ -7,25 +7,28 @@ import useSWRMutation from "swr/mutation";
 import { postRole } from "../_api/rolesApi";
 import { RolePayload, RoleDto } from "../add/_types/roleTypes";
 import { mutate } from "swr";
+import { useTranslation } from "react-i18next";
 
-const permissionSchema = z.object({
-  module: z.string().min(1, "Module name is required"),
-  canView: z.boolean(),
-  canCreate: z.boolean(),
-  canEdit: z.boolean(),
-  canDelete: z.boolean(),
-});
-
-const roleSchema = z.object({
-  name: z.string().min(1, "Role name is required"),
-  description: z.string().min(1, "Description is required"),
-  isDefault: z.boolean().default(false),
-  permissions: z.array(permissionSchema).min(1, "At least one permission is required"),
-});
-
-export type RoleFormValues = z.infer<typeof roleSchema>;
 
 export default function useRoleForm() {
+  const { t } = useTranslation();
+  const permissionSchema = z.object({
+    module: z.string().min(1, t("Module name is required")),
+    canView: z.boolean(),
+    canCreate: z.boolean(),
+    canEdit: z.boolean(),
+    canDelete: z.boolean(),
+  });
+
+  const roleSchema = z.object({
+    name: z.string().min(1, t("Role name is required")),
+    description: z.string().min(1, t("Description is required")),
+    isDefault: z.boolean().default(false),
+    permissions: z.array(permissionSchema).min(1, t("At least one permission is required")),
+  });
+
+  type RoleFormValues = z.infer<typeof roleSchema>;
+
   const { trigger, isMutating } = useSWRMutation(
     "createRole",
     async (_: string, { arg }: { arg: RolePayload }) => {
@@ -74,7 +77,7 @@ export default function useRoleForm() {
     try {
       const result = await trigger(values);
       if (result) {
-        showSuccess("Role created successfully!");
+        showSuccess(t("Role created successfully!"));
         reset();
       }
     } catch (error: unknown) {

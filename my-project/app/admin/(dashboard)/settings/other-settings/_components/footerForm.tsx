@@ -9,8 +9,10 @@ import { Save, Upload, X } from "lucide-react";
 import { useFooterForm } from "../_hooks/useFooterForm";
 import { useState } from "react";
 import Preloader from "@/components/shared/Preloader";
+import { useTranslation } from "react-i18next";
 
 export default function FooterForm({ canEdit }: { canEdit: boolean }) {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -40,7 +42,7 @@ export default function FooterForm({ canEdit }: { canEdit: boolean }) {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading Footer</p>
+          <p className="text-sm">{t("Loading Footer")}</p>
         </div>
     );
   }
@@ -49,13 +51,13 @@ export default function FooterForm({ canEdit }: { canEdit: boolean }) {
       <form onSubmit={handleSubmit(v => onSubmit(v, () => {}))}>
         <Card>
           <CardHeader>
-            <CardTitle>Footer Configuration</CardTitle>
-            <CardDescription>Configure your footer settings and appearance</CardDescription>
+            <CardTitle>{t("Footer Configuration")}</CardTitle>
+            <CardDescription>{t("Configure your footer settings and appearance")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <h3 className="text-lg font-medium">Footer Logo</h3>
+                <h3 className="text-lg font-medium">{t("Footer Logo")}</h3>
                 <div className="flex items-center gap-4">
                   <div className="relative">
                     <div className="h-24 w-24 shrink-0 rounded-md bg-muted flex items-center justify-center overflow-hidden">
@@ -97,10 +99,10 @@ export default function FooterForm({ canEdit }: { canEdit: boolean }) {
                             type="button"
                             onClick={() => document.getElementById("footer-logo")?.click()}
                         >
-                          Upload Photo
+                          {t("Upload Photo")}
                         </Button>
                         <p className="text-sm text-muted-foreground">
-                          Upload a footer logo. JPG, PNG or GIF. Max 2MB.
+                          {t("Upload a footer logo. JPG, PNG or GIF. Max 2MB.")}
                         </p>
                       </div>
                   )}
@@ -108,13 +110,13 @@ export default function FooterForm({ canEdit }: { canEdit: boolean }) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="footer-description">Footer Description</Label>
-                <Textarea
-                    id="footer-description"
-                    placeholder="Enter footer description"
-                    {...register("footerDescription")}
-                    disabled={!canEdit}
-                />
+        <Label htmlFor="footer-description">{t("Footer Description")}</Label>
+        <Textarea
+          id="footer-description"
+          placeholder={t("Enter footer description")}
+          {...register("footerDescription")}
+          disabled={!canEdit}
+        />
                 {errors.footerDescription && (
                     <p className="text-xs text-red-500">{errors.footerDescription.message}</p>
                 )}
@@ -123,39 +125,39 @@ export default function FooterForm({ canEdit }: { canEdit: boolean }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="link-name">Link Name</Label>
-                <Input
-                    id="link-name"
-                    placeholder="Enter link name"
-                    {...register("linkName")}
-                    disabled={!canEdit}
-                />
+        <Label htmlFor="link-name">{t("Link Name")}</Label>
+        <Input
+          id="link-name"
+          placeholder={t("Enter link name")}
+          {...register("linkName")}
+          disabled={!canEdit}
+        />
                 {errors.linkName && (
                     <p className="text-xs text-red-500">{errors.linkName.message}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="search-name">Search Name</Label>
-                <Input
-                    id="search-name"
-                    placeholder="Enter search name"
-                    {...register("searchName")}
-                    disabled={!canEdit}
-                />
+        <Label htmlFor="search-name">{t("Search Name")}</Label>
+        <Input
+          id="search-name"
+          placeholder={t("Enter search name")}
+          {...register("searchName")}
+          disabled={!canEdit}
+        />
                 {errors.searchName && (
                     <p className="text-xs text-red-500">{errors.searchName.message}</p>
                 )}
               </div>
 
               <div className="space-y-2 col-span-1 md:col-span-2">
-                <Label htmlFor="footer-content">Footer Content</Label>
-                <Input
-                    id="footer-content"
-                    placeholder="Enter footer content"
-                    {...register("footerContent")}
-                    disabled={!canEdit}
-                />
+        <Label htmlFor="footer-content">{t("Footer Content")}</Label>
+        <Input
+          id="footer-content"
+          placeholder={t("Enter footer content")}
+          {...register("footerContent")}
+          disabled={!canEdit}
+        />
                 {errors.footerContent && (
                     <p className="text-xs text-red-500">{errors.footerContent.message}</p>
                 )}
@@ -166,7 +168,7 @@ export default function FooterForm({ canEdit }: { canEdit: boolean }) {
               <div className="flex justify-end p-6">
                 <Button type="submit" disabled={isLoading}>
                   <Save className="mr-2 h-4 w-4" />
-                  {isLoading ? "Saving..." : "Save Template"}
+                  {isLoading ? t("Saving...") : t("Save Template")}
                 </Button>
               </div>
           )}

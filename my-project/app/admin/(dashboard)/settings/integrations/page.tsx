@@ -1,6 +1,7 @@
 "use client"
 
 import {ArrowLeft, Building} from "lucide-react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import {Button} from "@/components/admin/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
@@ -16,6 +17,7 @@ import SMTPForm from "./_components/smtpForm";
 import {useSession} from "next-auth/react";
 
 export default function IntegrationsPage() {
+  const { t } = useTranslation();
   const {data: session} = useSession();
 
   const permissionsArr = session?.user.permissions ?? [];
@@ -45,20 +47,20 @@ export default function IntegrationsPage() {
             <Link href="/admin/settings">
               <Button variant="outline" size="icon" className="h-8 w-8">
                 <ArrowLeft className="h-4 w-4" />
-                <span className="sr-only">Back</span>
+                <span className="sr-only">{t("Back")}</span>
               </Button>
             </Link>
-            <h2 className="text-2xl font-bold tracking-tight">Integrations</h2>
+            <h2 className="text-2xl font-bold tracking-tight">{t("Integrations")}</h2>
           </div>
         </div>
 
         <Tabs defaultValue="social">
           <TabsList className="grid w-full grid-cols-4 sm:grid-cols-5 md:w-[600px]">
-            {(isAdmin || socialMediaLogin?.canView) && <TabsTrigger value="social">Social</TabsTrigger>}
-            {(isAdmin || thirdPartySettings?.canView) && <TabsTrigger value="third-party">Third Party</TabsTrigger>}
-            {(isAdmin || paymentMethods?.canView) && <TabsTrigger value="settings">Payments</TabsTrigger>}
-            {(isAdmin || smtpSettings?.canView) && <TabsTrigger value="smtp">SMTP</TabsTrigger>}
-            {(isAdmin || pushNotification?.canView) && <TabsTrigger value="push-notification">Push Noti.</TabsTrigger>}
+            {(isAdmin || socialMediaLogin?.canView) && <TabsTrigger value="social">{t("Social")}</TabsTrigger>}
+            {(isAdmin || thirdPartySettings?.canView) && <TabsTrigger value="third-party">{t("Third Party")}</TabsTrigger>}
+            {(isAdmin || paymentMethods?.canView) && <TabsTrigger value="settings">{t("Payments")}</TabsTrigger>}
+            {(isAdmin || smtpSettings?.canView) && <TabsTrigger value="smtp">{t("SMTP")}</TabsTrigger>}
+            {(isAdmin || pushNotification?.canView) && <TabsTrigger value="push-notification">{t("Push Noti.")}</TabsTrigger>}
           </TabsList>
 
           {(isAdmin || socialMediaLogin?.canView) && (
@@ -67,9 +69,9 @@ export default function IntegrationsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Building className="mr-2 h-5 w-5" />
-                      Social Media Login
+                      {t("Social Media Login")}
                     </CardTitle>
-                    <CardDescription>Configure social media authentication providers</CardDescription>
+                    <CardDescription>{t("Configure social media authentication providers")}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <GoogleForm canEdit={isAdmin || socialMediaLogin?.canEdit} />
@@ -92,9 +94,9 @@ export default function IntegrationsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Building className="mr-2 h-5 w-5" />
-                      Payment Methods
+                      {t("Payment Methods")}
                     </CardTitle>
-                    <CardDescription>Configure your payment gateway settings</CardDescription>
+                    <CardDescription>{t("Configure your payment gateway settings")}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <MollieForm canEdit={isAdmin || paymentMethods?.canEdit} />

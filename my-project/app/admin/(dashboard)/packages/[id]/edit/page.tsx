@@ -1,4 +1,5 @@
 "use client"
+import { useTranslation } from "react-i18next";
 
 import React, {useEffect, useState} from 'react';
 import {ArrowLeft, Plus, Save, Trash2, Upload, X} from 'lucide-react';
@@ -13,6 +14,7 @@ import useEditPackage from "@/app/admin/(dashboard)/packages/_hooks/useEditPacka
 import Link from "next/link";
 
 export default function PackageEditPage() {
+    const { t } = useTranslation();
     const {
         handleSubmit,
         onSubmit,
@@ -66,7 +68,7 @@ export default function PackageEditPage() {
     if (loading) return (
         <div className="flex items-center flex-col justify-center h-64">
             <Preloader/>
-            <p className="text-sm">Package Loading</p>
+            <p className="text-sm">{t('Package Loading')}</p>
         </div>
     );
 
@@ -78,32 +80,32 @@ export default function PackageEditPage() {
                         <ArrowLeft className="h-4 w-4"/>
                     </Link>
                 </Button>
-                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Edit Package</h2>
+                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">{t('Edit Package')}</h2>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid gap-4 md:grid-cols-2">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Package Information</CardTitle>
-                            <CardDescription>Update the basic information for this package</CardDescription>
+                            <CardTitle>{t('Package Information')}</CardTitle>
+                            <CardDescription>{t('Update the basic information for this package')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="name">
-                                    Package Name <span className="text-red-500">*</span>
+                                    {t('Package Name')} <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     id="name"
-                                    placeholder="e.g. Premium Plan"
+                                    placeholder={t('e.g. Premium Plan')}
                                     {...register('name')}
                                 />
-                                {errors.name && <div className="text-red-500 text-sm">{errors.name.message}</div>}
+                                {errors.name && <div className="text-red-500 text-sm">{errors.name.message || ""}</div>}
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="price">
-                                    Price <span className="text-red-500">*</span>
+                                    {t('Price')} <span className="text-red-500">*</span>
                                 </Label>
                                 <div className="relative">
                                     <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
@@ -111,7 +113,7 @@ export default function PackageEditPage() {
                                     </div>
                                     <Input
                                         id="price"
-                                        placeholder="0.00"
+                                        placeholder={t('0.00')}
                                         className="pl-8"
                                         type="number"
                                         step="0.01"
@@ -119,31 +121,31 @@ export default function PackageEditPage() {
                                         {...register('price')}
                                     />
                                 </div>
-                                {errors.price && <div className="text-red-500 text-sm">{errors.price.message}</div>}
+                                {errors.price && <div className="text-red-500 text-sm">{errors.price.message || ""}</div>}
                                 <p className="text-xs text-muted-foreground">
-                                    Set 0 for free packages
+                                    {t('Set 0 for free packages')}
                                 </p>
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="validity">
-                                    Validity <span className="text-red-500">*</span>
+                                    {t('Validity')} <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     id="validity"
-                                    placeholder="0 Days"
+                                    placeholder={t('0 Days')}
                                     type="number"
                                     min="0"
                                     {...register('validity')}
                                 />
-                                {errors.validity && <div className="text-red-500 text-sm">{errors.validity.message}</div>}
+                                {errors.validity && <div className="text-red-500 text-sm">{errors.validity.message || ""}</div>}
                             </div>
 
                             <div className="flex items-center justify-between space-y-0">
                                 <div className="flex flex-col space-y-1">
-                                    <Label htmlFor="isActive">Package Status</Label>
+                                    <Label htmlFor="isActive">{t('Package Status')}</Label>
                                     <span className="text-sm text-muted-foreground">
-                                        {watch('isActive') ? 'Package is currently active' : 'Package is currently inactive'}
+                                        {watch('isActive') ? t('Package is currently active') : t('Package is currently inactive')}
                                     </span>
                                 </div>
                                 <Controller
@@ -163,12 +165,12 @@ export default function PackageEditPage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Package Details</CardTitle>
-                            <CardDescription>Additional information about the package</CardDescription>
+                            <CardTitle>{t('Package Details')}</CardTitle>
+                            <CardDescription>{t('Additional information about the package')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
-                                <Label>Package Image</Label>
+                                <Label>{t('Package Image')}</Label>
                                 <div className="relative">
                                     <div className="flex h-32 w-32 items-center justify-center rounded-md border border-dashed">
                                         <label
@@ -212,14 +214,14 @@ export default function PackageEditPage() {
                                     )}
                                 </div>
                                 <p className="text-xs text-muted-foreground">
-                                    Recommended: 600x600px, Max 2MB
+                                    {t('Recommended: 600x600px, Max 2MB')}
                                 </p>
                             </div>
                         </CardContent>
                         <CardFooter className="flex justify-end">
                             <Button type="submit" disabled={isLoading}>
                                 <Save className="mr-2 h-4 w-4"/>
-                                {isLoading ? 'Saving...' : 'Save Changes'}
+                                {isLoading ? t('Saving...') : t('Save Changes')}
                             </Button>
                         </CardFooter>
                     </Card>
@@ -228,15 +230,15 @@ export default function PackageEditPage() {
                 {/* Features Section - Full Width */}
                 <Card className="mt-4">
                     <CardHeader>
-                        <CardTitle>Package Features</CardTitle>
-                        <CardDescription>Define what's included in this package</CardDescription>
+                        <CardTitle>{t('Package Features')}</CardTitle>
+                        <CardDescription>{t(`Define what's included in this package`)}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-3">
                             {features.map((feature, index) => (
                                 <div key={index} className="flex items-center gap-3">
                                     <Input
-                                        placeholder={`Feature ${index + 1}`}
+                                        placeholder={t(`Feature ${index + 1}`)}
                                         {...register(`features.${index}`)}
                                         className="flex-1"
                                     />
@@ -253,13 +255,13 @@ export default function PackageEditPage() {
                             ))}
                             <Button variant="outline" type="button" onClick={addFeature}>
                                 <Plus className="mr-2 h-4 w-4"/>
-                                Add Feature
+                                {t('Add Feature')}
                             </Button>
                             {errors.features && (
-                                <div className="text-red-500 text-sm">{errors.features.message}</div>
+                                <div className="text-red-500 text-sm">{errors.features.message || ""}</div>
                             )}
                             {errors.features?.root && (
-                                <div className="text-red-500 text-sm">{errors.features.root.message}</div>
+                                <div className="text-red-500 text-sm">{errors.features.root.message || ""}</div>
                             )}
                         </div>
                     </CardContent>

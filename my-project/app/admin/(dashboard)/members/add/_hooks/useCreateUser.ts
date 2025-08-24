@@ -1,45 +1,51 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {showError, showSuccess} from "@/shared-lib";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {imageUpload} from "@/admin-utils/utils/imageUpload";
-import {getUserTrackingId, setUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
-import {isFile} from "@/lib/utils";
-import {useEffect, useMemo} from "react";
-import {useBasicInfo} from "../../../../../shared-hooks/useBasicInfo";
-import {useParams} from "next/navigation";
-import {useSWRConfig} from "swr";
-import {GetAllMembersResponse} from "../../_types/member";
-import {patchUser, postUser} from "@/app/shared-api/userApi";
-import {MemberProfile} from "@/app/shared-types/member";
-import {useSession} from "next-auth/react";
-
-const createUserSchema = (requirePassword: boolean) => z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
-  password: requirePassword
-    ? z.string().min(6, "Password is required and must be at least 6 characters")
-    : z.string().optional(),
-  username: z.string().min(1, "Username is required"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  role: z.string().min(1, "Role is required"),
-  dob: z.string().min(1, "Date of birth is required"),
-  image: z.union([z.instanceof(File), z.string()]).optional(),
-  phone: z.string().min(1, "Phone is required"),
-  origin: z.string().min(1, "Origin is required"),
-  gender: z.string().min(1, "Gender is required"),
-  age: z.coerce.number().min(1, "Age is required"),
-  relationshipStatus: z.string().min(1, "Relationship status is required"),
-  children: z.string().min(1, "Children is required"),
-  religion: z.string().min(1, "Religion is required"),
-  shortDescription: z.string().min(1, "Short description is required"),
-});
-
-export type CreateUserFormValues = z.infer<ReturnType<typeof createUserSchema>>;
+import { imageUpload } from "@/admin-utils/utils/imageUpload";
+import { getUserTrackingId, setUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
+import { isFile } from "@/lib/utils";
+import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
+import { useParams } from "next/navigation";
+import { useSWRConfig } from "swr";
+import { GetAllMembersResponse } from "../../_types/member";
+import { patchUser, postUser } from "@/app/shared-api/userApi";
+import { MemberProfile } from "@/app/shared-types/member";
+import { useSession } from "next-auth/react";
 
 export default function useCreateUserForm() {
- const { mutate:globalMutate } = useSWRConfig();
+
+  const { t } = useTranslation();
+
+  const createUserSchema = (requirePassword: boolean) => z.object({
+    email: z.string().min(1, t("Email is required")).email(t("Please enter a valid email address")),
+    password: requirePassword
+      ? z.string().min(6, t("Password is required and must be at least 6 characters"))
+      : z.string().optional(),
+    username: z.string().min(1, t("Username is required")),
+    firstName: z.string().min(1, t("First name is required")),
+    lastName: z.string().min(1, t("Last name is required")),
+    role: z.string().min(1, t("Role is required")),
+    dob: z.string().min(1, t("Date of birth is required")),
+    image: z.union([z.instanceof(File), z.string()]).optional(),
+    phone: z.string().min(1, t("Phone is required")),
+    origin: z.string().min(1, t("Origin is required")),
+    gender: z.string().min(1, t("Gender is required")),
+    age: z.coerce.number().min(1, t("Age is required")),
+    relationshipStatus: z.string().min(1, t("Relationship status is required")),
+    children: z.string().min(1, t("Children is required")),
+    religion: z.string().min(1, t("Religion is required")),
+    shortDescription: z.string().min(1, t("Short description is required")),
+  });
+
+  type CreateUserFormValues = z.infer<ReturnType<typeof createUserSchema>>;
+
+  const { mutate: globalMutate } = useSWRConfig();
+
+  const { data: session } = useSession();
 
   const params = useParams();
   const tracker = getUserTrackingId();
@@ -126,30 +132,32 @@ export default function useCreateUserForm() {
   }, [user, id]);
 
   const { trigger, isMutating } = useSWRMutation(
-      "createOrUpdateUser",
-      async (_: string, { arg }: { arg: CreateUserFormValues }) => {
-        let imageUrl = "";
-        if (isFile(arg.image)) imageUrl = await imageUpload(arg.image);
-        else if (typeof arg.image === "string") imageUrl = arg.image;
+    "createOrUpdateUser",
+    async (_: string, { arg }: { arg: CreateUserFormValues }) => {
+      let imageUrl = "";
+      if (isFile(arg.image)) imageUrl = await imageUpload(arg.image);
+      else if (typeof arg.image === "string") imageUrl = arg.image;
 
-        if (id && allowEdit) {
-          return await patchUser(id, { ...arg, image: imageUrl });
-        } else {
-          return await postUser({ ...arg, image: imageUrl } );
-        }
-      },
-      {
-        onError: (error: Error) => {
-          showError({ message: error?.message || "Failed to add user" });
-        },
-        revalidate: false,
-        populateCache: false,
+      const adminId = session?.user.id ? String(session.user.id) : undefined;
+
+      if (id && allowEdit) {
+        return await patchUser(id, { ...arg, image: imageUrl });
+      } else {
+        return await postUser({ ...arg, image: imageUrl, adminId });
       }
+    },
+    {
+      onError: (error: Error) => {
+        showError({ message: error?.message ? t(error.message) : t("Failed to add user") });
+      },
+      revalidate: false,
+      populateCache: false,
+    }
   );
 
   const onSubmit = async (values: CreateUserFormValues, callback?: () => void) => {
     const imageUrl =
-        isFile(values.image) ? await imageUpload(values.image as File) : (values.image as string);
+      isFile(values.image) ? await imageUpload(values.image as File) : (values.image as string);
 
     const tempUser: Partial<MemberProfile> = {
       id: id || `temp-${Date.now()}`,
@@ -175,10 +183,10 @@ export default function useCreateUserForm() {
 
     if (!id) {
       globalMutate(
-          (key) => typeof key === 'string' && key.startsWith('all-members'),
-          (current: GetAllMembersResponse | undefined) => {
+        (key) => typeof key === 'string' && key.startsWith('all-members'),
+        (current: GetAllMembersResponse | undefined) => {
           if (!current) return current;
-            return {
+          return {
             ...current,
             users: [result, ...current.users],
             stats: {
@@ -197,7 +205,7 @@ export default function useCreateUserForm() {
 
     const result = await trigger({ ...values, image: imageUrl });
     if (result) {
-      showSuccess("User updated successfully!");
+      showSuccess(t("User updated successfully!"));
 
       globalMutate(
         (key) => typeof key === 'string' && key.startsWith('all-members'),

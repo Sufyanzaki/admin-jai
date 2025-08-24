@@ -26,11 +26,13 @@ import {useDetailReport} from "@/app/admin/(dashboard)/reports/_hooks/useDetailR
 import Preloader from "@/components/shared/Preloader"
 import {useSearchParams} from "next/navigation"
 import React, {useState} from "react"
+import { useTranslation } from "react-i18next";
 import {Button} from "@/components/admin/ui/button";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"]
 
 export default function DetailedReportsPage() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams()
   const [filters, setFilters] = useState({
     startDate: searchParams.get('startDate') || '',
@@ -86,7 +88,7 @@ export default function DetailedReportsPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading</p>
+          <p className="text-sm">{t('Loading')}</p>
         </div>
     )
   }
@@ -95,7 +97,7 @@ export default function DetailedReportsPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading</p>
+          <p className="text-sm">{t('Loading')}</p>
         </div>
     )
   }
@@ -104,8 +106,8 @@ export default function DetailedReportsPage() {
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">Detailed Reports</h1>
-          <p className="text-muted-foreground">Analyze user data, track trends, and generate detailed reports</p>
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">{t('Detailed Reports')}</h1>
+          <p className="text-muted-foreground">{t('Analyze user data, track trends, and generate detailed reports')}</p>
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -120,13 +122,13 @@ export default function DetailedReportsPage() {
                 onValueChange={(value) => handleFilterChange('role', value)}
             >
               <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Role" />
+                <SelectValue placeholder={t('Role')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-                <SelectItem value="CLIENT">Client</SelectItem>
-                <SelectItem value="MODERATOR">Moderator</SelectItem>
+                <SelectItem value="all">{t('All Roles')}</SelectItem>
+                <SelectItem value="ADMIN">{t('Admin')}</SelectItem>
+                <SelectItem value="CLIENT">{t('Client')}</SelectItem>
+                <SelectItem value="MODERATOR">{t('Moderator')}</SelectItem>
               </SelectContent>
             </Select>
             <Select
@@ -134,12 +136,12 @@ export default function DetailedReportsPage() {
                 onValueChange={(value) => handleFilterChange('status', value)}
             >
               <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('Status')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="all">{t('All Statuses')}</SelectItem>
+                <SelectItem value="active">{t('Active')}</SelectItem>
+                <SelectItem value="inactive">{t('Inactive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -148,7 +150,7 @@ export default function DetailedReportsPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Daily Logins</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('Daily Logins')}</CardTitle>
               <CalendarIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -164,7 +166,7 @@ export default function DetailedReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Completed Profiles</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('Completed Profiles')}</CardTitle>
               <CheckCircleIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -182,7 +184,7 @@ export default function DetailedReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Deleted Accounts</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('Deleted Accounts')}</CardTitle>
               <XCircleIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -200,7 +202,7 @@ export default function DetailedReportsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Never Logged In</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('Never Logged In')}</CardTitle>
               <ClockIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -221,8 +223,8 @@ export default function DetailedReportsPage() {
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="col-span-1">
             <CardHeader>
-              <CardTitle>Relationship Status</CardTitle>
-              <CardDescription>Breakdown of users by relationship status</CardDescription>
+              <CardTitle>{t('Relationship Status')}</CardTitle>
+              <CardDescription>{t('Breakdown of users by relationship status')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[300px] w-full">
@@ -251,8 +253,8 @@ export default function DetailedReportsPage() {
           </Card>
           <Card className="col-span-1">
             <CardHeader>
-              <CardTitle>Top Origins</CardTitle>
-              <CardDescription>Distribution of users by origin</CardDescription>
+              <CardTitle>{t('Top Origins')}</CardTitle>
+              <CardDescription>{t('Distribution of users by origin')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[300px] w-full">
@@ -283,8 +285,8 @@ export default function DetailedReportsPage() {
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="col-span-1">
             <CardHeader>
-              <CardTitle>Religion</CardTitle>
-              <CardDescription>Breakdown of users by religion</CardDescription>
+              <CardTitle>{t('Religion')}</CardTitle>
+              <CardDescription>{t('Breakdown of users by religion')}</CardDescription>
             </CardHeader>
             <CardContent className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -302,8 +304,8 @@ export default function DetailedReportsPage() {
           </Card>
           <Card className="col-span-1">
             <CardHeader>
-              <CardTitle>Career</CardTitle>
-              <CardDescription>Breakdown of users by career</CardDescription>
+              <CardTitle>{t('Career')}</CardTitle>
+              <CardDescription>{t('Breakdown of users by career')}</CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <ChartContainer className="h-[300px] w-full max-w-full" config={{}}>
@@ -344,8 +346,8 @@ export default function DetailedReportsPage() {
           <CardHeader>
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div>
-                <CardTitle>Recent Users</CardTitle>
-                <CardDescription>Detailed view of the last 10 users</CardDescription>
+                <CardTitle>{t('Recent Users')}</CardTitle>
+                <CardDescription>{t('Detailed view of the last 10 users')}</CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -353,18 +355,18 @@ export default function DetailedReportsPage() {
             <Table className="whitespace-nowrap">
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last Login</TableHead>
+                  <TableHead>{t('Name')}</TableHead>
+                  <TableHead>{t('Email')}</TableHead>
+                  <TableHead>{t('Role')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Last Login')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {detailReport.data.lastTenAccounts.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium">
-                        {user.firstName || 'Unknown'} {user.lastName || ''}
+                        {user.firstName ? t(user.firstName) : t('Unknown')} {user.lastName ? t(user.lastName) : ''}
                       </TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
@@ -379,11 +381,11 @@ export default function DetailedReportsPage() {
                                       : "border-amber-500 bg-amber-500/10 text-amber-500"
                             }
                         >
-                          {user.isDeleted ? 'Deleted' : user.isActive ? 'Active' : 'Inactive'}
+                          {user.isDeleted ? t('Deleted') : user.isActive ? t('Active') : t('Inactive')}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never'}
+                        {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : t('Never')}
                       </TableCell>
                     </TableRow>
                 ))}

@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card";
 import { Button } from "@/components/admin/ui/button";
 import { Input } from "@/components/admin/ui/input";
@@ -12,6 +13,7 @@ import { Controller } from "react-hook-form";
 import { SimpleEditor } from "@/components/admin/tiptap-templates/simple/simple-editor";
 
 export default function NewsletterAddPage() {
+    const { t } = useTranslation();
     const { handleSubmit, onSubmit, errors, isLoading, register, control } = useNewsletterForm();
 
     return (
@@ -20,13 +22,13 @@ export default function NewsletterAddPage() {
                 <Button variant="outline" size="icon" asChild>
                     <Link href="/admin/marketing/newsletter">
                         <ArrowLeft className="h-4 w-4" />
-                        <span className="sr-only">Back</span>
+                        <span className="sr-only">{t("Back")}errors</span>
                     </Link>
                 </Button>
 
                 <div className="space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">Add Newsletter</h2>
-                    <p className="text-muted-foreground">Create and publish a new newsletter</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">{t('Add Newsletter')}</h2>
+                    <p className="text-muted-foreground">{t('Create and publish a new newsletter')}</p>
                 </div>
             </div>
 
@@ -34,18 +36,18 @@ export default function NewsletterAddPage() {
             <Card>
                 <CardHeader>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <CardTitle>Newsletters</CardTitle>
+                        <CardTitle>{t('Newsletters')}</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent>
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <div className="space-y-2">
-                            <Label htmlFor="title">Newsletter Subject</Label>
-                            <Input id="title" placeholder="Enter subject" {...register("title")} disabled={isLoading} />
-                            {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title.message}</p>}
+                            <Label htmlFor="title">{t('Newsletter Subject')}</Label>
+                            <Input id="title" placeholder={t('Enter subject')} {...register("title")} disabled={isLoading} />
+                            {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title.message || ""}</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="content">Newsletter Content</Label>
+                            <Label htmlFor="content">{t('Newsletter Content')}</Label>
                             <Controller
                                 control={control}
                                 name="content"
@@ -56,15 +58,15 @@ export default function NewsletterAddPage() {
                                     />
                                 )}
                             />
-                            {errors.content && <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>}
+                            {errors.content && <p className="text-sm text-red-500 mt-1">{errors.content.message || ""}</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="emails">Emails</Label>
-                            <Input id="emails" placeholder="Comma separated emails (user1@example.com, user2@example.com)" {...register("emails")} disabled={isLoading} />
-                            {errors.emails && <p className="text-sm text-red-500 mt-1">{errors.emails.message}</p>}
+                            <Label htmlFor="emails">{t('Emails')}</Label>
+                            <Input id="emails" placeholder={t('Comma separated emails (user1@example.com, user2@example.com)')} {...register("emails")} disabled={isLoading} />
+                            {errors.emails && <p className="text-sm text-red-500 mt-1">{errors.emails.message || ""}</p>}
                         </div>
                         <div className="flex justify-end pt-6">
-                            <Button className="px-8" type="submit" disabled={isLoading}>{isLoading ? "Submitting..." : "Save"}</Button>
+                            <Button className="px-8" type="submit" disabled={isLoading}>{isLoading ? t('Submitting...') : t('Save')}</Button>
                         </div>
                     </form>
                 </CardContent>

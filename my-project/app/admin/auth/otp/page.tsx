@@ -7,11 +7,13 @@ import { Input } from "@/components/admin/ui/input";
 import useOTPForm from "../_hooks/useOTPForm";
 import { Controller } from "react-hook-form";
 import useResendOtp from "@/app/shared-hooks/useResendOtp";
-import {getUserEmail} from "@/lib/access-token";
+import { getUserEmail } from "@/lib/access-token";
+import { useTranslation } from "react-i18next";
 
 export default function OtpPage() {
+  const { t } = useTranslation();
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
-  
+
   const {
     control,
     handleSubmit,
@@ -43,9 +45,9 @@ export default function OtpPage() {
 
         <Card className="border-gray-800 bg-gray-900">
           <CardHeader>
-            <CardTitle className="text-xl text-white">Verify OTP</CardTitle>
+            <CardTitle className="text-xl text-white">{t("Verify OTP")}</CardTitle>
             <CardDescription className="text-gray-400">
-              Enter the 5-digit code sent to your email
+              {t("Enter the 5-digit code sent to your email")}
             </CardDescription>
           </CardHeader>
 
@@ -102,17 +104,17 @@ export default function OtpPage() {
 
             <CardFooter className="flex flex-col space-y-4">
               <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-                {isLoading ? "Verifying..." : "Verify"}
+                {isLoading ? t("Verifying...") : t("Verify")}
               </Button>
               <p className="text-center text-sm text-gray-400">
-                Didn&apos;t receive code?{" "}
+                {t("Didn't receive code?")} {" "}
                 <button
                   type="button"
                   onClick={handleResend}
                   disabled={isResending}
                   className="underline cursor-pointer hover:text-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isResending ? "Sending..." : "Resend"}
+                  {isResending ? t("Sending...") : t("Resend")}
                 </button>
               </p>
             </CardFooter>

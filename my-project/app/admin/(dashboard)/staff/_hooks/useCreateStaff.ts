@@ -9,21 +9,26 @@ import useSWRMutation from "swr/mutation";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { StaffListResponse, StaffMemberDto } from "../_types/staff";
+import { useTranslation } from "react-i18next";
 
-const createStaffSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
-  password: z.string().min(6, "Password is required and must be at least 6 characters"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  role: z.string().min(1, "Role is required"),
-  image: z.any().optional(),
-  phone: z.string().optional(),
-  roleId: z.string().min(1, "Role is required"),
-});
 
-export type CreateStaffFormValues = z.infer<typeof createStaffSchema>;
 
 export function useCreateStaffForm() {
+  const { t } = useTranslation();
+
+
+  const createStaffSchema = z.object({
+    email: z.string().min(1, t("Email is required")).email(t("Please enter a valid email address")),
+    password: z.string().min(6, t("Password is required and must be at least 6 characters")),
+    firstName: z.string().min(1, t("First name is required")),
+    lastName: z.string().min(1, t("Last name is required")),
+    role: z.string().min(1, t("Role is required")),
+    image: z.any().optional(),
+    phone: z.string().optional(),
+    roleId: z.string().min(1, t("Role is required")),
+  });
+
+  type CreateStaffFormValues = z.infer<typeof createStaffSchema>;
 
   const { mutate: globalMutate } = useSWRConfig();
 
@@ -73,7 +78,7 @@ export function useCreateStaffForm() {
             ? error.message
             : "Failed to create staff member";
         setError(message);
-        showError({ message });
+  showError({ message: t(message) });
       },
       revalidate: false,
       populateCache: false,
@@ -119,7 +124,7 @@ export function useCreateStaffForm() {
         false
       ).finally();
 
-      showSuccess("Staff member created successfully!");
+  showSuccess(t("Staff member created successfully!"));
       callback?.();
       reset();
     } catch (error: unknown) {
@@ -127,8 +132,8 @@ export function useCreateStaffForm() {
         error instanceof Error
           ? error.message
           : "Failed to create staff member";
-      setError(message);
-      showError({ message });
+  setError(t(message));
+  showError({ message: t(message) });
     }
   };
 

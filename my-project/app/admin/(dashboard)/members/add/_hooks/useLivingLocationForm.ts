@@ -6,21 +6,25 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { patchUserLocation, postUserLocation } from "@/app/shared-api/livingApi";
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
-import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
-import {useEffect} from "react";
+import { useLiving } from "@/app/admin/(dashboard)/members/_hooks/useLiving";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-const livingLocationSchema = z.object({
-  id: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().min(1, "State is Required"),
-  country: z.string().min(1, "Country is Required"),
-});
-
-export type UpdateUserLocationFormValues = z.infer<typeof livingLocationSchema>;
 
 export default function useLivingLocationForm() {
 
-  const {living, livingLoading} = useLiving();
+  const { t } = useTranslation();
+
+  const livingLocationSchema = z.object({
+    id: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().min(1, t("State is Required")),
+    country: z.string().min(1, t("Country is Required")),
+  });
+
+  type UpdateUserLocationFormValues = z.infer<typeof livingLocationSchema>;
+
+  const { living, livingLoading } = useLiving();
 
   const {
     handleSubmit,
@@ -40,7 +44,7 @@ export default function useLivingLocationForm() {
   });
 
   useEffect(() => {
-    if(!living) return;
+    if (!living) return;
 
     reset({
       city: living.city || "",
@@ -55,14 +59,14 @@ export default function useLivingLocationForm() {
       const tracker = getUserTrackingId();
       const id = tracker?.id ?? "";
 
-      if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member" });
+  if (!id) return showError({ message: t("You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member") });
 
-      if (tracker && tracker.living) return await patchUserLocation(id,arg);
+      if (tracker && tracker.living) return await patchUserLocation(id, arg);
       else await postUserLocation(id, arg);
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message || "Failed to update user location" });
+        showError({ message: error.message ? t(error.message) : t("Failed to update user location") });
       },
       revalidate: false,
       populateCache: false,
@@ -72,7 +76,7 @@ export default function useLivingLocationForm() {
   const onSubmit = async (values: UpdateUserLocationFormValues, callback?: () => void) => {
     const result = await trigger(values);
     if (result) {
-      showSuccess("User location updated successfully!");
+      showSuccess(t("User location updated successfully!"));
       reset();
       callback?.();
       updateUserTrackingId({ living: true });

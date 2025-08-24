@@ -1,26 +1,29 @@
 "use client"
 
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card";
-import {Label} from "@radix-ui/react-label";
-import {Input} from "@/components/admin/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "@/components/admin/ui/input";
 import { Textarea } from "@/components/admin/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/admin/ui/select";
-import {Button} from "@/components/admin/ui/button";
+import { Button } from "@/components/admin/ui/button";
 import { Controller } from "react-hook-form";
 import useChatSettingForm from "../settings/other-settings/_hooks/useChatSettingForm";
 import React from "react";
 import Preloader from "@/components/shared/Preloader";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useTranslation } from 'react-i18next';
 
 export default function ChatAndVideoSetting() {
+    const { t } = useTranslation();
+
     const { handleSubmit, onSubmit, errors, isLoading, control, register, loading } = useChatSettingForm();
-    const { data:session } = useSession();
+    const { data: session } = useSession();
 
     if (loading) {
         return (
             <div className="flex items-center flex-col justify-center h-64">
-                <Preloader/>
-                <p className="text-sm">Loading chat & video settings</p>
+                <Preloader />
+                <p className="text-sm">{t("Loading chat & video settings")}</p>
             </div>
         )
     }
@@ -36,30 +39,30 @@ export default function ChatAndVideoSetting() {
         <div className="flex flex-col gap-5 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Chat & Video Setting</h2>
-                    <p className="text-muted-foreground">Manage your users and their information.</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Chat & Video Setting")}</h2>
+                    <p className="text-muted-foreground">{t("Manage your users and their information.")}</p>
                 </div>
             </div>
             <Card>
                 <CardHeader>
-                    <CardTitle>Chat Settings</CardTitle>
+                    <CardTitle>{t("Chat Settings")}</CardTitle>
                 </CardHeader>
                 <form onSubmit={handleSubmit((values) => onSubmit(values))}>
                     <CardContent className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="message-length">Message length</Label>
+                                <Label htmlFor="message-length">{t("Message length")}</Label>
                                 <Input id="message-length" type="number" {...register("messageLength", { valueAsNumber: true })} className="w-full" />
                                 {errors.messageLength && <p className="text-sm text-red-500">{errors.messageLength.message}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="file-size-limit">File size limit (bytes)</Label>
+                                <Label htmlFor="file-size-limit">{t("File size limit (bytes)")}</Label>
                                 <Input id="file-size-limit" type="number" {...register("fileSizeLimit", { valueAsNumber: true })} className="w-full" />
-                                {errors.fileSizeLimit && <p className="text-sm text-red-500">{errors.fileSizeLimit.message}</p>}
+                                <p className="text-sm">{t("Loading chat & video settings")}</p>
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="chat-notice">Chat page notice message</Label>
+                            <Label htmlFor="chat-notice">{t("Chat page notice message")}</Label>
                             <Controller
                                 name="pageNoticeMessage"
                                 control={control}
@@ -71,7 +74,8 @@ export default function ChatAndVideoSetting() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="noticeStyle">Chat page notice style</Label>
+                                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Chat & Video Setting")}</h2>
+                                <p className="text-muted-foreground">{t("Manage your users and their information.")}</p>
                                 <Controller
                                     name="noticeStyle"
                                     control={control}
@@ -81,17 +85,17 @@ export default function ChatAndVideoSetting() {
                                                 <SelectValue placeholder="Select style" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="banner">Banner</SelectItem>
-                                                <SelectItem value="popup">Popup</SelectItem>
-                                                <SelectItem value="inline">Inline</SelectItem>
+                                                <SelectItem value="banner">{t("Banner")}</SelectItem>
+                                                <SelectItem value="popup">{t("Popup")}</SelectItem>
+                                                <Label htmlFor="message-length">{t("Message length")}</Label>
                                             </SelectContent>
                                         </Select>
                                     )}
                                 />
-                                {errors.noticeStyle && <p className="text-sm text-red-500">{errors.noticeStyle.message}</p>}
+                                <Label htmlFor="file-size-limit">{t("File size limit (bytes)")}</Label>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="displayName">Display name format</Label>
+                                <Label htmlFor="displayName">{t("Display name format")}</Label>
                                 <Controller
                                     name="displayName"
                                     control={control}
@@ -101,9 +105,9 @@ export default function ChatAndVideoSetting() {
                                                 <SelectValue placeholder="Select format" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="username-only">Username Only</SelectItem>
-                                                <SelectItem value="full-name">Full Name</SelectItem>
-                                                <SelectItem value="both">Username & Full Name</SelectItem>
+                                                <SelectItem value="username-only">{t("Username Only")}</SelectItem>
+                                                {errors.pageNoticeMessage && <p className="text-sm text-red-500">{errors.pageNoticeMessage.message}</p>}
+                                                <SelectItem value="both">{t("Username & Full Name")}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     )}
@@ -113,18 +117,18 @@ export default function ChatAndVideoSetting() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="enable-images">Enable Images</Label>
+                                <Label htmlFor="enable-images">{t("Enable Images")}</Label>
                                 <Controller
                                     name="enableImages"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") } key={field.value?"a":"b"}>
+                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes")} key={field.value ? "a" : "b"}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select option" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="yes">Yes</SelectItem>
-                                                <SelectItem value="no">No</SelectItem>
+                                                <SelectItem value="yes">{t("Yes")}</SelectItem>
+                                                <SelectItem value="no">{t("No")}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     )}
@@ -132,18 +136,18 @@ export default function ChatAndVideoSetting() {
                                 {errors.enableImages && <p className="text-sm text-red-500">{errors.enableImages.message}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="enable-videos">Enable Videos</Label>
+                                <Label htmlFor="enable-videos">{t("Enable Videos")}</Label>
                                 <Controller
                                     name="enableVideos"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") }  key={field.value?"a":"b"}>
+                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes")} key={field.value ? "a" : "b"}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select option" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="yes">Yes</SelectItem>
-                                                <SelectItem value="no">No</SelectItem>
+                                                <SelectItem value="yes">{t("Yes")}</SelectItem>
+                                                <SelectItem value="no">{t("No")}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     )}
@@ -151,18 +155,18 @@ export default function ChatAndVideoSetting() {
                                 {errors.enableVideos && <p className="text-sm text-red-500">{errors.enableVideos.message}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="enable-files">Enable Files</Label>
+                                <Label htmlFor="enable-files">{t("Enable Files")}</Label>
                                 <Controller
                                     name="enableFiles"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes") } key={field.value?"a":"b"}>
+                                        <Select value={field.value ? "yes" : "no"} onValueChange={v => field.onChange(v === "yes")} key={field.value ? "a" : "b"}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select option" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="yes">Yes</SelectItem>
-                                                <SelectItem value="no">No</SelectItem>
+                                                <SelectItem value="yes">{t("Yes")}</SelectItem>
+                                                <SelectItem value="no">{t("No")}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     )}
@@ -171,7 +175,7 @@ export default function ChatAndVideoSetting() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="file-extensions">File Extension List</Label>
+                            <Label htmlFor="file-extensions">{t("File Extension List")}</Label>
                             <Controller
                                 name="fileExtensions"
                                 control={control}
@@ -181,17 +185,17 @@ export default function ChatAndVideoSetting() {
                             />
                             {errors.fileExtensions && <p className="text-sm text-red-500">{errors.fileExtensions.message}</p>}
                             <p className="text-sm text-muted-foreground">
-                                File extension list must be comma separated list. Ex. doc, xls, zip, txt.
+                                {t("File extension list must be comma separated list. Ex. doc, xls, zip, txt.")}
                             </p>
                         </div>
                         {canEdit && <div className="flex justify-end pt-4">
                             <Button className="px-8" type="submit" disabled={isLoading}>
-                                {isLoading ? "Updating..." : "Update"}
+                                {isLoading ? t("Updating...") : t("Update")}
                             </Button>
                         </div>}
                     </CardContent>
                 </form>
             </Card>
-        </div>
+        </div >
     );
 }

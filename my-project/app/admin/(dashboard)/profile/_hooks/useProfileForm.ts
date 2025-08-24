@@ -1,48 +1,52 @@
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
-import {updateProfile} from "@/app/admin/(dashboard)/profile/_api/updateProfile";
+import { useForm } from 'react-hook-form';
+import { useTranslation } from "react-i18next";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
+import { updateProfile } from "@/app/admin/(dashboard)/profile/_api/updateProfile";
 import useSWRMutation from "swr/mutation";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { isFile } from "@/lib/utils";
 import { useEffect } from 'react';
-import {patchUserLocation} from "@/app/shared-api/livingApi";
-import {useProfile} from "@/app/shared-hooks/useProfile";
+import { patchUserLocation } from "@/app/shared-api/livingApi";
+import { useProfile } from "@/app/shared-hooks/useProfile";
 
-const profileSchema = z.object({
-    firstName: z.string()
-        .min(1, "First name is required")
-        .min(2, "First name must be at least 2 characters"),
-    lastName: z.string()
-        .min(1, "Last name is required")
-        .min(2, "Last name must be at least 2 characters"),
-    email: z.string()
-        .min(1, "Email is required")
-        .email("Please enter a valid email address"),
-    city: z.string().optional(),
-    state: z.string().min(1, "State is Required"),
-    country: z.string().min(1, "Country is Required"),
-    image: z.any().optional(), 
-});
-
-export type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export default function useProfileForm() {
+    const { t } = useTranslation();
+
+    const profileSchema = z.object({
+        firstName: z.string()
+            .min(1, t("First name is required"))
+            .min(2, t("First name must be at least 2 characters")),
+        lastName: z.string()
+            .min(1, t("Last name is required"))
+            .min(2, t("Last name must be at least 2 characters")),
+        email: z.string()
+            .min(1, t("Email is required"))
+            .email(t("Please enter a valid email address")),
+        city: z.string().optional(),
+        state: z.string().min(1, t("State is Required")),
+        country: z.string().min(1, t("Country is Required")),
+        image: z.any().optional(),
+    });
+
+    type ProfileFormValues = z.infer<typeof profileSchema>;
+
     const { response, mutate } = useProfile();
 
     const { trigger, isMutating } = useSWRMutation(
         'updateProfile',
         async (url: string, { arg }: { arg: ProfileFormValues }) => {
-            if(!response) throw new Error( 'User not found. Please refresh the page and try again.' )
-            const {country, city, state, image, email, lastName, firstName} = arg;
-            await patchUserLocation(response.user.id, {country, city, state})
-            return await updateProfile(response.user.id, {image, email, lastName, firstName});
+            if (!response) throw new Error(t('User not found. Please refresh the page and try again.'))
+            const { country, city, state, image, email, lastName, firstName } = arg;
+            await patchUserLocation(response.user.id, { country, city, state })
+            return await updateProfile(response.user.id, { image, email, lastName, firstName });
         },
         {
             onError: (error: Error) => {
-                showError({message: error.message});
+                showError({ message: t(error.message) });
                 console.error('Profile update error:', error);
             }
         }
@@ -70,7 +74,7 @@ export default function useProfileForm() {
 
     useEffect(() => {
         if (!response) return;
-        const {user} = response;
+        const { user } = response;
 
         reset({
             firstName: user.firstName ?? "",
@@ -102,12 +106,12 @@ export default function useProfileForm() {
 
             if (result) {
                 await mutate();
-                showSuccess('Profile updated successfully!');
+                showSuccess(t('Profile updated successfully!'));
                 callback?.();
             }
         } catch (error: unknown) {
-            if(error instanceof Error){
-                showError({message: error.message});
+            if (error instanceof Error) {
+                showError({ message: error.message });
                 console.error('Profile update error:', error);
             }
         }

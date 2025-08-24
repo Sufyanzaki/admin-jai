@@ -5,8 +5,9 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { mutate as globalMutate } from "swr";
-import {addLanguage} from "@/app/admin/(dashboard)/settings/_api/languageApi";
-import {BasicLanguageDto} from "@/app/shared-types/basic-languages";
+import { addLanguage } from "@/app/admin/(dashboard)/settings/_api/languageApi";
+import { BasicLanguageDto } from "@/app/shared-types/basic-languages";
+import { useTranslation } from "react-i18next";
 
 const languageSchema = z.object({
   name: z.string().min(1, "Language name is required"),
@@ -16,7 +17,18 @@ const languageSchema = z.object({
 
 export type LanguageFormValues = z.infer<typeof languageSchema>;
 
+
 export default function useLanguageForm() {
+  const { t } = useTranslation();
+
+  const languageSchema = z.object({
+    name: z.string().min(1, t("Language name is required")),
+    code: z.string().min(1, t("Language code is required")),
+    status: z.enum(["active", "inactive"], { required_error: t("Status is required") }),
+  });
+
+  type LanguageFormValues = z.infer<typeof languageSchema>;
+
   const { trigger, isMutating } = useSWRMutation(
     "addLanguage",
     async (_: string, { arg }: { arg: LanguageFormValues }) => {
@@ -74,7 +86,7 @@ export default function useLanguageForm() {
         callback?.();
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message });
+      if (error instanceof Error) showError({ message: error.message });
     }
   };
 

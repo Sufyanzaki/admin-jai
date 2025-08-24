@@ -1,5 +1,5 @@
 import { useSWRFix } from "@/shared-lib";
-import { getProfileAttribute } from "../_api/getProfileAttribute";
+import { getProfileAttribute } from "@/app/shared-api/getProfileAttribute";
 
 export function useProfileAttributeInfo(attributeId: string) {
   const { data, loading, error, mutate } = useSWRFix({

@@ -39,7 +39,9 @@ import { Checkbox } from "@/components/admin/ui/checkbox"
 import { Label } from "@/components/admin/ui/label"
 import { use } from "react"
 
+import { useTranslation } from "react-i18next";
 export default function RoleUsersPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation();
   // Mock data for the role
   const { id } = use(params)
   const role = {
@@ -191,12 +193,12 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
         <Button variant="outline" size="icon" asChild className="h-8 w-8">
           <Link href={`/admin/staff/roles/${id}`}>
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
+            <span className="sr-only">{t("Back")}</span>
           </Link>
         </Button>
         <div>
-          <h2 className="text-xl md:text-2xl mb-2 font-bold">{role.name} Role - Users</h2>
-          <p className="text-sm text-muted-foreground">Manage users assigned to this role</p>
+          <h2 className="text-xl md:text-2xl mb-2 font-bold">{role.name} {t("Role - Users")}</h2>
+          <p className="text-sm text-muted-foreground">{t("Manage users assigned to this role")}</p>
         </div>
       </div>
 
@@ -204,33 +206,33 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
         <CardHeader>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <CardTitle>Users with {role.name} Role</CardTitle>
-              <CardDescription>Total of {role.users} users assigned to this role</CardDescription>
+              <CardTitle>{t("Users with") + " " + role.name + " " + t("Role")}</CardTitle>
+              <CardDescription>{t("Total of") + " " + role.users + " " + t("users assigned to this role")}</CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input type="search" placeholder="Search users..." className="w-full pl-8 md:w-[300px]" />
+                <Input type="search" placeholder={t("Search users...")} className="w-full pl-8 md:w-[300px]" />
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon">
                     <Filter className="h-4 w-4" />
-                    <span className="sr-only">Filter</span>
+                    <span className="sr-only">{t("Filter")}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[200px]">
-                  <DropdownMenuLabel>Filter By</DropdownMenuLabel>
+                  <DropdownMenuLabel>{t("Filter By")}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Select>
                       <SelectTrigger className="w-full border-none p-0 shadow-none">
-                        <SelectValue placeholder="Department" />
+                        <SelectValue placeholder={t("Department")} />
                       </SelectTrigger>
                       <SelectContent>
                         {departments.map((dept) => (
                           <SelectItem key={dept} value={dept.toLowerCase().replace(/\s+/g, "-")}>
-                            {dept}
+                            {t(dept)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -239,12 +241,12 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
                   <DropdownMenuItem>
                     <Select>
                       <SelectTrigger className="w-full border-none p-0 shadow-none">
-                        <SelectValue placeholder="Status" />
+                        <SelectValue placeholder={t("Status")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Status</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
+                        <SelectItem value="all">{t("All Status")}</SelectItem>
+                        <SelectItem value="active">{t("Active")}</SelectItem>
+                        <SelectItem value="inactive">{t("Inactive")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </DropdownMenuItem>
@@ -252,7 +254,7 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
                   <DropdownMenuItem>
                     <Button variant="outline" size="sm" className="w-full">
                       <RefreshCw className="mr-2 h-3 w-3" />
-                      Reset Filters
+                      {t("Reset Filters")}
                     </Button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -261,18 +263,18 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
                 <DialogTrigger asChild>
                   <Button>
                     <UserPlus className="mr-2 h-4 w-4" />
-                    Assign Users
+                    {t("Assign Users")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="bg-background">
                   <DialogHeader>
-                    <DialogTitle>Assign Users to {role.name} Role</DialogTitle>
-                    <DialogDescription>Select staff members to assign to this role</DialogDescription>
+                    <DialogTitle>{t("Assign Users to") + " " + role.name + " " + t("Role")}</DialogTitle>
+                    <DialogDescription>{t("Select staff members to assign to this role")}</DialogDescription>
                   </DialogHeader>
                   <div className="py-4">
                     <div className="relative mb-4">
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input type="search" placeholder="Search staff..." className="pl-8" />
+                      <Input type="search" placeholder={t("Search staff...")} className="pl-8" />
                     </div>
                     <div className="max-h-[300px] overflow-y-auto space-y-2">
                       {Array.from({ length: 5 }).map((_, i) => (
@@ -284,8 +286,8 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
                               <AvatarFallback>U{i}</AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className="text-sm font-medium">User Name {i + 1}</p>
-                              <p className="text-xs text-muted-foreground">Department • Position</p>
+                              <p className="text-sm font-medium">{t("User Name") + " " + (i + 1)}</p>
+                              <p className="text-xs text-muted-foreground">{t("Department")} • {t("Position")}</p>
                             </div>
                           </Label>
                         </div>
@@ -293,14 +295,14 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button variant="outline">Cancel</Button>
-                    <Button>Assign Selected Users</Button>
+                    <Button variant="outline">{t("Cancel")}</Button>
+                    <Button>{t("Assign Selected Users")}</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
               <Button variant="outline">
                 <Download className="mr-2 h-4 w-4" />
-                Export
+                {t("Export")}
               </Button>
             </div>
           </div>
@@ -309,12 +311,12 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
           <Table className="whitespace-nowrap">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[250px]">Name</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead className="hidden md:table-cell">Assigned Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="w-[250px]">{t("Name")}</TableHead>
+                <TableHead>{t("Department")}</TableHead>
+                <TableHead>{t("Position")}</TableHead>
+                <TableHead className="hidden md:table-cell">{t("Assigned Date")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead className="text-right">{t("Actions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="whitespace-nowrap">
@@ -343,26 +345,26 @@ export default function RoleUsersPage({ params }: { params: Promise<{ id: string
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">
                           <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Open menu</span>
+                          <span className="sr-only">{t("Open menu")}</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="bg-background">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                          <Link href={`/staff/${user.id}`}>View Profile</Link>
+                          <Link href={`/staff/${user.id}`}>{t("View Profile")}</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Mail className="mr-2 h-4 w-4" />
-                          Send Email
+                          {t("Send Email")}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <UserCog className="mr-2 h-4 w-4" />
-                          Change Role
+                          {t("Change Role")}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-destructive">
                           <UserMinus className="mr-2 h-4 w-4" />
-                          Remove from Role
+                          {t("Remove from Role")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

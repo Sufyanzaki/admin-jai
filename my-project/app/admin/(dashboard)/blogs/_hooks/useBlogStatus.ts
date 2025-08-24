@@ -2,6 +2,7 @@ import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
 import {showError, showSuccess} from "@/shared-lib";
 import {useState} from "react";
+import { useTranslation } from "react-i18next";
 import {editBlog} from "@/app/shared-api/blogsApi";
 import {BlogApiResponse} from "@/app/shared-types/blog";
 
@@ -9,16 +10,17 @@ export const useBlogStatus = () => {
     const { mutate: globalMutate } = useSWRConfig();
     const [updatingIds, setUpdatingIds] = useState<string[]>([]);
 
+    const { t } = useTranslation();
     const { trigger, isMutating } = useSWRMutation(
         "update-blog-status",
         async (_, { arg }: { arg: { id: string, isActive: boolean } }) => {
             return await editBlog(arg.id, {isActive: arg.isActive});
         },
         {
-            onSuccess: () => showSuccess("Member status updated successfully!"),
+            onSuccess: () => showSuccess(t("Blog status updated successfully!")),
             onError: (error) => {
-                globalMutate("all-members").finally();
-                showError({ message: error.message });
+                globalMutate(t("all-members")).finally();
+                showError({ message: t(error.message) });
             }
         }
     );

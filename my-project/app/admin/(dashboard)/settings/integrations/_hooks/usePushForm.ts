@@ -4,26 +4,31 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import useSWRMutation from 'swr/mutation';
 import { showError } from '@/shared-lib';
 import { showSuccess } from '@/shared-lib';
 import { patchPush } from '../_api/push';
 import usePush from './usePush';
 
-const pushSchema = z.object({
-  isActive: z.boolean(),
-  fcmApiKey: z.string().min(1, { message: 'FCM API Key is required' }),
-  authDomain: z.string().min(1, { message: 'Auth Domain is required' }),
-  projectId: z.string().min(1, { message: 'Project ID is required' }),
-  storageBucket: z.string().min(1, { message: 'Storage Bucket is required' }),
-  messagingSenderId: z.string().min(1, { message: 'Messaging Sender ID is required' }),
-  appId: z.string().min(1, { message: 'App ID is required' }),
-  serverKey: z.string().min(1, { message: 'Server Key is required' }),
-});
-
-export type PushFormValues = z.infer<typeof pushSchema>;
 
 export default function usePushForm() {
+
+  const { t } = useTranslation();
+
+  const pushSchema = z.object({
+    isActive: z.boolean(),
+    fcmApiKey: z.string().min(1, { message: t('FCM API Key is required') }),
+    authDomain: z.string().min(1, { message: t('Auth Domain is required') }),
+    projectId: z.string().min(1, { message: t('Project ID is required') }),
+    storageBucket: z.string().min(1, { message: t('Storage Bucket is required') }),
+    messagingSenderId: z.string().min(1, { message: t('Messaging Sender ID is required') }),
+    appId: z.string().min(1, { message: t('App ID is required') }),
+    serverKey: z.string().min(1, { message: t('Server Key is required') }),
+  });
+
+  type PushFormValues = z.infer<typeof pushSchema>;
+
   const { data: existingData, isLoading: isLoadingData } = usePush();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -33,7 +38,7 @@ export default function usePushForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t('Failed to update push notification settings.') });
       },
     }
   );
@@ -80,10 +85,10 @@ export default function usePushForm() {
     try {
       const result = await trigger(values);
       if (result) {
-        showSuccess('Push notification settings updated successfully!');
+  showSuccess(t('Push notification settings updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || 'Failed to update push notification settings.' });
+  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update push notification settings.') });
     }
   };
 

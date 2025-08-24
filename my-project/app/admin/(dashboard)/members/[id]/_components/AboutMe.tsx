@@ -1,6 +1,7 @@
 "use client";
 
 import { CardContent } from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/admin/ui/separator";
 import { usePhysicalAppearanceInfo } from "../../../../../shared-hooks/usePhysicalAppearanceInfo";
 import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
@@ -10,6 +11,7 @@ interface AboutMeProps {
 }
 
 export default function AboutMe({ memberId }: AboutMeProps) {
+  const { t } = useTranslation();
   const { physicalAppearance, physicalAppearanceLoading: loading, error } = usePhysicalAppearanceInfo();
   const { user: basicInfo } = useBasicInfo();
 
@@ -18,7 +20,7 @@ export default function AboutMe({ memberId }: AboutMeProps) {
       <CardContent>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          <span className="ml-2 text-sm text-muted-foreground">Loading about me information...</span>
+          <span className="ml-2 text-sm text-muted-foreground">{t('Loading about me information...')}</span>
         </div>
       </CardContent>
     );
@@ -28,7 +30,7 @@ export default function AboutMe({ memberId }: AboutMeProps) {
     return (
       <CardContent>
         <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">No about me information available</p>
+          <p className="text-sm text-muted-foreground">{t('No about me information available')}</p>
         </div>
       </CardContent>
     );
@@ -86,7 +88,7 @@ export default function AboutMe({ memberId }: AboutMeProps) {
               return (
                 <div key={key}>
                   <div className="grid grid-cols-2 py-1">
-                    <span className="font-medium text-muted-foreground">{key}</span>
+                    <span className="font-medium text-muted-foreground">{t(key)}</span>
                     <span className="text-right font-semibold text-primary">
                       {value}
                     </span>
@@ -101,7 +103,7 @@ export default function AboutMe({ memberId }: AboutMeProps) {
           {typedBasicInfo?.shortDescription && typedBasicInfo.shortDescription !== "-" && (
             <div className="mt-4">
               <div className="py-1">
-                <span className="font-medium text-muted-foreground">Short Description</span>
+                <span className="font-medium text-muted-foreground">{t('Short Description')}</span>
               </div>
               <Separator className="my-2" />
               <p className="text-sm text-muted-foreground mt-2">

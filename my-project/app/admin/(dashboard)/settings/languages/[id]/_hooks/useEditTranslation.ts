@@ -1,10 +1,12 @@
 import { showError, showSuccess } from "@/shared-lib";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { updateTranslation } from "@/app/admin/(dashboard)/settings/languages/[id]/_api/translationApi";
 import { useParams } from "next/navigation";
 import useSWRMutation from "swr/mutation";
 
 export default function useEditTranslation() {
+    const { t } = useTranslation();
     const params = useParams();
     const languageId = typeof params.id === 'string' ? params.id : params.id?.[0] || '';
 
@@ -21,7 +23,7 @@ export default function useEditTranslation() {
                 showError({ message: error.message });
             },
             onSuccess: () => {
-                showSuccess("Translations updated successfully!");
+                showSuccess(t("Translations updated successfully!"));
                 setSelectedRows({});
                 setModifiedValues({});
             }
@@ -59,7 +61,7 @@ export default function useEditTranslation() {
             }, {} as Record<string, string>);
 
         if (Object.keys(translationsPayload).length === 0) {
-            showError({message: "No changes selected for update"});
+            showError({message: t("No changes selected for update")});
             return;
         }
 

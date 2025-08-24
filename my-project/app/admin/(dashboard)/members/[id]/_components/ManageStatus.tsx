@@ -1,16 +1,18 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/admin/ui/select";
 import {Button} from "@/components/admin/ui/button";
 import {Controller} from "react-hook-form";
 import useUpdateMemberStatusForm from "@/app/admin/(dashboard)/members/_hooks/useUpdateMemberStatusForm";
 
 export default function ManageStatus() {
+    const { t } = useTranslation();
     const { handleSubmit, onSubmit, errors, isLoading, control } = useUpdateMemberStatusForm();
 
     return (
         <Card>
             <CardHeader className="xxl:!pb-0">
-                <CardTitle>Manage Status</CardTitle>
+                <CardTitle>{t('Manage Status')}</CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -21,20 +23,19 @@ export default function ManageStatus() {
                             <Select 
                                 value={field.value ? 'active' : 'inactive'} 
                                 onValueChange={(value) => field.onChange(value === 'active')}
-                                key={field.value}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select Status" />
+                                    <SelectValue placeholder={t('Select Status')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="active">Active</SelectItem>
-                                    <SelectItem value="inactive">In Active</SelectItem>
+                                    <SelectItem value="active">{t('Active')}</SelectItem>
+                                    <SelectItem value="inactive">{t('In Active')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
                     />
                     {errors.isActive && (
-                        <p className="text-sm text-red-500">{errors.isActive.message}</p>
+                        <p className="text-sm text-red-500">{errors.isActive.message || ""}</p>
                     )}
                     <Button 
                         type="submit"
@@ -42,7 +43,7 @@ export default function ManageStatus() {
                         className="w-full"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Updating...' : 'Submit'}
+                        {isLoading ? t('Updating...') : t('Submit')}
                     </Button>
                 </form>
             </CardContent>

@@ -5,6 +5,7 @@ import {Button} from "@/components/admin/ui/button";
 import {Input} from "@/components/admin/ui/input";
 import {ArrowLeft, Save, Search} from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import {useTranslationDetails} from "@/app/admin/(dashboard)/settings/languages/[id]/_hooks/useTranslationDetails";
 import {useParams} from "next/navigation";
@@ -15,6 +16,7 @@ import useEditTranslation from "@/app/admin/(dashboard)/settings/languages/[id]/
 import PaginationSection from "@/components/admin/Pagination";
 
 export default function LanguageTranslatePage() {
+    const { t } = useTranslation();
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
     const [page, setPage] = useState(1);
@@ -43,7 +45,7 @@ export default function LanguageTranslatePage() {
     } = useEditTranslation();
 
     if(error) return (
-        <div className="text-red-500">Failed to load translations.</div>
+        <div className="text-red-500">{t("Failed to load translations.")}</div>
     )
 
     const translations = response?.translations?.translations ?? {};
@@ -69,20 +71,20 @@ export default function LanguageTranslatePage() {
                 <Button variant="outline" size="icon" asChild>
                     <Link href="/admin/settings/languages">
                         <ArrowLeft className="h-4 w-4" />
-                        <span className="sr-only">Back</span>
+                        <span className="sr-only">{t("Back")}</span>
                     </Link>
                 </Button>
                 <div className="space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Manage Translations</h2>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Manage Translations")}</h2>
                     <p className="text-muted-foreground">
-                        Add and update translations for different languages to make the platform accessible to a wider audience.
+                        {t("Add and update translations for different languages to make the platform accessible to a wider audience.")}
                     </p>
                 </div>
             </div>
             <Card>
                 <CardHeader>
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <CardTitle>{response?.translations?.language || 'Language'}</CardTitle>
+                        <CardTitle>{response?.translations?.language ? t(response.translations.language) : t('Language')}</CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                             <Button
                                 variant="secondary"
@@ -93,12 +95,12 @@ export default function LanguageTranslatePage() {
                                 {isUpdating ? (
                                     <>
                                         <Preloader />
-                                        Updating...
+                                        {t("Updating...")}
                                     </>
                                 ) : (
                                     <>
                                         <Save className="w-4 h-4 mr-1" />
-                                        Update
+                                        {t("Update")}
                                     </>
                                 )}
                             </Button>
@@ -106,7 +108,7 @@ export default function LanguageTranslatePage() {
                             <div className="relative">
                                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search translations..."
+                                    placeholder={t("Search translations...")}
                                     className="pl-8 w-40"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -117,7 +119,7 @@ export default function LanguageTranslatePage() {
                 </CardHeader>
                 {responseLoading ? <div className="flex items-center flex-col justify-center h-64">
                     <Preloader/>
-                    <p className="text-sm">Loading...</p>
+                    <p className="text-sm">{t("Loading...")}</p>
                 </div> : <CardContent>
                     <Table className="whitespace-nowrap">
                         <TableHeader>
@@ -129,8 +131,8 @@ export default function LanguageTranslatePage() {
                                     />
                                 </TableHead>
                                 <TableHead className="w-12 text-center">#</TableHead>
-                                <TableHead>Key</TableHead>
-                                <TableHead>Value</TableHead>
+                                <TableHead>{t("Key")}</TableHead>
+                                <TableHead>{t("Value")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -158,7 +160,7 @@ export default function LanguageTranslatePage() {
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={4} className="text-center py-8">
-                                        {debouncedSearch ? 'No translations found matching your search.' : 'No translations available.'}
+                                        {debouncedSearch ? t('No translations found matching your search.') : t('No translations available.')}
                                     </TableCell>
                                 </TableRow>
                             )}

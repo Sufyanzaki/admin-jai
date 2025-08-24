@@ -5,22 +5,24 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { Currency, postCurrency } from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
-import {useSWRConfig} from "swr";
+import { useSWRConfig } from "swr";
+import { useTranslation } from "react-i18next";
 
-const currencySchema = z.object({
-    currencyName: z.string().min(2, "Currency name is required"),
-    currencyCode: z.string().min(2, "Currency code is required"),
-    symbol: z.string().min(1, "Currency symbol is required"),
-    textDirection: z.string().min(1, "Text direction is required"),
-});
-
-export type CurrencyFormValues = z.infer<typeof currencySchema>;
 
 type CreateCurrencyProps = CurrencyFormValues;
 
 export default function useCurrencyForm() {
+    const { t } = useTranslation();
+    const currencySchema = z.object({
+        currencyName: z.string().min(2, t("Currency name is required")),
+        currencyCode: z.string().min(2, t("Currency code is required")),
+        symbol: z.string().min(1, t("Currency symbol is required")),
+        textDirection: z.string().min(1, t("Text direction is required")),
+    });
 
-    const { mutate:globalMutate } = useSWRConfig();
+     type CurrencyFormValues = z.infer<typeof currencySchema>;
+
+    const { mutate: globalMutate } = useSWRConfig();
 
     const {
         handleSubmit,
@@ -68,7 +70,7 @@ export default function useCurrencyForm() {
                 return [result, ...prev];
             }, false);
 
-            showSuccess("Currency created successfully!");
+            showSuccess(t("Currency created successfully!"));
             reset();
             callback?.(result);
         }

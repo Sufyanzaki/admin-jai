@@ -1,20 +1,24 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import useSWRMutation from "swr/mutation";
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
-import {patchAbusiveWords} from "../_api/abusiveWordsApi";
-import {useEffect} from "react";
-import {useAbusiveWords} from "@/app/shared-hooks/useAbusiveWords";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
+import { useTranslation } from "react-i18next";
+import { patchAbusiveWords } from "../_api/abusiveWordsApi";
+import { useEffect } from "react";
+import { useAbusiveWords } from "@/app/shared-hooks/useAbusiveWords";
 
-export const abusiveWordsSchema = z.object({
-  word: z.string().min(1, "At least one word is required"),
-});
-
-export type AbusiveWordsFormValues = z.infer<typeof abusiveWordsSchema>;
 
 export default function useAbusiveWordsForm() {
+  const { t } = useTranslation();
+  const abusiveWordsSchema = z.object({
+    word: z.string().min(1, t("At least one word is required")),
+  });
+
+  type AbusiveWordsFormValues = z.infer<typeof abusiveWordsSchema>;
+
+
   const {
     handleSubmit,
     setValue,
@@ -27,7 +31,7 @@ export default function useAbusiveWordsForm() {
     mode: "onBlur",
   });
 
-  const {words, wordLoading} = useAbusiveWords();
+  const { words, wordLoading } = useAbusiveWords();
 
   useEffect(() => {
     if (words) reset(words);
@@ -40,7 +44,7 @@ export default function useAbusiveWordsForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
         console.error("Abusive words error:", error);
       },
       revalidate: false,
@@ -71,7 +75,7 @@ export default function useAbusiveWordsForm() {
   const onSubmit = async (values: AbusiveWordsFormValues) => {
     const result = await trigger({ word: values.word });
     if (result) {
-      showSuccess("Abusive words saved successfully!");
+      showSuccess(t("Abusive words saved successfully!"));
     }
   };
 

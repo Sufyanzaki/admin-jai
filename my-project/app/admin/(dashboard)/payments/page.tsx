@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { useTranslation } from "react-i18next";
 import {useState} from "react";
 
 import {
@@ -31,6 +32,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function PaymentsPage() {
+  const { t } = useTranslation();
 
   const { payments, paymentLoading } = usePayments();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -82,8 +84,8 @@ export default function PaymentsPage() {
         <div className="flex flex-col gap-5 mb-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="space-y-2">
-              <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Payments</h1>
-              <p className="text-muted-foreground">Manage your payments and their records.</p>
+              <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t('Payments')}</h1>
+              <p className="text-muted-foreground">{t('Manage your payments and their records.')}</p>
             </div>
           </div>
         </div>
@@ -91,7 +93,7 @@ export default function PaymentsPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Total Payments</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('Total Payments')}</CardTitle>
               <DollarSignIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -99,13 +101,13 @@ export default function PaymentsPage() {
               <p className="text-xs text-muted-foreground">
                 {payments.yearDifferencePercent !== null ?
                     `${payments.yearDifferencePercent > 0 ? '+' : ''}${payments.yearDifferencePercent}% from last year` :
-                    'No comparison data'}
+                    t('No comparison data')}
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">Active Packages</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('Active Packages')}</CardTitle>
               <TrendingUpIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -117,7 +119,7 @@ export default function PaymentsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">This Year</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('This Year')}</CardTitle>
               <UserIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -129,7 +131,7 @@ export default function PaymentsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm xl:text-lg font-medium">This Month</CardTitle>
+              <CardTitle className="text-sm xl:text-lg font-medium">{t('This Month')}</CardTitle>
               <CreditCardIcon className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -144,12 +146,12 @@ export default function PaymentsPage() {
         <div className="flex justify-end mb-6">
           <div className="relative w-full md:w-[300px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-                placeholder="Search payments..."
-                className="pl-9 w-full"
-                value={searchTerm}
-                onChange={handleSearchChange}
-            />
+      <Input
+        placeholder={t('Search payments...')}
+        className="pl-9 w-full"
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
           </div>
         </div>
 
@@ -158,12 +160,12 @@ export default function PaymentsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Package</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Purchase Date</TableHead>
-                  <TableHead>Expiry Date</TableHead>
+                  <TableHead>{t('Customer')}</TableHead>
+                  <TableHead>{t('Package')}</TableHead>
+                  <TableHead>{t('Amount')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Purchase Date')}</TableHead>
+                  <TableHead>{t('Expiry Date')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -195,7 +197,7 @@ export default function PaymentsPage() {
                             variant="outline"
                             className={statusColors[pkg.status] || "bg-gray-500/20 text-gray-700 border-gray-500"}
                         >
-                          {pkg.status}
+                          {t(pkg.status)}
                         </Badge>
                       </TableCell>
                       <TableCell>{formatDate(pkg.purchaseDate)}</TableCell>
@@ -210,18 +212,18 @@ export default function PaymentsPage() {
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure you want to Delete this payment?</AlertDialogTitle>
+              <AlertDialogTitle>{t('Are you sure you want to Delete this payment?')}</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. The payment&#39;s data will be permanently removed.
+                {t('This action cannot be undone. The payment\'s data will be permanently removed.')}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
               <AlertDialogAction
                   onClick={() => setDeleteDialogOpen(false)}
                   className="bg-red-500 text-neutral-50 hover:bg-red-700"
               >
-                Delete
+                {t('Delete')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

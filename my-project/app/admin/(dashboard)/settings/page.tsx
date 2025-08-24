@@ -8,8 +8,10 @@ import SEOForm from "@/app/admin/(dashboard)/settings/_components/SEO-form";
 import BasicSettingsForm from "./_components/basic-settings-form"
 import PreferenceForm from "./_components/preference-form"
 import {useSession} from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const { data: session } = useSession();
 
   const permissionsArr = session?.user.permissions ?? [];
@@ -35,17 +37,17 @@ export default function SettingsPage() {
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div>
-          <h2 className="text-2xl font-bold">General Settings</h2>
-          <p className="text-sm text-muted-foreground">Configure your cookie settings and preferences</p>
+          <h2 className="text-2xl font-bold">{t("General Settings")}</h2>
+          <p className="text-sm text-muted-foreground">{t("Configure your cookie settings and preferences")}</p>
         </div>
 
         <Tabs defaultValue="basic" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
-            {(isAdmin || generalSettings?.canView) && <TabsTrigger value="basic">Basic</TabsTrigger>}
-            {(isAdmin || preferences?.canView) && <TabsTrigger value="preferences">Preferences</TabsTrigger>}
-            {(isAdmin || system?.canView) && <TabsTrigger value="system">System</TabsTrigger>}
-            {(isAdmin || cookie?.canView) && <TabsTrigger value="cookies">Cookies</TabsTrigger>}
-            {(isAdmin || seoSettings?.canView) && <TabsTrigger value="seo-settings">SEO Settings</TabsTrigger>}
+            {(isAdmin || generalSettings?.canView) && <TabsTrigger value="basic">{t("Basic")}</TabsTrigger>}
+            {(isAdmin || preferences?.canView) && <TabsTrigger value="preferences">{t("Preferences")}</TabsTrigger>}
+            {(isAdmin || system?.canView) && <TabsTrigger value="system">{t("System")}</TabsTrigger>}
+            {(isAdmin || cookie?.canView) && <TabsTrigger value="cookies">{t("Cookies")}</TabsTrigger>}
+            {(isAdmin || seoSettings?.canView) && <TabsTrigger value="seo-settings">{t("SEO Settings")}</TabsTrigger>}
           </TabsList>
 
           {(isAdmin || generalSettings?.canView) && (
@@ -66,53 +68,53 @@ export default function SettingsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Building className="mr-2 h-5 w-5" />
-                      System Settings
+                      {t("System Settings")}
                     </CardTitle>
                     <CardDescription>
-                      Overview of your server configuration and PHP settings.
+                      {t("Overview of your server configuration and PHP settings.")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="border rounded-xl p-4">
-                      <h3 className="text-sm font-medium text-muted-foreground mb-3">Server Information</h3>
+                      <h3 className="text-sm font-medium text-muted-foreground mb-3">{t("Server Information")}</h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span>- Node.js Version</span>
-                          <span>v20.11.1</span>
+                          <span>{t("- Node.js Version")}</span>
+                          <span>{t("v20.11.1")}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>- NPM Version</span>
-                          <span>10.5.0</span>
+                          <span>{t("- NPM Version")}</span>
+                          <span>{t("10.5.0")}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>- Next.js Version</span>
-                          <span>14.2.4</span>
+                          <span>{t("- Next.js Version")}</span>
+                          <span>{t("14.2.4")}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>- Express.js Version</span>
-                          <span>4.19.2</span>
+                          <span>{t("- Express.js Version")}</span>
+                          <span>{t("4.19.2")}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>- Database</span>
-                          <span>PostgreSQL 15.4</span>
+                          <span>{t("- Database")}</span>
+                          <span>{t("PostgreSQL 15.4")}</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="border rounded-xl p-4">
-                      <h3 className="text-sm font-medium text-muted-foreground mb-3">App Config</h3>
+                      <h3 className="text-sm font-medium text-muted-foreground mb-3">{t("App Config")}</h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span>- Environment</span>
-                          <span>Production</span>
+                          <span>{t("- Environment")}</span>
+                          <span>{t("Production")}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>- Port</span>
-                          <span>3000</span>
+                          <span>{t("- Port")}</span>
+                          <span>{t("3000")}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>- Build Mode</span>
-                          <span>Server / Static Hybrid</span>
+                          <span>{t("- Build Mode")}</span>
+                          <span>{t("Server / Static Hybrid")}</span>
                         </div>
                       </div>
                     </div>
@@ -127,9 +129,9 @@ export default function SettingsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Building className="mr-2 h-5 w-5" />
-                      Cookies
+                      {t("Cookies")}
                     </CardTitle>
-                    <CardDescription>Update your cookies basic information</CardDescription>
+                    <CardDescription>{t("Update your cookies basic information")}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CookiesForm canEdit={isAdmin || cookie?.canEdit} />
@@ -144,10 +146,10 @@ export default function SettingsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Building className="mr-2 h-5 w-5" />
-                      SEO Settings
+                      {t("SEO Settings")}
                     </CardTitle>
                     <CardDescription>
-                      Manage meta titles, descriptions, and keywords to improve your app’s visibility in search engines.
+                      {t("Manage meta titles, descriptions, and keywords to improve your app’s visibility in search engines.")}
                     </CardDescription>
                   </CardHeader>
                   <SEOForm canEdit={isAdmin || seoSettings?.canEdit} />

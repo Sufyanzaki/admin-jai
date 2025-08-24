@@ -1,6 +1,7 @@
 "use client";
 
 import { CardContent } from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/admin/ui/separator";
 import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
 
@@ -9,6 +10,7 @@ interface LivingProps {
 }
 
 export default function Living({ memberId }: LivingProps) {
+  const { t } = useTranslation();
   const { user: basicInfo, userLoading: loading, error } = useBasicInfo();
 
   if (loading) {
@@ -16,7 +18,7 @@ export default function Living({ memberId }: LivingProps) {
       <CardContent>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          <span className="ml-2 text-sm text-muted-foreground">Loading living information...</span>
+          <span className="ml-2 text-sm text-muted-foreground">{t('Loading living information...')}</span>
         </div>
       </CardContent>
     );
@@ -26,7 +28,7 @@ export default function Living({ memberId }: LivingProps) {
     return (
       <CardContent>
         <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">No living information available</p>
+          <p className="text-sm text-muted-foreground">{t('No living information available')}</p>
         </div>
       </CardContent>
     );
@@ -82,7 +84,7 @@ export default function Living({ memberId }: LivingProps) {
               return (
                 <div key={key}>
                   <div className="grid grid-cols-2 py-1">
-                    <span className="font-medium text-muted-foreground">{key}</span>
+                    <span className="font-medium text-muted-foreground">{t(key)}</span>
                     <span className="text-right font-semibold text-primary">
                       {value}
                     </span>

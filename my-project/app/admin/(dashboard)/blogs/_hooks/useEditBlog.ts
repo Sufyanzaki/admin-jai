@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { editBlog } from "@/app/shared-api/blogsApi";
@@ -9,22 +10,23 @@ import { useEffect } from "react";
 import useBlogById from "../../../../shared-hooks/useBlogById";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 
-const editBlogSchema = z.object({
-    title: z.string().min(1, "Title is required"),
-    slug: z.string().min(1, "Slug is required"),
-    categoryId: z.number({ required_error: "Category is required" }),
+const editBlogSchema = (t: any) => z.object({
+    title: z.string().min(1, t("Title is required")),
+    slug: z.string().min(1, t("Slug is required")),
+    categoryId: z.number({ required_error: t("Category is required") }),
     bannerImage: z.any().optional(),
-    shortDescription: z.string().min(1, "Short description is required"),
-    description: z.string().min(1, "Description is required"),
-    metaTitle: z.string().min(1, "Meta title is required"),
+    shortDescription: z.string().min(1, t("Short description is required")),
+    description: z.string().min(1, t("Description is required")),
+    metaTitle: z.string().min(1, t("Meta title is required")),
     metaImage: z.any().optional(),
-    metaDescription: z.string().min(1, "Meta description is required"),
-    metaKeywords: z.string().min(1, "Meta keywords are required"),
+    metaDescription: z.string().min(1, t("Meta description is required")),
+    metaKeywords: z.string().min(1, t("Meta keywords are required")),
 });
 
-export type EditBlogFormValues = z.infer<typeof editBlogSchema>;
+export type EditBlogFormValues = z.infer<ReturnType<typeof editBlogSchema>>;
 
 export default function useEditBlog(id: string) {
+    const { t } = useTranslation();
     const { blog, loading: blogLoading, error: blogError } = useBlogById(id);
 
     const { trigger, isMutating } = useSWRMutation(
@@ -34,7 +36,7 @@ export default function useEditBlog(id: string) {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message || "Failed to update blog" });
+                showError({ message: t(error.message || "Failed to update blog") });
             },
         }
     );
@@ -46,8 +48,8 @@ export default function useEditBlog(id: string) {
         reset,
         setValue,
         control,
-    } = useForm<EditBlogFormValues>({
-        resolver: zodResolver(editBlogSchema),
+    } = useForm<z.infer<ReturnType<typeof editBlogSchema>>>({
+        resolver: zodResolver(editBlogSchema(t)),
         defaultValues: blog
             ? {
                 title: blog.title,
@@ -83,7 +85,7 @@ export default function useEditBlog(id: string) {
     }, [blog, reset]);
 
     const onSubmit = async (
-        values: EditBlogFormValues,
+        values: z.infer<ReturnType<typeof editBlogSchema>>,
         callback?: (data: { status: number } | undefined) => void
     ) => {
         let bannerImageUrl = "";
@@ -108,7 +110,7 @@ export default function useEditBlog(id: string) {
         });
 
         if (result) {
-            showSuccess("Blog updated successfully!");
+            showSuccess(t("Blog updated successfully!"));
             reset(values);
             callback?.(result);
         }

@@ -1,25 +1,29 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
-import {useSWRConfig} from "swr";
-import {postFaq} from "@/app/shared-api/faqApi";
-import {FaqDto} from "@/app/shared-types/faq";
+import { useTranslation } from "react-i18next";
+import { useSWRConfig } from "swr";
+import { postFaq } from "@/app/shared-api/faqApi";
+import { FaqDto, FaqCategoryDto } from "@/app/shared-types/faq";
 
-const faqSchema = z.object({
-  question: z.string().min(1, "Question is required"),
-  answer: z.string().min(1, "Answer is required"),
-  categoryId: z.string({ required_error: "Category is required" }),
-});
 
-export type FaqFormValues = z.infer<typeof faqSchema>;
 
 export default function useFaqForm() {
   const { data: categories, isLoading: categoriesLoading } = useFaqCategories();
   const { mutate: globalMutate } = useSWRConfig();
+  const { t } = useTranslation();
+  const faqSchema = z.object({
+    question: z.string().min(1, t("Question is required")),
+    answer: z.string().min(1, t("Answer is required")),
+    categoryId: z.string({ required_error: t("Category is required") }),
+  });
+
+  type FaqFormValues = z.infer<typeof faqSchema>;
+
   const { trigger, isMutating } = useSWRMutation(
     "createFaq",
     async (_: string, { arg }: { arg: Partial<FaqDto> }) => {
@@ -27,7 +31,7 @@ export default function useFaqForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
         console.error("FAQ creation error:", error);
       },
     }
@@ -39,7 +43,7 @@ export default function useFaqForm() {
     register,
     control,
     reset,
-      watch
+    watch
   } = useForm<FaqFormValues>({
     resolver: zodResolver(faqSchema),
     defaultValues: {
@@ -57,7 +61,7 @@ export default function useFaqForm() {
       categoryId: values.categoryId,
     });
     if (result) {
-      showSuccess("FAQ created successfully!");
+      showSuccess(t("FAQ created successfully!"));
       reset();
       globalMutate(
         "faqs",
@@ -70,7 +74,7 @@ export default function useFaqForm() {
             categoryId: values.categoryId,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
-            category: categories?.find((cat) => cat.id === values.categoryId) || null,
+            category: categories?.find((cat) => cat.id === values.categoryId) ?? ({} as FaqCategoryDto),
           },
         ],
         false

@@ -10,8 +10,10 @@ import FooterSettingsTable from "./_components/footer-settings-table";
 import FooterForm from "./_components/footerForm";
 import {useSession} from "next-auth/react";
 import {superUser} from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const { data: session } = useSession();
 
   const permissionsArr = session?.user.permissions ?? [];
@@ -35,17 +37,17 @@ export default function SettingsPage() {
   return (
       <div className="flex flex-col gap-6 p-4 xl:p-6">
         <div>
-          <h2 className="text-2xl font-bold">App Settings</h2>
-          <p className="text-sm text-muted-foreground">Configure your app settings and preferences</p>
+          <h2 className="text-2xl font-bold">{t("App Settings")}</h2>
+          <p className="text-sm text-muted-foreground">{t("Configure your app settings and preferences")}</p>
         </div>
 
         <Tabs defaultValue="currency" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
-            {currency?.canView && <TabsTrigger value="currency">Currency</TabsTrigger>}
-            {abuseWordFiltering?.canView && <TabsTrigger value="abusive-words">Abusive Words</TabsTrigger>}
-            {footer?.canView && <TabsTrigger value="footer">Footer</TabsTrigger>}
-            {footerSection?.canView && <TabsTrigger value="footer-settings">Footer Section</TabsTrigger>}
-            {footerSection?.canView && <TabsTrigger value="user-dashboard">User Dashboard</TabsTrigger>}
+            {currency?.canView && <TabsTrigger value="currency">{t("Currency")}</TabsTrigger>}
+            {abuseWordFiltering?.canView && <TabsTrigger value="abusive-words">{t("Abusive Words")}</TabsTrigger>}
+            {footer?.canView && <TabsTrigger value="footer">{t("Footer")}</TabsTrigger>}
+            {footerSection?.canView && <TabsTrigger value="footer-settings">{t("Footer Section")}</TabsTrigger>}
+            {footerSection?.canView && <TabsTrigger value="user-dashboard">{t("User Dashboard")}</TabsTrigger>}
           </TabsList>
 
           {currency?.canView && (
@@ -62,9 +64,9 @@ export default function SettingsPage() {
                       <div>
                         <CardTitle className="flex items-center gap-2">
                           <Settings className="h-5 w-5" />
-                          Abusive Words Configuration
+                          {t("Abusive Words Configuration")}
                         </CardTitle>
-                        <CardDescription>Manage abusive word filtering</CardDescription>
+                        <CardDescription>{t("Manage abusive word filtering")}</CardDescription>
                       </div>
                     </div>
                   </CardHeader>
@@ -81,9 +83,9 @@ export default function SettingsPage() {
                       <div>
                         <CardTitle className="flex items-center gap-2">
                           <Settings className="h-5 w-5" />
-                          Footer
+                          {t("Footer")}
                         </CardTitle>
-                        <CardDescription>Manage footer content</CardDescription>
+                        <CardDescription>{t("Manage footer content")}</CardDescription>
                       </div>
                     </div>
                   </CardHeader>

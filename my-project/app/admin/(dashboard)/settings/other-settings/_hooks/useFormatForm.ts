@@ -10,18 +10,22 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 
 import { patchCurrencyFormat } from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
+import { useTranslation } from "react-i18next";
 import { useFormat } from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useFormat";
 
-const formatSchema = z.object({
-    defaultCurrencyId: z.number().min(1, "Default currency is required"),
-    symbolFormat: z.string().min(1, "Symbol format is required"),
-    decimalSeparator: z.string().min(1, "Decimal separator is required"),
-    decimalPlaces: z.number().min(1, "Decimal places are required"),
-});
-
-export type FormatFormValues = z.infer<typeof formatSchema>;
 
 export default function useFormatForm() {
+    const { t } = useTranslation();
+
+    const formatSchema = z.object({
+        defaultCurrencyId: z.number().min(1, t("Default currency is required")),
+        symbolFormat: z.string().min(1, t("Symbol format is required")),
+        decimalSeparator: z.string().min(1, t("Decimal separator is required")),
+        decimalPlaces: z.number().min(1, t("Decimal places are required")),
+    });
+
+    type FormatFormValues = z.infer<typeof formatSchema>;
+
     const {
         handleSubmit,
         setValue,
@@ -61,7 +65,7 @@ export default function useFormatForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error("Currency format error:", error);
             },
             revalidate: false,
@@ -69,10 +73,10 @@ export default function useFormatForm() {
         }
     );
 
-    const onSubmit = async (values: FormatFormValues, callback: ()=>void) => {
+    const onSubmit = async (values: FormatFormValues, callback: () => void) => {
         const result = await trigger(values);
         if (result) {
-            showSuccess("Currency format saved successfully!");
+            showSuccess(t("Currency format saved successfully!"));
             reset(values);
             callback();
         }

@@ -10,6 +10,7 @@ import { X } from "lucide-react";
 import { useProfileAttributeForm } from "../_hooks/useProfileAttributeForm";
 import { Controller } from "react-hook-form";
 import {ProfileAttributeResponse} from "@/app/shared-types/attribute";
+import { useTranslation } from "react-i18next";
 
 interface AttributeFormProps {
   attribute: ProfileAttributeResponse;
@@ -18,12 +19,9 @@ interface AttributeFormProps {
   canDelete?: boolean;
 }
 
-export default function AttributeForm({
-  attribute,
-  canCreate = true,
-  canEdit = true,
-  canDelete = true,
-}: AttributeFormProps) {
+export default function AttributeForm(props: AttributeFormProps) {
+  const { attribute, canCreate = true, canEdit = true, canDelete = true } = props;
+  const { t } = useTranslation();
   const {
     handleSubmit,
     setValue,
@@ -52,7 +50,7 @@ export default function AttributeForm({
       <CardContent className="space-y-6">
         <div className="flex items-center justify-between py-4">
           <Label htmlFor={`show-${attribute.id}`} className="font-medium">
-            Show on profile
+            {t("Show on profile")}
           </Label>
           <Switch
             id={`show-${attribute.id}`}
@@ -69,7 +67,7 @@ export default function AttributeForm({
               control={control}
               render={({ field }) => (
                 <Input
-                  placeholder={`Add ${attribute.label.toLowerCase()} value...`}
+                  placeholder={t("Add {{label}} value...", { label: attribute.label.toLowerCase() })}
                   value={field.value}
                   onChange={field.onChange}
                   onKeyDown={handleKeyPress}
@@ -84,14 +82,14 @@ export default function AttributeForm({
               variant="outline"
               type="button"
             >
-              Add
+              {t("Add")}
             </Button>
           </div>
 
           {values.length > 0 && (
             <div className="space-y-3">
               <Label className="text-sm font-medium text-muted-foreground">
-                Current values:
+                {t("Current values:")}
               </Label>
               <div className="flex flex-wrap gap-2">
                 {values.map((value, index) => (
@@ -100,7 +98,7 @@ export default function AttributeForm({
                     <button
                       onClick={() => canDelete && removeChip(value)}
                       className="hover:bg-primary/30 rounded-md p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      aria-label={`Remove ${value}`}
+                      aria-label={t("Remove {{value}}", { value })}
                       type="button"
                       disabled={!canDelete}
                     >
@@ -122,14 +120,14 @@ export default function AttributeForm({
           className="w-full sm:w-auto"
           type="button"
         >
-          Clear All
+          {t("Clear All")}
         </Button>
         <Button
           className="w-full sm:w-auto"
           type="submit"
           disabled={isLoading || !canEdit}
         >
-          Save Changes
+          {t("Save Changes")}
         </Button>
       </CardFooter>
     </form>

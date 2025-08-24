@@ -1,4 +1,6 @@
+
 "use client";
+import { useTranslation } from "react-i18next";
 
 import {
     Card,
@@ -25,6 +27,7 @@ import { useRef, useState, useEffect } from "react";
 import { Controller } from "react-hook-form";
 
 export default function BannerEditPage() {
+    const { t } = useTranslation();
     const params = useParams();
     const id = params.id as string;
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -72,7 +75,7 @@ export default function BannerEditPage() {
                 <div className="flex items-center justify-center h-64">
                     <div className="flex items-center gap-2">
                         <Loader2 className="h-6 w-6 animate-spin" />
-                        <span>Loading banner details...</span>
+                        <span>{t('Loading banner details...')}</span>
                     </div>
                 </div>
             </div>
@@ -85,49 +88,49 @@ export default function BannerEditPage() {
                 <Button variant="outline" size="icon" asChild>
                     <Link href="/admin/marketing/banners">
                         <ArrowLeft className="h-4 w-4" />
-                        <span className="sr-only">Back</span>
+                        <span className="sr-only">{t("Back")}</span>
                     </Link>
                 </Button>
                 <div className="space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">Edit Banner</h2>
-                    <p className="text-muted-foreground">Upload banner and define scheduling details</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-1">{t('Edit Banner')}</h2>
+                    <p className="text-muted-foreground">{t('Upload banner and define scheduling details')}</p>
                 </div>
             </div>
             <form onSubmit={handleSubmit((data) => onSubmit(data, selectedFile, () => console.log("Banner updated successfully!")))}>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Banner Information</CardTitle>
+                        <CardTitle>{t('Banner Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         {/* Name + Link */}
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('Name')}</Label>
                                 <Input 
                                     id="name" 
-                                    placeholder="Enter banner name" 
+                                    placeholder={t('Enter banner name')} 
                                     {...register('name')}
                                 />
                                 {errors.name && (
-                                    <p className="text-sm text-red-400">{errors.name.message}</p>
+                                    <p className="text-sm text-red-400">{errors.name.message || ""}</p>
                                 )}
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="link">Link</Label>
+                                <Label htmlFor="link">{t('Link')}</Label>
                                 <Input 
                                     id="link" 
-                                    placeholder="https://example.com" 
+                                    placeholder={t('https://example.com')} 
                                     {...register('link')}
                                 />
                                 {errors.link && (
-                                    <p className="text-sm text-red-400">{errors.link.message}</p>
+                                    <p className="text-sm text-red-400">{errors.link.message || ""}</p>
                                 )}
                             </div>
                         </div>
                         {/* Date Range Picker + CPM */}
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label>Start Date</Label>
+                                <Label>{t('Start Date')}</Label>
                                 <Controller
                                     name="startDate"
                                     control={control}
@@ -144,12 +147,12 @@ export default function BannerEditPage() {
                                     )}
                                 />
                                 {errors.startDate && (
-                                    <p className="text-sm text-red-400">{errors.startDate.message}</p>
+                                    <p className="text-sm text-red-400">{errors.startDate.message || ""}</p>
                                 )}
                             </div>
 
                             <div className="grid gap-2">
-                                <Label>End Date</Label>
+                                <Label>{t('End Date')}</Label>
                                 <Controller
                                     name="endDate"
                                     control={control}
@@ -166,58 +169,58 @@ export default function BannerEditPage() {
                                     )}
                                 />
                                 {errors.endDate && (
-                                    <p className="text-sm text-red-400">{errors.endDate.message}</p>
+                                    <p className="text-sm text-red-400">{errors.endDate.message || ""}</p>
                                 )}
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="cpm">CPM</Label>
+                                <Label htmlFor="cpm">{t('CPM')}</Label>
                                 <Input 
                                     id="cpm" 
                                     type="number" 
-                                    placeholder="Enter CPM" 
+                                    placeholder={t('Enter CPM')} 
                                     {...register('cpm', { valueAsNumber: true })}
                                 />
                                 {errors.cpm && (
-                                    <p className="text-sm text-red-400">{errors.cpm.message}</p>
+                                    <p className="text-sm text-red-400">{errors.cpm.message || ""}</p>
                                 )}
                             </div>
                         </div>
                         {/* Page Selection */}
                         <div className="grid gap-2">
-                            <Label htmlFor="page">Select Page</Label>
+                            <Label htmlFor="page">{t('Select Page')}</Label>
                             <Controller
                                 name="page"
                                 control={control}
                                 render={({ field }) => (
                                     <Select value={field.value} onValueChange={field.onChange} key={field.value}>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select Page" />
+                                            <SelectValue placeholder={t('Select Page')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="homepage">Homepage</SelectItem>
-                                            <SelectItem value="agenda">Agenda</SelectItem>
-                                            <SelectItem value="blog">Blog</SelectItem>
-                                            <SelectItem value="blog-details">Blog Details</SelectItem>
-                                            <SelectItem value="how-work">How Work</SelectItem>
-                                            <SelectItem value="registration">Registration</SelectItem>
+                                            <SelectItem value="homepage">{t('Homepage')}</SelectItem>
+                                            <SelectItem value="agenda">{t('Agenda')}</SelectItem>
+                                            <SelectItem value="blog">{t('Blog')}</SelectItem>
+                                            <SelectItem value="blog-details">{t('Blog Details')}</SelectItem>
+                                            <SelectItem value="how-work">{t('How Work')}</SelectItem>
+                                            <SelectItem value="registration">{t('Registration')}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 )}
                             />
                             {errors.page && (
-                                <p className="text-sm text-red-400">{errors.page.message}</p>
+                                <p className="text-sm text-red-400">{errors.page.message || ""}</p>
                             )}
                         </div>
                         {/* Banner Image Upload */}
                         <div className="space-y-4">
-                            <Label>Banner Image</Label>
+                            <Label>{t('Banner Image')}</Label>
                             <div className="flex items-center gap-4">
                                 <div className="h-24 w-24 shrink-0 rounded-md bg-muted flex items-center justify-center overflow-hidden">
                                     {imagePreview ? (
                                         <div className="relative w-full h-full">
                                             <img 
                                                 src={imagePreview} 
-                                                alt="Banner preview" 
+                                                alt={t('Banner preview')} 
                                                 className="w-full h-full object-cover"
                                             />
                                             <Button
@@ -231,7 +234,7 @@ export default function BannerEditPage() {
                                             </Button>
                                         </div>
                                     ) : (
-                                        <Upload className="h-8 w-8 text-muted-foreground" />
+                                        <span className="text-muted-foreground text-xs">{t('No image selected')}</span>
                                     )}
                                 </div>
                                 <div className="space-y-2">
@@ -248,13 +251,13 @@ export default function BannerEditPage() {
                                         variant="outline"
                                         onClick={() => fileInputRef.current?.click()}
                                     >
-                                        Upload Photo
+                                        {t('Upload Photo')}
                                     </Button>
                                     <p className="text-sm text-muted-foreground">
-                                        Upload a banner image. JPG, PNG or GIF. Max 2MB.
+                                        {t('Upload a banner image. JPG, PNG or GIF. Max 2MB.')}
                                     </p>
                                     {errors.bannerImage && (
-                                        <p className="text-sm text-red-400">{errors.bannerImage.message}</p>
+                                        <p className="text-sm text-red-400">{errors.bannerImage.message || ""}</p>
                                     )}
                                 </div>
                             </div>
@@ -262,7 +265,7 @@ export default function BannerEditPage() {
                         {/* Submit Button */}
                         <div className="pt-4 flex justify-end">
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? "Updating Banner..." : "Update Banner"}
+                                {isLoading ? t('Updating Banner...') : t('Update Banner')}
                             </Button>
                         </div>
                     </CardContent>

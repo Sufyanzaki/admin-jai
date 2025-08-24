@@ -1,14 +1,15 @@
-import {Input} from "@/components/admin/ui/input";
-import {Label} from "@/components/admin/ui/label";
-import {Separator} from "@/components/admin/ui/separator";
-import {Textarea} from "@/components/admin/ui/textarea";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/admin/ui/tooltip";
-import {Button} from "@/components/admin/ui/button";
-import {Info} from "lucide-react";
+import { Input } from "@/components/admin/ui/input";
+import { Label } from "@/components/admin/ui/label";
+import { Separator } from "@/components/admin/ui/separator";
+import { Textarea } from "@/components/admin/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/admin/ui/tooltip";
+import { Button } from "@/components/admin/ui/button";
+import { Info } from "lucide-react";
 import Link from "next/link";
-import {Checkbox} from "@/components/admin/ui/checkbox";
-import {Controller} from "react-hook-form";
+import { Checkbox } from "@/components/admin/ui/checkbox";
+import { Controller } from "react-hook-form";
 import useRoleForm from "../_hook/useRoleForm";
+import { useTranslation } from "react-i18next";
 import React, { useEffect } from "react";
 import { roleMenuItems } from "../../const/permissions";
 
@@ -20,6 +21,7 @@ const permissionTypes = [
 ];
 
 export default function RoleForm() {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     onSubmit,
@@ -46,24 +48,24 @@ export default function RoleForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
       <div className="grid gap-2">
-        <Label htmlFor="name">Role Name</Label>
+        <Label htmlFor="name">{t("Role Name")}</Label>
         <Controller
           name="name"
           control={control}
           render={({ field }) => (
-            <Input id="name" placeholder="Enter role name" {...field} />
+            <Input id="name" placeholder={t("Enter role name")} {...field} />
           )}
         />
         {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="description">Role Description</Label>
+        <Label htmlFor="description">{t("Role Description")}</Label>
         <Controller
           name="description"
           control={control}
           render={({ field }) => (
-            <Textarea id="description" placeholder="Role Description" {...field} />
+            <Textarea id="description" placeholder={t("Role Description")} {...field} />
           )}
         />
         {errors.description && <span className="text-red-500 text-xs">{errors.description.message}</span>}
@@ -71,11 +73,11 @@ export default function RoleForm() {
 
       <Separator />
       <div className="space-y-4">
-        <Label className="text-base">Basic Permissions</Label>
-        {roleMenuItems.slice(0,4).map((module, modIdx) => (
+        <Label className="text-base">{t("Basic Permissions")}</Label>
+        {roleMenuItems.slice(0, 4).map((module, modIdx) => (
           <div key={module.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="font-medium">{module.title}</Label>
+              <Label className="font-medium">{t(module.title)}</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -84,7 +86,7 @@ export default function RoleForm() {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    {module.title}
+                    {t(module.title)}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -94,23 +96,23 @@ export default function RoleForm() {
                 const permConfig = permissionTypes.find((p) => p.key === permKey);
                 if (!permConfig) return null;
                 return (
-                    <Controller
-                        key={permConfig.key}
-                        name={`permissions.${modIdx}.${permConfig.key}`}
-                        control={control}
-                        render={({ field }) => (
-                            <div className="flex items-center space-x-2">
-                              <Checkbox
-                                  id={`${module.id}-${permConfig.label}`}
-                                  checked={!!field.value}
-                                  onCheckedChange={field.onChange}
-                              />
-                              <Label htmlFor={`${module.id}-${permConfig.label}`} className="capitalize">
-                                {permConfig.label}
-                              </Label>
-                            </div>
-                        )}
-                    />
+                  <Controller
+                    key={permConfig.key}
+                    name={`permissions.${modIdx}.${permConfig.key}`}
+                    control={control}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`${module.id}-${permConfig.label}`}
+                          checked={!!field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label htmlFor={`${module.id}-${permConfig.label}`} className="capitalize">
+                          {t(permConfig.label)}
+                        </Label>
+                      </div>
+                    )}
+                  />
                 );
               })}
             </div>
@@ -119,13 +121,13 @@ export default function RoleForm() {
         <div className="pt-2">
           <Button variant="outline" size="sm" asChild>
             <Link href="/admin/staff/roles/add">
-              Show All Modules
+              {t("Show All Modules")}
             </Link>
           </Button>
         </div>
       </div>
       <Button type="submit" disabled={isLoading} className="mt-4">
-        {isLoading ? "Saving..." : "Save Role"}
+        {isLoading ? t("Saving...") : t("Save Role")}
       </Button>
     </form>
   );

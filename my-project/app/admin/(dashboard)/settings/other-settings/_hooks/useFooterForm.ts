@@ -1,29 +1,31 @@
 "use client";
 
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {patchFooterSettings} from "@/app/shared-api/footerApi";
-import {showError, showSuccess} from "@/shared-lib";
-import {imageUpload} from "@/admin-utils/utils/imageUpload";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { patchFooterSettings } from "@/app/shared-api/footerApi";
+import { showError, showSuccess } from "@/shared-lib";
+import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
-import {useEffect, useState} from "react";
-import {useSWRConfig} from "swr";
-import {useFooterSettings} from "@/app/shared-hooks/useFooterSettings";
-
-const footerFormSchema = z.object({
-  footerLogo: z.any().optional(),
-  footerDescription: z.string().min(1, "Footer description is required"),
-  linkName: z.string().min(1, "Link name is required"),
-  searchName: z.string().min(1, "Search name is required"),
-  footerContent: z.string().min(1, "Footer content is required"),
-});
-
-export type FooterFormValues = z.infer<typeof footerFormSchema>;
+import { useEffect, useState } from "react";
+import { useSWRConfig } from "swr";
+import { useFooterSettings } from "@/app/shared-hooks/useFooterSettings";
+import { useTranslation } from "react-i18next";
 
 export function useFooterForm() {
+  const { t } = useTranslation();
   const { mutate: globalMutate } = useSWRConfig();
   const { data: footerData, isLoading: isLoadingFooterData } = useFooterSettings();
+
+  const footerFormSchema = z.object({
+    footerLogo: z.any().optional(),
+    footerDescription: z.string().min(1, t("Footer description is required")),
+    linkName: z.string().min(1, t("Link name is required")),
+    searchName: z.string().min(1, t("Search name is required")),
+    footerContent: z.string().min(1, t("Footer content is required")),
+  });
+
+  type FooterFormValues = z.infer<typeof footerFormSchema>;
 
   const [error, setError] = useState<string | null>(null);
 
@@ -74,8 +76,8 @@ export function useFooterForm() {
     },
     {
       onError: (error: Error) => {
-        setError(error?.message || "Failed to update footer settings");
-        showError({ message: error?.message || "Failed to update footer settings" });
+        setError(error?.message ? t(error.message) : t("Failed to update footer settings"));
+        showError({ message: error?.message ? t(error.message) : t("Failed to update footer settings") });
       },
       revalidate: false,
       populateCache: false,
@@ -103,13 +105,13 @@ export function useFooterForm() {
         false
       ).finally();
 
-      showSuccess("Footer settings updated successfully!");
+      showSuccess(t("Footer settings updated successfully!"));
       callback?.();
     } catch (error: unknown) {
       const message =
         error instanceof Error
-          ? error.message
-          : "Something went wrong";
+          ? t(error.message)
+          : t("Something went wrong");
       setError(message);
       showError({ message });
     }

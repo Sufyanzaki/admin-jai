@@ -3,9 +3,11 @@ import useSWRMutation from "swr/mutation";
 import { mutate as globalMutate } from "swr";
 import { FooterSectionDto } from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 import { deleteFooterSectionDetails } from "@/app/shared-api/footerApi";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 export const useFooterSectionDelete = () => {
+    const { t } = useTranslation();
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const { trigger, error } = useSWRMutation(
@@ -15,7 +17,7 @@ export const useFooterSectionDelete = () => {
         },
         {
             onSuccess: async (deletedItem: { id: string }) => {
-                showSuccess("Page deleted successfully!");
+                showSuccess(t("Page deleted successfully!"));
                 await globalMutate(
                     "footer-all-settings",
                     (current: FooterSectionDto[] = []) =>
@@ -25,7 +27,7 @@ export const useFooterSectionDelete = () => {
                 setDeletingId(null);
             },
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 setDeletingId(null);
                 globalMutate("footer-all-settings").finally();
             },

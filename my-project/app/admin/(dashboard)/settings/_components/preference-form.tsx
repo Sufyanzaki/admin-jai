@@ -19,12 +19,14 @@ import {
 } from "@/components/admin/ui/select";
 import { Button } from "@/components/admin/ui/button";
 import usePreferenceSettingsForm from "@/app/admin/(dashboard)/settings/_hooks/usePreferenceSettingForm";
+import { useTranslation } from "react-i18next";
 import {Controller} from "react-hook-form";
 import {useLanguages} from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
 import {useCurrencies} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useCurrencies";
 
 export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
 
+    const { t } = useTranslation();
     const { languages } = useLanguages();
     const { currencies } = useCurrencies();
 
@@ -46,15 +48,15 @@ export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
                 <CardHeader>
                     <CardTitle className="flex items-center">
                         <Building className="mr-2 h-5 w-5" />
-                        Preferences
+                        {t("Preferences")}
                     </CardTitle>
-                    <CardDescription>Update your Personal Preferences</CardDescription>
+                    <CardDescription>{t("Update your Personal Preferences")}</CardDescription>
                 </CardHeader>
 
                 <CardContent className="space-y-6 pt-6">
                     <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="maintenance-mode">Maintenance Mode Activation</Label>
+                            <Label htmlFor="maintenance-mode">{t("Maintenance Mode Activation")}</Label>
                             <Switch
                                 id="maintenance-mode"
                                 checked={maintenanceMode}
@@ -70,7 +72,7 @@ export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
 
                     <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="default-currency">Default Currency</Label>
+                            <Label htmlFor="default-currency">{t("Default Currency")}</Label>
                             <Controller
                                 control={control}
                                 name="defaultCurrency"
@@ -83,12 +85,12 @@ export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
                                         }
                                     >
                                         <SelectTrigger className="w-full sm:w-[180px]">
-                                            <SelectValue placeholder="Select currency" />
+                                            <SelectValue placeholder={t("Select currency")}/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             {(currencies ?? []).map((c) => (
                                                 <SelectItem key={c.currencyCode} value={c.currencyCode}>
-                                                    {c.currencyName}
+                                                    {t(c.currencyName)}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -103,7 +105,7 @@ export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
 
                     <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="default-language">Default Language</Label>
+                            <Label htmlFor="default-language">{t("Default Language")}</Label>
                             <Controller
                                 control={control}
                                 name="defaultLanguage"
@@ -116,12 +118,12 @@ export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
                                         }
                                     >
                                         <SelectTrigger className="w-full sm:w-[180px]">
-                                            <SelectValue placeholder="Select language" />
+                                            <SelectValue placeholder={t("Select language")}/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             {(languages ?? []).map((lang) => (
                                                 <SelectItem key={lang.code} value={lang.code}>
-                                                    {lang.name}
+                                                    {t(lang.name)}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -136,7 +138,7 @@ export default function PreferenceForm({canEdit}: {canEdit: boolean}) {
 
                     {canEdit && <div className="flex justify-end pt-6">
                         <Button className="px-8" type="submit" disabled={isLoading}>
-                            {isLoading ? "Saving..." : "Save Configuration"}
+                            {isLoading ? t("Saving...") : t("Save Configuration")}
                         </Button>
                     </div>}
                 </CardContent>

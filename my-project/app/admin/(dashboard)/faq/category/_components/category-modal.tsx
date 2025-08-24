@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/a
 import { Label } from "@/components/admin/ui/label";
 import { Input } from "@/components/admin/ui/input";
 import { Button } from "@/components/admin/ui/button";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 
 type CategoryModalProps = {
@@ -15,6 +16,7 @@ type CategoryModalProps = {
 };
 
 export default function CategoryModal({ isOpen, onClose, canCreate = true, canEdit = true }: CategoryModalProps) {
+    const { t } = useTranslation();
     const searchParams = useSearchParams();
     const editId = searchParams.get("edit");
     const { data: categories } = useFaqCategories();
@@ -32,15 +34,15 @@ export default function CategoryModal({ isOpen, onClose, canCreate = true, canEd
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader className="px-1">
-                    <DialogTitle>{isEdit ? "Edit Category" : "Add Category"}</DialogTitle>
+                    <DialogTitle>{isEdit ? t("Edit Category") : t("Add Category")}</DialogTitle>
                 </DialogHeader>
                 <div className="max-h-[400px] overflow-y-auto px-1">
                     <form className="space-y-4" onSubmit={handleSubmit((data: any) => onSubmit(data, onClose))}>
                         <div className="space-y-2">
-                            <Label htmlFor="categoryName">Category Name</Label>
+                            <Label htmlFor="categoryName">{t("Category Name")}</Label>
                             <Input
                                 id="categoryName"
-                                placeholder="Category Name"
+                                placeholder={t("Category Name")}
                                 {...register("name")}
                                 disabled={isLoading || !canSubmit}
                                 required
@@ -51,10 +53,10 @@ export default function CategoryModal({ isOpen, onClose, canCreate = true, canEd
                         </div>
                         <div className="flex justify-end space-x-2">
                             <Button variant="outline" type="button" onClick={() => onClose(false)} disabled={isLoading}>
-                                Cancel
+                                {t("Cancel")}
                             </Button>
                             <Button type="submit" disabled={isLoading || !canSubmit}>
-                                {isLoading ? (isEdit ? "Saving..." : "Submitting...") : (isEdit ? "Save" : "Submit")}
+                                {isLoading ? (isEdit ? t("Saving...") : t("Submitting...")) : (isEdit ? t("Save") : t("Submit"))}
                             </Button>
                         </div>
                     </form>

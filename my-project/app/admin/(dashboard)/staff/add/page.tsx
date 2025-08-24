@@ -9,11 +9,13 @@ import {ArrowLeft, Mail, Phone, Save, Upload, X} from "lucide-react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 import { useCreateStaffForm } from "../_hooks/useCreateStaff";
+import { useTranslation } from "react-i18next";
 import useRoles from "../roles/_hook/useRoles";
 import {useState} from "react";
 import Image from "next/image";
 
 export default function AddStaffPage() {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -46,20 +48,20 @@ export default function AddStaffPage() {
         <Button variant="outline" size="icon" asChild>
           <Link href="/admin/staff">
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
+            <span className="sr-only">{t("Back")}</span>
           </Link>
         </Button>
         <div className="space-y-2">
-          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add New Staff</h1>
-          <p className="text-muted-foreground">Create a new staff member profile</p>
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Add New Staff")}</h1>
+          <p className="text-muted-foreground">{t("Create a new staff member profile")}</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(v => onSubmit(v, () => {}))}>
         <Card>
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
-            <CardDescription>Enter the staff member&apos;s basic information</CardDescription>
+            <CardTitle>{t("Personal Information")}</CardTitle>
+            <CardDescription>{t("Enter the staff member's basic information")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
@@ -78,7 +80,7 @@ export default function AddStaffPage() {
                         accept="image/*"
                         onChange={handleFileChange}
                     />
-                    <span className="text-xs text-muted-foreground">Upload photo</span>
+                    <span className="text-xs text-muted-foreground">{t("Upload photo")}</span>
                   </label>
                 </div>
                 {(imagePreview || image) && (
@@ -98,10 +100,10 @@ export default function AddStaffPage() {
               </div>
               <div className="grid flex-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">{t("First Name")}</Label>
                   <Input
                     id="firstName"
-                    placeholder="Enter first name"
+                    placeholder={t("Enter first name")}
                     {...register("firstName")}
                   />
                   {errors.firstName && (
@@ -109,10 +111,10 @@ export default function AddStaffPage() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">{t("Last Name")}</Label>
                   <Input
                     id="lastName"
-                    placeholder="Enter last name"
+                    placeholder={t("Enter last name")}
                     {...register("lastName")}
                   />
                   {errors.lastName && (
@@ -124,13 +126,13 @@ export default function AddStaffPage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email">{t("Email Address")}</Label>
                 <div className="relative">
                   <Mail className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Enter email address"
+                    placeholder={t("Enter email address")}
                     className="pl-8"
                     {...register("email")}
                   />
@@ -140,13 +142,13 @@ export default function AddStaffPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone">{t("Phone Number")}</Label>
                 <div className="relative">
                   <Phone className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="Enter phone number"
+                    placeholder={t("Enter phone number")}
                     className="pl-8"
                     {...register("phone")}
                   />
@@ -156,11 +158,11 @@ export default function AddStaffPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("Password")}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter password"
+                  placeholder={t("Enter password")}
                   {...register("password")}
                 />
                 {errors.password && (
@@ -168,7 +170,7 @@ export default function AddStaffPage() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="roleId">User Role</Label>
+                <Label htmlFor="roleId">{t("User Role")}</Label>
                 <Controller
                   name="roleId"
                   control={control}
@@ -179,7 +181,7 @@ export default function AddStaffPage() {
                       disabled={rolesLoading}
                     >
                       <SelectTrigger id="roleId">
-                        <SelectValue placeholder={rolesLoading ? "Loading roles..." : "Select role"} />
+                        <SelectValue placeholder={rolesLoading ? t("Loading roles...") : t("Select role")} />
                       </SelectTrigger>
                       <SelectContent>
                         {roles &&
@@ -201,7 +203,7 @@ export default function AddStaffPage() {
           <CardFooter className="flex justify-end">
             <Button type="submit" disabled={isLoading}>
               <Save className="mr-2 h-4 w-4" />
-              {isLoading ? "Saving..." : "Save Staff"}
+              {isLoading ? t("Saving...") : t("Save Staff")}
             </Button>
           </CardFooter>
         </Card>

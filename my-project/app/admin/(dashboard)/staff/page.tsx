@@ -20,7 +20,9 @@ import useRoles from "./roles/_hook/useRoles";
 import {useDeleteStaff} from "@/app/admin/(dashboard)/staff/_hooks/useDeleteStaff";
 import { useSession } from "next-auth/react";
 
+import { useTranslation } from "react-i18next";
 export default function StaffPage() {
+  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState({key: '', value:false});
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
@@ -78,14 +80,14 @@ export default function StaffPage() {
     <div className="flex flex-col gap-6 p-4 xl:p-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Staff Management</h2>
-          <p className="text-muted-foreground">Manage staff, roles, and permissions</p>
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t("Staff Management")}</h2>
+          <p className="text-muted-foreground">{t("Manage staff, roles, and permissions")}</p>
         </div>
         {canCreate && <div className="flex items-center flex-wrap gap-2">
           <Button asChild>
             <Link href="/admin/staff/add">
               <UserPlus className="mr-2 h-4 w-4" />
-              Add New Staff
+              {t("Add New Staff")}
             </Link>
           </Button>
         </div>}
@@ -95,13 +97,13 @@ export default function StaffPage() {
         <Card className="md:col-span-3">
           <CardHeader className="pb-3">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <CardTitle>Staff Directory</CardTitle>
+              <CardTitle>{t("Staff Directory")}</CardTitle>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="search"
-                    placeholder="Search staff..."
+                    placeholder={t("Search staff...")}
                     className="w-full pl-8 sm:w-[300px]"
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
@@ -111,19 +113,19 @@ export default function StaffPage() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon">
                       <Filter className="h-4 w-4" />
-                      <span className="sr-only">Filter</span>
+                      <span className="sr-only">{t("Filter")}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-[200px]">
-                    <DropdownMenuLabel>Filter By</DropdownMenuLabel>
+                    <DropdownMenuLabel>{t("Filter By")}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Select value={roleFilter} onValueChange={setRoleFilter} disabled={rolesLoading}>
                         <SelectTrigger className="w-full border-none p-0 shadow-none">
-                          <SelectValue placeholder="Role" />
+                          <SelectValue placeholder={t("Role")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">All Roles</SelectItem>
+                          <SelectItem value="all">{t("All Roles")}</SelectItem>
                           {roles &&
                             roles.map((role) => (
                               <SelectItem key={role.id} value={role.name}>
@@ -140,8 +142,8 @@ export default function StaffPage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="all">All Statuses</SelectItem>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
+                          <SelectItem value="active">{t("Active")}</SelectItem>
+                          <SelectItem value="inactive">{t("Inactive")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </DropdownMenuItem>
@@ -158,7 +160,7 @@ export default function StaffPage() {
                         }}
                       >
                         <RefreshCw className="mr-2 h-3 w-3" />
-                        Reset Filters
+                        {t("Reset Filters")}
                       </Button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -171,26 +173,26 @@ export default function StaffPage() {
               {loading ? (
                 <div className="flex items-center flex-col justify-center h-64">
                     <Preloader />
-                    <p className="text-sm">Loading Staff</p>
+                    <p className="text-sm">{t("Loading Staff")}</p>
                 </div>
               ) : error ? (
                 <div className="flex items-center justify-center h-32 text-red-500">
-                  Failed to load staff.
+                  {t("Failed to load staff.")}
                 </div>
               ) : staffData.length === 0 ? (
                 <div className="flex items-center justify-center h-32 text-muted-foreground">
-                  No staff members found.
+                  {t("No staff members found.")}
                 </div>
               ) : (
               <Table className="whitespace-nowrap">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead className="hidden md:table-cell">Contact</TableHead>
-                    <TableHead className="hidden md:table-cell">Joined</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t("Name")}</TableHead>
+                    <TableHead>{t("Role")}</TableHead>
+                    <TableHead className="hidden md:table-cell">{t("Contact")}</TableHead>
+                    <TableHead className="hidden md:table-cell">{t("Joined")}</TableHead>
+                    <TableHead>{t("Status")}</TableHead>
+                    <TableHead className="text-right">{t("Actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="whitespace-nowrap">
@@ -214,7 +216,7 @@ export default function StaffPage() {
                         </TableCell>
                         <TableCell>
                           <Badge variant={staff.isActive ? "success" : "destructive"}>
-                            {staff.isActive ? "Active" : "Inactive"}
+                            {staff.isActive ? t("Active") : t("Inactive")}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
@@ -225,22 +227,22 @@ export default function StaffPage() {
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon">
                                   <MoreVertical className="h-4 w-4" />
-                                  <span className="sr-only">Actions</span>
+                                  <span className="sr-only">{t("Actions")}</span>
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 {canEdit && <DropdownMenuItem asChild>
                                   <Link href={`/admin/staff/${staff.id}/edit`}>
                                     <Edit className="mr-2 h-4 w-4" />
-                                    Edit
+                                    {t("Edit")}
                                   </Link>
                                 </DropdownMenuItem>}
                                 <DropdownMenuSeparator />
                                 {canDelete && <DropdownMenuItem onClick={() => setDeleteDialogOpen({value: true, key: staff.id})} className="text-red-500">
                                   <Trash className="mr-2 h-4 w-4" />
-                                  Delete
+                                  {t("Delete")}
                                 </DropdownMenuItem>}
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -262,19 +264,19 @@ export default function StaffPage() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader className="pb-2 flex !flex-row items-center justify-between">
-              <CardTitle className="text-base">Staff Overview</CardTitle>
+              <CardTitle className="text-base">{t("Staff Overview")}</CardTitle>
               <Users className="size-8 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <span className="text-3xl font-bold">{staffList?.totalStaff ?? 0}</span>
-                  <span className="text-xs text-muted-foreground">Total Staff</span>
+                  <span className="text-xs text-muted-foreground">{t("Total Staff")}</span>
                 </div>
               </div>
               <div className="mt-4 space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span>Active</span>
+                  <span>{t("Active")}</span>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">
                       {staffList?.activeStaffCount ?? 0}
@@ -288,7 +290,7 @@ export default function StaffPage() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span>Inactive</span>
+                  <span>{t("Inactive")}</span>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">
                       {staffList?.inactiveStaffCount ?? 0}
@@ -307,7 +309,7 @@ export default function StaffPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Staff Roles</CardTitle>
+              <CardTitle className="text-base">{t("Staff Roles")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -327,20 +329,20 @@ export default function StaffPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Quick Actions</CardTitle>
+              <CardTitle className="text-base">{t("Quick Actions")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-2">
                 {canCreate && <Button variant="outline" className="justify-start" asChild>
                   <Link href="/admin/staff/add">
                     <UserPlus className="mr-2 h-4 w-4" />
-                    Add New Staff
+                    {t("Add New Staff")}
                   </Link>
                 </Button>}
                 {canCreate && <Button variant="outline" className="justify-start" asChild>
                   <Link href="/admin/staff/roles">
                     <Shield className="mr-2 h-4 w-4" />
-                    Add Roles
+                    {t("Add Roles")}
                   </Link>
                 </Button>}
               </div>
@@ -353,13 +355,13 @@ export default function StaffPage() {
       <AlertDialog open={deleteDialogOpen.value} onOpenChange={value=>setDeleteDialogOpen({...deleteDialogOpen, value: value})}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to Delete this staff member?</AlertDialogTitle>
-            <AlertDialogDescription>This action will permanently delete the staff member&apos;s record from the system. This action cannot be undone and will remove all associated data including schedules, permissions and attendance records.</AlertDialogDescription>
+            <AlertDialogTitle>{t("Are you sure you want to Delete this staff member?")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("This action will permanently delete the staff member's record from the system. This action cannot be undone and will remove all associated data including schedules, permissions and attendance records.")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteConfirm} className="bg-red-500 text-neutral-50 hover:bg-red-700">
-              Delete
+              {t("Delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

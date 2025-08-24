@@ -28,6 +28,7 @@ import {
   X,
 } from "lucide-react";
 import { useEditStaffForm } from "../../_hooks/useEditStaffForm";
+import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ import useRoles from "@/app/admin/(dashboard)/staff/roles/_hook/useRoles";
 import Image from "next/image";
 
 export default function EditStaffPage() {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -85,7 +87,7 @@ export default function EditStaffPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading Member</p>
+          <p className="text-sm">{t("Loading Member")}</p>
         </div>
     );
   }
@@ -96,15 +98,15 @@ export default function EditStaffPage() {
           <Button variant="outline" size="icon" asChild>
             <Link href="/admin/staff">
               <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Back</span>
+              <span className="sr-only">{t("Back")}</span>
             </Link>
           </Button>
           <div className="space-y-2">
             <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">
-              Edit Staff
+              {t("Edit Staff")}
             </h1>
             <p className="text-muted-foreground">
-              Edit a staff member profile
+              {t("Edit a staff member profile")}
             </p>
           </div>
         </div>
@@ -112,9 +114,9 @@ export default function EditStaffPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Card>
             <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
+              <CardTitle>{t("Personal Information")}</CardTitle>
               <CardDescription>
-                Enter the staff member&apos;s basic information
+                {t("Enter the staff member's basic information")}
               </CardDescription>
             </CardHeader>
 
@@ -145,7 +147,7 @@ export default function EditStaffPage() {
                           onChange={handleFileChange}
                       />
                       <span className="text-xs text-muted-foreground">
-                      Upload photo
+                      {t("Upload photo")}
                     </span>
                     </label>
                   </div>
@@ -164,12 +166,12 @@ export default function EditStaffPage() {
 
                 <div className="grid flex-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input
-                        id="firstName"
-                        placeholder="Enter first name"
-                        {...register("firstName")}
-                    />
+          <Label htmlFor="firstName">{t("First Name")}</Label>
+          <Input
+            id="firstName"
+            placeholder={t("Enter first name")}
+            {...register("firstName")}
+          />
                     {errors.firstName && (
                         <p className="text-sm text-red-600">
                           {errors.firstName.message}
@@ -178,12 +180,12 @@ export default function EditStaffPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input
-                        id="lastName"
-                        placeholder="Enter last name"
-                        {...register("lastName")}
-                    />
+          <Label htmlFor="lastName">{t("Last Name")}</Label>
+          <Input
+            id="lastName"
+            placeholder={t("Enter last name")}
+            {...register("lastName")}
+          />
                     {errors.lastName && (
                         <p className="text-sm text-red-600">
                           {errors.lastName.message}
@@ -195,16 +197,16 @@ export default function EditStaffPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">{t("Email Address")}</Label>
                   <div className="relative">
                     <Mail className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        id="email"
-                        type="email"
-                        placeholder="Enter email address"
-                        className="pl-8"
-                        {...register("email")}
-                    />
+          <Input
+            id="email"
+            type="email"
+            placeholder={t("Enter email address")}
+            className="pl-8"
+            {...register("email")}
+          />
                     {errors.email && (
                         <p className="text-sm text-red-600">
                           {errors.email.message}
@@ -214,16 +216,16 @@ export default function EditStaffPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">{t("Phone Number")}</Label>
                   <div className="relative">
                     <Phone className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="Enter phone number"
-                        className="pl-8"
-                        {...register("phone")}
-                    />
+          <Input
+            id="phone"
+            type="tel"
+            placeholder={t("Enter phone number")}
+            className="pl-8"
+            {...register("phone")}
+          />
                     {errors.phone && (
                         <p className="text-sm text-red-600">
                           {errors.phone.message}
@@ -233,7 +235,7 @@ export default function EditStaffPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="roleId">User Role</Label>
+                  <Label htmlFor="roleId">{t("User Role")}</Label>
                   <Controller
                       name="roleId"
                       control={control}
@@ -245,7 +247,7 @@ export default function EditStaffPage() {
                               key={field.value}
                           >
                             <SelectTrigger id="roleId">
-                              <SelectValue placeholder={rolesLoading ? "Loading roles..." : "Select role"} />
+                              <SelectValue placeholder={rolesLoading ? t("Loading roles...") : t("Select role")} />
                             </SelectTrigger>
                             <SelectContent>
                               {roles &&
@@ -258,9 +260,9 @@ export default function EditStaffPage() {
                           </Select>
                       )}
                   />
-                  {errors.roleId && (
-                      <p className="text-xs text-red-500">{errors.roleId.message}</p>
-                  )}
+          {errors.roleId && (
+              <p className="text-xs text-red-500">{errors.roleId.message}</p>
+            )}
                 </div>
               </div>
             </CardContent>
@@ -268,7 +270,7 @@ export default function EditStaffPage() {
             <CardFooter className="flex justify-end">
               <Button type="submit" disabled={isLoading}>
                 <Save className="mr-2 h-4 w-4" />
-                {isLoading ? "Saving..." : "Save Staff"}
+                {isLoading ? t("Saving...") : t("Save Staff")}
               </Button>
             </CardFooter>
           </Card>

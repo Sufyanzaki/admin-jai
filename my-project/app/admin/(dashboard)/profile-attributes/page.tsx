@@ -1,6 +1,7 @@
 "use client";
 
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
 import {
   Globe,
@@ -138,6 +139,7 @@ function getAttributeIcon(label: string) {
 }
 
 export default function AttributePage() {
+  const { t } = useTranslation();
   const {data:session} = useSession();
   const { attributes, loading } = useProfileAttributes();
 
@@ -145,7 +147,7 @@ export default function AttributePage() {
     return (
       <div className="flex items-center flex-col justify-center h-64">
         <Preloader/>
-        <p className="text-sm">Loading Attributes</p>
+  <p className="text-sm">{t('Loading Attributes')}</p>
       </div>
     )
   }
@@ -164,10 +166,10 @@ export default function AttributePage() {
       <div className="flex flex-col space-y-6 p-4 xl:p-6">
         <div className="flex flex-col space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">
-            Profile Attributes
+            {t('Profile Attributes')}
           </h2>
           <p className="text-muted-foreground">
-            Define and display key user characteristics like age, location, interests, and activity status for building personalized profiles and user interfaces.
+            {t('Define and display key user characteristics like age, location, interests, and activity status for building personalized profiles and user interfaces.')}
           </p>
         </div>
 
@@ -182,7 +184,7 @@ export default function AttributePage() {
                 >
                   <div className="flex items-center gap-2">
                     {getAttributeIcon(attribute.label)}
-                    <span className="truncate">{attribute.label}</span>
+                    <span className="truncate">{t(attribute.label)}</span>
                   </div>
                   <span className="border px-1 text-[10px] rounded-sm">{attribute.options ? attribute.options.split(",").filter(Boolean).length : 0}</span>
                 </TabsTrigger>
@@ -195,9 +197,9 @@ export default function AttributePage() {
               <TabsContent key={attribute.id} value={attribute.id.toString()} className="mt-0">
                 <Card className="shadow-sm">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-xl">{attribute.label}</CardTitle>
+                    <CardTitle className="text-xl">{t(attribute.label)}</CardTitle>
                     <CardDescription>
-                      Add values for {attribute.label.toLowerCase()} that will appear on your profile.
+                      {t('Add values for')} {t(attribute.label.toLowerCase())} {t('that will appear on your profile.')}
                     </CardDescription>
                   </CardHeader>
 

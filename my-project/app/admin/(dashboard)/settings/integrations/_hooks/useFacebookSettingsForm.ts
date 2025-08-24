@@ -4,21 +4,26 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import useSWRMutation from 'swr/mutation';
 import { showError } from '@/shared-lib';
 import { showSuccess } from '@/shared-lib';
 import { patchFacebookSettings, PatchFacebookSettingsProps } from '../_api/patchFacebookSettings';
 import useFacebookSettings from './useFacebookSettings';
 
-const facebookSettingsSchema = z.object({
-  clientId: z.string().min(1, { message: 'Client ID is required' }),
-  clientSecret: z.string().min(1, { message: 'Client SECRET is required' }),
-  isActive: z.boolean(),
-});
-
-export type FacebookSettingsFormValues = z.infer<typeof facebookSettingsSchema>;
 
 export default function useFacebookSettingsForm() {
+
+  const { t } = useTranslation();
+
+  const facebookSettingsSchema = z.object({
+    clientId: z.string().min(1, { message: t('Client ID is required') }),
+    clientSecret: z.string().min(1, { message: t('Client SECRET is required') }),
+    isActive: z.boolean(),
+  });
+
+  type FacebookSettingsFormValues = z.infer<typeof facebookSettingsSchema>;
+
   const { data: existingData, isLoading: isLoadingData } = useFacebookSettings();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -28,7 +33,7 @@ export default function useFacebookSettingsForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t('Failed to update Facebook settings.') });
       },
     }
   );
@@ -68,12 +73,12 @@ export default function useFacebookSettingsForm() {
         clientSecret: values.clientSecret,
         isActive: values.isActive,
       });
-      
+
       if (result) {
-        showSuccess('Facebook settings updated successfully!');
+  showSuccess(t('Facebook settings updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || 'Failed to update Facebook settings.' });
+  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update Facebook settings.') });
     }
   };
 

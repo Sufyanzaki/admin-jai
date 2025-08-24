@@ -8,49 +8,53 @@ import { postHobbiesInterests, patchHobbiesInterests } from "@/app/shared-api/ho
 import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 import { useHobbiesInterestsInfo } from "@/app/shared-hooks/useHobbiesInterestsInfo";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "next/navigation";
 
-const hobbiesInterestsSchema = z.object({
-  sports: z.any()
-      .refine((val) => Array.isArray(val) && val.length > 0, {
-        message: "Please select at least one sport"
-      })
-      .pipe(z.array(z.string()).min(1, {
-        message: "Please select at least one sport"
-      })),
-  music: z.any()
-      .refine((val) => Array.isArray(val) && val.length > 0, {
-        message: "Please select at least one music"
-      })
-      .pipe(z.array(z.string()).min(1, {
-        message: "Please select at least one music"
-      })),
-  kitchen: z.any()
-      .refine((val) => Array.isArray(val) && val.length > 0, {
-        message: "Please select at least one kitchen"
-      })
-      .pipe(z.array(z.string()).min(1, {
-        message: "Please select at least one kitchen"
-      })),
-  reading: z.any()
-      .refine((val) => Array.isArray(val) && val.length > 0, {
-        message: "Please select at least one reading"
-      })
-      .pipe(z.array(z.string()).min(1, {
-        message: "Please select at least one reading"
-      })),
-  tvShows: z.any()
-      .refine((val) => Array.isArray(val) && val.length > 0, {
-        message: "Please select at least one tvShows"
-      })
-      .pipe(z.array(z.string()).min(1, {
-        message: "Please select at least one tvShows"
-      })),
-});
-
-export type HobbiesInterestsFormValues = z.infer<typeof hobbiesInterestsSchema>;
 
 export default function useHobbiesInterestsForm() {
+
+  const { t } = useTranslation();
+
+  const hobbiesInterestsSchema = z.object({
+    sports: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: t("Please select at least one sport")
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: t("Please select at least one sport")
+      })),
+    music: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: t("Please select at least one music")
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: t("Please select at least one music")
+      })),
+    kitchen: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: t("Please select at least one kitchen")
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: t("Please select at least one kitchen")
+      })),
+    reading: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: t("Please select at least one reading")
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: t("Please select at least one reading")
+      })),
+    tvShows: z.any()
+      .refine((val) => Array.isArray(val) && val.length > 0, {
+        message: t("Please select at least one tvShows")
+      })
+      .pipe(z.array(z.string()).min(1, {
+        message: t("Please select at least one tvShows")
+      })),
+  });
+
+  type HobbiesInterestsFormValues = z.infer<typeof hobbiesInterestsSchema>;
 
   const params = useParams();
   const tracker = getUserTrackingId();
@@ -99,7 +103,7 @@ export default function useHobbiesInterestsForm() {
   const { trigger, isMutating } = useSWRMutation(
     "updateHobbiesInterests",
     async (_: string, { arg }: { arg: HobbiesInterestsFormValues }) => {
-      if (!id) return showError({ message: "You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member" });
+  if (!id) return showError({ message: t("You need to initialize a new member profile before you can add other details. Go back to basic Information to initialze a member") });
 
       const payload = {
         sports: arg.sports.join(","),
@@ -114,7 +118,7 @@ export default function useHobbiesInterestsForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message || "Failed to update hobbies/interests info" });
+        showError({ message: error.message ? t(error.message) : t("Failed to update hobbies/interests info") });
       },
       revalidate: false,
       populateCache: false,
@@ -124,7 +128,7 @@ export default function useHobbiesInterestsForm() {
   const onSubmit = async (values: HobbiesInterestsFormValues, callback?: () => void) => {
     const result = await trigger(values);
     if (result) {
-      showSuccess("Hobbies & Interests updated successfully!");
+      showSuccess(t("Hobbies & Interests updated successfully!"));
       callback?.();
       updateUserTrackingId({ hobbiesAndInterest: true });
     }

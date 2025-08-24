@@ -1,6 +1,7 @@
 "use client";
 
 import { CardContent } from "@/components/admin/ui/card";
+import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/admin/ui/separator";
 import { useLanguageInfoInfo } from "../../../../../shared-hooks/useLanguageInfoInfo";
 
@@ -9,6 +10,7 @@ interface LanguagesProps {
 }
 
 export default function Languages({ memberId }: LanguagesProps) {
+  const { t } = useTranslation();
   const { languageInfo, languageInfoLoading: loading, error } = useLanguageInfoInfo();
 
   if (loading) {
@@ -16,7 +18,7 @@ export default function Languages({ memberId }: LanguagesProps) {
       <CardContent>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          <span className="ml-2 text-sm text-muted-foreground">Loading language information...</span>
+          <span className="ml-2 text-sm text-muted-foreground">{t('Loading language information...')}</span>
         </div>
       </CardContent>
     );
@@ -26,7 +28,7 @@ export default function Languages({ memberId }: LanguagesProps) {
     return (
       <CardContent>
         <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">No language information available</p>
+          <p className="text-sm text-muted-foreground">{t('No language information available')}</p>
         </div>
       </CardContent>
     );
@@ -82,7 +84,7 @@ export default function Languages({ memberId }: LanguagesProps) {
               return (
                 <div key={key}>
                   <div className="grid grid-cols-2 py-1">
-                    <span className="font-medium text-muted-foreground">{key}</span>
+                    <span className="font-medium text-muted-foreground">{t(key)}</span>
                     <span className="text-right font-semibold text-primary">
                       {value}
                     </span>

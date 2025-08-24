@@ -9,6 +9,7 @@ import useFormatForm from "@/app/admin/(dashboard)/settings/other-settings/_hook
 import Preloader from "@/components/shared/Preloader";
 import {Save} from "lucide-react";
 import {DialogFooter} from "@/components/admin/ui/dialog";
+import { useTranslation } from "react-i18next";
 import {CurrencyDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
+    const { t } = useTranslation();
     const {
         handleSubmit,
         onSubmit,
@@ -31,7 +33,7 @@ export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader/>
-                <p className="text-sm">Loading Format</p>
+                <p className="text-sm">{t("Loading Format")}</p>
             </div>
         )
     }
@@ -39,14 +41,14 @@ export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v, ()=>setOpenFormatDialog(false)))} className="grid gap-6">
             <div className="space-y-2">
-                <Label htmlFor="default">Default Currency *</Label>
+                <Label htmlFor="default">{t("Default Currency *")}</Label>
                 <Controller
                     control={control}
                     name="defaultCurrencyId"
                     render={({ field }) => (
                         <Select {...field} key={field.value} onValueChange={v=>field.onChange(Number(v))} value={String(field.value)}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select default currency" />
+                                <SelectValue placeholder={t("Select default currency")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {(currencies ?? []).map((currency) => (
@@ -65,18 +67,18 @@ export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
 
             <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                    <Label htmlFor="symbol-format">Symbol Format</Label>
+                    <Label htmlFor="symbol-format">{t("Symbol Format")}</Label>
                     <Controller
                         control={control}
                         name="symbolFormat"
                         render={({ field }) => (
                             <Select {...field} key={field.value} onValueChange={field.onChange} value={field.value}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select format" />
+                                    <SelectValue placeholder={t("Select format")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="prefix">Prefix ($100)</SelectItem>
-                                    <SelectItem value="suffix">Suffix (100$)</SelectItem>
+                                    <SelectItem value="prefix">{t("Prefix ($100)")}</SelectItem>
+                                    <SelectItem value="suffix">{t("Suffix (100$)")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
@@ -87,18 +89,18 @@ export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="decimal-separator">Decimal Separator</Label>
+                    <Label htmlFor="decimal-separator">{t("Decimal Separator")}</Label>
                     <Controller
                         control={control}
                         name="decimalSeparator"
                         render={({ field }) => (
                             <Select {...field} key={field.value} onValueChange={field.onChange} value={field.value}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select separator" />
+                                    <SelectValue placeholder={t("Select separator")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value=".">Period (.)</SelectItem>
-                                    <SelectItem value=",">Comma (,)</SelectItem>
+                                    <SelectItem value=".">{t("Period (.)")}</SelectItem>
+                                    <SelectItem value=",">{t("Comma (,)")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
@@ -109,19 +111,19 @@ export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="decimals">Decimal Places</Label>
+                    <Label htmlFor="decimals">{t("Decimal Places")}</Label>
                     <Input
                         id="decimals"
                         type="number"
                         min="0"
                         max="4"
-                        placeholder="Decimal Places"
+                        placeholder={t("Decimal Places")}
                         {...register("decimalPlaces", {
                             valueAsNumber: true,
                             validate: (value) => {
-                                if (isNaN(value)) return "Please enter a valid number";
-                                if (value < 0) return "Value must be 0 or greater";
-                                if (value > 4) return "Value must be 4 or less";
+                                if (isNaN(value)) return t("Please enter a valid number");
+                                if (value < 0) return t("Value must be 0 or greater");
+                                if (value > 4) return t("Value must be 4 or less");
                                 return true;
                             }
                         })}
@@ -135,11 +137,11 @@ export default function FormatForm({ currencies, setOpenFormatDialog }: Props) {
 
             <DialogFooter>
                 <Button variant="outline" type="button" onClick={() => setOpenFormatDialog(false)}>
-                    Cancel
+                    {t("Cancel")}
                 </Button>
                 <Button type="submit" disabled={isLoading}>
                     <Save className="mr-2 h-4 w-4" />
-                    {isLoading ? "Saving..." : "Save Format"}
+                    {isLoading ? t("Saving...") : t("Save Format")}
                 </Button>
             </DialogFooter>
         </form>

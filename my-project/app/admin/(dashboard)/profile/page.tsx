@@ -1,6 +1,7 @@
 "use client";
 
 import {useState} from 'react'
+import { useTranslation } from "react-i18next";
 import {Separator} from '@/components/admin/ui/separator'
 import {Card, CardContent, CardHeader} from '@/components/admin/ui/card'
 import {Button} from '@/components/admin/ui/button'
@@ -14,6 +15,7 @@ import {useProfile} from "@/app/shared-hooks/useProfile";
 import RecentActivity from "@/app/admin/(dashboard)/profile/_components/RecentActivity";
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const { response } = useProfile();
@@ -23,9 +25,9 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6 p-4 xl:p-6">
       <div>
-        <h3 className="text-lg font-medium">Profile</h3>
+        <h3 className="text-lg font-medium">{t('Profile')}</h3>
         <p className="text-sm text-muted-foreground">
-          Manage your profile settings and account preferences.
+          {t('Manage your profile settings and account preferences.')}
         </p>
       </div>
       
@@ -50,14 +52,14 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" />
-                    <span className="text-sm font-medium">Basic Information</span>
+                    <span className="text-sm font-medium">{t('Basic Information')}</span>
                   </div>
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => setIsEditing(!isEditing)}
                   >
-                    {isEditing ? 'Save' : 'Edit'}
+                    {isEditing ? t('Save') : t('Edit')}
                   </Button>
                 </div>
 
@@ -66,17 +68,17 @@ export default function ProfilePage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Email</span>
+                        <span className="text-muted-foreground">{t('Email')}</span>
                       </div>
-                      <span>{displayUser?.email || "No email provided"}</span>
+                      <span>{displayUser?.email || t('No email provided')}</span>
                     </div>
                   
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Age</span>
+                        <span className="text-muted-foreground">{t('Age')}</span>
                       </div>
-                      <span>{displayUser?.age ? `${displayUser.age} years` : "Not specified"}</span>
+                      <span>{displayUser?.age ? `${displayUser.age} ${t('years')}` : t('Not specified')}</span>
                     </div>
                   </div>
                 )}
@@ -89,22 +91,22 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Shield className="h-4 w-4" />
-                    <span className="text-sm font-medium">Security Status</span>
+                    <span className="text-sm font-medium">{t('Security Status')}</span>
                   </div>
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => setIsChangingPassword(!isChangingPassword)}
                   >
-                    {isChangingPassword ? 'Save' : 'Change Password'}
+                    {isChangingPassword ? t('Save') : t('Change Password')}
                   </Button>
                 </div>
 
                 {isChangingPassword ? <PasswordForm /> : (
                   <div className="grid gap-2 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">2FA Status</span>
-                      <Badge variant="success">Enabled</Badge>
+                      <span className="text-muted-foreground">{t('2FA Status')}</span>
+                      <Badge variant="success">{t('Enabled')}</Badge>
                     </div>
                   </div>
                 )}
@@ -115,7 +117,7 @@ export default function ProfilePage() {
           {/* Quick Actions Card */}
           <Card>
             <CardHeader>
-              <h4 className="text-sm font-medium">Quick Actions</h4>
+              <h4 className="text-sm font-medium">{t('Quick Actions')}</h4>
             </CardHeader>
             <CardContent className="space-y-4">
               <Button 
@@ -124,7 +126,7 @@ export default function ProfilePage() {
                 onClick={() => setIsEditing(!isEditing)}
               >
                 <Settings className="mr-2 h-4 w-4" />
-                {isEditing ? 'Cancel Edit' : 'Edit Profile'}
+                {isEditing ? t('Cancel Edit') : t('Edit Profile')}
               </Button>
               <Button 
                 className="w-full" 
@@ -132,7 +134,7 @@ export default function ProfilePage() {
                 onClick={() => setIsChangingPassword(!isChangingPassword)}
               >
                 <Lock className="mr-2 h-4 w-4" />
-                {isChangingPassword ? 'Cancel Change' : 'Change Password'}
+                {isChangingPassword ? t('Cancel Change') : t('Change Password')}
               </Button>
             </CardContent>
           </Card>
@@ -144,15 +146,15 @@ export default function ProfilePage() {
             <TabsList>
               <TabsTrigger value="activity" className="flex items-center gap-2">
                 <Activity className="h-4 w-4" />
-                Activity
+                {t('Activity')}
               </TabsTrigger>
               <TabsTrigger value="security" className="flex items-center gap-2">
                 <Lock className="h-4 w-4" />
-                Security
+                {t('Security')}
               </TabsTrigger>
               <TabsTrigger value="notifications" className="flex items-center gap-2">
                 <Bell className="h-4 w-4" />
-                Notifications
+                {t('Notifications')}
               </TabsTrigger>
             </TabsList>
 
@@ -205,21 +207,21 @@ export default function ProfilePage() {
                               <item.icon className="h-4 w-4" />
                             </div>
                             <div>
-                              <h5 className="font-medium">{item.title}</h5>
-                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                              <h5 className="font-medium">{t(item.title)}</h5>
+                              <p className="text-sm text-muted-foreground">{t(item.description)}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
                             {item.status === "enabled" && (
-                              <Badge variant="success" className="text-xs">Enabled</Badge>
+                              <Badge variant="success" className="text-xs">{t('Enabled')}</Badge>
                             )}
                             {item.status === "warning" && (
-                              <Badge variant="warning" className="text-xs">Warning</Badge>
+                              <Badge variant="warning" className="text-xs">{t('Warning')}</Badge>
                             )}
                             {item.status === "disabled" && (
-                              <Badge variant="secondary" className="text-xs">Disabled</Badge>
+                              <Badge variant="secondary" className="text-xs">{t('Disabled')}</Badge>
                             )}
-                            <Button variant="outline">{item.action}</Button>
+                            <Button variant="outline">{t(item.action)}</Button>
                           </div>
                         </div>
                         {i < 7 && <Separator className="my-4" />}
@@ -243,13 +245,13 @@ export default function ProfilePage() {
                     ].map((section, i) => (
                       <div key={i} className="space-y-4">
                         <div>
-                          <h5 className="font-medium">{section.title}</h5>
-                          <p className="text-sm text-muted-foreground">{section.description}</p>
+                          <h5 className="font-medium">{t(section.title)}</h5>
+                          <p className="text-sm text-muted-foreground">{t(section.description)}</p>
                         </div>
                         <div className="space-y-3">
                           {section.options.map((option, j) => (
                             <div key={j} className="flex items-center justify-between">
-                              <span className="text-sm">{option}</span>
+                              <span className="text-sm">{t(option)}</span>
                               <Switch />
                             </div>
                           ))}

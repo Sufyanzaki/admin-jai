@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import {Card, CardContent, CardHeader, CardTitle,} from "@/components/admin/ui/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/admin/ui/table";
 import {
@@ -23,6 +24,7 @@ import { useSession } from "next-auth/react";
 export default function BannerListPage() {
 
     const { data: session } = useSession();
+    const { t } = useTranslation();
 
     const { banners, bannersLoading, error } = useBanners();
     const [searchTerm, setSearchTerm] = useState("");
@@ -38,7 +40,7 @@ export default function BannerListPage() {
         try {
             return format(new Date(dateString), 'dd-MM-yyyy');
         } catch {
-            return 'Invalid Date';
+            return t('Invalid Date');
         }
     };
 
@@ -48,7 +50,7 @@ export default function BannerListPage() {
                 <div className="flex items-center justify-center h-64">
                     <div className="flex items-center gap-2">
                         <Loader2 className="h-6 w-6 animate-spin" />
-                        <span>Loading banners...</span>
+                        <span>{t('Loading banners...')}</span>
                     </div>
                 </div>
             </div>
@@ -60,7 +62,7 @@ export default function BannerListPage() {
             <div className="flex flex-col gap-6 p-4 xl:p-6">
                 <div className="flex items-center justify-center h-64">
                     <div className="text-center">
-                        <p className="text-red-500 mb-2">Error loading banners</p>
+                        <p className="text-red-500 mb-2">{t('Error loading banners')}</p>
                         <p className="text-sm text-muted-foreground">{error.message}</p>
                     </div>
                 </div>
@@ -83,15 +85,15 @@ export default function BannerListPage() {
         <div className="flex flex-col gap-6 p-4 xl:p-6">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-2">
-                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Manage Banners</h2>
-                    <p className="text-muted-foreground">View, edit, and track your active banners</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t('Manage Banners')}</h2>
+                    <p className="text-muted-foreground">{t('View, edit, and track your active banners')}</p>
                 </div>
                 {canCreate && (
                     <div className="flex items-center flex-wrap gap-2">
                         <Button asChild className="w-full sm:w-fit">
                             <Link href="/admin/marketing/banners/add">
                                 <UserPlus className="mr-2 h-4 w-4" />
-                                Add New
+                                {t('Add New')}
                             </Link>
                         </Button>
                     </div>
@@ -101,7 +103,7 @@ export default function BannerListPage() {
             <Card>
                 <CardHeader>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <CardTitle>All Banners</CardTitle>
+                        <CardTitle>{t('All Banners')}</CardTitle>
                         {canView && (
                             <div className="relative mt-2 sm:mt-0">
                                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -122,15 +124,15 @@ export default function BannerListPage() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>#</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>CPM</TableHead>
-                                    <TableHead>Start Date</TableHead>
-                                    <TableHead>End Date</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Created</TableHead>
-                                    <TableHead>Page</TableHead>
+                                    <TableHead>{t('Name')}</TableHead>
+                                    <TableHead>{t('CPM')}</TableHead>
+                                    <TableHead>{t('Start Date')}</TableHead>
+                                    <TableHead>{t('End Date')}</TableHead>
+                                    <TableHead>{t('Status')}</TableHead>
+                                    <TableHead>{t('Created')}</TableHead>
+                                    <TableHead>{t('Page')}</TableHead>
                                     {(canEdit || canDelete) && (
-                                        <TableHead className="text-right">Option</TableHead>
+                                        <TableHead className="text-right">{t('Option')}</TableHead>
                                     )}
                                 </TableRow>
                             </TableHeader>
@@ -141,7 +143,7 @@ export default function BannerListPage() {
                                             colSpan={(canEdit || canDelete) ? 9 : 8}
                                             className="h-24 text-center"
                                         >
-                                            No banners found.
+                                            {t('No banners found.')}
                                         </TableCell>
                                     </TableRow>
                                 ) : (
@@ -154,7 +156,7 @@ export default function BannerListPage() {
                                             <TableCell>{formatDate(banner.endDate)}</TableCell>
                                             <TableCell>
                                                 <Badge variant={banner.isActive ? "default" : "secondary"}>
-                                                    {banner.isActive ? "Active" : "Inactive"}
+                                                    {banner.isActive ? t("Active") : t("Inactive")}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell>{formatDate(banner.createdAt)}</TableCell>
@@ -178,13 +180,13 @@ export default function BannerListPage() {
                                                             <DropdownMenuContent align="end">
                                                                 <DropdownMenuItem asChild>
                                                                     <Link href={`/admin/marketing/banners/${banner.id}`}>
-                                                                        View Details
+                                                                        {t('View Details')}
                                                                     </Link>
                                                                 </DropdownMenuItem>
                                                                 {canEdit && (
                                                                     <DropdownMenuItem asChild>
                                                                         <Link href={`/admin/marketing/banners/${banner.id}/edit`}>
-                                                                            Edit Banner
+                                                                            {t('Edit Banner')}
                                                                         </Link>
                                                                     </DropdownMenuItem>
                                                                 )}
@@ -196,7 +198,7 @@ export default function BannerListPage() {
                                                                             setDeletingId(null);
                                                                         }}
                                                                     >
-                                                                        Deactivate
+                                                                        {t('Deactivate')}
                                                                     </DropdownMenuItem>
                                                                 )}
                                                             </DropdownMenuContent>
@@ -211,7 +213,7 @@ export default function BannerListPage() {
                         </Table>
                     ) : (
                         <div className="flex items-center justify-center h-32">
-                            <p className="text-muted-foreground">You don't have permission to view banners.</p>
+                            <p className="text-muted-foreground">{t("You don't have permission to view banners.")}</p>
                         </div>
                     )}
                 </CardContent>

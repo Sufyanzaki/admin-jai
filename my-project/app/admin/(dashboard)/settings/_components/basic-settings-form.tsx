@@ -1,6 +1,7 @@
 "use client";
 
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useBasicSettingsForm } from "../other-settings/_hooks/useBasicSettingsForm";
 import { Button } from "@/components/admin/ui/button";
 import {
@@ -25,6 +26,7 @@ import Preloader from "@/components/shared/Preloader";
 import Image from "next/image";
 
 export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
@@ -45,7 +47,7 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
     return (
       <div className="flex items-center flex-col justify-center h-64">
         <Preloader />
-        <p className="text-sm">Loading settings</p>
+        <p className="text-sm">{t("Loading settings")}</p>
       </div>
     );
 
@@ -54,10 +56,10 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Settings className="h-5 w-5" />
-          System Configuration
+          {t("System Configuration")}
         </CardTitle>
         <CardDescription>
-          Manage your system settings and appearance
+          {t("Manage your system settings and appearance")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -65,13 +67,13 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-semibold">System Identity</h3>
+                <h3 className="text-lg font-semibold">{t("System Identity")}</h3>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="system-name">System Name</Label>
+                    <Label htmlFor="system-name">{t("System Name")}</Label>
                     <Input
                       id="system-name"
-                      placeholder="Your System Name"
+                      placeholder={t("Your System Name")}
                       {...register("systemName")}
                     />
                     {errors.systemName && (
@@ -81,7 +83,7 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label>System Logo</Label>
+                    <Label>{t("System Logo")}</Label>
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <div className="h-24 w-24 rounded-lg border flex items-center justify-center bg-muted/50 overflow-hidden">
@@ -89,7 +91,7 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                             <Image
                               fill
                               src={systemLogoPreview}
-                              alt="Logo"
+                              alt={t("Logo")}
                               className="h-20 w-20 object-contain"
                             />
                           ) : (
@@ -118,11 +120,11 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                               document.getElementById("system-logo")?.click()
                             }
                           >
-                            Upload Logo
+                            {t("Upload Logo")}
                           </Button>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          Recommended: 300×300px PNG with transparent background
+                          {t("Recommended: 300×300px PNG with transparent background")}
                         </p>
                         <Controller
                           name="systemLogo"
@@ -204,13 +206,13 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
             <div className="space-y-6">
               {/* Member Settings */}
               <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-semibold">Member Settings</h3>
+                <h3 className="text-lg font-semibold">{t("Member Settings")}</h3>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="member-code-prefix">Member ID Prefix</Label>
+                    <Label htmlFor="member-code-prefix">{t("Member ID Prefix")}</Label>
                     <Input
                       id="member-code-prefix"
-                      placeholder="MEM-"
+                      placeholder={t("MEM-")}
                       {...register("memberPrefix")}
                     />
                     {errors.memberPrefix && (
@@ -221,7 +223,7 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="member-minimum-age">
-                      Minimum Age Requirement
+                      {t("Minimum Age Requirement")}
                     </Label>
                     <div className="flex items-center gap-2">
                       <Input
@@ -233,7 +235,7 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
                         {...register("minimumAge", { valueAsNumber: true })}
                       />
                       <span className="text-sm text-muted-foreground">
-                        years
+                        {t("years")}
                       </span>
                     </div>
                     {errors.minimumAge && (
@@ -335,7 +337,7 @@ export default function BasicSettingsForm({canEdit}: {canEdit: boolean}) {
           </div>
           {canEdit &&  <div className="flex justify-end gap-4 pt-4">
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save Configuration"}
+              {isLoading ? t("Saving...") : t("Save Configuration")}
             </Button>
           </div>}
         </form>

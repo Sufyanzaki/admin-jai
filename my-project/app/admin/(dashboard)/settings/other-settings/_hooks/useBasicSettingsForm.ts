@@ -8,29 +8,32 @@ import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { patchBasicSettings } from "../_api/basicSettingApi";
+import { useTranslation } from "react-i18next";
 import { useBasicSettings } from "./useBasicSettings";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { isFile } from "@/lib/utils";
 
-const basicSettingsSchema = z.object({
-  systemLogo: z.any().optional(),
-  systemName: z.string().min(1, "System name is required"),
-  memberPrefix: z.string().min(1, "Member prefix is required"),
-  minimumAge: z.coerce.number().min(1, "Minimum age is required"),
-  dateFormat: z.string().min(1, "Date format is required"),
-  adminPanelTitle: z.string().min(1, "Admin panel title is required"),
-  loginImage: z.any().optional(),
-  loginMessage: z.string().min(1, "Login message is required"),
-  maintenanceMode: z.boolean().optional(),
-  defaultCurrency: z.string().min(1, "Default currency is required"),
-  defaultLanguage: z.string().min(1, "Default language is required"),
-  serverInformation: z.string().optional(),
-  database: z.string().optional(),
-});
-
-export type BasicSettingsFormValues = z.infer<typeof basicSettingsSchema>;
 
 export function useBasicSettingsForm() {
+  const { t } = useTranslation();
+  const basicSettingsSchema = z.object({
+    systemLogo: z.any().optional(),
+    systemName: z.string().min(1, t("System name is required")),
+    memberPrefix: z.string().min(1, t("Member prefix is required")),
+    minimumAge: z.coerce.number().min(1, t("Minimum age is required")),
+    dateFormat: z.string().min(1, t("Date format is required")),
+    adminPanelTitle: z.string().min(1, t("Admin panel title is required")),
+    loginImage: z.any().optional(),
+    loginMessage: z.string().min(1, t("Login message is required")),
+    maintenanceMode: z.boolean().optional(),
+    defaultCurrency: z.string().min(1, t("Default currency is required")),
+    defaultLanguage: z.string().min(1, t("Default language is required")),
+    serverInformation: z.string().optional(),
+    database: z.string().optional(),
+  });
+
+  type BasicSettingsFormValues = z.infer<typeof basicSettingsSchema>;
+
   const { data, loading } = useBasicSettings();
   const [systemLogoPreview, setSystemLogoPreview] = useState<string | null>(null);
   const [loginImagePreview, setLoginImagePreview] = useState<string | null>(null);
@@ -41,7 +44,7 @@ export function useBasicSettingsForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
       },
       revalidate: false,
       populateCache: false,
@@ -133,7 +136,7 @@ export function useBasicSettingsForm() {
     }
     const result = await trigger(values);
     if (result) {
-      showSuccess("Settings updated successfully!");
+      showSuccess(t("Settings updated successfully!"));
     }
   };
 

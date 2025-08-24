@@ -1,6 +1,7 @@
 "use client";
 
 import {Button} from "@/components/admin/ui/button";
+import { useTranslation } from "react-i18next";
 import {Tabs, TabsList, TabsTrigger} from "@/components/admin/ui/tabs";
 import {ArrowLeft} from "lucide-react";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import AboutMeTab from "@/app/admin/(dashboard)/members/_components/AboutMeTab";
 import {useRouter} from "next/navigation";
 
 export default function AddMemberPage() {
+  const { t } = useTranslation();
 
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("personal");
@@ -27,12 +29,12 @@ export default function AddMemberPage() {
           <Button variant="outline" size="icon" asChild>
             <Link href="/admin/members">
               <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Back</span>
+              <span className="sr-only">{t("Back")}</span>
             </Link>
           </Button>
           <div className="space-y-2">
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">Add Member</h1>
-            <p className="text-muted-foreground">Add a new member to your app.</p>
+            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight mb-2">{t('Add Member')}</h1>
+            <p className="text-muted-foreground">{t('Add a new member to your app.')}</p>
           </div>
         </div>
 
@@ -43,15 +45,15 @@ export default function AddMemberPage() {
             onValueChange={setActiveTab}
         >
           <TabsList>
-            <TabsTrigger value="personal">Basic Information</TabsTrigger>
-            <TabsTrigger value="professional">Education & Career</TabsTrigger>
-            <TabsTrigger value="behavior">Personality & Behavior</TabsTrigger>
-            <TabsTrigger value="partner">Partner Expectation</TabsTrigger>
-            <TabsTrigger value="life_style">Life Style</TabsTrigger>
-            <TabsTrigger value="hobbies">Hobbies & Interest</TabsTrigger>
-            <TabsTrigger value="languages">Languages</TabsTrigger>
-            <TabsTrigger value="living">Living</TabsTrigger>
-            <TabsTrigger value="about_me">About Me</TabsTrigger>
+            <TabsTrigger value="personal">{t('Basic Information')}</TabsTrigger>
+            <TabsTrigger value="professional">{t('Education & Career')}</TabsTrigger>
+            <TabsTrigger value="behavior">{t('Personality & Behavior')}</TabsTrigger>
+            <TabsTrigger value="partner">{t('Partner Expectation')}</TabsTrigger>
+            <TabsTrigger value="life_style">{t('Life Style')}</TabsTrigger>
+            <TabsTrigger value="hobbies">{t('Hobbies & Interest')}</TabsTrigger>
+            <TabsTrigger value="languages">{t('Languages')}</TabsTrigger>
+            <TabsTrigger value="living">{t('Living')}</TabsTrigger>
+            <TabsTrigger value="about_me">{t('About Me')}</TabsTrigger>
           </TabsList>
 
           {/* Only render the active tab */}

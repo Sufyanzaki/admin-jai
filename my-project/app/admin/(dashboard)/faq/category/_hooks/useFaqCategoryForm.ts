@@ -1,22 +1,26 @@
 "use client"
 
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useSWRConfig } from "swr";
-import {FaqCategoryDto} from "@/app/shared-types/faq";
-import {postFaqCategory} from "@/app/shared-api/faqApi";
+import { FaqCategoryDto } from "@/app/shared-types/faq";
+import { postFaqCategory } from "@/app/shared-api/faqApi";
 
-const createFaqCategorySchema = z.object({
-  name: z.string().min(1, "Category name is required"),
-});
-
-export type CreateFaqCategoryFormValues = z.infer<typeof createFaqCategorySchema>;
 
 export default function useFaqCategoryForm() {
+  const { t } = useTranslation();
+
+  const createFaqCategorySchema = z.object({
+    name: z.string().min(1, t("Category name is required")),
+  });
+
+  type CreateFaqCategoryFormValues = z.infer<typeof createFaqCategorySchema>;
+
   const { mutate: globalMutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation(
     "createFaqCategory",
@@ -25,7 +29,7 @@ export default function useFaqCategoryForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: t(error.message) });
         console.error("FAQ Category creation error:", error);
       },
     }
@@ -50,7 +54,7 @@ export default function useFaqCategoryForm() {
   ) => {
     const result = await trigger({ name: values.name });
     if (result) {
-      showSuccess("FAQ Category created successfully!");
+      showSuccess(t("FAQ Category created successfully!"));
       reset();
       globalMutate(
         "faq-categories",

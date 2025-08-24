@@ -1,5 +1,5 @@
 import { getRequest } from "@/shared-lib";
-import { ProfileAttributeResponse } from "./getProfileAttribute";
+import { ProfileAttributeResponse } from "@/app/shared-types/attribute";
 
 export async function getProfileAttributes(): Promise<ProfileAttributeResponse[]> {
   return getRequest({

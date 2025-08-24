@@ -1,6 +1,7 @@
 "use client"
 
 import {useState} from "react"
+import { useTranslation } from "react-i18next";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/admin/ui/card"
 import {Input} from "@/components/admin/ui/input"
 import {Edit, PlusCircle, Search, Trash2} from "lucide-react"
@@ -16,6 +17,7 @@ import {FaqEditModal} from "@/app/admin/(dashboard)/faq/_components/faq-edit-mod
 import {useSession} from "next-auth/react";
 
 export default function SupportFAQ() {
+    const { t } = useTranslation();
 
     const { data: session } = useSession();
 
@@ -76,27 +78,27 @@ export default function SupportFAQ() {
         <div className="space-y-6 p-4 xl:p-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="space-y-2">
-                    <h2 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">FAQ Management</h2>
-                    <p className="text-muted-foreground">Create and manage members faq surveys</p>
+                    <h2 className="text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight">{t('FAQ Management')}</h2>
+                    <p className="text-muted-foreground">{t('Create and manage members faq surveys')}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     {canViewCategory && <Button variant="secondary" size="sm">
                         <Link href="/admin/faq/category">
-                            Manage Category
+                            {t('Manage Category')}
                         </Link>
                     </Button>}
                     {canCreate && <Button size="sm" onClick={() => setOpen(true)}>
                         <PlusCircle className="h-4 w-4 mr-2" />
-                        Add Faq
+                        {t('Add Faq')}
                     </Button>}
                 </div>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Frequently Asked Questions</CardTitle>
+                    <CardTitle>{t('Frequently Asked Questions')}</CardTitle>
                     <CardDescription>
-                        Find answers to common questions about using the matrimonial platform and managing your profile.
+                        {t('Find answers to common questions about using the matrimonial platform and managing your profile.')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -104,7 +106,7 @@ export default function SupportFAQ() {
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
-                            placeholder="Search FAQs..."
+                            placeholder={t('Search FAQs...')}
                             className="pl-8"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -114,20 +116,20 @@ export default function SupportFAQ() {
                     {isLoading ? (
                         <div className="flex items-center flex-col justify-center h-64">
                             <Preloader/>
-                            <p className="text-sm">Loading...</p>
+                            <p className="text-sm">{t('Loading...')}</p>
                         </div>
                     ) : error ? (
                         <div className="text-center py-10 text-red-500">
-                            <p>Error loading FAQs</p>
+                            <p>{t('Error loading FAQs')}</p>
                         </div>
                     ) : filteredFAQs.length > 0 ? (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[300px]">Question</TableHead>
-                                    <TableHead className="hidden sm:table-cell">Answer</TableHead>
-                                    <TableHead className="hidden sm:table-cell">Category</TableHead>
-                                    <TableHead className="w-[120px] text-right">Actions</TableHead>
+                                    <TableHead className="w-[300px]">{t('Question')}</TableHead>
+                                    <TableHead className="hidden sm:table-cell">{t('Answer')}</TableHead>
+                                    <TableHead className="hidden sm:table-cell">{t('Category')}</TableHead>
+                                    <TableHead className="w-[120px] text-right">{t('Actions')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -146,7 +148,7 @@ export default function SupportFAQ() {
                                                     disabled={!canEdit}
                                                 >
                                                     <Edit className="h-4 w-4" />
-                                                    <span className="sr-only">Edit FAQ</span>
+                                                    <span className="sr-only">{t('Edit FAQ')}</span>
                                                 </Button>
                                                 <Button
                                                     variant="outline"
@@ -160,7 +162,7 @@ export default function SupportFAQ() {
                                                     ) : (
                                                         <Trash2 className="h-4 w-4" />
                                                     )}
-                                                    <span className="sr-only">Delete FAQ</span>
+                                                    <span className="sr-only">{t('Delete FAQ')}</span>
                                                 </Button>
                                             </div>
                                         </TableCell>
@@ -170,7 +172,7 @@ export default function SupportFAQ() {
                         </Table>
                     ) : (
                         <div className="text-center py-10">
-                            <p className="text-muted-foreground">No FAQs found matching your search</p>
+                            <p className="text-muted-foreground">{t('No FAQs found matching your search')}</p>
                         </div>
                     )}
                 </CardContent>

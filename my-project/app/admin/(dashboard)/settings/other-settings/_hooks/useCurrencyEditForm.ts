@@ -1,28 +1,31 @@
 "use client";
 
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { showError } from "@/shared-lib";
+import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {Currency, patchCurrency} from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
-import {useSWRConfig} from "swr";
-import {useEffect} from "react";
-import {useCurrencyDetails} from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useCurrencyDetails";
+import { Currency, patchCurrency } from "@/app/admin/(dashboard)/settings/other-settings/_api/currencies";
+import { useSWRConfig } from "swr";
+import { useEffect } from "react";
+import { useCurrencyDetails } from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useCurrencyDetails";
+import { useTranslation } from "react-i18next";
 
-const currencySchema = z.object({
-    currencyName: z.string().min(2, "Currency name is required"),
-    currencyCode: z.string().min(2, "Currency code is required"),
-    symbol: z.string().min(1, "Currency symbol is required"),
-    textDirection: z.string().min(1, "Text direction is required"),
-});
-
-export type CurrencyFormValues = z.infer<typeof currencySchema>;
 
 export default function useCurrencyEditForm(editId: string) {
+    const { t } = useTranslation();
 
-    const { currency: editCurrency, loading:currencyLoading } = useCurrencyDetails(editId);
+    const currencySchema = z.object({
+        currencyName: z.string().min(2, t("Currency name is required")),
+        currencyCode: z.string().min(2, t("Currency code is required")),
+        symbol: z.string().min(1, t("Currency symbol is required")),
+        textDirection: z.string().min(1, t("Text direction is required")),
+    });
+
+    type CurrencyFormValues = z.infer<typeof currencySchema>;
+
+    const { currency: editCurrency, loading: currencyLoading } = useCurrencyDetails(editId);
     const { mutate: globalMutate } = useSWRConfig();
 
     const {
@@ -63,7 +66,7 @@ export default function useCurrencyEditForm(editId: string) {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error("Currency update error:", error);
             },
             revalidate: false,
@@ -85,7 +88,7 @@ export default function useCurrencyEditForm(editId: string) {
                 false
             );
 
-            showSuccess("Currency updated successfully!");
+            showSuccess(t("Currency updated successfully!"));
             reset();
             callback?.(result);
         }

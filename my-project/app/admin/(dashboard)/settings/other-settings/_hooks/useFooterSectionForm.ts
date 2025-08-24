@@ -1,37 +1,40 @@
 "use client";
 
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {showError, showSuccess} from "@/shared-lib";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {useEffect, useState} from "react";
-import {createFooterSection, updateFooterSection} from "@/app/shared-api/footerApi";
-import {useFooterSectionSetting} from "@/app/shared-hooks/useFooterSectionSetting";
-import {useSearchParams} from "next/navigation";
-import {useSWRConfig} from "swr";
-import {FooterSectionDto} from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
+import { useEffect, useState } from "react";
+import { createFooterSection, updateFooterSection } from "@/app/shared-api/footerApi";
+import { useFooterSectionSetting } from "@/app/shared-hooks/useFooterSectionSetting";
+import { useSearchParams } from "next/navigation";
+import { useSWRConfig } from "swr";
+import { FooterSectionDto } from "@/app/admin/(dashboard)/settings/other-settings/_types/system-settings";
+import { useTranslation } from "react-i18next";
 
-const footerSectionFormSchema = z.object({
-    sectionName: z.string().min(1, "Section name is required"),
-    pageNames: z.array(
-        z.object({
-            title: z.string(),
-            url: z.string(),
-        })
-    ).min(1, "At least one page must be selected"),
-});
-
-export type FooterSectionFormValues = z.infer<typeof footerSectionFormSchema>;
 
 export function useFooterSectionForm() {
+    const { t } = useTranslation();
 
-    const { mutate:globalMutate } = useSWRConfig();
+    const footerSectionFormSchema = z.object({
+        sectionName: z.string().min(1, t("Section name is required")),
+        pageNames: z.array(
+            z.object({
+                title: z.string(),
+                url: z.string(),
+            })
+        ).min(1, t("At least one page must be selected")),
+    });
+
+    type FooterSectionFormValues = z.infer<typeof footerSectionFormSchema>;
+
+    const { mutate: globalMutate } = useSWRConfig();
 
     const searchParams = useSearchParams();
     const editId = searchParams.get("editId") ?? undefined;
 
-    const {isLoading, data} = useFooterSectionSetting(editId)
+    const { isLoading, data } = useFooterSectionSetting(editId)
 
     const [error, setError] = useState<string | null>(null);
 
@@ -61,12 +64,12 @@ export function useFooterSectionForm() {
                     pageNames: arg.pageNames.map((p) => p.title).join(","),
                     pagesLinks: arg.pageNames.map((p) => p.url).join(","),
                 };
-                if(editId) return await updateFooterSection(editId, payload);
+                if (editId) return await updateFooterSection(editId, payload);
                 return await createFooterSection(payload)
             } catch (error: unknown) {
                 const message =
                     error instanceof Error ? error.message : "Something went wrong";
-                showError({ message });
+                showError({ message: t(message) });
             }
         },
         {
@@ -75,11 +78,11 @@ export function useFooterSectionForm() {
                     error instanceof Error
                         ? error.message
                         : "Failed to update footer section settings";
-                setError(message);
-                showError({ message });
+                setError(t(message));
+                showError({ message: t(message) });
             },
             onSuccess: () => {
-                showSuccess("Footer section updated successfully!");
+                showSuccess(t("Footer section updated successfully!"));
             },
             revalidate: false,
             populateCache: false,
@@ -111,7 +114,7 @@ export function useFooterSectionForm() {
         try {
             const r = await trigger(values);
             callback?.();
-            if(!r) throw new Error("Failed to create footer section");
+            if (!r) throw new Error("Failed to create footer section");
             globalMutate(
                 "footer-all-settings",
                 (current: FooterSectionDto[] = []) => {
@@ -149,7 +152,7 @@ export function useFooterSectionForm() {
                 error instanceof Error
                     ? error.message
                     : "Failed to update footer section";
-            showError({ message });
+            showError({ message: t(message) });
         }
     };
 

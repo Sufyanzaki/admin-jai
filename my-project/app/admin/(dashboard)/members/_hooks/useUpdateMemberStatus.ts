@@ -4,8 +4,10 @@ import { patchUserStatus } from "@/app/shared-api/userApi";
 import { showError, showSuccess } from "@/shared-lib";
 import { GetAllMembersResponse } from "@/app/admin/(dashboard)/members/_types/member";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const useUpdateMemberStatus = () => {
+    const { t } = useTranslation();
     const { mutate: globalMutate } = useSWRConfig();
     const [updatingIds, setUpdatingIds] = useState<string[]>([]);
 
@@ -15,7 +17,7 @@ export const useUpdateMemberStatus = () => {
             return await patchUserStatus(arg.id, arg.isActive);
         },
         {
-            onSuccess: () => showSuccess("Member status updated successfully!"),
+            onSuccess: () => showSuccess(t("Member status updated successfully!")),
             onError: (error) => {
                 globalMutate("all-members").finally();
                 showError({ message: error.message });

@@ -11,6 +11,7 @@ import { Building } from "lucide-react";
 import { Controller } from "react-hook-form";
 import usePushForm from "../_hooks/usePushForm";
 import Preloader from "@/components/shared/Preloader";
+import { useTranslation } from "react-i18next";
 
 const firebaseInstructions = [
   "Log in to Google Firebase and Create a new app if you don’t have any.",
@@ -23,6 +24,7 @@ const firebaseInstructions = [
 ];
 
 export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -37,7 +39,7 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader/>
-          <p className="text-sm">Loading push notification settings</p>
+          <p className="text-sm">{t("Loading push notification settings")}</p>
         </div>
     )
   }
@@ -48,20 +50,20 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Building className="mr-2 h-5 w-5" />
-            Push Notifications
+            {t("Push Notifications")}
           </CardTitle>
-          <CardDescription>Configure Firebase Cloud Messaging (FCM) settings</CardDescription>
+          <CardDescription>{t("Configure Firebase Cloud Messaging (FCM) settings")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Settings Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Firebase Configuration</h3>
+            <h3 className="text-lg font-medium">{t("Firebase Configuration")}</h3>
 
             <div className="flex items-center justify-between pb-4">
               <div>
-                <Label htmlFor="push-status">Activation</Label>
+                <Label htmlFor="push-status">{t("Activation")}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Enable/disable push notifications service
+                  {t("Enable/disable push notifications service")}
                 </p>
               </div>
               <Controller
@@ -80,11 +82,11 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="fcm-api-key">FCM API KEY</Label>
+                <Label htmlFor="fcm-api-key">{t("FCM API KEY")}</Label>
                 <Input
                   id="fcm-api-key"
                   type="password"
-                  placeholder="Enter FCM API Key"
+                  placeholder={t("Enter FCM API Key")}
                   {...register('fcmApiKey')}
                     disabled={!canEdit}
                 />
@@ -93,10 +95,10 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fcm-auth-domain">FCM AUTH DOMAIN</Label>
+                <Label htmlFor="fcm-auth-domain">{t("FCM AUTH DOMAIN")}</Label>
                 <Input
                   id="fcm-auth-domain"
-                  placeholder="Enter Auth Domain"
+                  placeholder={t("Enter Auth Domain")}
                   {...register('authDomain')}
                     disabled={!canEdit}
                 />
@@ -105,10 +107,10 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fcm-project-id">FCM PROJECT ID</Label>
+                <Label htmlFor="fcm-project-id">{t("FCM PROJECT ID")}</Label>
                 <Input
                   id="fcm-project-id"
-                  placeholder="Enter Project ID"
+                  placeholder={t("Enter Project ID")}
                   {...register('projectId')}
                     disabled={!canEdit}
                 />
@@ -117,10 +119,10 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fcm-storage-bucket">FCM STORAGE BUCKET</Label>
+                <Label htmlFor="fcm-storage-bucket">{t("FCM STORAGE BUCKET")}</Label>
                 <Input
                   id="fcm-storage-bucket"
-                  placeholder="Enter Storage Bucket"
+                  placeholder={t("Enter Storage Bucket")}
                   disabled={!canEdit}
                   {...register('storageBucket')}
                 />
@@ -129,10 +131,10 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fcm-sender-id">FCM MESSAGING SENDER ID</Label>
+                <Label htmlFor="fcm-sender-id">{t("FCM MESSAGING SENDER ID")}</Label>
                 <Input
                   id="fcm-sender-id"
-                  placeholder="Enter Sender ID"
+                  placeholder={t("Enter Sender ID")}
                   disabled={!canEdit}
                   {...register('messagingSenderId')}
                 />
@@ -141,10 +143,10 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fcm-app-id">FCM APP ID</Label>
+                <Label htmlFor="fcm-app-id">{t("FCM APP ID")}</Label>
                 <Input
                   id="fcm-app-id"
-                  placeholder="Enter App ID"
+                  placeholder={t("Enter App ID")}
                   disabled={!canEdit}
                   {...register('appId')}
                 />
@@ -153,12 +155,12 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                 )}
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="firebase-server-key">FIREBASE SERVER KEY</Label>
+                <Label htmlFor="firebase-server-key">{t("FIREBASE SERVER KEY")}</Label>
                 <Input
                   id="firebase-server-key"
                   type="password"
                   disabled={!canEdit}
-                  placeholder="Enter Firebase Server Key"
+                  placeholder={t("Enter Firebase Server Key")}
                   {...register('serverKey')}
                 />
                 {errors.serverKey && (
@@ -172,7 +174,7 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
 
           {/* Instructions Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Setup Instructions</h3>
+            <h3 className="text-lg font-medium">{t("Setup Instructions")}</h3>
 
             <div className="space-y-3">
               {firebaseInstructions.map((step, idx) => (
@@ -180,7 +182,7 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
                   <div className="flex items-start gap-3">
                     <span className="font-medium">{idx + 1}.</span>
                     <AlertDescription>
-                      {step}
+                      {t(step)}
                     </AlertDescription>
                   </div>
                 </Alert>
@@ -190,7 +192,7 @@ export default function PushNotificationForm({canEdit}: { canEdit: boolean}) {
         </CardContent>
         {canEdit && <CardFooter className="flex justify-end gap-2 flex-wrap">
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Saving..." : "Save Settings"}
+            {isLoading ? t("Saving...") : t("Save Settings")}
           </Button>
         </CardFooter>}
       </Card>

@@ -1,20 +1,23 @@
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { useSWRConfig } from "swr";
 import { useEffect } from "react";
-import {patchFaqCategory} from "@/app/shared-api/faqApi";
-import {FaqCategoryDto} from "@/app/shared-types/faq";
+import { patchFaqCategory } from "@/app/shared-api/faqApi";
+import { FaqCategoryDto } from "@/app/shared-types/faq";
 
-const editFaqCategorySchema = z.object({
-  name: z.string().min(1, "Category name is required"),
-});
-
-export type EditFaqCategoryFormValues = z.infer<typeof editFaqCategorySchema>;
 
 export default function useEditFaqCategory(id: string | null, initialName: string) {
+  const { t } = useTranslation();
+  const editFaqCategorySchema = z.object({
+    name: z.string().min(1, t("Category name is required")),
+  });
+
+  type EditFaqCategoryFormValues = z.infer<typeof editFaqCategorySchema>;
+
   const { mutate } = useSWRConfig();
   const {
     handleSubmit,
@@ -39,7 +42,7 @@ export default function useEditFaqCategory(id: string | null, initialName: strin
     try {
       const result = await patchFaqCategory(id, { name: values.name });
       if (result) {
-        showSuccess("FAQ Category updated successfully!");
+        showSuccess(t("FAQ Category updated successfully!"));
         mutate(
           "faq-categories",
           (current: FaqCategoryDto[] = []) =>
@@ -51,7 +54,7 @@ export default function useEditFaqCategory(id: string | null, initialName: strin
         callback?.(false);
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || "Failed to update category" });
+      if (error instanceof Error) showError({ message: error.message || t("Failed to update category") });
     }
   };
 

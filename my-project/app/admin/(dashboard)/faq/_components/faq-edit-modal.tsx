@@ -9,12 +9,14 @@ import { Input } from "@/components/admin/ui/input";
 import { Controller } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import useEditFaq from "../_hooks/useEditFaq";
+import { useTranslation } from "react-i18next";
 import useFaq from "../../../../shared-hooks/useFaq";
 import useFaqCategories from "../category/_hooks/useFaqCategories";
 import Preloader from "@/components/shared/Preloader";
 
 export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (value: boolean) => void }) {
     const searchParams = useSearchParams();
+    const { t } = useTranslation();
     const editId = searchParams.get("edit");
     const { data: faqs } = useFaq();
     const { data: categories, isLoading: categoriesLoading } = useFaqCategories();
@@ -35,7 +37,7 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
             <Dialog open={isOpen} onOpenChange={onClose}>
                 <DialogContent className="sm:max-w-[500px]">
                     <DialogHeader className="px-1">
-                        <DialogTitle>Edit FAQ</DialogTitle>
+                        <DialogTitle>{t("Edit FAQ")}</DialogTitle>
                     </DialogHeader>
                     <div className="flex items-center justify-center py-8">
                         <Preloader size="md" />
@@ -49,26 +51,26 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader className="px-1">
-                    <DialogTitle>Edit FAQ</DialogTitle>
-                    <DialogDescription>Update the frequently asked question</DialogDescription>
+                    <DialogTitle>{t("Edit FAQ")}</DialogTitle>
+                    <DialogDescription>{t("Update the frequently asked question")}</DialogDescription>
                 </DialogHeader>
                 <div className="max-h-[400px] overflow-y-auto px-1">
                     <form className="space-y-4" onSubmit={submitHandler}>
                         <div className="space-y-2">
-                            <Label htmlFor="question">Question</Label>
+                            <Label htmlFor="question">{t("Question")}</Label>
                             <Input
                                 id="question"
-                                placeholder="Enter the question"
+                                placeholder={t("Enter the question")}
                                 {...register("question")}
                                 disabled={isLoading}
                                 required
                             />
                             {errors.question && (
-                                <p className="text-sm text-red-500 mt-1">{errors.question.message}</p>
+                                <p className="text-sm text-red-500 mt-1">{errors.question.message || ""}</p>
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="categoryId">Category</Label>
+                            <Label htmlFor="categoryId">{t("Category")}</Label>
                             {categoriesLoading ? (
                                 <div className="flex justify-center">
                                     <Preloader size="md" />
@@ -84,7 +86,7 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
                                             key={field.value}
                                         >
                                             <SelectTrigger id="categoryId">
-                                                <SelectValue placeholder="Select category" />
+                                                <SelectValue placeholder={t("Select category")} />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {categories && categories.length > 0 ? (
@@ -95,7 +97,7 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
                                                     ))
                                                 ) : (
                                                     <SelectItem value="" disabled>
-                                                        No categories available
+                                                        {t("No categories available")}
                                                     </SelectItem>
                                                 )}
                                             </SelectContent>
@@ -104,21 +106,21 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
                                 />
                             )}
                             {errors.categoryId && (
-                                <p className="text-sm text-red-500 mt-1">{errors.categoryId.message}</p>
+                                <p className="text-sm text-red-500 mt-1">{errors.categoryId.message || ""}</p>
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="answer">Answer</Label>
+                            <Label htmlFor="answer">{t("Answer")}</Label>
                             <Textarea
                                 id="answer"
-                                placeholder="Enter the detailed answer"
+                                placeholder={t("Enter the detailed answer")}
                                 rows={5}
                                 {...register("answer")}
                                 disabled={isLoading}
                                 required
                             />
                             {errors.answer && (
-                                <p className="text-sm text-red-500 mt-1">{errors.answer.message}</p>
+                                <p className="text-sm text-red-500 mt-1">{errors.answer.message || ""}</p>
                             )}
                         </div>
                         <div className="flex justify-end space-x-2">
@@ -128,10 +130,10 @@ export function FaqEditModal({ isOpen, onClose }: { isOpen: boolean; onClose: (v
                                 onClick={() => onClose(false)}
                                 disabled={isLoading}
                             >
-                                Cancel
+                                {t("Cancel")}
                             </Button>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? "Saving..." : "Save"}
+                                {isLoading ? t("Saving...") : t("Save")}
                             </Button>
                         </div>
                     </form>

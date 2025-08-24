@@ -8,26 +8,30 @@ import { showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
 import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
-import {patchHowWorkSettings} from "@/app/shared-api/howWorkApi";
-import {useHowWork} from "@/app/shared-hooks/useHowWork";
+import { patchHowWorkSettings } from "@/app/shared-api/howWorkApi";
+import { useHowWork } from "@/app/shared-hooks/useHowWork";
 
-const howItWorksFormSchema = z.object({
-    Title: z.string().min(1, 'Title is required'),
-    bannerImage: z.any().optional(),
-    bannerTitle: z.string().min(1, 'Banner title is required'),
-    bannerSubTitle: z.string().min(1, 'Banner subtitle is required'),
-    contactName: z.string().min(1, 'Contact name is required'),
-    searchPlaceholder: z.string().min(1, 'Search placeholder is required'),
-    faqTitle: z.string().min(1, 'FAQ title is required'),
-    faqSubTitle: z.string().min(1, 'FAQ subtitle is required'),
-    faqDescription: z.string().min(1, 'FAQ description is required'),
-    faqProfileName: z.string().min(1, 'FAQ profile name is required'),
-    showOnHeader: z.boolean(),
-});
 
-type HowItWorksFormValues = z.infer<typeof howItWorksFormSchema>;
 
 export default function useHowWorkForm() {
+
+    const { t } = require('react-i18next');
+    const howItWorksFormSchema = z.object({
+        Title: z.string().min(1, t('Title is required')),
+        bannerImage: z.any().optional(),
+        bannerTitle: z.string().min(1, t('Banner title is required')),
+        bannerSubTitle: z.string().min(1, t('Banner subtitle is required')),
+        contactName: z.string().min(1, t('Contact name is required')),
+        searchPlaceholder: z.string().min(1, t('Search placeholder is required')),
+        faqTitle: z.string().min(1, t('FAQ title is required')),
+        faqSubTitle: z.string().min(1, t('FAQ subtitle is required')),
+        faqDescription: z.string().min(1, t('FAQ description is required')),
+        faqProfileName: z.string().min(1, t('FAQ profile name is required')),
+        showOnHeader: z.boolean(),
+    });
+
+    type HowItWorksFormValues = z.infer<typeof howItWorksFormSchema>;
+
     const { howWorkSettings, mutate, howWorkLoading } = useHowWork();
     const [isUploading, setIsUploading] = useState(false);
 
@@ -62,7 +66,7 @@ export default function useHowWorkForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
+                showError({ message: t(error.message) });
                 console.error('How It Works settings update error:', error);
             }
         }
@@ -104,11 +108,11 @@ export default function useHowWorkForm() {
             const result = await trigger(payload);
             if (result) {
                 await mutate();
-                showSuccess('How It Works settings updated successfully!');
+                showSuccess(t('How It Works settings updated successfully!'));
             }
         } catch (error) {
             setIsUploading(false);
-            showError({ message: 'Failed to upload image' });
+            showError({ message: t('Failed to upload image') });
             console.error('Image upload error:', error);
         }
     };

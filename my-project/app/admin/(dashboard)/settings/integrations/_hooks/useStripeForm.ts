@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
@@ -8,15 +9,19 @@ import { showSuccess } from '@/shared-lib';
 import { patchStripe } from '../_api/stripe';
 import useStripe from './useStripe';
 
-const stripeSchema = z.object({
-  key: z.string().min(1, { message: 'Key is required' }),
-  publicKey: z.string().min(1, { message: 'Public Key is required' }),
-  isActive: z.boolean(),
-});
-
-export type StripeFormValues = z.infer<typeof stripeSchema>;
-
 export default function useStripeForm() {
+
+
+  const { t } = useTranslation();
+
+  const stripeSchema = z.object({
+    key: z.string().min(1, { message: t('Key is required') }),
+    publicKey: z.string().min(1, { message: t('Public Key is required') }),
+    isActive: z.boolean(),
+  });
+
+  type StripeFormValues = z.infer<typeof stripeSchema>;
+
   const { data: existingData, isLoading: isLoadingData } = useStripe();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -26,7 +31,7 @@ export default function useStripeForm() {
     },
     {
       onError: (error: Error) => {
-        showError({ message: error.message });
+        showError({ message: error.message ? t(error.message) : t('Failed to update Stripe settings.') });
       },
     }
   );
@@ -63,10 +68,10 @@ export default function useStripeForm() {
     try {
       const result = await trigger(values);
       if (result) {
-        showSuccess('Stripe settings updated successfully!');
+  showSuccess(t('Stripe settings updated successfully!'));
       }
     } catch (error: unknown) {
-      if(error instanceof Error) showError({ message: error.message || 'Failed to update Stripe settings.' });
+  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update Stripe settings.') });
     }
   };
 

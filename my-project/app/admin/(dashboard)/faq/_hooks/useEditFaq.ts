@@ -1,35 +1,39 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {showError, showSuccess} from "@/shared-lib";
-import {useSWRConfig} from "swr";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError, showSuccess } from "@/shared-lib";
+import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import {useEffect} from "react";
-import {FaqCategoryDto, FaqDto} from "@/app/shared-types/faq";
-import {patchFaq} from "@/app/shared-api/faqApi";
+import { useEffect } from "react";
+import { FaqCategoryDto, FaqDto } from "@/app/shared-types/faq";
+import { useTranslation } from "react-i18next";
+import { patchFaq } from "@/app/shared-api/faqApi";
 
-const editFaqSchema = z.object({
-  question: z.string().min(1, "Question is required"),
-  answer: z.string().min(1, "Answer is required"),
-  categoryId: z.string({ required_error: "Category is required" }),
-});
 
-export type EditFaqFormValues = z.infer<typeof editFaqSchema>;
 
-export default function useEditFaq(categories: FaqCategoryDto[], faq?: FaqDto,) {
+export default function useEditFaq(categories: FaqCategoryDto[], faq?: FaqDto) {
   const { mutate: globalMutate } = useSWRConfig();
+  const { t } = useTranslation();
+
+  const editFaqSchema = z.object({
+    question: z.string().min(1, t("Question is required")),
+    answer: z.string().min(1, t("Answer is required")),
+    categoryId: z.string({ required_error: t("Category is required") }),
+  });
+
+  type EditFaqFormValues = z.infer<typeof editFaqSchema>;
 
   const { trigger, isMutating } = useSWRMutation(
-      faq?.id ? `editFaq-${faq.id}` : null,
-      async (_key, { arg }: { arg: Partial<FaqDto> }) => {
-        return await patchFaq(faq!.id, arg);
+    faq?.id ? `editFaq-${faq.id}` : null,
+    async (_key, { arg }: { arg: Partial<FaqDto> }) => {
+      return await patchFaq(faq!.id, arg);
+    },
+    {
+      onError: (error: Error) => {
+        showError({ message: t(error?.message || "Failed to update FAQ") });
+        console.error("FAQ update error:", error);
       },
-      {
-        onError: (error: Error) => {
-          showError({ message: error?.message || "Failed to update FAQ" });
-          console.error("FAQ update error:", error);
-        },
-      }
+    }
   );
 
   const {
@@ -39,7 +43,6 @@ export default function useEditFaq(categories: FaqCategoryDto[], faq?: FaqDto,) 
     control,
     reset,
     setValue,
-
   } = useForm<EditFaqFormValues>({
     resolver: zodResolver(editFaqSchema),
     defaultValues: {
@@ -68,23 +71,23 @@ export default function useEditFaq(categories: FaqCategoryDto[], faq?: FaqDto,) 
     });
 
     if (result) {
-      showSuccess("FAQ updated successfully!");
+      showSuccess(t("FAQ updated successfully!"));
       globalMutate(
-          "faqs",
-          (current: FaqDto[] = []) =>
-              current.map((item) =>
-                  item.id === faq.id
-                      ? {
-                        ...item,
-                        question: values.question,
-                        answer: values.answer,
-                        categoryId: values.categoryId,
-                        updatedAt: new Date().toISOString(),
-                        category: categories?.find((cat) => cat.id === values.categoryId) || null,
-                      }
-                      : item
-              ),
-          false
+        "faqs",
+        (current: FaqDto[] = []) =>
+          current.map((item) =>
+            item.id === faq.id
+              ? {
+                ...item,
+                question: values.question,
+                answer: values.answer,
+                categoryId: values.categoryId,
+                updatedAt: new Date().toISOString(),
+                category: categories?.find((cat) => cat.id === values.categoryId) || item.category,
+              }
+              : item
+          ),
+        false
       ).finally();
       callback?.(false);
     }
