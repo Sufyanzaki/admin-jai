@@ -8,7 +8,7 @@ import {Input} from "@/components/admin/ui/input"
 import {Eye, MessageSquare, Search} from "lucide-react"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/admin/ui/table"
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,} from "@/components/admin/ui/dialog"
-import {useSupportTickets} from "@/app/admin/(dashboard)/support/_hooks/useSupportTickets"
+import {useSupportTickets} from "@/app/shared-hooks/useSupportTickets"
 import {AdminSupportTicketDto, ReplyDto} from "@/app/(client)/dashboard/settings/support/_types/support";
 import ReplyForm from "./ReplyForm"
 
