@@ -1,7 +1,8 @@
-import { showError, showSuccess } from '@/shared-lib';
-import { useState } from "react";
-import { postLike } from '../notifications/_api/likes';
-import { useTranslation } from 'react-i18next';
+import {showSuccess} from '@/shared-lib';
+import {useState} from "react";
+import {postLike} from '../notifications/_api/likes';
+import Swal from "sweetalert2";
+import {useTranslation} from 'react-i18next';
 
 export const useSendLike = () => {
     const [loading, setLoading] = useState(false);
@@ -19,11 +20,10 @@ export const useSendLike = () => {
             }
             return res;
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                const apiMessage = err?.message;
-                showError({ message: apiMessage });
-                setError(err);
-            }
+            // @ts-expect-error err is unknown
+            Swal.fire({ html: `<p style="font-weight: 500; font-size: 1.5rem; margin: 0;">${err.message}</p>` }).finally();
+            // @ts-expect-error err is unknown
+            setError(err);
             throw err;
         } finally {
             setLoading(false);

@@ -50,9 +50,26 @@ export function PhotoSettings() {
     reset,
     getValues,
     isFetching,
+    setValue,
   } = usePhotoPrivacyForm();
 
   const currentValues = watch();
+  const settings = photoSettings(t);
+
+  // Handle exclusive toggle - only one setting can be active at a time
+  const handleExclusiveToggle = (settingId: string) => {
+    const isCurrentlyActive = currentValues[settingId as keyof typeof currentValues];
+    
+    // First, turn off all settings
+    settings.forEach(setting => {
+      setValue(setting.id as keyof typeof currentValues, false);
+    });
+    
+    // Then turn on the clicked one (unless it was already active, in which case turn it off)
+    if (!isCurrentlyActive) {
+      setValue(settingId as keyof typeof currentValues, true);
+    }
+  };
 
   if (isFetching) {
     return (
@@ -62,8 +79,6 @@ export function PhotoSettings() {
         </div>
     );
   }
-
-  const settings = photoSettings(t);
 
   return (
       <form
@@ -89,9 +104,7 @@ export function PhotoSettings() {
                 </div>
                 <Switch
                     checked={currentValues[setting.id as keyof typeof currentValues]}
-                    onCheckedChange={() =>
-                        toggleSetting(setting.id as keyof typeof currentValues)
-                    }
+                    onCheckedChange={() => handleExclusiveToggle(setting.id)}
                     className="data-[state=checked]:bg-app-pink"
                     disabled={isLoading}
                 />
@@ -99,16 +112,7 @@ export function PhotoSettings() {
           ))}
         </div>
 
-        {isDirty && (
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                  type="button"
-                  onClick={() => reset()}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-                  disabled={isLoading}
-              >
-                {t("Cancel")}
-              </button>
+        <div className="flex justify-end gap-3 mt-6">
               <button
                   type="button"
                   onClick={() => onSubmit(getValues())}
@@ -118,7 +122,6 @@ export function PhotoSettings() {
                 {isLoading ? t("Saving...") : t("Save Changes")}
               </button>
             </div>
-        )}
       </form>
   );
 }
