@@ -10,13 +10,15 @@ import { showError, showSuccess } from "@/shared-lib";
 import { useProfile } from "@/app/shared-hooks/useProfile";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
+import { useLanguages } from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
 
 export default function useActiveLanguage() {
     const { t } = useTranslation();
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
+    const { languages, languagesLoading } = useLanguages();
 
-    const { response, userLoading } = useProfile();
+    const { response, userLoading, mutate } = useProfile();
     const user = response?.user;
     const activeLanguage = user?.activeLanguage ?? null; // full object now
 
@@ -62,6 +64,12 @@ export default function useActiveLanguage() {
     const onSubmit = async (values: ActiveLanguageFormValues) => {
         try {
             await trigger({ activeLanguageId: values.activeLanguageId });
+            const selected = languages?.find(l => Number(l.id) === values.activeLanguageId);
+            if (selected) {
+                console.log("Setting i18n to:", selected);
+                i18n.changeLanguage(selected.code); 
+            }
+            mutate();
             showSuccess(t("Preferred Language Updated"));
         } catch (error: unknown) {
             if (error instanceof Error) showError({ message: error.message });

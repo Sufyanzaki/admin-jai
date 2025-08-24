@@ -4,11 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/admin/ui/avata
 import { Button } from "@/components/admin/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/admin/ui/dropdown-menu";
 import { HelpCircle, LogOut, MessageCircle, Settings, User } from "lucide-react";
-import { NotificationDropdown } from "./notification-dropdown";
 import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { LanguageSelector } from "./language-selector";
 
 export function UserNav() {
   const router = useRouter();
@@ -49,6 +49,7 @@ export function UserNav() {
   return (
     <div className="flex items-center gap-4">
       <ThemeToggle />
+      <LanguageSelector/>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-md">

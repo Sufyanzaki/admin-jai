@@ -8,6 +8,7 @@ import { useLanguages } from "@/app/admin/(dashboard)/settings/_hooks/useLanguag
 import useActiveLanguage from "../../_hooks/useActiveLanguage";
 import { Controller } from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
+import i18n from "@/i18n";
 
 export default function LanguageSettingForm() {
     const { t } = useTranslation();
@@ -30,7 +31,7 @@ export default function LanguageSettingForm() {
             </div>
         );
     }
-
+console.log(languages)
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -45,24 +46,12 @@ export default function LanguageSettingForm() {
                         <Select
                             disabled={isLoading}
                             value={String(field.value)}
-                            onValueChange={(val) => field.onChange(Number(val))}
+                            onValueChange={(val) => {
+                                field.onChange(Number(val));
+                            }}
                         >
                             <SelectTrigger className="mt-2">
-                                <SelectValue
-                                    placeholder={t("Select language")}
-                                >
-                                    {activeLanguage && (
-                                        <div className="flex items-center gap-2">
-                                            <Image
-                                                src={`https://flagcdn.com/${activeLanguage.code}.svg`}
-                                                width="20"
-                                                height="20"
-                                                alt={activeLanguage.name}
-                                            />
-                                            <span>{activeLanguage.name}</span>
-                                        </div>
-                                    )}
-                                </SelectValue>
+                                <SelectValue placeholder={t("Select language")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {languages?.map((lang) => (
