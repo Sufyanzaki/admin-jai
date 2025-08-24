@@ -2,13 +2,15 @@
 
 import { Check, X } from "lucide-react";
 import { usePackages } from "@/app/shared-hooks/usePackages";
+import { useTranslation } from "react-i18next";
 
 export function FeatureComparison() {
+  const { t } = useTranslation();
   const { packages, loading, error } = usePackages();
 
-  if (loading) return <p>Loading features...</p>;
-  if (error) return <p className="text-red-500">Failed to load features.</p>;
-  if (!packages || packages.length === 0) return <p>No packages available.</p>;
+  if (loading) return <p>{t("Loading features...")}</p>;
+  if (error) return <p className="text-red-500">{t("Failed to load features.")}</p>;
+  if (!packages || packages.length === 0) return <p>{t("No packages available.")}</p>;
 
   const allFeatureNames = Array.from(
       new Set(packages.flatMap((pkg) => pkg.features || []))
@@ -16,19 +18,19 @@ export function FeatureComparison() {
 
   return (
       <div className="mb-32">
-        <h4 className="text-xl font-semibold mb-6">Feature Comparison</h4>
+        <h4 className="text-xl font-semibold mb-6">{t("Feature Comparison")}</h4>
 
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
             <tr className="border-b border-app-border">
-              <th className="text-left py-3 px-4">Features</th>
+              <th className="text-left py-3 px-4">{t("Features")}</th>
               {packages.map((pkg) => (
                   <th key={pkg.id} className="text-center py-3 px-4">
                     <div className="space-y-1">
                       <div className="font-semibold">{pkg.name}</div>
                       <div className="text-sm text-muted-foreground">
-                        ${pkg.price} / {pkg.validity} days
+                        {t("${price} / ${validity} days", { price: pkg.price, validity: pkg.validity })}
                       </div>
                     </div>
                   </th>

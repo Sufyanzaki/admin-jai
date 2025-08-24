@@ -5,10 +5,11 @@ import Link from "next/link";
 import ImageWrapper from "@/components/client/image-wrapper";
 import {Container} from "@/components/client/ux/container";
 import {useRegistration} from "@/app/shared-hooks/useRegistration";
+import { useTranslation } from "react-i18next";
 
 export default function PaymentLayout({ children }: { children: React.ReactNode }) {
-
     const { registrationSettings } = useRegistration();
+    const { t } = useTranslation();
 
     return (
         <div>
@@ -28,13 +29,13 @@ export default function PaymentLayout({ children }: { children: React.ReactNode 
                                     width={200}
                                     height={200}
                                     src="/logo-black.png"
-                                    alt="humsafar"
+                                    alt={t("humsafar")}
                                 />
                             </Link>
                             <p className="text-md text-black">
-                                Don&apos;t have an account?
+                                {t("Don't have an account?")}
                                 <Link href="/" className="ml-1 font-medium hover:underline">
-                                    Register
+                                    {t("Register")}
                                 </Link>
                             </p>
                         </div>
@@ -53,7 +54,7 @@ export default function PaymentLayout({ children }: { children: React.ReactNode 
                             width={170}
                             height={170}
                             src="/logo-black.png"
-                            alt="humsafar"
+                            alt={t("humsafar")}
                         />
                     </Link>
                 </div>
@@ -67,9 +68,9 @@ export default function PaymentLayout({ children }: { children: React.ReactNode 
 
                 <div className="flex flex-col w-full">
                     <p className="mt-7 text-center text-md text-black">
-                        Don&apos;t have an account?
+                        {t("Don't have an account?")}
                         <Link href="/" className="ml-1 font-medium hover:underline">
-                            Register
+                            {t("Register")}
                         </Link>
                     </p>
                     <div className="mt-6 mx-auto w-full max-w-full overflow-auto">

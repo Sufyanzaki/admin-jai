@@ -5,18 +5,21 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import { showError, showSuccess } from "@/shared-lib";
-import { createSupportTicket } from "../../../../../shared-api/supportApi";
-
-const supportTicketSchema = z.object({
-    subject: z.string().min(5, "Subject must be at least 5 characters"),
-    category: z.string().min(1, "Category is Required"),
-    priority: z.string().min(1, "Priority is Required"),
-    description: z.string().min(10, "Description must be at least 10 characters"),
-});
-
-export type SupportTicketFormValues = z.infer<typeof supportTicketSchema>;
+import { createSupportTicket } from "@/app/shared-api/supportApi";
+import { useTranslation } from "react-i18next";
 
 export default function useSupportTicket() {
+    const { t } = useTranslation();
+
+    const supportTicketSchema = z.object({
+        subject: z.string().min(5, "Subject must be at least 5 characters"),
+        category: z.string().min(1, "Category is Required"),
+        priority: z.string().min(1, "Priority is Required"),
+        description: z.string().min(10, "Description must be at least 10 characters"),
+    });
+
+    type SupportTicketFormValues = z.infer<typeof supportTicketSchema>;
+
     const {
         control,
         register,
@@ -41,11 +44,11 @@ export default function useSupportTicket() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message || "Failed to create support ticket" });
+                showError({ message: t(error.message || "Failed to create support ticket") });
                 console.error("Support ticket error:", error);
             },
             onSuccess: () => {
-                showSuccess("Support ticket created successfully!");
+                showSuccess(t("Support ticket created successfully!"));
                 reset();
             },
         }

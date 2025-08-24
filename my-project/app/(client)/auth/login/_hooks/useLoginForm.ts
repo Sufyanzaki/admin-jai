@@ -1,24 +1,26 @@
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {useRouter} from 'next/navigation';
-import {showError} from "@/shared-lib";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useRouter } from 'next/navigation';
+import { showError } from "@/shared-lib";
 import useSWRMutation from 'swr/mutation';
 import { postLoginForm } from '@/app/shared-api/auth';
-import {setUserEmail} from "@/lib/access-token";
+import { setUserEmail } from "@/lib/access-token";
+import i18next from "i18next";
+
+const { t } = i18next;
 
 const loginSchema = z.object({
     email: z.string()
-        .min(1, "Email is required")
-        .email("Please enter a valid email address"),
+        .min(1, t("Email is required"))
+        .email(t("Please enter a valid email address")),
     password: z.string()
-        .min(6, "Password must be at least 6 characters"),
+        .min(6, t("Password must be at least 6 characters")),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function useLoginForm() {
-
     const router = useRouter();
 
     const { trigger } = useSWRMutation(
@@ -55,7 +57,8 @@ export default function useLoginForm() {
             setUserEmail(values.email);
             router.push('/auth/otp');
         } catch (error: unknown) {
-            if(error instanceof Error) showError({ message: error.message || 'An unexpected error occurred. Please try again.' });
+            // @ts-expect-error unknown type
+            showError({message: error.message || t("An unexpected error occurred. Please try again.")});
         }
     };
 

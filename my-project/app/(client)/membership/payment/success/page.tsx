@@ -2,14 +2,15 @@
 
 import { Button } from "@/components/client/ux/button";
 import { CheckCircle2, Home } from "lucide-react";
-import {useRouter, useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
-import {patchUser} from "@/app/shared-api/userApi";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { patchUser } from "@/app/shared-api/userApi";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
 const PaymentSuccessPage = () => {
-
-    const {data:session } = useSession();
+    const { t } = useTranslation();
+    const { data: session } = useSession();
     const userId = session?.user.id ? String(session.user.id) : undefined;
 
     const [loading, setLoading] = useState(false);
@@ -25,12 +26,12 @@ const PaymentSuccessPage = () => {
 
     useEffect(() => {
         setLoading(true)
-        paymentSuccess().finally(()=>setLoading(false))
+        paymentSuccess().finally(() => setLoading(false))
     }, []);
 
     async function paymentSuccess() {
-        if(!userId) throw new Error("No user id provided");
-        await patchUser(userId, {packageId: pkgId})
+        if (!userId) throw new Error("No user id provided");
+        await patchUser(userId, { packageId: pkgId })
     }
 
     return (
@@ -47,12 +48,11 @@ const PaymentSuccessPage = () => {
             </div>
 
             <h1 className="text-2xl md:text-3xl font-bold font-mon text-app-blue mt-6">
-                Payment Successful 🎉
+                {t("Payment Successful ")}🎉
             </h1>
 
             <p className="text-[#6B7280] mt-2 max-w-lg">
-                Thank you for your purchase! Your payment has been successfully processed.
-                You can now enjoy your selected package.
+                {t("Thank you for your purchase! Your payment has been successfully processed. You can now enjoy your selected package.")}
             </p>
 
             <Button
@@ -62,9 +62,9 @@ const PaymentSuccessPage = () => {
                 size={"lg"}
                 className="flex items-center justify-center gap-2 mt-10"
             >
-                {loading ? "Please wait..." : <>
+                {loading ? t("Please wait...") : <>
                     <Home className="h-12 w-12" />
-                    Back to Home
+                    {t("Back to Home")}
                 </>}
             </Button>
         </div>

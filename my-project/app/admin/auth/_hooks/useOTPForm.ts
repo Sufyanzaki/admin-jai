@@ -14,7 +14,7 @@ const otpSchema = z.object({
     .regex(/^\d{5}$/, 'OTP must contain only digits'),
 });
 
-export type OtpFormValues = z.infer<typeof otpSchema>;
+type OtpFormValues = z.infer<typeof otpSchema>;
 
 export default function useOTPForm() {
   const email = getUserEmail();

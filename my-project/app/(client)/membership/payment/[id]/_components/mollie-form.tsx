@@ -1,50 +1,51 @@
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
-import {Button} from "@/components/client/ux/button";
-import {FormEvent, useState} from "react";
-import {createPayment} from "@/app/shared-api/paymentApi";
-import {useRouter} from "next/navigation";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select"
+import { Button } from "@/components/client/ux/button"
+import { FormEvent, useState } from "react"
+import { createPayment } from "@/app/shared-api/paymentApi"
+import { useRouter } from "next/navigation"
+import { useTranslation } from "react-i18next"
 
 type Props = {
-    id?: string;
-    amount: number;
+    id?: string
+    amount: number
 }
 
-export default function MollieForm({id, amount}:Props){
+export default function MollieForm({ id, amount }: Props) {
+    const { t } = useTranslation()
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
 
-    const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    async function handleClick(e: FormEvent) {
+        e.preventDefault()
+        if (!id) throw new Error(t("No package id provided"))
 
-    async function handleClick(e:FormEvent){
-        e.preventDefault();
-        if(!id) throw new Error("No package id provided");
-
-        setLoading(true);
+        setLoading(true)
 
         const r = await createPayment({
             packageId: id,
-            provider: "mollie"
+            provider: "mollie",
         })
 
         router.push(r.data.checkoutUrl)
 
-        setLoading(false);
+        setLoading(false)
     }
 
     return (
         <>
             <Select>
                 <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a payment method" />
+                    <SelectValue placeholder={t("Select a payment method")} />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="credit-card">Credit Card</SelectItem>
-                    <SelectItem value="ideal">iDEAL</SelectItem>
-                    <SelectItem value="paypal">PayPal</SelectItem>
+                    <SelectItem value="credit-card">{t("Credit Card")}</SelectItem>
+                    <SelectItem value="ideal">{t("iDEAL")}</SelectItem>
+                    <SelectItem value="paypal">{t("PayPal")}</SelectItem>
                 </SelectContent>
             </Select>
 
             <Button disabled={loading} className="w-full mt-4" size="lg" onClick={handleClick}>
-                Pay (€${amount}) with Mollie
+                {t("Pay (€{{amount}}) with Mollie", { amount })}
             </Button>
         </>
     )

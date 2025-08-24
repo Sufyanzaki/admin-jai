@@ -2,15 +2,16 @@
 
 import { OtpInput } from "@/components/client/otp-input";
 import useOTPForm from "@/app/(client)/auth/otp/_hooks/useOtpForm";
-import {Button} from "@/components/client/ux/button";
+import { Button } from "@/components/client/ux/button";
 import useResendOtp from "@/app/shared-hooks/useResendOtp";
-import {getUserEmail} from "@/lib/access-token";
-import {Controller} from "react-hook-form";
+import { getUserEmail } from "@/lib/access-token";
+import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
-export default function OtpForm(){
-
-    const {handleSubmit, onSubmit, isSubmitting, control } = useOTPForm();
+export default function OtpForm() {
+    const { handleSubmit, onSubmit, isSubmitting, control } = useOTPForm();
     const { resendOtp, isLoading: isResending } = useResendOtp();
+    const { t } = useTranslation();
 
     const handleResend = () => {
         const email = getUserEmail();
@@ -18,7 +19,7 @@ export default function OtpForm(){
     };
 
     return (
-        <form onSubmit={handleSubmit(data=>onSubmit(data))} className="space-y-6">
+        <form onSubmit={handleSubmit((data) => onSubmit(data))} className="space-y-6">
             <Controller
                 name="otp"
                 control={control}
@@ -28,13 +29,18 @@ export default function OtpForm(){
             />
 
             <div className="flex gap-4 mt-4">
-                <Button type="submit"  disabled={isSubmitting}>
-                    {isSubmitting ? 'Processing...' : 'Submit'}
+                <Button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? t("Processing...") : t("Submit")}
                 </Button>
-                <Button type="button" variant="ghost" disabled={isResending} onClick={handleResend}>
-                    {isResending ? 'Sending...' : 'Resend Code'}
+                <Button
+                    type="button"
+                    variant="ghost"
+                    disabled={isResending}
+                    onClick={handleResend}
+                >
+                    {isResending ? t("Sending...") : t("Resend Code")}
                 </Button>
             </div>
         </form>
-    )
+    );
 }

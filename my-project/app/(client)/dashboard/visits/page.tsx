@@ -7,15 +7,18 @@ import { useState } from "react";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
 import { LikeStatus, useLikesReceived } from "../notifications/_hooks/useLikesReceived";
+import { useTranslation } from "react-i18next";
 
 export default function MatchesPage() {
+    const { t } = useTranslation();
     const [online, setOnline] = useState(false);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const { likesReceived, likesReceivedLoading } = useLikesReceived(
         LikeStatus.PENDING
     );
+
     if (likesReceivedLoading) {
-        return <p>Loading...</p>;
+        return <p>{t("Loading...")}</p>;
     }
 
     const filteredResults = online
@@ -27,7 +30,7 @@ export default function MatchesPage() {
             <div className="flex-1 flex flex-col">
                 <header className="bg-white px-6 pt-6 pb-4">
                     <h1 className="text-[22px] sm:text-2xl lg:text-3xl xl:text-[36px] font-semibold">
-                        Who visited me?
+                        {t("Who visited me?")}
                     </h1>
                 </header>
 
@@ -39,7 +42,7 @@ export default function MatchesPage() {
                                 onCheckedChange={setOnline}
                                 className="data-[state=checked]:bg-app-blue"
                             />
-                            <Label className="text-sm">Online</Label>
+                            <Label className="text-sm">{t("Online")}</Label>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -48,7 +51,7 @@ export default function MatchesPage() {
                                 size="sm"
                                 className={`h-8 w-8 p-0`}
                                 onClick={() => setViewMode("grid")}
-                                aria-label="Grid view"
+                                aria-label={t("Grid view")}
                             >
                                 <Grid3X3 className="w-4 h-4" />
                             </Button>
@@ -57,7 +60,7 @@ export default function MatchesPage() {
                                 size="sm"
                                 className={`h-8 w-8 p-0`}
                                 onClick={() => setViewMode("list")}
-                                aria-label="List view"
+                                aria-label={t("List view")}
                             >
                                 <List className="w-4 h-4" />
                             </Button>
@@ -79,17 +82,7 @@ export default function MatchesPage() {
                     )}
 
                     <div className="flex justify-center items-center gap-2">
-                        {/* <PaginationSection
-              pagination={{
-                page: matches?.page,
-                limit: matches?.limit,
-                total: matches?.total,
-                totalPages: matches?.totalPages,
-              }}
-              onPageChange={(newPage) => {
-                console.log("Go to page:", newPage);
-              }}
-            /> */}
+                        {/* Pagination component can also have text wrapped in t() if needed */}
                     </div>
                 </main>
             </div>

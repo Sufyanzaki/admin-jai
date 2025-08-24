@@ -1,7 +1,9 @@
 import {deleteRequest, getRequest, patchRequest, postRequest} from "@/shared-lib";
 import {AdminSupportTicketDto} from "../(client)/dashboard/settings/support/_types/support";
 
-export async function createSupportTicket(payload: Omit<AdminSupportTicketDto, "id">) {
+type Payload = Partial<AdminSupportTicketDto>;
+
+export async function createSupportTicket(payload: Payload) {
     const r = await postRequest({
         url: "users/support-tickets",
         data: payload,

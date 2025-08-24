@@ -10,36 +10,36 @@ import { postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
 import { postLoginForm } from "@/app/shared-api/auth";
 import { setUserEmail } from "@/lib/access-token";
 import { useRouter } from "next/navigation";
-
-const userSchema = z.object({
-    email: z.string().min(1, "Email is required").email("Invalid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    country: z.string().min(1, "Country is Required"),
-    state: z.string().min(1, "State is Required"),
-    city: z.string().optional(),
-    ageFrom: z.string().min(1, "Age is required"),
-    ageTo: z.string().min(1, "Age is required"),
-    lookingFor: z.string().min(1, "Looking for is required"),
-    dummyKey: z.string().optional(),
-});
-
-export type UserFormValues = z.infer<typeof userSchema>;
+import { useTranslation } from "react-i18next";
 
 export default function useRegisterForm() {
-
+    const { t } = useTranslation();
     const router = useRouter();
-
     const [currentStep, setCurrentStep] = useState<string | null>(null);
+
+    const userSchema = z.object({
+        email: z.string().min(1, t("Email is required")).email(t("Invalid email")),
+        password: z.string().min(6, t("Password must be at least 6 characters")),
+        country: z.string().min(1, t("Country is Required")),
+        state: z.string().min(1, t("State is Required")),
+        city: z.string().optional(),
+        ageFrom: z.string().min(1, t("Age is required")),
+        ageTo: z.string().min(1, t("Age is required")),
+        lookingFor: z.string().min(1, t("Looking for is required")),
+        dummyKey: z.string().optional(),
+    });
+
+    type UserFormValues = z.infer<typeof userSchema>;
 
     const { trigger, isMutating } = useSWRMutation(
         'clientCreateUser',
         async (_, { arg }: { arg: UserFormValues }) => {
             const { email, password, ageTo, ageFrom, lookingFor, ...location } = arg;
 
-            setCurrentStep("Creating user");
+            setCurrentStep(t("Creating user"));
             const user = await postUser({ email, password });
 
-            setCurrentStep("Saving location & preferences");
+            setCurrentStep(t("Saving location & preferences"));
             await Promise.all([
                 postUserLocation(user.id, location),
                 postPartnerExpectation(user.id, {
@@ -47,7 +47,7 @@ export default function useRegisterForm() {
                     ageTo: parseInt(ageTo),
                     ageFrom: parseInt(ageFrom),
                 }),
-                postLoginForm({ email, password })
+                postLoginForm({ email, password }),
             ]);
 
             setUserEmail(email);
@@ -61,7 +61,7 @@ export default function useRegisterForm() {
             },
             onSuccess: () => {
                 router.push('/auth/otp');
-                setCurrentStep(null)
+                setCurrentStep(null);
             },
             revalidate: false,
             populateCache: false,
@@ -95,17 +95,18 @@ export default function useRegisterForm() {
             try {
                 const result = await trigger(values);
                 if (result) {
-                    showSuccess('User created successfully!');
+                    showSuccess(t('User created successfully!'));
                     callback?.();
-                    router.push("/auth/otp")
+                    router.push("/auth/otp");
                 }
-            } catch (error) {
-                if (error instanceof Error) showError({ message: error.message });
+            } catch (error:unknown) {
+                // @ts-expect-error unknown type
+                showError({ message: error.message });
             } finally {
                 setCurrentStep(null);
             }
         },
-        [trigger, reset]
+        [trigger, reset, t]
     );
 
     return {

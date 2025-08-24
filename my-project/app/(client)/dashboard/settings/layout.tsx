@@ -1,18 +1,16 @@
 "use client";
 import type React from "react";
-import {SidebarProvider} from "@/components/client/ux/sidebar";
-import {settingsItems, SettingsSidebar,} from "../_components/settings-sidebar";
-import {Button} from "@/components/client/ux/button";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import { SidebarProvider } from "@/components/client/ux/sidebar";
+import { settingsItems, SettingsSidebar } from "../_components/settings-sidebar";
+import { Button } from "@/components/client/ux/button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
-export default function SettingsLayout({
-                                           children,
-                                       }: {
-    children: React.ReactNode;
-}) {
-    const {data: session} = useSession();
+export default function SettingsLayout({ children }: { children: React.ReactNode }) {
+    const { t } = useTranslation();
+    const { data: session } = useSession();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -21,9 +19,9 @@ export default function SettingsLayout({
         return (
             <div className="flex flex-col sm:flex-row items-center justify-between mb-12 w-full gap-4">
                 <div className="space-y-2 w-full sm:w-auto">
-                    <h1 className="text-2xl sm:text-4xl font-semibold">My Account</h1>
+                    <h1 className="text-2xl sm:text-4xl font-semibold">{t("My Account")}</h1>
                     <p className="text-sm sm:text-base">
-                        Here&apos;s an overview of your account
+                        {t("Here's an overview of your account")}
                     </p>
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto">
@@ -35,7 +33,7 @@ export default function SettingsLayout({
                         size="lg"
                         className="text-sm sm:text-xs shadow-none grow sm:grow-0"
                     >
-                        View Profile
+                        {t("View Profile")}
                     </Button>
                 </div>
             </div>
@@ -78,7 +76,7 @@ export default function SettingsLayout({
                                     className="flex flex-row items-center gap-3"
                                 >
                                     <item.icon className="w-4 h-4" />
-                                    <span>{item.title}</span>
+                                    <span>{t(item.title)}</span>
                                 </Link>
                             </div>
                         );

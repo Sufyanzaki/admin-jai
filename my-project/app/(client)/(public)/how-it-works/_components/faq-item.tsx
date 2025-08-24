@@ -12,9 +12,8 @@ export function FAQItem({ question, answer }: FAQItemProps) {
     <div>
       <>
         <div className="flex flex-col items-start justify-between gap-3 w-full">
-          <div className="">
+          <div>
             <h4 className="text-xl lg:text-[22px] flex flex-row gap-5 items-center font-semibold">
-              {" "}
               <div className="min-w-9 w-9 min-h-9 h-9 bg-app-sky-blue rounded-md flex items-center justify-center">
                 <MessageCircle className="text-white" />{" "}
               </div>

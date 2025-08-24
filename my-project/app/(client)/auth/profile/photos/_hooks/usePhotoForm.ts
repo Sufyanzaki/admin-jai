@@ -9,31 +9,26 @@ import useSWRMutation from "swr/mutation";
 import { patchUser } from "@/app/shared-api/userApi";
 import { updateUserTrackingId } from "@/lib/access-token";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import {useRouter} from "next/navigation";
-import {useEffect} from "react";
-import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
-import {toArray} from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
+import { toArray } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export const photoFormSchema = z.object({
-    images: z.array(
-        z.union([
-            z.instanceof(File),
-            z.string().url()
-        ])
-    ).optional()
+    images: z.array(z.union([z.instanceof(File), z.string().url()])).optional(),
 });
 
 export type PhotoFormValues = z.infer<typeof photoFormSchema>;
 
 export default function usePhotoForm() {
-
     const router = useRouter();
+    const { t } = useTranslation();
 
-    const { data: session} = useSession();
+    const { data: session } = useSession();
     const userId = session?.user.id ? String(session.user.id) : undefined;
-    const userIdProp = userId;
 
-    const {user, userLoading} = useBasicInfo(userIdProp);
+    const { user, userLoading } = useBasicInfo(userId);
 
     const {
         control,
@@ -42,28 +37,24 @@ export default function usePhotoForm() {
         setValue,
         reset,
         watch,
-        trigger
+        trigger,
     } = useForm<PhotoFormValues>({
         resolver: zodResolver(photoFormSchema),
-        defaultValues: {
-            images: []
-        },
-        mode: "onBlur"
+        defaultValues: { images: [] },
+        mode: "onBlur",
     });
 
     useEffect(() => {
         if (!user) return;
-
-        const {image} = user;
-        reset({ images:toArray(image) })
-
+        const { image } = user;
+        reset({ images: toArray(image) });
     }, [user, reset]);
 
     const { trigger: mutate, isMutating } = useSWRMutation(
         "updateUserPhotos",
         async (_, { arg }: { arg: PhotoFormValues }) => {
             if (!userId) {
-                throw new Error("User not authenticated");
+                throw new Error(t("User not authenticated"));
             }
 
             const processedImages = await Promise.all(
@@ -75,41 +66,35 @@ export default function usePhotoForm() {
 
             const validImageUrls = processedImages.filter((url): url is string => !!url);
 
-            if (validImageUrls.length === 0)  new Error("No valid images to upload");
+            if (validImageUrls.length === 0) throw new Error(t("No valid images to upload"));
 
             const strImages = validImageUrls.join(",");
 
-            console.log(processedImages, validImageUrls, strImages)
+            console.log(processedImages, validImageUrls, strImages);
 
             await patchUser(userId, {
                 image: strImages,
-                route: "/auth/profile/photos"
+                route: "/auth/profile/photos",
             });
 
-            return strImages
+            return strImages;
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message || "Failed to update photos" });
+                showError({ message: error.message || t("Failed to update photos") });
             },
             onSuccess: () => {
-                showSuccess("Photos updated successfully!");
+                showSuccess(t("Photos updated successfully!"));
             },
-            revalidate: false
+            revalidate: false,
         }
     );
 
     const onSubmit = async (values: PhotoFormValues) => {
-
-        // if(!isDirty){
-        //     router.push("/auth/profile/partner-preferences");
-        //     return
-        // }
-
         const isValid = await trigger();
         if (!isValid) return;
         await mutate(values);
-        updateUserTrackingId({ step5: true })
+        updateUserTrackingId({ step5: true });
         router.push("/auth/profile/partner-preferences");
     };
 
@@ -122,6 +107,6 @@ export default function usePhotoForm() {
         watch,
         isFetching: userLoading,
         onSubmit,
-        images: watch("images") || []
+        images: watch("images") || [],
     };
 }

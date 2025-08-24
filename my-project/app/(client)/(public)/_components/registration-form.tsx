@@ -1,160 +1,171 @@
 "use client";
 
-import {useState} from "react";
-import {Button} from "@/components/client/ux/button";
-import {Input} from "@/components/client/ux/input";
-import {Card, CardContent, CardHeader} from "@/components/client/ux/card";
+import { useState } from "react";
+import { Button } from "@/components/client/ux/button";
+import { Input } from "@/components/client/ux/input";
+import { Card, CardContent, CardHeader } from "@/components/client/ux/card";
 import Link from "next/link";
-import {FacebookIcon, GoogleIcon} from "@/lib/icons";
-import {RadioButtonGroup} from "@/components/client/ux/radio-button-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select"
+import { FacebookIcon, GoogleIcon } from "@/lib/icons";
+import { RadioButtonGroup } from "@/components/client/ux/radio-button-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
 import { Label } from "@/components/client/ux/label";
 import { signIn } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
-const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString())
+const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
 const months = [
-    "Januari",
-    "Februari",
-    "Maart",
+    "January",
+    "February",
+    "March",
     "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Augustus",
+    "May",
+    "June",
+    "July",
+    "August",
     "September",
-    "Oktober",
+    "October",
     "November",
     "December",
-]
-const currentYear = new Date().getFullYear()
-const years = Array.from({ length: 100 }, (_, i) => (currentYear - i).toString())
+];
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 100 }, (_, i) => (currentYear - i).toString());
 
 export function RegistrationForm() {
-  const [selectedGender, setSelectedGender] = useState<string>("");
-  const [selectedLookingFor, setSelectedLookingFor] = useState<string>("");
+    const { t } = useTranslation();
 
-    const [selectedDay, setSelectedDay] = useState("")
-    const [selectedMonth, setSelectedMonth] = useState("")
-    const [selectedYear, setSelectedYear] = useState("")
+    const [selectedGender, setSelectedGender] = useState<string>("");
+    const [selectedLookingFor, setSelectedLookingFor] = useState<string>("");
 
-  return (
-      <Card className="w-full rounded-none max-w-md bg-white">
-        <CardHeader className="grid grid-cols-2 gap-4">
-          <Button onClick={()=>signIn("google", { callbackUrl: "/" })} variant="outline" size="lg" className="w-full">
-            <div className="flex items-center justify-center space-x-2">
-              <GoogleIcon className="w-6 h-6" />
-              <span className="font-light">Registreer</span>
-            </div>
-          </Button>
-          <Button onClick={()=>signIn("facebook", { callbackUrl: "/" })}  variant="outline" size="lg" className="w-full">
-            <div className="flex items-center justify-center space-x-2">
-              <FacebookIcon className="w-6 h-6" />
-              <span className="font-light">Registreer</span>
-            </div>
-          </Button>
-        </CardHeader>
+    const [selectedDay, setSelectedDay] = useState("");
+    const [selectedMonth, setSelectedMonth] = useState("");
+    const [selectedYear, setSelectedYear] = useState("");
 
-        <CardContent className="px-4 space-y-3">
-          <RadioButtonGroup
-              name="gender"
-              label="Ik ben een:"
-              value={selectedGender}
-              onChange={setSelectedGender}
-              options={[
-                { label: "Man", value: "man" },
-                { label: "Vrouw", value: "vrouw" },
-              ]}
-          />
+    return (
+        <Card className="w-full rounded-none max-w-md bg-white">
+            <CardHeader className="grid grid-cols-2 gap-4">
+                <Button
+                    onClick={() => signIn("google", { callbackUrl: "/" })}
+                    variant="outline"
+                    size="lg"
+                    className="w-full"
+                >
+                    <div className="flex items-center justify-center space-x-2">
+                        <GoogleIcon className="w-6 h-6" />
+                        <span className="font-light">{t("Register")}</span>
+                    </div>
+                </Button>
+                <Button
+                    onClick={() => signIn("facebook", { callbackUrl: "/" })}
+                    variant="outline"
+                    size="lg"
+                    className="w-full"
+                >
+                    <div className="flex items-center justify-center space-x-2">
+                        <FacebookIcon className="w-6 h-6" />
+                        <span className="font-light">{t("Register")}</span>
+                    </div>
+                </Button>
+            </CardHeader>
 
-          <RadioButtonGroup
-              name="lookingFor"
-              label="Ik zoek een:"
-              value={selectedLookingFor}
-              onChange={setSelectedLookingFor}
-              className="grid grid-cols-3 gap-4"
-              options={[
-                { label: "Man", value: "man" },
-                { label: "Vrouw", value: "vrouw" },
-                { label: "Beide", value: "Both" },
-              ]}
-          />
+            <CardContent className="px-4 space-y-3">
+                <RadioButtonGroup
+                    name="gender"
+                    label={t("I am a:")}
+                    value={selectedGender}
+                    onChange={setSelectedGender}
+                    options={[
+                        { label: t("Man"), value: "man" },
+                        { label: t("Woman"), value: "woman" },
+                    ]}
+                />
 
-          <Input id="username" label="Gebruikersnaam" className="h-12" />
+                <RadioButtonGroup
+                    name="lookingFor"
+                    label={t("I am looking for a:")}
+                    value={selectedLookingFor}
+                    onChange={setSelectedLookingFor}
+                    className="grid grid-cols-3 gap-4"
+                    options={[
+                        { label: t("Man"), value: "man" },
+                        { label: t("Woman"), value: "woman" },
+                        { label: t("Both"), value: "both" },
+                    ]}
+                />
 
-            <div className="space-y-2">
-                <Label>Geboortedatum</Label>
-                <div className="grid grid-cols-3 gap-2">
-                    <Select value={selectedDay} onValueChange={setSelectedDay}>
-                        <SelectTrigger className="h-12">
-                            <SelectValue placeholder="Dag" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {days.map((day) => (
-                                <SelectItem key={day} value={day}>
-                                    {day}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                <Input id="username" label={t("Username")} className="h-12" />
 
-                    <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                        <SelectTrigger className="h-12">
-                            <SelectValue placeholder="Maand" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {months.map((month, index) => (
-                                <SelectItem key={month} value={(index + 1).toString()}>
-                                    {month}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                <div className="space-y-2">
+                    <Label>{t("Date of Birth")}</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                        <Select value={selectedDay} onValueChange={setSelectedDay}>
+                            <SelectTrigger className="h-12">
+                                <SelectValue placeholder={t("Day")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {days.map((day) => (
+                                    <SelectItem key={day} value={day}>
+                                        {day}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
 
-                    <Select value={selectedYear} onValueChange={setSelectedYear}>
-                        <SelectTrigger className="h-12">
-                            <SelectValue placeholder="Jaar" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {years.map((year) => (
-                                <SelectItem key={year} value={year}>
-                                    {year}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                            <SelectTrigger className="h-12">
+                                <SelectValue placeholder={t("Month")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {months.map((month, index) => (
+                                    <SelectItem key={month} value={(index + 1).toString()}>
+                                        {t(month)}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        <Select value={selectedYear} onValueChange={setSelectedYear}>
+                            <SelectTrigger className="h-12">
+                                <SelectValue placeholder={t("Year")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {years.map((year) => (
+                                    <SelectItem key={year} value={year}>
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
-            </div>
 
-          <div className="grid grid-cols-1 gap-4">
-            <Input
-                id="email"
-                type="email"
-                label="E-mailadres"
-                className="h-12"
-                placeholder="je@email.com"
-            />
+                <div className="grid grid-cols-1 gap-4">
+                    <Input
+                        id="email"
+                        type="email"
+                        label={t("Email address")}
+                        className="h-12"
+                        placeholder="you@email.com"
+                    />
 
-            <Input
-                id="password"
-                type="password"
-                label="Wachtwoord"
-                className="h-12"
-                placeholder="Wachtwoord"
-            />
-          </div>
+                    <Input
+                        id="password"
+                        type="password"
+                        label={t("Password")}
+                        className="h-12"
+                        placeholder={t("Password")}
+                    />
+                </div>
 
-          <Button variant="theme" size="lg" asChild className="w-full">
-            <Link href="#">Register</Link>
-          </Button>
+                <Button variant="theme" size="lg" asChild className="w-full">
+                    <Link href="#">{t("Register")}</Link>
+                </Button>
 
-            <p className="w-full text-[#919ba4] text-[12px] font-light leading-[20px]">
-                Door &quot;Registreren&quot; te kiezen, ga je akkoord met onze gebruiksvoorwaarden
-                (inclusief de verplichte arbitrage van geschillen) en heb je onze
-                privacyverklaring begrepen.
-            </p>
-
-        </CardContent>
-      </Card>
-
-  );
+                <p className="w-full text-[#919ba4] text-[12px] font-light leading-[20px]">
+                    {t(
+                        'By choosing "Register", you agree to our Terms of Use (including mandatory arbitration of disputes) and have understood our Privacy Policy.'
+                    )}
+                </p>
+            </CardContent>
+        </Card>
+    );
 }

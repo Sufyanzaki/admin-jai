@@ -107,13 +107,13 @@ export default function BannerInformationCard() {
                     {[
                         { label: "Banner ID", value: banner.id },
                         { label: "Name", value: banner.name },
-                        { label: "Link", value: <a href={banner.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{banner.link}</a> },
+                        { label: "Link", value: <Link href={banner.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{banner.link}</Link> },
                         { label: "CPM", value: `$${banner.cpm.toFixed(2)}` },
                         { label: "Start Date", value: formatDate(banner.startDate) },
                         { label: "End Date", value: formatDate(banner.endDate) },
                         { label: "Page Displayed", value: banner.page },
                         { label: "Created At", value: formatDate(banner.createdAt) },
-                        { label: "Banner Image", value: <a href={banner.bannerImage} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">View Image</a> },
+                        { label: "Banner Image", value: <Link href={banner.bannerImage} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">View Image</Link> },
                     ].map((item, index) => (
                         <div
                             key={index}

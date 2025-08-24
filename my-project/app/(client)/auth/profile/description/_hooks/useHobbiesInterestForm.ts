@@ -1,32 +1,42 @@
-"use client"
+"use client";
 
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {useRouter} from "next/navigation";
-import {showError} from "@/shared-lib";
-import {patchUser} from "@/app/shared-api/userApi";
-import {patchHobbiesInterests, postHobbiesInterests,} from "@/app/shared-api/hobbiesInterestsApi";
-import {useSession} from "next-auth/react";
-import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
-import {useHobbiesInterestsInfo} from "@/app/shared-hooks/useHobbiesInterestsInfo";
-import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { showError } from "@/shared-lib";
+import { patchUser } from "@/app/shared-api/userApi";
+import { patchHobbiesInterests, postHobbiesInterests } from "@/app/shared-api/hobbiesInterestsApi";
+import { useSession } from "next-auth/react";
+import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
+import { useHobbiesInterestsInfo } from "@/app/shared-hooks/useHobbiesInterestsInfo";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 import useSWRMutation from "swr/mutation";
-import {toArray} from "@/lib/utils";
+import { toArray } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
-const hobbiesInterestsSchema = z.object({
-    sports: z.array(z.string()).min(1, "Select at least one sport"),
-    music: z.array(z.string()).min(1, "Select at least one music genre"),
-    kitchen: z.array(z.string()).min(1, "Select at least one kitchen hobby"),
-    reading: z.array(z.string()).min(1, "Select at least one reading category"),
-    tvShows: z.array(z.string()).min(1, "Select at least one TV show type"),
-    shortDescription: z.string().min(100, "At least 100 characters long"),
-});
-
-export type HobbiesInterestsForm = z.infer<typeof hobbiesInterestsSchema>;
+export type HobbiesInterestsForm = {
+    sports: string[];
+    music: string[];
+    kitchen: string[];
+    reading: string[];
+    tvShows: string[];
+    shortDescription: string;
+};
 
 export default function useHobbiesInterestsForm() {
+    const { t } = useTranslation();
+
+    const hobbiesInterestsSchema = z.object({
+        sports: z.array(z.string()).min(1, t("Select at least one sport")),
+        music: z.array(z.string()).min(1, t("Select at least one music genre")),
+        kitchen: z.array(z.string()).min(1, t("Select at least one kitchen hobby")),
+        reading: z.array(z.string()).min(1, t("Select at least one reading category")),
+        tvShows: z.array(z.string()).min(1, t("Select at least one TV show type")),
+        shortDescription: z.string().min(100, t("At least 100 characters long")),
+    });
+
     const { data: session } = useSession();
     const { hobbiesInterests, hobbiesInterestsLoading } = useHobbiesInterestsInfo();
     const { user, userLoading } = useBasicInfo();
@@ -68,7 +78,7 @@ export default function useHobbiesInterestsForm() {
             kitchen: toArray(kitchen),
             reading: toArray(reading),
             tvShows: toArray(tvShows),
-            shortDescription: shortDescription,
+            shortDescription,
         });
     }, [userLoading, hobbiesInterests, reset, user]);
 
@@ -77,8 +87,9 @@ export default function useHobbiesInterestsForm() {
         async (_: string, { arg }: { arg: HobbiesInterestsForm }) => {
             if (!userId) {
                 return showError({
-                    message:
-                        "You need to initialize a new member profile before you can add hobbies. Go back to Basic Information to initialize a member.",
+                    message: t(
+                        "You need to initialize a new member profile before you can add hobbies. Go back to Basic Information to initialize a member."
+                    ),
                 });
             }
 
@@ -97,13 +108,13 @@ export default function useHobbiesInterestsForm() {
                 patchUser(userId, { shortDescription: arg.shortDescription, route: "auth/profile/description" }),
                 api(userId, hobbiesPayload),
             ]);
+
             return true;
         },
         {
             onError: (error: Error) => {
                 showError({
-                    message:
-                        error.message || "Failed to update hobbies and description",
+                    message: error.message || t("Failed to update hobbies and description"),
                 });
             },
             revalidate: false,
@@ -112,12 +123,6 @@ export default function useHobbiesInterestsForm() {
     );
 
     const onSubmit = async (values: HobbiesInterestsForm, callback?: () => void) => {
-
-        // if(!isDirty){
-        //     router.push("/auth/profile/personality");
-        //     return
-        // }
-
         const result = await trigger(values);
         if (result) {
             callback?.();

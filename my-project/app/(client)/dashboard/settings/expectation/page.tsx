@@ -1,20 +1,20 @@
 "use client";
 
-import React, {Suspense} from "react";
-import {Label} from "@/components/client/ux/label";
-import {Select,} from "@/components/client/ux/select";
-import {Button} from "@/components/client/ux/button";
-import {Slider} from "@/components/client/ux/slider";
-import {RangeSlider} from "@/components/client/ux/range-slider";
+import React, { Suspense } from "react";
+import { Label } from "@/components/client/ux/label";
+import { Button } from "@/components/client/ux/button";
+import { Slider } from "@/components/client/ux/slider";
+import { RangeSlider } from "@/components/client/ux/range-slider";
 import LocationSearchInput from "@/components/client/location-search";
 import {
   ExpectationsFormValues,
-  useClientExpectationsForm
+  useClientExpectationsForm,
 } from "@/app/(client)/dashboard/settings/expectation/_hooks/useClientExpectationsForm";
-import {MemberLocation} from "@/app/shared-types/member";
-import {Controller} from "react-hook-form";
+import { MemberLocation } from "@/app/shared-types/member";
+import { Controller } from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
-import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
+import { useTranslation } from "react-i18next";
 
 type SelectField = {
   name: keyof ExpectationsFormValues;
@@ -24,6 +24,8 @@ type SelectField = {
 };
 
 export default function ExpectationPage() {
+  const { t } = useTranslation();
+
   const {
     control,
     handleSubmit,
@@ -54,64 +56,24 @@ export default function ExpectationPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading...</p>
+          <p className="text-sm">{t("Loading...")}</p>
         </div>
     );
   }
 
   const selectFields: SelectField[] = [
-    {
-      name: "origin",
-      label: "Ethnicity",
-      placeholder: "Select",
-      key: "origin"
-    },
-    {
-      name: "lookingFor",
-      label: "I'm looking for *",
-      placeholder: "Man",
-      key:"amLookingFor"
-    },
-    {
-      name: "religion",
-      label: "Religion",
-      placeholder: "Muslim",
-      key:"religion"
-    },
-    {
-      name: "relationshipStatus",
-      label: "Relationship Status",
-      placeholder: "Single",
-      key:"relationStatus"
-    },
-    {
-      name: "education",
-      label: "Education",
-      placeholder: "Vocational",
-      key:"education"
-    },
-    {
-      name: "smoke",
-      label: "Smoke",
-      placeholder: "Vocational",
-      key:"smoke"
-    },
-    {
-      name: "drinking",
-      label: "Drinking",
-      placeholder: "Vocational",
-      key:"drinking"
-    },
-    {
-      name: "goingOut",
-      label: "Going Out",
-      placeholder: "Vocational",
-      key:"goingOut"
-    },
+    { name: "origin", label: t("Ethnicity"), placeholder: t("Select"), key: "origin" },
+    { name: "lookingFor", label: t("I'm looking for *"), placeholder: t("Man"), key: "amLookingFor" },
+    { name: "religion", label: t("Religion"), placeholder: t("Muslim"), key: "religion" },
+    { name: "relationshipStatus", label: t("Relationship Status"), placeholder: t("Single"), key: "relationStatus" },
+    { name: "education", label: t("Education"), placeholder: t("Vocational"), key: "education" },
+    { name: "smoke", label: t("Smoke"), placeholder: t("Vocational"), key: "smoke" },
+    { name: "drinking", label: t("Drinking"), placeholder: t("Vocational"), key: "drinking" },
+    { name: "goingOut", label: t("Going Out"), placeholder: t("Vocational"), key: "goingOut" },
   ];
 
   return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>{t("Loading...")}</div>}>
         <form
             onSubmit={handleSubmit((v) => onSubmit(v))}
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -138,8 +100,8 @@ export default function ExpectationPage() {
           ))}
 
           <div className="relative">
-            <Label>Age Range *</Label>
-            <RangeSlider min={18} max={100} value={ageRange} onChange={setAgeRange} unit="y/o" />
+            <Label>{t("Age Range *")}</Label>
+            <RangeSlider min={18} max={100} value={ageRange} onChange={setAgeRange} unit={t("y/o")} />
             {(errors.ageFrom || errors.ageTo) && (
                 <p className="text-sm text-red-400">
                   {errors.ageFrom?.message || errors.ageTo?.message}
@@ -148,14 +110,14 @@ export default function ExpectationPage() {
           </div>
 
           <div className="relative">
-            <Label>Height</Label>
+            <Label>{t("Height")}</Label>
             <Slider
                 value={parseInt(watch("length") || "0")}
                 onValueChange={(value) => setValue("length", value.toString(), { shouldDirty: true })}
                 min={0}
                 max={300}
                 step={1}
-                unit="cm"
+                unit={t("cm")}
                 className="mt-9 mb-2"
             />
             {errors.length && (
@@ -164,14 +126,14 @@ export default function ExpectationPage() {
           </div>
 
           <div className="relative">
-            <Label>Weight</Label>
+            <Label>{t("Weight")}</Label>
             <Slider
                 value={parseInt(watch("weight") || "0")}
                 onValueChange={(value) => setValue("weight", value.toString(), { shouldDirty: true })}
                 min={0}
                 max={300}
                 step={1}
-                unit="kg"
+                unit={t("kg")}
                 className="mt-9 mb-2"
             />
             {errors.weight && (
@@ -180,17 +142,20 @@ export default function ExpectationPage() {
           </div>
 
           <div>
-            <Label>Location</Label>
+            <Label>{t("Location")}</Label>
             <div className="border border-app-border rounded-[5px] !h-13 py-1">
-              <LocationSearchInput value={currentLocation} onSelect={handleLocationSelect} placeholder="Start typing your city or address" />
-              {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
-
+              <LocationSearchInput
+                  value={currentLocation}
+                  onSelect={handleLocationSelect}
+                  placeholder={t("Start typing your city or address")}
+              />
+              {(errors.state || errors.country) && <p className="text-sm text-red-500">{t("Invalid Address")}</p>}
             </div>
           </div>
 
           <div className="md:col-span-2 flex justify-end">
             <Button type="submit" size="lg" variant="theme" disabled={!isDirty || isLoading}>
-              {isLoading ? "Updating..." : "Update"}
+              {isLoading ? t("Updating...") : t("Update")}
             </Button>
           </div>
         </form>

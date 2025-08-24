@@ -59,7 +59,7 @@ const personalityTraits: PersonalityTrait[] = [
 ];
 
 export function PersonalityForm() {
-    const {registrationSettings, registrationLoading} = useRegistration();
+    const {registrationSettings} = useRegistration();
   
   const router = useRouter();
   const {

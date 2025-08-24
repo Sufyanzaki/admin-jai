@@ -1,33 +1,45 @@
 "use client";
 
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {showError, showSuccess} from "@/shared-lib";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError, showSuccess } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {useSession} from "next-auth/react";
-import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
-import {patchPhysicalAppearance} from "@/app/shared-api/physicalAppearanceApi";
+import { useSession } from "next-auth/react";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
+import { patchPhysicalAppearance } from "@/app/shared-api/physicalAppearanceApi";
+import { useTranslation } from "react-i18next";
 
-const aboutMe2Schema = z.object({
-    height: z.string().min(1, "Height is required"),
-    weight: z.string().min(1, "Weight is required"),
-    eyeColor: z.string().min(1, "Eye color is required"),
-    hairColor: z.string().min(1, "Hair color is required"),
-    bodyType: z.string().min(1, "Body type is required"),
-    appearance: z.string().min(1, "Appearance is required"),
-    clothing: z.string().min(1, "Clothing style is required"),
-    intelligence: z.string().min(1, "Intelligence is required"),
-});
-
-export type AboutMe2Form = z.infer<typeof aboutMe2Schema>;
+export type AboutMe2Form = {
+    height: string;
+    weight: string;
+    eyeColor: string;
+    hairColor: string;
+    bodyType: string;
+    appearance: string;
+    clothing: string;
+    intelligence: string;
+};
 
 export default function useAboutMe2Form() {
+    const { t } = useTranslation();
+
     const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
 
     const { user, userLoading } = useBasicInfo(userId);
+
+    const aboutMe2Schema = z.object({
+        height: z.string().min(1, t("Height is required")),
+        weight: z.string().min(1, t("Weight is required")),
+        eyeColor: z.string().min(1, t("Eye color is required")),
+        hairColor: z.string().min(1, t("Hair color is required")),
+        bodyType: z.string().min(1, t("Body type is required")),
+        appearance: z.string().min(1, t("Appearance is required")),
+        clothing: z.string().min(1, t("Clothing style is required")),
+        intelligence: z.string().min(1, t("Intelligence is required")),
+    });
 
     const {
         register,
@@ -53,7 +65,8 @@ export default function useAboutMe2Form() {
     useEffect(() => {
         if (!user?.physicalAppearance) return;
 
-        const { height, weight, clothing, appearance, bodyType, hairColor, eyeColor, intelligence } = user.physicalAppearance;
+        const { height, weight, clothing, appearance, bodyType, hairColor, eyeColor, intelligence } =
+            user.physicalAppearance;
 
         reset({
             height: height || "",
@@ -70,17 +83,16 @@ export default function useAboutMe2Form() {
     const { trigger, isMutating } = useSWRMutation(
         "updateAboutMe2",
         async (_, { arg }: { arg: AboutMe2Form }) => {
-            if (!userId)
-                throw new Error("User ID is undefined. Please log in again");
+            if (!userId) throw new Error(t("User ID is undefined. Please log in again"));
             return await patchPhysicalAppearance(userId, arg);
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message || "Failed to update" });
-                console.error("Update About Me 2 error:", error);
+                showError({ message: error.message || t("Failed to update") });
+                console.error(t("Update About Me 2 error:"), error);
             },
             onSuccess: () => {
-                showSuccess("About Me updated successfully!");
+                showSuccess(t("About Me updated successfully!"));
             },
             revalidate: false,
             populateCache: false,
@@ -91,12 +103,11 @@ export default function useAboutMe2Form() {
         try {
             const result = await trigger(values);
             if (result) {
-                showSuccess("About Me updated successfully!");
+                showSuccess(t("About Me updated successfully!"));
                 callback?.();
             }
         } catch (error: unknown) {
-            if (error instanceof Error)
-                showError({ message: error.message });
+            if (error instanceof Error) showError({ message: error.message });
         }
     };
 

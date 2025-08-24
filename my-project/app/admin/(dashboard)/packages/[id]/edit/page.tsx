@@ -10,6 +10,7 @@ import {Switch} from '@/components/admin/ui/switch';
 import {Controller} from 'react-hook-form';
 import Preloader from "@/components/shared/Preloader";
 import useEditPackage from "@/app/admin/(dashboard)/packages/_hooks/useEditPackage";
+import Link from "next/link";
 
 export default function PackageEditPage() {
     const {
@@ -73,9 +74,9 @@ export default function PackageEditPage() {
         <div className="flex flex-col gap-5 p-4 xl:p-6">
             <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" asChild>
-                    <a href="/admin/packages">
+                    <Link href="/admin/packages">
                         <ArrowLeft className="h-4 w-4"/>
-                    </a>
+                    </Link>
                 </Button>
                 <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Edit Package</h2>
             </div>

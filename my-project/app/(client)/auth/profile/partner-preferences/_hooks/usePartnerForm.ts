@@ -1,54 +1,55 @@
 "use client";
 
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {useSession} from "next-auth/react";
-import {showError} from "@/shared-lib";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useSession } from "next-auth/react";
+import { showError } from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import {patchPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
-import {updateUserTrackingId} from "@/lib/access-token";
-import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
-import {useEffect} from "react";
-import {useRouter} from "next/navigation";
-import {patchUser} from "@/app/shared-api/userApi";
-
-export const partnerFormSchema = z.object({
-    origin: z.string().min(1, "Origin is required"),
-    lookingFor: z.string().min(1, "Looking for is required"),
-    relationshipStatus: z.string().min(1, "Relationship status is required"),
-    religion: z.string().min(1, "Religion is required"),
-    ageFrom: z.number().min(18).max(100),
-    ageTo: z.number().min(18).max(100),
-    weight: z.string().min(1, "Weight is required"),
-    education: z.string().min(1, "Education is required"),
-    smoke: z.string().min(1, "Required"),
-    drinking: z.string().min(1, "Required"),
-    goingOut: z.string().min(1, "Required"),
-    children: z.string().optional(),
-    searchWithIn: z.number().optional(),
-    length: z.string().min(1, "Height is required"),
-    country: z.string().min(1, "Country is required"),
-    city: z.string().optional(),
-    state: z.string().min(1, "State is required")
-});
-
-export type PartnerFormValues = z.infer<typeof partnerFormSchema>;
+import { patchPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
+import { updateUserTrackingId } from "@/lib/access-token";
+import { usePartnerExpectations } from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { patchUser } from "@/app/shared-api/userApi";
+import { useTranslation } from "react-i18next";
 
 export default function usePartnerForm() {
+    const { t } = useTranslation();
 
     const router = useRouter();
-
     const { data: session } = useSession();
     const userId = session?.user.id ? String(session.user.id) : undefined;
     const userIdProp = userId;
 
-    const {expectations, expectationLoading} = usePartnerExpectations(userIdProp);
+    const { expectations, expectationLoading } = usePartnerExpectations(userIdProp);
+
+    const partnerFormSchema = z.object({
+        origin: z.string().min(1, t("Origin is required")),
+        lookingFor: z.string().min(1, t("Looking for is required")),
+        relationshipStatus: z.string().min(1, t("Relationship status is required")),
+        religion: z.string().min(1, t("Religion is required")),
+        ageFrom: z.number().min(18, t("Minimum age is 18")).max(100, t("Maximum age is 100")),
+        ageTo: z.number().min(18, t("Minimum age is 18")).max(100, t("Maximum age is 100")),
+        weight: z.string().min(1, t("Weight is required")),
+        education: z.string().min(1, t("Education is required")),
+        smoke: z.string().min(1, t("Required")),
+        drinking: z.string().min(1, t("Required")),
+        goingOut: z.string().min(1, t("Required")),
+        children: z.string().optional(),
+        searchWithIn: z.number().optional(),
+        length: z.string().min(1, t("Height is required")),
+        country: z.string().min(1, t("Country is required")),
+        city: z.string().optional(),
+        state: z.string().min(1, t("State is required")),
+    });
+
+    type PartnerFormValues = z.infer<typeof partnerFormSchema>;
 
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting, isDirty },
+        formState: { errors, isSubmitting },
         setValue,
         watch,
         reset,
@@ -72,15 +73,31 @@ export default function usePartnerForm() {
             length: "Permanent",
             country: "",
             city: "",
-            state: ""
+            state: "",
         },
-        mode: "onBlur"
+        mode: "onBlur",
     });
 
     useEffect(() => {
-        if(!expectations) return;
+        if (!expectations) return;
 
-        const { lookingFor, origin, relationshipStatus, religion, ageTo, ageFrom, length, weight, education, smoke, drinking, goingOut, city, state, country } = expectations;
+        const {
+            lookingFor,
+            origin,
+            relationshipStatus,
+            religion,
+            ageTo,
+            ageFrom,
+            length,
+            weight,
+            education,
+            smoke,
+            drinking,
+            goingOut,
+            city,
+            state,
+            country,
+        } = expectations;
 
         reset({
             origin,
@@ -94,21 +111,18 @@ export default function usePartnerForm() {
             smoke,
             drinking,
             goingOut,
-            // children,
-            // searchWithIn,
             length,
             country,
             city,
-            state
-        })
-
+            state,
+        });
     }, [expectations, reset]);
 
     const { trigger: mutate, isMutating } = useSWRMutation(
         "updatePartnerPreferences",
         async (_, { arg }: { arg: PartnerFormValues }) => {
             if (!userId) {
-                throw new Error("User not authenticated");
+                throw new Error(t("User not authenticated"));
             }
 
             const payload = {
@@ -123,34 +137,29 @@ export default function usePartnerForm() {
                 smoke: arg.smoke,
                 drinking: arg.drinking,
                 goingOut: arg.goingOut,
-                // children: arg.children,
-                // searchWithIn: arg.searchWithIn,
                 length: arg.length,
                 country: arg.country,
                 city: arg.city,
-                state: arg.state
+                state: arg.state,
             };
-            patchUser(userId, {route: "/auth/profile/partner-preferences"}).finally()
+
+            patchUser(userId, { route: "/auth/profile/partner-preferences" }).finally();
             return await patchPartnerExpectation(userId, payload);
         },
         {
-            onError: (error: Error) => showError({ message: error.message || "Failed to update partner preferences" }),
+            onError: (error: Error) =>
+                showError({ message: error.message || t("Failed to update partner preferences") }),
             onSuccess: () => {},
-            revalidate: false
+            revalidate: false,
         }
     );
 
     const onSubmit = async (values: PartnerFormValues) => {
-
-        // if(!isDirty){
-        //     router.push("/auth/profile/membership");
-        //     return
-        // }
-
         const isValid = await trigger();
         if (!isValid) return;
+
         await mutate(values);
-        updateUserTrackingId({ step6: true })
+        updateUserTrackingId({ step6: true });
         router.push("/membership");
     };
 

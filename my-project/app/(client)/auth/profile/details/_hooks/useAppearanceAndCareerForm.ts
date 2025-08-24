@@ -1,91 +1,72 @@
-import {useCallback, useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import useSWRMutation from 'swr/mutation';
-import {showError} from '@/shared-lib';
-import {useRouter} from 'next/navigation';
+"use client";
 
-import {patchPhysicalAppearance, postPhysicalAppearance} from '@/app/shared-api/physicalAppearanceApi';
-import {patchEducationCareer, postEducationCareer} from '@/app/shared-api/educationCareerApi';
-import {patchLanguageInfo, postLanguageInfo} from '@/app/shared-api/languageInfoApi';
-import {useSession} from "next-auth/react";
-import {usePhysicalAppearanceInfo} from "@/app/shared-hooks/usePhysicalAppearanceInfo";
-import {useEducationCareerInfo} from "@/app/shared-hooks/useEducationCareerInfo";
-import {useLanguageInfoInfo} from "@/app/shared-hooks/useLanguageInfoInfo";
-import {getUserTrackingId, updateUserTrackingId} from "@/lib/access-token";
-import {patchUser} from "@/app/shared-api/userApi";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import useSWRMutation from "swr/mutation";
+import { showError } from "@/shared-lib";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
-export const appearanceCareerSchema = z.object({
-    height: z.string().min(1, {
-        message: "Please enter your height"
-    }),
-    eyeColor: z.string().min(1, {
-        message: "Please select your eye color"
-    }),
-    hairColor: z.string().min(1, {
-        message: "Please select your hair color"
-    }),
-    bodyType: z.string().min(1, {
-        message: "Please select your body type"
-    }),
-    weight: z.string().min(1, {
-        message: "Please enter your weight"
-    }),
-    appearance: z.string().min(1, {
-        message: "Please describe your appearance"
-    }),
-    clothing: z.string().min(1, {
-        message: "Please select your clothing style"
-    }),
-    intelligence: z.string().min(1, {
-        message: "Please select your intelligence level"
-    }),
-    motherTongue: z.string().min(1, {
-        message: "Please enter your mother tongue"
-    }),
-    knownLanguages: z
-        .any()
-        .refine((val) => Array.isArray(val) && val.length > 0, {
-            message: "Please select at least one language you know"
-        })
-        .pipe(z.array(z.string()).min(1, {
-            message: "Please select at least one language"
-        })),
-    education: z.string().min(1, {
-        message: "Please select your education level"
-    }),
-    primarySpecialization: z.string().min(1, {
-        message: "Please select Specialization"
-    }),
-    department: z.string().min(1, {
-        message: "Please enter your work experience"
-    }),
-});
+import { patchPhysicalAppearance, postPhysicalAppearance } from "@/app/shared-api/physicalAppearanceApi";
+import { patchEducationCareer, postEducationCareer } from "@/app/shared-api/educationCareerApi";
+import { patchLanguageInfo, postLanguageInfo } from "@/app/shared-api/languageInfoApi";
+import { patchUser } from "@/app/shared-api/userApi";
 
-export type AppearanceCareerForm = z.infer<typeof appearanceCareerSchema>;
+import { useSession } from "next-auth/react";
+import { usePhysicalAppearanceInfo } from "@/app/shared-hooks/usePhysicalAppearanceInfo";
+import { useEducationCareerInfo } from "@/app/shared-hooks/useEducationCareerInfo";
+import { useLanguageInfoInfo } from "@/app/shared-hooks/useLanguageInfoInfo";
+import { getUserTrackingId, updateUserTrackingId } from "@/lib/access-token";
 
 export default function useAppearanceAndCareerForm() {
     const router = useRouter();
+    const { t } = useTranslation();
 
     const { data: session } = useSession();
     const userId = session?.user.id ? String(session.user.id) : undefined;
 
     const [currentStep, setCurrentStep] = useState<string | null>(null);
 
-    const {physicalAppearance, physicalAppearanceLoading} = usePhysicalAppearanceInfo();
-    const {educationCareer, educationCareerLoading} = useEducationCareerInfo();
-    const {languageInfo, languageInfoLoading} = useLanguageInfoInfo()
+    const { physicalAppearance, physicalAppearanceLoading } = usePhysicalAppearanceInfo();
+    const { educationCareer, educationCareerLoading } = useEducationCareerInfo();
+    const { languageInfo, languageInfoLoading } = useLanguageInfoInfo();
 
+    // Schema with translated messages
+    const appearanceCareerSchema = z.object({
+        height: z.string().min(1, { message: t("Please enter your height") }),
+        eyeColor: z.string().min(1, { message: t("Please select your eye color") }),
+        hairColor: z.string().min(1, { message: t("Please select your hair color") }),
+        bodyType: z.string().min(1, { message: t("Please select your body type") }),
+        weight: z.string().min(1, { message: t("Please enter your weight") }),
+        appearance: z.string().min(1, { message: t("Please describe your appearance") }),
+        clothing: z.string().min(1, { message: t("Please select your clothing style") }),
+        intelligence: z.string().min(1, { message: t("Please select your intelligence level") }),
+        motherTongue: z.string().min(1, { message: t("Please enter your mother tongue") }),
+        knownLanguages: z
+            .any()
+            .refine((val) => Array.isArray(val) && val.length > 0, {
+                message: t("Please select at least one language you know"),
+            })
+            .pipe(z.array(z.string()).min(1, { message: t("Please select at least one language") })),
+        education: z.string().min(1, { message: t("Please select your education level") }),
+        primarySpecialization: z.string().min(1, { message: t("Please select Specialization") }),
+        department: z.string().min(1, { message: t("Please enter your work experience") }),
+    });
+
+    type AppearanceCareerForm = z.infer<typeof appearanceCareerSchema>;
+
+    // SWR mutation for saving all sections
     const { trigger, isMutating } = useSWRMutation(
-        'clientCreateAppearanceCareer',
+        "clientCreateAppearanceCareer",
         async (_: string, { arg }: { arg: AppearanceCareerForm }) => {
-            if (!userId) throw new Error('User ID is missing or invalid.');
+            if (!userId) throw new Error(t("User ID is missing or invalid."));
             const tracker = getUserTrackingId();
 
-            const physicalApi = tracker?.step2 ? patchPhysicalAppearance : postPhysicalAppearance
-            const languageApi = tracker?.step2 ? patchLanguageInfo : postLanguageInfo
-            const appearanceApi = tracker?.step2 ? patchEducationCareer : postEducationCareer
+            const physicalApi = tracker?.step2 ? patchPhysicalAppearance : postPhysicalAppearance;
+            const languageApi = tracker?.step2 ? patchLanguageInfo : postLanguageInfo;
+            const educationApi = tracker?.step2 ? patchEducationCareer : postEducationCareer;
 
             const {
                 height,
@@ -103,8 +84,10 @@ export default function useAppearanceAndCareerForm() {
                 department,
             } = arg;
 
-            setCurrentStep('Saving physical appearance & education');
-            patchUser(userId, { route: "/auth/profile/details" }).finally()
+            setCurrentStep(t("Saving physical appearance & education"));
+
+            patchUser(userId, { route: "/auth/profile/details" }).finally(() => {});
+
             await Promise.all([
                 physicalApi(userId, {
                     height,
@@ -121,7 +104,7 @@ export default function useAppearanceAndCareerForm() {
                     motherTongue,
                     knownLanguages: knownLanguages.join(", "),
                 }),
-                appearanceApi(userId, {
+                educationApi(userId, {
                     primarySpecialization,
                     education,
                     department,
@@ -132,8 +115,8 @@ export default function useAppearanceAndCareerForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message });
-                console.error('Appearance/Career creation error:', error);
+                showError({ message: error.message || t("Failed to save data") });
+                console.error("Appearance/Career creation error:", error);
             },
             onSuccess: () => {
                 router.push("/auth/profile/description");
@@ -146,7 +129,7 @@ export default function useAppearanceAndCareerForm() {
 
     const {
         handleSubmit,
-        formState: { errors, isSubmitting, isDirty },
+        formState: { errors, isSubmitting },
         register,
         reset,
         setValue,
@@ -169,60 +152,39 @@ export default function useAppearanceAndCareerForm() {
             primarySpecialization: "",
             department: "",
         },
-        mode: 'onBlur',
+        mode: "onBlur",
     });
 
     useEffect(() => {
         if (!physicalAppearance || !languageInfo) return;
 
-        const {
-            height,
-            eyeColor,
-            hairColor,
-            appearance,
-            weight,
-            bodyType,
-            intelligence,
-            clothing,
-        } = physicalAppearance;
-
-        const { motherTongue, knownLanguages } = languageInfo;
-        const education = educationCareer?.education ?? "";
-        const department = educationCareer?.department ?? "";
-
         reset({
-            height,
-            eyeColor,
-            hairColor,
-            appearance,
-            weight,
-            bodyType,
-            intelligence,
-            clothing,
-            motherTongue,
-            knownLanguages: knownLanguages? knownLanguages.split(",") : [],
-            education,
-            department,
+            height: physicalAppearance.height || "",
+            eyeColor: physicalAppearance.eyeColor || "",
+            hairColor: physicalAppearance.hairColor || "",
+            bodyType: physicalAppearance.bodyType || "",
+            weight: physicalAppearance.weight || "",
+            appearance: physicalAppearance.appearance || "",
+            clothing: physicalAppearance.clothing || "",
+            intelligence: physicalAppearance.intelligence || "",
+            motherTongue: languageInfo.motherTongue || "",
+            knownLanguages: languageInfo.knownLanguages ? languageInfo.knownLanguages.split(",") : [],
+            education: educationCareer?.education || "",
+            primarySpecialization: educationCareer?.primarySpecialization || "",
+            department: educationCareer?.department || "",
         });
     }, [physicalAppearance, languageInfo, educationCareer, reset]);
 
-
     const onSubmit = useCallback(
         async (values: AppearanceCareerForm, callback?: () => void) => {
-            // if(!isDirty){
-            //     router.push("/auth/profile/description");
-            //     return
-            // }
             try {
                 const result = await trigger(values);
                 if (result) {
-                    updateUserTrackingId({ step2: true })
+                    updateUserTrackingId({ step2: true });
                     callback?.();
                 }
             } catch (error) {
-                if (error instanceof Error) {
-                    showError({ message: error.message });
-                }
+                if (error instanceof Error) showError({ message: error.message });
             } finally {
                 setCurrentStep(null);
             }

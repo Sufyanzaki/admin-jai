@@ -1,24 +1,26 @@
-import {useSWRFix} from "@/shared-lib";
-import {getPhotoDetails} from "../_api/photoSettingsApi";
-import {PhotoDto} from "@/app/(client)/dashboard/settings/photo/_types/photo";
+import { useSWRFix } from "@/shared-lib";
+import { getPhotoDetails } from "../_api/photoSettingsApi";
+import { PhotoDto } from "@/app/(client)/dashboard/settings/photo/_types/photo";
+import { useTranslation } from "react-i18next";
 
 export const usePhotoSettings = () => {
+    const { t } = useTranslation();
 
     const { data, loading, error, mutate } = useSWRFix<PhotoDto>({
         key: "photo-settings",
         fetcher: async () => {
             const response = await getPhotoDetails();
             if (!response) {
-                throw new Error('Failed to fetch photo settings');
+                throw new Error(t("Failed to fetch photo settings"));
             }
             return response;
-        }
+        },
     });
 
     return {
-        photoSettings:data,
+        photoSettings: data,
         photoSettingsLoading: loading,
         error,
-        mutate
+        mutate,
     };
 };

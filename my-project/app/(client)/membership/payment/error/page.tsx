@@ -2,11 +2,12 @@
 
 import { Button } from "@/components/client/ux/button"
 import { XCircle, Home } from "lucide-react"
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation"
+import { useTranslation } from "react-i18next"
 
 const PaymentErrorPage = () => {
-
-    const router = useRouter();
+    const { t } = useTranslation()
+    const router = useRouter()
 
     const handleGoHome = () => {
         router.push("/dashboard")
@@ -26,12 +27,11 @@ const PaymentErrorPage = () => {
             </div>
 
             <h1 className="text-2xl md:text-3xl font-bold font-mon text-red-600 mt-6">
-                Payment Failed ❌
+                {t("Payment Failed ")}❌
             </h1>
 
             <p className="text-[#6B7280] mt-2 max-w-lg">
-                Unfortunately, your payment could not be processed.
-                Please try again or use a different payment method.
+                {t("Unfortunately, your payment could not be processed. Please try again or use a different payment method.")}
             </p>
 
             <Button
@@ -41,7 +41,7 @@ const PaymentErrorPage = () => {
                 className="flex items-center justify-center gap-2 mt-10"
             >
                 <Home className="h-12 w-12" />
-                Back to Home
+                {t("Back to Home")}
             </Button>
         </div>
     )

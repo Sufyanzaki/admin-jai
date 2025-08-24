@@ -7,8 +7,10 @@ import { Button } from "@/components/client/ux/button";
 import { useBlogs } from "@/app/shared-hooks/useBlogs";
 import Preloader from "@/components/shared/Preloader";
 import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
+import { useTranslation } from "react-i18next";
 
 export default function BlogPage() {
+  const {t} = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -34,7 +36,7 @@ export default function BlogPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64">
           <Preloader />
-          <p className="text-sm">Loading blog posts...</p>
+          <p className="text-sm">{t("loading")}</p>
         </div>
     );
   }
@@ -43,7 +45,7 @@ export default function BlogPage() {
     return (
         <div className="flex items-center flex-col justify-center h-64 gap-3">
           <h2 className="text-2xl font-bold text-red-600">
-            Error loading blog posts
+            {t("errorTitle")}
           </h2>
           <p className="text-muted-foreground">{error.message}</p>
         </div>
@@ -56,7 +58,7 @@ export default function BlogPage() {
           <div className="py-[50px] pt-[114px] xl:pt-[124px] xl:pb-[92px]">
             <div className="flex flex-col gap-3 lg:flex-row justify-between mb-8">
               <h3 className="text-[22px] lg:text-[26px] font-semibold text-base lg:text-lg">
-                Blog
+                {t("title")}
               </h3>
               <div className="flex-wrap gap-3 flex text-sm">
                 {categoryNames && categoryNames.map((name) => (
@@ -75,14 +77,15 @@ export default function BlogPage() {
             {selectedCategory && (
                 <div className="mb-6">
                   <p className="text-lg font-medium">
-                    Showing posts in: <span className="text-primary">{selectedCategory}</span>
+                    {t("showingPostsIn")}{" "}
+                    <span className="text-primary">{selectedCategory}</span>
                     <Button
                         variant="ghost"
                         size="sm"
                         className="ml-2"
                         onClick={() => setSelectedCategory(null)}
                     >
-                      Clear filter
+                      {t("clearFilter")}
                     </Button>
                   </p>
                 </div>
@@ -93,8 +96,8 @@ export default function BlogPage() {
                   <div className="col-span-full flex items-center justify-center h-32">
                     <p className="text-muted-foreground">
                       {selectedCategory
-                          ? `No blog posts found in category "${selectedCategory}"`
-                          : "No blog posts available"
+                          ? t("noPostsInCategory", { category: selectedCategory })
+                          : t("noPostsAvailable")
                       }
                     </p>
                   </div>

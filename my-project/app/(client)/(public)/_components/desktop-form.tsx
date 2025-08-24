@@ -1,18 +1,18 @@
 "use client"
 
-import {Controller} from "react-hook-form";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
-import {Label} from "@/components/client/ux/label";
+import { Controller } from "react-hook-form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
+import { Label } from "@/components/client/ux/label";
 import LocationSearchInput from "@/components/client/location-search";
-import {Input} from "@/components/client/ux/input";
-import {Button} from "@/components/client/ux/button";
+import { Input } from "@/components/client/ux/input";
+import { Button } from "@/components/client/ux/button";
 import useRegisterForm from "@/app/(client)/auth/profile/_hooks/useRegisterForm";
-import {MemberLocation} from "@/app/shared-types/member";
-import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import { MemberLocation } from "@/app/shared-types/member";
+import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
+import { useTranslation } from "react-i18next";
 import type React from "react";
 
-export default function DesktopForm(){
-
+export default function DesktopForm() {
     const {
         errors,
         isLoading,
@@ -22,8 +22,10 @@ export default function DesktopForm(){
         register,
         setValue,
         watch,
-        currentStep
+        currentStep,
     } = useRegisterForm();
+
+    const { t } = useTranslation();
 
     const city = watch("city");
     const state = watch("state");
@@ -39,7 +41,7 @@ export default function DesktopForm(){
     };
 
     return (
-        <form onSubmit={handleSubmit(data=>onSubmit(data))} className="space-y-5">
+        <form onSubmit={handleSubmit((data) => onSubmit(data))} className="space-y-5">
             <div className="border-b border-[#E5E7EB]">
                 <Controller
                     name="lookingFor"
@@ -50,7 +52,7 @@ export default function DesktopForm(){
                             value={field.value || undefined}
                             onChange={field.onChange}
                             triggerClasses="border-none h-12 pl-0 items-end"
-                            placeholder="Select Partner's Gender"
+                            placeholder={t("Select Partner's Gender")}
                         />
                     )}
                 />
@@ -65,22 +67,15 @@ export default function DesktopForm(){
             <div className="flex flex-row gap-4 w-full justify-center">
                 <div className="flex flex-row gap-2 justify-between items-end w-full">
                     <Label className="text-base font-normal text-[#374151] mb-0">
-                        Between
+                        {t("Between")}
                     </Label>
                     <div className="border-b border-[#E5E7EB] w-full">
                         <Controller
                             name="ageFrom"
                             control={control}
                             render={({ field }) => (
-                                <Select
-                                    key="ageFrom"
-                                    onValueChange={field.onChange}
-                                    value={field.value}
-                                >
-                                    <SelectTrigger
-                                        id="between"
-                                        className="border-none h-12 items-end"
-                                    >
+                                <Select key="ageFrom" onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger id="between" className="border-none h-12 items-end">
                                         <SelectValue placeholder="" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -102,29 +97,22 @@ export default function DesktopForm(){
 
                 <div className="flex flex-row gap-2 justify-between items-end w-full">
                     <Label className="text-base font-normal text-[#374151] mb-0">
-                        and
+                        {t("and")}
                     </Label>
                     <div className="border-b border-[#E5E7EB] w-full">
                         <Controller
                             name="ageTo"
                             control={control}
                             render={({ field }) => (
-                                <Select
-                                    key="ageTo"
-                                    onValueChange={field.onChange}
-                                    value={field.value}
-                                >
-                                    <SelectTrigger
-                                        id="and"
-                                        className="border-none h-12 items-end"
-                                    >
+                                <Select key="ageTo" onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger id="and" className="border-none h-12 items-end">
                                         <SelectValue placeholder="" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="25">25</SelectItem>
                                         <SelectItem value="35">35</SelectItem>
                                         <SelectItem value="45">45</SelectItem>
-                                        <SelectItem value="99">99+</SelectItem>
+                                        <SelectItem value="99">{t("99+")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             )}
@@ -143,19 +131,20 @@ export default function DesktopForm(){
                 <LocationSearchInput
                     value={currentLocation}
                     onSelect={handleLocationSelect}
-                    placeholder="Search for your city, state, or country"
+                    placeholder={t("Search for your city, state, or country")}
                 />
-                {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
-
+                {(errors.state || errors.country) && (
+                    <p className="text-sm text-red-500">{t("Invalid Address")}</p>
+                )}
             </div>
 
             <div className="flex flex-row gap-4">
                 <div className="w-1/2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t("Email")}</Label>
                     <Input
                         id="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder={t("Email")}
                         {...register("email")}
                     />
                     {errors.email && (
@@ -166,11 +155,11 @@ export default function DesktopForm(){
                 </div>
 
                 <div className="w-1/2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">{t("Password")}</Label>
                     <Input
                         id="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder={t("Password")}
                         {...register("password")}
                     />
                     {errors.password && (
@@ -188,8 +177,8 @@ export default function DesktopForm(){
                 className="w-full"
                 disabled={isLoading}
             >
-                {isLoading ? currentStep : "Register"}
+                {isLoading ? currentStep : t("Register")}
             </Button>
         </form>
-    )
+    );
 }

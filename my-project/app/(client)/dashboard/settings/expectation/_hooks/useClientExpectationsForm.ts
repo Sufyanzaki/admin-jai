@@ -5,40 +5,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import { showError, showSuccess } from "@/shared-lib";
 import { useEffect } from "react";
-import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
-import {patchPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
+import { usePartnerExpectations } from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
+import { patchPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
 import { useSession } from "next-auth/react";
-
-const expectationsSchema = z.object({
-    origin: z.string().min(1, "Origin is required"),
-    lookingFor: z.string().min(1, "Looking for is required"),
-    ageFrom: z
-        .number({ invalid_type_error: "Age from must be a number" })
-        .min(18, "Min age is 18")
-        .max(100, "Max age is 100"),
-    ageTo: z
-        .number({ invalid_type_error: "Age to must be a number" })
-        .min(18, "Min age is 18")
-        .max(100, "Max age is 100"),
-    country: z.string().min(1, "Country is required"),
-    city: z.string().optional(),
-    state: z.string().min(1, "State is required"),
-    relationshipStatus: z.string().min(1, "Relationship status is required"),
-    education: z.string().min(1, "Education is required"),
-    religion: z.string().min(1, "Religion is required"),
-    smoke: z.string().min(1, "Required"),
-    drinking: z.string().min(1, "Required"),
-    weight: z.string().min(1, "Weight is required"),
-    goingOut: z.string().min(1, "Required"),
-    length: z.string().min(1, "Length is required"),
-});
-
-
-export type ExpectationsFormValues = z.infer<typeof expectationsSchema>;
+import { useTranslation } from "react-i18next";
 
 export const useClientExpectationsForm = () => {
+    const { t } = useTranslation();
 
-    const {data:session} = useSession();
+    const expectationsSchema = z.object({
+        origin: z.string().min(1, t("Origin is required")),
+        lookingFor: z.string().min(1, t("Looking for is required")),
+        ageFrom: z
+            .number({ invalid_type_error: t("Age from must be a number") })
+            .min(18, t("Min age is 18"))
+            .max(100, t("Max age is 100")),
+        ageTo: z
+            .number({ invalid_type_error: t("Age to must be a number") })
+            .min(18, t("Min age is 18"))
+            .max(100, t("Max age is 100")),
+        country: z.string().min(1, t("Country is required")),
+        city: z.string().optional(),
+        state: z.string().min(1, t("State is required")),
+        relationshipStatus: z.string().min(1, t("Relationship status is required")),
+        education: z.string().min(1, t("Education is required")),
+        religion: z.string().min(1, t("Religion is required")),
+        smoke: z.string().min(1, t("Required")),
+        drinking: z.string().min(1, t("Required")),
+        weight: z.string().min(1, t("Weight is required")),
+        goingOut: z.string().min(1, t("Required")),
+        length: z.string().min(1, t("Length is required")),
+    });
+
+    type ExpectationsFormValues = z.infer<typeof expectationsSchema>;
+
+    const { data: session } = useSession();
     const userId = session?.user?.id ? String(session.user.id) : undefined;
 
     const { expectations, expectationLoading } = usePartnerExpectations(userId);
@@ -71,12 +72,12 @@ export const useClientExpectationsForm = () => {
             goingOut: "",
             length: "",
         },
-        mode: "onChange"
+        mode: "onChange",
     });
 
     useEffect(() => {
         if (!expectations) return;
-        const {id, userId, ...other} = expectations;
+        const { id, userId, ...other } = expectations;
 
         reset({
             ...other,
@@ -96,16 +97,16 @@ export const useClientExpectationsForm = () => {
     const { trigger, isMutating } = useSWRMutation(
         "updatePartnerExpectations",
         async (_, { arg }: { arg: ExpectationsFormValues }) => {
-            if(!userId) throw new Error("user is missing");
+            if (!userId) throw new Error(t("User is missing"));
             return await patchPartnerExpectation(userId, arg);
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message || "Failed to update expectations" });
+                showError({ message: error.message || t("Failed to update expectations") });
                 console.error("Expectations update error:", error);
             },
             onSuccess: () => {
-                showSuccess("Expectations updated successfully!");
+                showSuccess(t("Expectations updated successfully!"));
             },
         }
     );

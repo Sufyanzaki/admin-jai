@@ -8,8 +8,10 @@ import { Label } from "@/components/client/ux/label";
 import { X } from "lucide-react";
 import { Controller } from "react-hook-form";
 import useSupportTicket from "@/app/(client)/dashboard/settings/support/_hook/useSupportForm";
+import { useTranslation } from "react-i18next";
 
 export default function SupportTicketPage() {
+    const { t } = useTranslation();
     const {
         control,
         register,
@@ -24,7 +26,7 @@ export default function SupportTicketPage() {
             <div className="bg-yellow-50 border border-yellow-300 rounded-[5px] p-4">
                 <div className="flex justify-between items-center">
                     <p className="text-sm text-yellow-800">
-                        ⚠️ Warning: Please ensure all information is accurate before saving.
+                        ⚠️ {t("Warning: Please ensure all information is accurate before saving.")}
                     </p>
                     <Button variant="ghost" size="sm" className="text-yellow-600 hover:bg-yellow-100">
                         <X className="w-5 h-5" />
@@ -32,11 +34,11 @@ export default function SupportTicketPage() {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit(v=>onSubmit(v))} className="space-y-5">
+            <form onSubmit={handleSubmit(v => onSubmit(v))} className="space-y-5">
                 <div>
-                    <Label>Subject</Label>
+                    <Label>{t("Subject")}</Label>
                     <Input
-                        placeholder="Brief description of the issue"
+                        placeholder={t("Brief description of the issue")}
                         className="h-12"
                         {...register("subject")}
                     />
@@ -46,20 +48,20 @@ export default function SupportTicketPage() {
                 </div>
 
                 <div>
-                    <Label>Category</Label>
+                    <Label>{t("Category")}</Label>
                     <Controller
                         name="category"
                         control={control}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} value={field.value}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select category" />
+                                    <SelectValue placeholder={t("Select category")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="technical">Technical</SelectItem>
-                                    <SelectItem value="billing">Billing</SelectItem>
-                                    <SelectItem value="account">Account</SelectItem>
-                                    <SelectItem value="general">General</SelectItem>
+                                    <SelectItem value="technical">{t("Technical")}</SelectItem>
+                                    <SelectItem value="billing">{t("Billing")}</SelectItem>
+                                    <SelectItem value="account">{t("Account")}</SelectItem>
+                                    <SelectItem value="general">{t("General")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
@@ -70,20 +72,20 @@ export default function SupportTicketPage() {
                 </div>
 
                 <div>
-                    <Label>Priority</Label>
+                    <Label>{t("Priority")}</Label>
                     <Controller
                         name="priority"
                         control={control}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} value={field.value}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select priority" />
+                                    <SelectValue placeholder={t("Select priority")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="low">Low</SelectItem>
-                                    <SelectItem value="medium">Medium</SelectItem>
-                                    <SelectItem value="high">High</SelectItem>
-                                    <SelectItem value="critical">Critical</SelectItem>
+                                    <SelectItem value="low">{t("Low")}</SelectItem>
+                                    <SelectItem value="medium">{t("Medium")}</SelectItem>
+                                    <SelectItem value="high">{t("High")}</SelectItem>
+                                    <SelectItem value="critical">{t("Critical")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
@@ -94,9 +96,9 @@ export default function SupportTicketPage() {
                 </div>
 
                 <div>
-                    <Label>Description</Label>
+                    <Label>{t("Description")}</Label>
                     <Textarea
-                        placeholder="Please provide detailed information about your issue"
+                        placeholder={t("Please provide detailed information about your issue")}
                         className="min-h-[100px]"
                         {...register("description")}
                     />
@@ -107,7 +109,7 @@ export default function SupportTicketPage() {
 
                 <div className="flex justify-end gap-3">
                     <Button variant="outline" size="lg" type="button">
-                        Cancel
+                        {t("Cancel")}
                     </Button>
                     <Button
                         variant="theme"
@@ -115,7 +117,7 @@ export default function SupportTicketPage() {
                         type="submit"
                         disabled={isLoading}
                     >
-                        {isLoading ? "Submitting..." : "Submit Ticket"}
+                        {isLoading ? t("Submitting...") : t("Submit Ticket")}
                     </Button>
                 </div>
             </form>

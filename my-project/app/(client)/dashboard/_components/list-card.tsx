@@ -1,22 +1,26 @@
+"use client";
+
 import Link from "next/link";
-import {Button} from "@/components/client/ux/button";
+import { Button } from "@/components/client/ux/button";
 import ImageWrapper from "@/components/client/image-wrapper";
-import {MemberProfile} from "@/app/shared-types/member";
-import {useSendLike} from "../_hooks/useSendLike";
-import {useBlockUser} from "../_hooks/useBlockUser";
-import {useCreateChat} from "../chat/_hooks/useCreateChat";
-import {useRouter} from "next/navigation";
+import { MemberProfile } from "@/app/shared-types/member";
+import { useSendLike } from "../_hooks/useSendLike";
+import { useBlockUser } from "../_hooks/useBlockUser";
+import { useCreateChat } from "../chat/_hooks/useCreateChat";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function ListCard({ profile }: { profile: MemberProfile }) {
   const router = useRouter();
+  const { t } = useTranslation();
+
   const { trigger: sendLike, loading } = useSendLike();
   const { trigger: blockUser, loading: blockLoading } = useBlockUser();
-
   const { sendMessageRefetch } = useCreateChat();
 
   const handleSendMessage = async () => {
     if (!profile?.id) return;
-    sendMessageRefetch(profile?.id).then(res => {
+    sendMessageRefetch(profile?.id).then((res) => {
       if (res?.data?.fullChat?.id) {
         router.push(`/dashboard/chat?chatId=${res.data.fullChat.id}`);
       }
@@ -33,7 +37,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                   alt={profile.firstName || profile.lastName}
                   className="min-w-40 h-40 object-cover rounded-[5px]"
               />
-              {(profile.isOnline) && (
+              {profile.isOnline && (
                   <div className="absolute top-1 right-1 w-3 h-3 bg-app-green rounded-[5px] border-2 border-white"></div>
               )}
             </div>
@@ -47,7 +51,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                       {profile.firstName} {profile.lastName}
                     </h3>
                     <p className="text-xl text-black">
-                      {profile.age} years, {profile.location}
+                      {profile.age} {t("years")}, {profile.location}
                     </p>
                   </div>
                 </div>
@@ -59,7 +63,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                     className="text-xs px-2 py-1 h-7 bg-transparent"
                     onClick={handleSendMessage}
                 >
-                  📧 Message
+                  📧 {t("Message")}
                 </Button>
                 <Button
                     variant="outline"
@@ -71,16 +75,8 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                       sendLike(Number(profile.id));
                     }}
                 >
-                  {loading ? "Liking..." : " 💝 Interested"}
+                  {loading ? t("Liking...") : `💝 ${t("Interested")}`}
                 </Button>
-                {/* <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs px-2 py-1 h-7 bg-transparent"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                  ⭐ Favorite
-                </Button> */}
                 <Button
                     variant="outline"
                     size="sm"
@@ -91,26 +87,22 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                       blockUser(Number(profile.id)).finally();
                     }}
                 >
-                  {blockLoading ? "Blocking..." : "🚫 Block"}
+                  {blockLoading ? t("Blocking...") : `🚫 ${t("Block")}`}
                 </Button>
               </div>
             </div>
             <div className="py-1">
               <p className="text-sm text-black font-normal mb-3 leading-relaxed">
-                {profile.shortDescription || "No description available."}
+                {profile.shortDescription || t("No description available.")}
               </p>
               <div className="space-y-1 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-black">Relationship Status</span>
-                  <span className="font-normal">
-                  : {profile.relationshipStatus || "Unknown"}
-                </span>
+                  <span className="font-medium text-black">{t("Relationship Status")}</span>
+                  <span className="font-normal">: {profile.relationshipStatus || t("Unknown")}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-black">Religion</span>
-                  <span className="text-black">
-                  : {profile.religion || "Unknown"}
-                </span>
+                  <span className="font-medium text-black">{t("Religion")}</span>
+                  <span className="text-black">: {profile.religion || t("Unknown")}</span>
                 </div>
               </div>
             </div>
@@ -127,7 +119,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                     alt={profile.firstName}
                     className="w-24 h-24 object-cover rounded-[5px]"
                 />
-                {(profile.isOnline) && (
+                {profile.isOnline && (
                     <div className="absolute top-1 right-1 w-2 h-2 bg-app-green rounded-[5px] border border-white"></div>
                 )}
               </div>
@@ -138,7 +130,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                   {profile.firstName} {profile.lastName}
                 </h3>
                 <p className="text-xs text-black">
-                  {profile.age} years, {profile.location}
+                  {profile.age} {t("years")}, {profile.location}
                 </p>
               </div>
 
@@ -149,7 +141,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                     className="text-xs px-2 py-1 h-8 justify-center bg-transparent"
                     onClick={(e) => e.stopPropagation()}
                 >
-                  📧 Message
+                  📧 {t("Message")}
                 </Button>
                 <Button
                     variant="outline"
@@ -161,7 +153,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                       sendLike(Number(profile.id));
                     }}
                 >
-                  {loading ? "Liking..." : " 💝 Interested"}
+                  {loading ? t("Liking...") : `💝 ${t("Interested")}`}
                 </Button>
                 <Button
                     variant="outline"
@@ -169,7 +161,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                     className="text-xs px-2 py-1 h-8 justify-center bg-transparent"
                     onClick={(e) => e.stopPropagation()}
                 >
-                  ⭐ Favorite
+                  ⭐ {t("Favorite")}
                 </Button>
                 <Button
                     variant="outline"
@@ -181,7 +173,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
                       blockUser(Number(profile.id));
                     }}
                 >
-                  {blockLoading ? "Blocking..." : "🚫 Block"}
+                  {blockLoading ? t("Blocking...") : `🚫 ${t("Block")}`}
                 </Button>
               </div>
             </div>
@@ -189,7 +181,7 @@ export default function ListCard({ profile }: { profile: MemberProfile }) {
 
           <div className="space-y-2">
             <p className="text-xs sm:text-sm text-black font-normal leading-relaxed">
-              {profile.shortDescription || "No description available."}
+              {profile.shortDescription || t("No description available.")}
             </p>
           </div>
         </div>

@@ -1,75 +1,70 @@
-import {useCallback, useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {showError} from '@/shared-lib';
+"use client";
+
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
+import { showError } from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
-import {patchUser} from "@/app/shared-api/userApi";
-import {patchPartnerExpectation, postPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
-import {useRouter} from "next/navigation";
-import {patchUserLocation, postUserLocation} from "@/app/shared-api/livingApi";
-import {useSession} from "next-auth/react";
-import {useLiving} from "@/app/admin/(dashboard)/members/_hooks/useLiving";
-import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
-import {useBasicInfo} from "@/app/shared-hooks/useBasicInfo";
-import {setUserTrackingId} from "@/lib/access-token";
-
-export const userProfileCreateSchema = z.object({
-    username: z.string().min(1, "Username is required"),
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().min(1, "Last name is required"),
-    gender: z.string().min(1, "Gender is required"),
-    age: z
-        .number({ required_error: "Age is required", invalid_type_error: "Age must be a number" })
-        .int("Age must be a whole number")
-        .min(0, "Age must be a positive number"),
-    dob: z
-        .string({ required_error: "Date of birth is required" })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in the format YYYY-MM-DD"),
-    relationshipStatus: z.string().min(1, "Relationship status is required"),
-    children: z.string().min(1, "Children is required"),
-    religion: z.string().min(1, "Religion is required"),
-    origin: z.string().min(1, "Country of origin is required"),
-    lookingFor: z.string().min(1, "Looking for field is required"),
-    country: z.string().min(1, "Country is required"),
-    state: z.string().min(1, "State is required"),
-    city: z.string().optional(),
-});
-
-export type UserProfile = z.infer<typeof userProfileCreateSchema>;
+import { patchUser } from "@/app/shared-api/userApi";
+import { patchPartnerExpectation, postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
+import { useRouter } from "next/navigation";
+import { patchUserLocation, postUserLocation } from "@/app/shared-api/livingApi";
+import { useSession } from "next-auth/react";
+import { useLiving } from "@/app/admin/(dashboard)/members/_hooks/useLiving";
+import { usePartnerExpectations } from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
+import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
+import { setUserTrackingId } from "@/lib/access-token";
 
 export default function useProfileCreateForm() {
+    const { t } = useTranslation();
 
     const { data: session, status } = useSession();
-
     const userId = session?.user.id ? String(session.user.id) : undefined;
     const userIdProp = userId;
-
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState<string | null>(null);
 
     const { living, livingLoading } = useLiving(userIdProp);
     const { expectations, expectationLoading } = usePartnerExpectations(userIdProp);
-    const { user, userLoading } = useBasicInfo(userIdProp)
+    const { user, userLoading } = useBasicInfo(userIdProp);
 
     useEffect(() => {
         if (!user) return;
         if (user?.route === "/auth/profile/partner-preferences") {
             router.push("/dashboard");
-        }
-        else if (user?.route) {
+        } else if (user?.route) {
             router.push(user.route);
         }
     }, [user?.route, router]);
 
+    const userProfileCreateSchema = z.object({
+        username: z.string().min(1, t("Username is required")),
+        firstName: z.string().min(1, t("First name is required")),
+        lastName: z.string().min(1, t("Last name is required")),
+        gender: z.string().min(1, t("Gender is required")),
+        age: z.number({ required_error: t("Age is required"), invalid_type_error: t("Age must be a number") })
+            .int(t("Age must be a whole number"))
+            .min(0, t("Age must be a positive number")),
+        dob: z.string({ required_error: t("Date of birth is required") })
+            .regex(/^\d{4}-\d{2}-\d{2}$/, t("Date of birth must be in the format YYYY-MM-DD")),
+        relationshipStatus: z.string().min(1, t("Relationship status is required")),
+        children: z.string().min(1, t("Children is required")),
+        religion: z.string().min(1, t("Religion is required")),
+        origin: z.string().min(1, t("Country of origin is required")),
+        lookingFor: z.string().min(1, t("Looking for field is required")),
+        country: z.string().min(1, t("Country is required")),
+        state: z.string().min(1, t("State is required")),
+        city: z.string().optional(),
+    });
 
     const { trigger, isMutating } = useSWRMutation(
         'clientCreateUserProfile',
-        async (_: string, { arg }: { arg: UserProfile }) => {
-
+        async (_: string, { arg }: { arg: z.infer<typeof userProfileCreateSchema> }) => {
             if (!userId) return;
             const { lookingFor, city, country, state, ...userFields } = arg;
-            setCurrentStep("Updating user & Saving preferences");
+            setCurrentStep(t("Updating user & Saving preferences"));
             const livingApi = living ? patchUserLocation : postUserLocation;
             const partnerApi = expectations ? patchPartnerExpectation : postPartnerExpectation;
             await Promise.all([
@@ -81,7 +76,7 @@ export default function useProfileCreateForm() {
         },
         {
             onError: (error: Error) => showError({ message: error.message }),
-            onSuccess: () => { setCurrentStep(null) },
+            onSuccess: () => setCurrentStep(null),
             revalidate: false,
             populateCache: false,
         }
@@ -95,7 +90,7 @@ export default function useProfileCreateForm() {
         watch,
         control,
         reset
-    } = useForm<UserProfile>({
+    } = useForm<z.infer<typeof userProfileCreateSchema>>({
         resolver: zodResolver(userProfileCreateSchema),
         defaultValues: {
             username: "",
@@ -117,7 +112,6 @@ export default function useProfileCreateForm() {
     });
 
     useEffect(() => {
-
         if (!user || !living || !expectations) return;
 
         const { firstName, lastName, username, gender, age, dob, relationshipStatus, children, religion, origin } = user;
@@ -132,24 +126,18 @@ export default function useProfileCreateForm() {
             relationshipStatus,
             age,
             dob: dob ? dob.split("T")[0] : "",
-            children : children ?? "",
+            children: children ?? "",
             religion,
             origin,
             lookingFor,
             country,
             state,
             city,
-        })
+        });
     }, [user, expectations, living, reset]);
 
     const onSubmit = useCallback(
-        async (values: UserProfile, callback?: () => void) => {
-
-            // if (!isDirty) {
-            //     router.push("/auth/profile/details");
-            //     return;
-            // }
-
+        async (values: z.infer<typeof userProfileCreateSchema>, callback?: () => void) => {
             try {
                 const result = await trigger(values);
                 if (result) {
@@ -171,7 +159,7 @@ export default function useProfileCreateForm() {
                 setCurrentStep(null);
             }
         },
-        [trigger, router]
+        [trigger, router, userId]
     );
 
     return {
@@ -185,5 +173,5 @@ export default function useProfileCreateForm() {
         control,
         watch,
         isFetching: status === 'loading' || livingLoading || expectationLoading || userLoading,
-    }
+    };
 }

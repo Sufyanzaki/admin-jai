@@ -1,9 +1,11 @@
-import { showError, showSuccess } from '@/shared-lib';
+import { showError, showSuccess } from "@/shared-lib";
 import { useState } from "react";
-import { mutate } from 'swr';
-import { unblockProfiles } from '../_api/getUnblockUser';
+import { mutate } from "swr";
+import { unblockProfiles } from "../_api/getUnblockUser";
+import { useTranslation } from "react-i18next";
 
 export const useUnblockUser = () => {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
@@ -14,12 +16,12 @@ export const useUnblockUser = () => {
         try {
             const res = await unblockProfiles({ blockedUserId });
             if (res) {
-                showSuccess('User Unblocked successfully!');
+                showSuccess(t("User Unblocked successfully!"));
             }
             mutate("blocked-profiles").finally();
             return res;
         } catch (err: unknown) {
-            let message = 'An error occurred while Unblocking this profile';
+            let message = t("An error occurred while Unblocking this profile");
 
             if (err instanceof Error) {
                 message = err.message;
@@ -28,8 +30,7 @@ export const useUnblockUser = () => {
             showError({ message });
             setError(new Error(message));
             throw err;
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };

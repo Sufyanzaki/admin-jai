@@ -1,12 +1,16 @@
+import { useTranslation } from "react-i18next";
+
 export function DashboardList() {
+    const { t } = useTranslation();
+
     const menuItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Search", href: "/dashboard/search" },
-        { label: "My Visits", href: "/dashboard/visits" },
-        { label: "Matches", href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
-        { label: "Notification", href: "/dashboard/notifications/received" },
-        { label: "Messages", href: "/dashboard/chat", badge: 3, badgeColor: "bg-cyan-500" },
-        { label: "My Profile", href: "/dashboard/settings/account" }
+        { label: t("Dashboard"), href: "/dashboard" },
+        { label: t("Search"), href: "/dashboard/search" },
+        { label: t("My Visits"), href: "/dashboard/visits" },
+        { label: t("Matches"), href: "/dashboard/matches", badge: 8, badgeColor: "bg-app-light-pink" },
+        { label: t("Notification"), href: "/dashboard/notifications/received" },
+        { label: t("Messages"), href: "/dashboard/chat", badge: 3, badgeColor: "bg-cyan-500" },
+        { label: t("My Profile"), href: "/dashboard/settings/account" }
     ];
 
     return (

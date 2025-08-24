@@ -17,6 +17,7 @@ import NotificationListener from "@/client-utils/NotificationListener";
 import {useSWRConfig} from "swr";
 import {ProfileResponse} from "@/app/shared-types/auth";
 import {useProfile} from "@/app/shared-hooks/useProfile";
+import { useTranslation } from "react-i18next";
 
 type MenuItem = {
   label: string;
@@ -26,24 +27,24 @@ type MenuItem = {
 };
 
 export function DashboardHeader() {
+  const { t } = useTranslation();
   const { mutate } = useSWRConfig();
-
   const { response, userLoading } = useProfile();
 
   if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
 
   const menuItems: MenuItem[] = [
-    { label: "Dashboard", href: "/dashboard" },
-    { label: "My Matches", href: "/dashboard/matches" },
-    { label: "My Visits", href: "/dashboard/visits" },
-    { label: "Notification", href: "/dashboard/notifications/received" },
-    { label: "Liked Profile", href: "/dashboard/notifications/received" },
-    { label: "Messages", href: "/dashboard/chat", badge: response?.user.messageCount, badgeColor: "bg-cyan-500" },
-    { label: "My Profile", href: "/dashboard/settings/account" },
+    { label: t("Dashboard"), href: "/dashboard" },
+    { label: t("My Matches"), href: "/dashboard/matches" },
+    { label: t("My Visits"), href: "/dashboard/visits" },
+    { label: t("Notification"), href: "/dashboard/notifications/received" },
+    { label: t("Liked Profile"), href: "/dashboard/notifications/received" },
+    { label: t("Messages"), href: "/dashboard/chat", badge: response?.user.messageCount, badgeColor: "bg-cyan-500" },
+    { label: t("My Profile"), href: "/dashboard/settings/account" },
   ];
 
   const lockedItems: MenuItem[] = [
-    { label: "Complete Profile", href: response?.user.route ?? "/auth/profile/create" },
+    { label: t("Complete Profile"), href: response?.user.route ?? "/auth/profile/create" },
   ];
 
   const allowedItems: MenuItem[] = response?.user.route === "/auth/profile/partner-preferences" ? menuItems : lockedItems;
@@ -86,7 +87,7 @@ export function DashboardHeader() {
             <div className="flex items-center gap-3 xl:hidden justify-between w-full">
               <ImageWrapper
                   src="https://ticketprijs.nl/admin/Image/AppSettings/Logo/1730289473_1730098174_1727434463_logo-alt.png"
-                  alt="Logo"
+                  alt={t("Logo")}
                   className="w-[150px]"
               />
               <div className="flex gap-2">
@@ -101,7 +102,7 @@ export function DashboardHeader() {
                       <SidebarHeader className="p-6">
                         <div className="flex items-center justify-between gap-2">
                           <Link href="/dashboard">
-                            <ImageWrapper src="/dashboardLogo.png" className="w-36" alt="logo" />
+                            <ImageWrapper src="/dashboardLogo.png" className="w-36" alt={t("logo")} />
                           </Link>
                         </div>
                       </SidebarHeader>
@@ -114,7 +115,7 @@ export function DashboardHeader() {
                             onClick={() => signOut({ callbackUrl: "/auth/login" })}
                         >
                           <LogOut className="w-4 h-4" />
-                          <span className="group-data-[collapsible=icon]:hidden ml-2 text-sm">Logout</span>
+                          <span className="group-data-[collapsible=icon]:hidden ml-2 text-sm">{t("Logout")}</span>
                         </Button>
                       </SidebarFooter>
 
@@ -131,7 +132,7 @@ export function DashboardHeader() {
                   <SheetContent side="right" className="w-full p-0">
                     <VisuallyHidden>
                       <SheetHeader>
-                        <SheetTitle>Menu</SheetTitle>
+                        <SheetTitle>{t("Menu")}</SheetTitle>
                       </SheetHeader>
                     </VisuallyHidden>
                     <DashboardList />

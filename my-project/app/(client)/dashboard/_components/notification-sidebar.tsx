@@ -1,8 +1,8 @@
 "use client";
 
-import {ChevronLeft, ChevronRight, MessageSquare, Send, Star, Trash2, User,} from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageSquare, Send, Star, Trash2, User } from "lucide-react";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
     Sidebar,
     SidebarContent,
@@ -14,63 +14,55 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/client/ux/sidebar";
-
-export const notificationItems = [
-    {
-        title: "Received",
-        icon: User,
-        href: "/dashboard/notifications/received",
-        count: 6,
-    },
-    {
-        title: "Accepted",
-        icon: Star,
-        href: "/dashboard/notifications/accepted",
-    },
-    {
-        title: "Sent",
-        icon: Send,
-        href: "/dashboard/notifications/sent",
-    },
-    {
-        title: "Request",
-        icon: MessageSquare,
-        href: "/dashboard/notifications/request",
-    },
-    {
-        title: "Trash",
-        icon: Trash2,
-        href: "/dashboard/notifications/trash",
-    },
-]
+import { useTranslation } from "react-i18next";
 
 export function NotificationSidebar() {
+    const { t } = useTranslation();
     const pathname = usePathname();
     const { open, toggleSidebar } = useSidebar();
 
+    const notificationItems = [
+        {
+            title: t("Received"),
+            icon: User,
+            href: "/dashboard/notifications/received",
+            count: 6,
+        },
+        {
+            title: t("Accepted"),
+            icon: Star,
+            href: "/dashboard/notifications/accepted",
+        },
+        {
+            title: t("Sent"),
+            icon: Send,
+            href: "/dashboard/notifications/sent",
+        },
+        {
+            title: t("Request"),
+            icon: MessageSquare,
+            href: "/dashboard/notifications/request",
+        },
+        {
+            title: t("Trash"),
+            icon: Trash2,
+            href: "/dashboard/notifications/trash",
+        },
+    ];
+
     return (
-        <div className={` ${open ? "w-64" : ""}`}>
+        <div className={`${open ? "w-64" : ""}`}>
             <Sidebar
-                className={`bg-white border-r border-gray-200 relative ${
-                    open ? "w-64" : ""
-                }`}
+                className={`bg-white border-r border-gray-200 relative ${open ? "w-64" : ""}`}
                 collapsible="icon"
             >
                 <SidebarHeader className="px-2 py-2">
-                    <div
-                        className={`flex items-center ${
-                            open ? "justify-end" : "justify-center"
-                        }`}
-                    >
+                    <div className={`flex items-center ${open ? "justify-end" : "justify-center"}`}>
                         <button
                             onClick={toggleSidebar}
                             className="p-2 hover:bg-gray-100 rounded-md transition"
                         >
-                            {open ? (
-                                <ChevronLeft className="w-5 h-5" />
-                            ) : (
-                                <ChevronRight className="w-5 h-5" />
-                            )}
+                            {open ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
                         </button>
                     </div>
                 </SidebarHeader>

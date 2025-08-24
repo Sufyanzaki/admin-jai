@@ -5,20 +5,22 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import { showError, showSuccess } from "@/shared-lib";
-import {updatePhoto} from "@/app/(client)/dashboard/settings/photo/_api/photoSettingsApi";
-import {useEffect} from "react";
-import {usePhotoSettings} from "@/app/(client)/dashboard/settings/photo/_hooks/usePhotoSettings";
-
-const photoPrivacySchema = z.object({
-    onlyMembersWithPhotoCanSee: z.boolean(),
-    onlyVipCanSee: z.boolean(),
-    blurForFreeMembers: z.boolean(),
-    onRequestOnly: z.boolean(),
-});
-
-export type PhotoPrivacyFormValues = z.infer<typeof photoPrivacySchema>;
+import { updatePhoto } from "@/app/(client)/dashboard/settings/photo/_api/photoSettingsApi";
+import { useEffect } from "react";
+import { usePhotoSettings } from "@/app/(client)/dashboard/settings/photo/_hooks/usePhotoSettings";
+import { useTranslation } from "react-i18next";
 
 export default function usePhotoPrivacyForm() {
+    const { t } = useTranslation();
+
+    const photoPrivacySchema = z.object({
+        onlyMembersWithPhotoCanSee: z.boolean(),
+        onlyVipCanSee: z.boolean(),
+        blurForFreeMembers: z.boolean(),
+        onRequestOnly: z.boolean(),
+    });
+
+    type PhotoPrivacyFormValues = z.infer<typeof photoPrivacySchema>;
 
     const { photoSettings, photoSettingsLoading } = usePhotoSettings();
 
@@ -43,17 +45,16 @@ export default function usePhotoPrivacyForm() {
     });
 
     useEffect(() => {
-        if(!photoSettings) return;
+        if (!photoSettings) return;
 
-        const {onlyMembersWithPhotoCanSee, onRequestOnly, onlyVipCanSee, blurForFreeMembers} = photoSettings;
+        const { onlyMembersWithPhotoCanSee, onRequestOnly, onlyVipCanSee, blurForFreeMembers } = photoSettings;
 
         reset({
             onlyMembersWithPhotoCanSee,
             onlyVipCanSee,
             blurForFreeMembers,
             onRequestOnly,
-        })
-
+        });
     }, [photoSettings, reset]);
 
     const { trigger, isMutating } = useSWRMutation(
@@ -63,11 +64,11 @@ export default function usePhotoPrivacyForm() {
         },
         {
             onError: (error: Error) => {
-                showError({ message: error.message || "Failed to update privacy settings" });
+                showError({ message: t(error.message || "Failed to update privacy settings") });
                 console.error("Privacy settings error:", error);
             },
             onSuccess: () => {
-                showSuccess("Privacy settings updated successfully!");
+                showSuccess(t("Privacy settings updated successfully!"));
             },
         }
     );
@@ -97,6 +98,6 @@ export default function usePhotoPrivacyForm() {
         toggleSetting,
         getValues,
         setValue,
-        isFetching:photoSettingsLoading
+        isFetching: photoSettingsLoading,
     };
 }

@@ -1,17 +1,18 @@
 "use client"
 
-import {Controller} from "react-hook-form";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
-import {Label} from "@/components/client/ux/label";
+import { Controller } from "react-hook-form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
+import { Label } from "@/components/client/ux/label";
 import LocationSearchInput from "@/components/client/location-search";
-import {Input} from "@/components/client/ux/input";
-import {Button} from "@/components/client/ux/button";
+import { Input } from "@/components/client/ux/input";
+import { Button } from "@/components/client/ux/button";
 import useRegisterForm from "@/app/(client)/auth/profile/_hooks/useRegisterForm";
-import {MemberLocation} from "@/app/shared-types/member";
-import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import { MemberLocation } from "@/app/shared-types/member";
+import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
+import { useTranslation } from "react-i18next";
 import type React from "react";
 
-export default function TabletForm(){
+export default function TabletForm() {
     const {
         errors,
         isLoading,
@@ -21,8 +22,10 @@ export default function TabletForm(){
         register,
         setValue,
         watch,
-        currentStep
+        currentStep,
     } = useRegisterForm();
+
+    const { t } = useTranslation();
 
     const city = watch("city");
     const state = watch("state");
@@ -51,7 +54,7 @@ export default function TabletForm(){
                             attributeKey="amLookingFor"
                             value={field.value || undefined}
                             onChange={field.onChange}
-                            placeholder="Select Partner's Gender"
+                            placeholder={t("Select partner's gender")}
                         />
                     )}
                 />
@@ -65,7 +68,7 @@ export default function TabletForm(){
             <div className="flex flex-row gap-4 w-full justify-center">
                 <div className="flex flex-row gap-2 items-end w-full">
                     <Label className="text-base font-normal text-[#374151]">
-                        Between
+                        {t("Between")}
                     </Label>
                     <div className="border-b border-[#E5E7EB] w-full">
                         <Controller
@@ -99,7 +102,7 @@ export default function TabletForm(){
 
                 <div className="flex flex-row gap-2 items-end w-full">
                     <Label className="text-base font-normal text-[#374151]">
-                        and
+                        {t("and")}
                     </Label>
                     <div className="border-b border-[#E5E7EB] w-full">
                         <Controller
@@ -136,19 +139,20 @@ export default function TabletForm(){
                 <LocationSearchInput
                     value={currentLocation}
                     onSelect={handleLocationSelect}
-                    placeholder="Search for your city, state, or country"
+                    placeholder={t("Search for your city, state, or country")}
                 />
-                {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
-
+                {(errors.state || errors.country) && (
+                    <p className="text-sm text-red-500">{t("Invalid address")}</p>
+                )}
             </div>
 
             <div className="flex flex-row gap-4">
                 <div className="w-1/2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t("Email")}</Label>
                     <Input
                         id="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder={t("Email")}
                         {...register("email")}
                     />
                     {errors.email && (
@@ -159,11 +163,11 @@ export default function TabletForm(){
                 </div>
 
                 <div className="w-1/2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">{t("Password")}</Label>
                     <Input
                         id="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder={t("Password")}
                         {...register("password")}
                     />
                     {errors.password && (
@@ -181,8 +185,8 @@ export default function TabletForm(){
                 className="w-full"
                 disabled={isLoading}
             >
-                {isLoading ? currentStep : "Register"}
+                {isLoading ? currentStep : t("Register")}
             </Button>
         </form>
-    )
+    );
 }

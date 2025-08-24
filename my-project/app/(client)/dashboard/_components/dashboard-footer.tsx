@@ -1,10 +1,12 @@
 "use client"
 import { useDashboardFooterSetting } from "@/app/admin/(dashboard)/settings/other-settings/_hooks/useDashboardFooterSetting";
-import { Headphones, MessageCircle, Phone } from "lucide-react"
-import Link from "next/link"
+import { Headphones, MessageCircle, Phone } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function DashboardFooter() {
+  const { t } = useTranslation();
   const { data: dashboardFooterData, isLoading: isLoadingDashboardFooterData } = useDashboardFooterSetting();
   const [sectionPageArray, setSectionPageArray] = useState<{ label: string; url: string }[]>([]);
 
@@ -29,12 +31,12 @@ export function DashboardFooter() {
 
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 gap-y-1 text-xs text-gray-600 font-medium">
               {isLoadingDashboardFooterData ? (
-                  <p>Loading...</p>
+                  <p>{t("Loading...")}</p>
               ) : (
                   sectionPageArray.map((link, idx) => (
                       <React.Fragment key={link.url}>
                         <Link href={link.url} className="hover:text-gray-900">
-                          {link.label}
+                          {t(link.label)}
                         </Link>
                         {idx !== sectionPageArray.length - 1 && (
                             <span className="text-gray-400 hidden sm:inline">•</span>
@@ -43,9 +45,9 @@ export function DashboardFooter() {
                   ))
               )}
 
-              <Link href={"/dashboard/agenda"} className="hover:text-gray-900">Agenda</Link>
+              <Link href={"/dashboard/agenda"} className="hover:text-gray-900">{t("Agenda")}</Link>
               <span className="text-gray-400 hidden sm:inline">•</span>
-              <Link href={"/membership"} className="hover:text-gray-900">Packages</Link>
+              <Link href={"/membership"} className="hover:text-gray-900">{t("Packages")}</Link>
               <span className="text-gray-400 hidden sm:inline">•</span>
             </div>
 
