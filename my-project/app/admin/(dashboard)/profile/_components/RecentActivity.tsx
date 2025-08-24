@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/admin/ui/card";
+import {Card, CardContent} from "@/components/admin/ui/card";
 import { useTranslation } from "react-i18next";
-import { Bell, FileText, Key, Lock, Shield, User } from "lucide-react";
-import { useActivity } from "@/app/admin/(dashboard)/profile/_hooks/useActivity";
+import {Bell, FileText, Key, Lock, Shield, User} from "lucide-react";
+import {useActivity} from "@/app/admin/(dashboard)/profile/_hooks/useActivity";
 import Preloader from "@/components/shared/Preloader";
 import { format } from "date-fns";
 import { LucideIcon } from "lucide-react";
@@ -42,7 +42,7 @@ export default function RecentActivity() {
     if (loading) {
         return (
             <div className="flex items-center flex-col justify-center h-64">
-                <Preloader />
+                <Preloader/>
                 <p className="text-sm">{t('Loading Activity')}</p>
             </div>
         );
@@ -87,7 +87,7 @@ export default function RecentActivity() {
                                     </div>
                                     <p className="text-sm text-muted-foreground">{item.message}</p>
                                 </div>
-                                <p className="text-sm text-muted-foreground">{item.description}</p>
+                                <p className="text-sm text-muted-foreground">{item.message}</p>
                             </div>
                         );
                     })}
