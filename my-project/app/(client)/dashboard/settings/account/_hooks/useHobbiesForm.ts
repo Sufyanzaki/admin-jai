@@ -49,7 +49,6 @@ export default function useHobbiesForm() {
     });
 
     const { hobbiesInterests, hobbiesInterestsLoading } = useHobbiesInterestsInfo(userIdProps);
-    console.log(hobbiesInterests);
 
     useEffect(() => {
         if (!hobbiesInterests) return;

@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/client/ux/button";
 import { Input } from "@/components/client/ux/input";
-import { ArrowLeft, MoreVertical, Send } from "lucide-react";
+import { ArrowLeft, MoreVertical, Send, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import ImageWrapper from "@/components/client/image-wrapper";
@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import { MessageListener } from "@/client-utils/MessageListener";
 import { Chat } from "@/app/(client)/dashboard/chat/_types/allChats";
+import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { useTranslation } from "react-i18next";
 
 type ChatBoxProps = {
@@ -27,7 +28,9 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
 
     const { sending, sendMessageAction } = useSendMessage({ chatID: selectedChat.id });
     const router = useRouter();
+    const [uploading, setUploading] = useState(false);
     const [messageInput, setMessageInput] = useState("");
+    const [attachments, setAttachments] = useState<string[]>([]);
 
     const { data: session } = useSession();
     const userId = session?.user?.id ? Number(session?.user?.id) : undefined;
@@ -41,7 +44,6 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
         );
     }
 
-
     const otherParticipants = selectedChat?.ChatUser?.filter(user => Number(user.userId) !== userId);
     const otherParticipant = otherParticipants[0]?.user;
 
@@ -49,9 +51,16 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
 
     const handleSendMessage = async () => {
         const trimmedMessage = messageInput.trim();
-        if (!trimmedMessage) return;
-        await sendMessageAction({ content: trimmedMessage });
+        if (!trimmedMessage && attachments.length === 0) return;
+
+        const finalContent = [trimmedMessage, ...attachments].filter(Boolean).join("\n");
+
+        await sendMessageAction({
+            content: finalContent
+        });
+
         setMessageInput("");
+        setAttachments([]);
     };
 
     return (
@@ -116,7 +125,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                 <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
                     {chat.length > 0 ? (
                         chat.map((message) => {
-                            const currentUser = message.senderId === userId;
+                            const currentUser = Number(message.sender.id) === Number(userId);
                             return (
                                 <div
                                     key={message.id}
@@ -126,7 +135,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-[5px] ${currentUser
                                             ? "bg-[#1975D2] text-white"
                                             : "text-gray-900 bg-[#F7F7F7]"
-                                            }`}
+                                        }`}
                                     >
                                         {message.content && (
                                             <p className="text-sm whitespace-pre-wrap">
@@ -151,7 +160,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
 
                                         <p
                                             className={`text-xs mt-1 ${currentUser ? "text-blue-100" : "text-gray-500"
-                                                }`}
+                                            }`}
                                         >
                                             {formatDistanceToNow(new Date(message.createdAt), {
                                                 addSuffix: true,
@@ -169,11 +178,47 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                 </div>
 
                 {/* Input */}
-                <div className="p-4 bg-white border-t border-gray-200">
+                <div className="p-4 bg-white border-t border-gray-200 space-y-2">
+                    {attachments.length > 0 && (
+                        <div className="flex gap-2 flex-wrap">
+                            {attachments.map((fileUrl, idx) => (
+                                <div key={idx} className="relative">
+                                    {fileUrl.match(/\.(jpg|jpeg|png|gif)$/i) ? (
+                                        <img
+                                            src={fileUrl}
+                                            alt={`attachment-${idx}`}
+                                            className="w-16 h-16 object-cover rounded"
+                                        />
+                                    ) : (
+                                        <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded text-xs text-gray-600">
+                                            {t("File")}
+                                        </div>
+                                    )}
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setAttachments((prev) => prev.filter((_, i) => i !== idx))
+                                        }
+                                        className="absolute top-0 right-0 bg-black/50 text-white rounded-full p-1"
+                                    >
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {uploading && <Preloader size="sm" />}
+
                     <div className="flex items-center w-full gap-3">
-                        <EmojiPopover onEmojiSelect={() => console.log("selected")} />
+                        <EmojiPopover onEmojiSelect={(emoji) => setMessageInput((prev) => prev + emoji)} />
                         <FileUploadClip
-                            onFileSelect={(file) => console.log("Selected file:", file)}
+                            onFileSelect={async (file) => {
+                                if (!file) return;
+                                setUploading(true);
+                                const res = await imageUpload(file);
+                                setAttachments((prev) => [...prev, res])
+                                setUploading(false);
+                            }}
                             accept="image/*"
                             multiple={false}
                         />
@@ -197,7 +242,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                             size="sm"
                             variant="theme"
                             className="h-9 w-9 p-0"
-                            disabled={!messageInput.trim() || sending}
+                            disabled={(!messageInput.trim() && attachments.length === 0) || sending}
                         >
                             <Send className="w-5 h-5" />
                         </Button>

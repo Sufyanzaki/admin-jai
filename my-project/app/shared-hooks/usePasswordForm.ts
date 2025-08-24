@@ -1,46 +1,56 @@
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
-import {showError} from "@/shared-lib";
-import {showSuccess} from "@/shared-lib";
-import {updatePassword} from "@/app/admin/(dashboard)/profile/_api/updatePassword";
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { showError, showSuccess } from "@/shared-lib";
+import { updatePassword } from "@/app/admin/(dashboard)/profile/_api/updatePassword";
 import useSWRMutation from "swr/mutation";
-
-const passwordSchema = z.object({
-    currentPassword: z.string()
-        .min(1, "Current password is required")
-        .min(6, "Password must be at least 6 characters"),
-    newPassword: z.string()
-        .min(1, "New password is required")
-        .min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string()
-        .min(1, "Please confirm your new password"),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-}).refine((data) => data.currentPassword !== data.newPassword, {
-    message: "New password must be different from current password",
-    path: ["newPassword"],
-});
-
-export type PasswordFormValues = z.infer<typeof passwordSchema>;
-
-type UpdatePasswordProps = {
-    currentPassword: string;
-    newPassword: string;
-}
+import { useTranslation } from "react-i18next";
 
 export default function usePasswordForm() {
+    const { t } = useTranslation();
+
+    const passwordSchema = z
+        .object({
+            currentPassword: z
+                .string()
+                .min(1, t("Current password is required"))
+                .min(6, t("Password must be at least 6 characters")),
+            newPassword: z
+                .string()
+                .min(1, t("New password is required"))
+                .min(6, t("Password must be at least 6 characters")),
+            confirmPassword: z
+                .string()
+                .min(1, t("Please confirm your new password")),
+        })
+        .refine((data) => data.newPassword === data.confirmPassword, {
+            message: t("Passwords don't match"),
+            path: ["confirmPassword"],
+        })
+        .refine((data) => data.currentPassword !== data.newPassword, {
+            message: t("New password must be different from current password"),
+            path: ["newPassword"],
+        });
+
+    type PasswordFormValues = z.infer<typeof passwordSchema>;
+
+    type UpdatePasswordProps = {
+        currentPassword: string;
+        newPassword: string;
+    };
+
     const { trigger, isMutating } = useSWRMutation(
-        'updatePassword',
+        "updatePassword",
         async (url: string, { arg }: { arg: UpdatePasswordProps }) => {
             return await updatePassword(arg);
         },
         {
             onError: (error: Error) => {
-                showError({message: error.message});
-                console.error('Password update error:', error);
-            }
+                showError({ message: error.message });
+                console.error("Password update error:", error);
+            },
         }
     );
 
@@ -52,15 +62,18 @@ export default function usePasswordForm() {
     } = useForm<PasswordFormValues>({
         resolver: zodResolver(passwordSchema),
         defaultValues: {
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: '',
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: "",
         },
-        mode: 'onBlur'
+        mode: "onBlur",
     });
 
-    const onSubmit = async (values: PasswordFormValues, callback?: (data: {status: number} | undefined) => void) => {
-        console.log('Password form submitted', values);
+    const onSubmit = async (
+        values: PasswordFormValues,
+        callback?: (data: { status: number } | undefined) => void
+    ) => {
+        console.log("Password form submitted", values);
 
         const result = await trigger({
             currentPassword: values.currentPassword,
@@ -68,7 +81,7 @@ export default function usePasswordForm() {
         });
 
         if (result?.status === 200) {
-            showSuccess('Password updated successfully!');
+            showSuccess(t("Password updated successfully!"));
             reset();
             callback?.(result);
         }

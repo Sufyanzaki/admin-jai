@@ -10,7 +10,7 @@ export default function DeleteAccount() {
 
     const { deleteMemberById, isDeleting } = useDeleteMember();
     const handleDeleteConfirm = () => {
-        deleteMemberById(String(session?.user?.id))
+        deleteMemberById(String(session?.user?.id)).finally()
     };
 
     return (
@@ -21,10 +21,10 @@ export default function DeleteAccount() {
                 </h2>
                 <p className="text-sm mb-8 leading-relaxed font-light">
                     Deleting account means you will no longer have access to it.
-                    Please be carefull.
+                    Please be careful.
                 </p>
                 <div className="flex flex-col gap-3">
-                    <label>Please Type "Delete My Account" below: </label>
+                    <label>Please Type &#34;Delete My Account&#34; below: </label>
                     <input
                         type="text"
                         value={deleteInput}

@@ -8,6 +8,7 @@ import { Grid3X3, List } from 'lucide-react';
 import ListCard from '../_components/list-card';
 import ProfileCard from '../_components/profile-card';
 import { useTranslation } from 'react-i18next';
+import PaginationSection from '../_components/pagination';
 
 export default function LikedProfiles() {
     const { t } = useTranslation();
@@ -85,17 +86,17 @@ export default function LikedProfiles() {
                         )}
 
                         <div className="flex justify-center items-center gap-2">
-                            {/* <PaginationSection
-              pagination={{
-                page: matches?.page,
-                limit: matches?.limit,
-                total: matches?.total,
-                totalPages: matches?.totalPages,
-              }}
-              onPageChange={(newPage) => {
-                console.log("Go to page:", newPage);
-              }}
-            /> */}
+                            <PaginationSection
+                              pagination={{
+                                page: 1,
+                                limit: 30,
+                                total: 30,
+                                totalPages: 1,
+                              }}
+                              onPageChange={(newPage) => {
+                                console.log("Go to page:", newPage);
+                              }}
+                            />
                         </div>
                     </main>
                 </div>

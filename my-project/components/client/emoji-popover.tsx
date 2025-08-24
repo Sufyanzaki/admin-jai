@@ -19,7 +19,7 @@ export function EmojiPopover({
           <Smile className="w-5 h-5 text-gray-500" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[100dvw] h-[200px] lg:w-[500px] lg:h-[450px] border border-app-gray/50 p-0">
+      <PopoverContent className="w-[100dvw] h-[200px] lg:w-[400px] lg:h-[450px] shadow-none border-none p-0">
         <EmojiPicker onEmojiSelect={onEmojiSelect} className="border-none [&_.emoji-picker-emoji]:text-[38px]">
           <EmojiPicker.Header>
             <EmojiPicker.Input placeholder="" className="pl-7 border border-app-border" />
@@ -27,7 +27,7 @@ export function EmojiPopover({
           <EmojiPicker.Group className="overflow-y-hidden">
             <EmojiPicker.List />
           </EmojiPicker.Group>
-        </EmojiPicker>{" "}
+        </EmojiPicker>
       </PopoverContent>
     </Popover>
   );

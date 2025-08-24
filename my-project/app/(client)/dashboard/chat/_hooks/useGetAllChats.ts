@@ -1,8 +1,7 @@
-import { useSWRFix } from "@/shared-lib";
-import { getAllChats } from "@/app/(client)/dashboard/chat/_api/conversation";
-import { ChatResponse } from "../_types/conversation";
-import { ChatsResponse } from "../_types/allChats";
-import { useTranslation } from "react-i18next";
+import {useSWRFix} from "@/shared-lib";
+import {getAllChats} from "@/app/(client)/dashboard/chat/_api/conversation";
+import {ChatsResponse} from "../_types/allChats";
+import {useTranslation} from "react-i18next";
 
 export const useGetAllChats = () => {
     const { t } = useTranslation();

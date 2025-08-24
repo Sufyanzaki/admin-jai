@@ -7,7 +7,7 @@ type ImageCardProps = {
   width?: number;
   height?: number;
   fill?: boolean;
-  className?: string; // extra Tailwind classes
+  className?: string;
 };
 
 export default function ImageCard({

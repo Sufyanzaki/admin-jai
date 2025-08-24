@@ -18,7 +18,16 @@ export default function NotificationsPage() {
 
   return (
     <div className="space-y-8">
-      {likesAccepted && likesAccepted.length <= 0 && <p>{t("No Notifications found")}</p>}
+      {likesAccepted && likesAccepted.length <= 0 && <div className="flex flex-col items-center justify-center py-12">
+        <div className="text-center max-w-md mx-auto">
+          <h3 className="text-xl font-medium text-gray-500 mb-2">
+            {t("No notifications found")}
+          </h3>
+          <p className="text-gray-400">
+            {t("Check back later for new notifications")}.
+          </p>
+        </div>
+      </div>}
       {likesAccepted && likesAccepted?.map((likeRec, index) => (
         <NotificationCard notification={likeRec} key={index} />
       ))}

@@ -30,7 +30,7 @@ export function SearchResults() {
 
   if (!data) return <p>{t("No data found")}</p>
 
-  const filteredResults = data.data.results
+  const filteredResults = online ? data.data.results.filter(profile => profile?.isOnline) : data.data.results;
 
   return (
     <div className="flex min-h-screen">

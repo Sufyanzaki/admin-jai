@@ -1,23 +1,26 @@
-'use client';
+"use client";
 
 import { useSWRFix } from "@/shared-lib";
-import {TermsSettingsDto} from "@/app/shared-types/tosTypes";
-import {getTermsConditionsSettings} from "@/app/shared-api/tosApi";
+import { TermsSettingsDto } from "@/app/shared-types/tosTypes";
+import { getTermsConditionsSettings } from "@/app/shared-api/tosApi";
+import { useTranslation } from "react-i18next";
 
 export const useTOS = () => {
+  const { t } = useTranslation();
+
   const { data, loading, error, mutate } = useSWRFix<TermsSettingsDto>({
-    key: 'terms-conditions-settings',
+    key: "terms-conditions-settings",
     fetcher: async () => {
       const response = await getTermsConditionsSettings();
-      if (!response) throw new Error('Failed to fetch terms and conditions settings');
+      if (!response) throw new Error(t("Failed to fetch terms and conditions settings"));
       return response;
-    }
+    },
   });
 
   return {
     tosSettings: data,
     tosLoading: loading,
     error,
-    mutate
+    mutate,
   };
 };

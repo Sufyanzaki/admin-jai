@@ -11,7 +11,7 @@ interface ProfileSidebarProps {
 }
 
 export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
-      const { t } = useTranslation();
+  const { t } = useTranslation();
   const basicInfo = [
     { label: "Username", value: user.username },
     { label: "Email", value: user.email },
@@ -60,7 +60,7 @@ export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
                     key={idx}
                     className="grid grid-cols-3 py-1 border-b border-gray-100"
                 >
-                  <span className="text-sm font-medium text-black">{item.label}</span>
+                  <span className="text-sm font-medium text-black">{t(item.label)}</span>
                   <span className="text-sm font-medium text-black text-center">:</span>
                   <span className="text-sm break-words">{item.value ?? "N/A"}</span>
                 </div>

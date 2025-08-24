@@ -14,8 +14,6 @@ export function HobbyInterest() {
         watch
     } = useHobbiesForm();
 
-    console.log(watch("sports"))
-
     return (
         <form onSubmit={handleSubmit((values) => onSubmit(values))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">

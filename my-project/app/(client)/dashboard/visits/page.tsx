@@ -8,6 +8,8 @@ import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
 import { LikeStatus, useLikesReceived } from "../notifications/_hooks/useLikesReceived";
 import { useTranslation } from "react-i18next";
+import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
+import Preloader from "@/components/shared/Preloader";
 
 export default function MatchesPage() {
     const { t } = useTranslation();
@@ -18,7 +20,11 @@ export default function MatchesPage() {
     );
 
     if (likesReceivedLoading) {
-        return <p>{t("Loading...")}</p>;
+        return(
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Preloader />
+            </div>
+        )
     }
 
     const filteredResults = online
@@ -67,23 +73,49 @@ export default function MatchesPage() {
                         </div>
                     </div>
 
-                    {viewMode === "grid" ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-                            {filteredResults?.map((profile) => (
-                                <ProfileCard key={profile.id} profile={profile?.sender} />
-                            ))}
-                        </div>
+                    {filteredResults && filteredResults.length > 0 ? (
+                        viewMode === "grid" ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
+                                {filteredResults.map((profile) => (
+                                    <ProfileCard key={profile.id} profile={profile?.sender} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="space-y-4 mb-8">
+                                {filteredResults.map((profile) => (
+                                    <ListCard key={profile.id} profile={profile?.sender} />
+                                ))}
+                            </div>
+                        )
                     ) : (
-                        <div className="space-y-4 mb-8">
-                            {filteredResults?.map((profile) => (
-                                <ListCard key={profile.id} profile={profile?.sender} />
-                            ))}
+                        <div className="flex flex-col items-center justify-center py-12">
+                            <div className="text-center max-w-md mx-auto">
+                                <h3 className="text-xl font-medium text-gray-500 mb-2">
+                                    {t("No matches found")}
+                                </h3>
+                                <p className="text-gray-400">
+                                    {online
+                                        ? t("There are no online matches at the moment. Try turning off the online filter.")
+                                        : t("Check back later for new matches.")}
+                                </p>
+                            </div>
                         </div>
                     )}
 
-                    <div className="flex justify-center items-center gap-2">
-                        {/* Pagination component can also have text wrapped in t() if needed */}
-                    </div>
+                    {filteredResults && filteredResults.length > 0 && <div className="flex justify-center items-center gap-2">
+                        <PaginationSection
+                            pagination={{
+                                page: 1,
+                                limit: 30,
+                                total: 30,
+                                totalPages: 1,
+                            }}
+                            onPageChange={(newPage) => {
+                                console.log("Go to page:", newPage);
+                            }}
+                        />
+                    </div>}
+
                 </main>
             </div>
         </div>

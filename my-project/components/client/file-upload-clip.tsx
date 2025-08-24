@@ -22,7 +22,7 @@ export default function FileUploadClip({
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0 && onFileSelect) {
-      onFileSelect(multiple ? files[0] : files[0]); // You can modify this if you want all files
+      onFileSelect(multiple ? files[0] : files[0]);
     }
   };
 

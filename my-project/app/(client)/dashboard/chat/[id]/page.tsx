@@ -1,22 +1,22 @@
 "use client";
-import { Button } from "@/components/client/ux/button";
-import { Input } from "@/components/client/ux/input";
-import { ArrowLeft, MoreVertical, Send, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import {Button} from "@/components/client/ux/button";
+import {Input} from "@/components/client/ux/input";
+import {ArrowLeft, MoreVertical, Send, X} from "lucide-react";
+import {useRouter} from "next/navigation";
+import React, {useState} from "react";
 import ImageWrapper from "@/components/client/image-wrapper";
-import { EmojiPopover } from "@/components/client/emoji-popover";
+import {EmojiPopover} from "@/components/client/emoji-popover";
 import FileUploadClip from "@/components/client/file-upload-clip";
-import { useChatDetails } from "@/app/(client)/dashboard/chat/_hooks/useChatDetails";
+import {useChatDetails} from "@/app/(client)/dashboard/chat/_hooks/useChatDetails";
 import Preloader from "@/components/shared/Preloader";
-import { useSendMessage } from "@/app/(client)/dashboard/chat/_hooks/useSendMessage";
-import { formatDistanceToNow } from "date-fns";
-import { useSession } from "next-auth/react";
-import { MessageListener } from "@/client-utils/MessageListener";
-import { imageUpload } from "@/admin-utils/utils/imageUpload";
-import { ProfileSidebar } from "../_components/profile-sidebar";
-import { ChatMessage, ChatMessagesResponse } from "../_types/message";
-import { useTranslation } from "react-i18next";
+import {useSendMessage} from "@/app/(client)/dashboard/chat/_hooks/useSendMessage";
+import {formatDistanceToNow} from "date-fns";
+import {useSession} from "next-auth/react";
+import {MessageListener} from "@/client-utils/MessageListener";
+import {imageUpload} from "@/admin-utils/utils/imageUpload";
+import {ProfileSidebar} from "../_components/profile-sidebar";
+import {ChatMessage, ChatMessagesResponse} from "../_types/message";
+import {useTranslation} from "react-i18next";
 
 export default function ChatBoxPage() {
     const { t } = useTranslation();

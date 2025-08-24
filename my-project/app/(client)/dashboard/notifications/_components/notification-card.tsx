@@ -24,44 +24,44 @@ export function NotificationCard({ notification }: NotificationCardProps) {
 
   const handleAccept = () => {
     const action = "ACCEPTED";
-    trigger(action, Number(notification?.id)).finally();
+    trigger(action, Number(notification.id)).finally();
   };
 
   const handleDecline = () => {
     const action = "DECLINED";
-    trigger(action, Number(notification?.id)).finally();
+    trigger(action, Number(notification.id)).finally();
   };
 
   const handleViewProfile = () => {
-    router.push(`/dashboard/search/${notification?.sender?.id}`)
+    router.push(`/dashboard/search/${notification.receiver.id}`)
   }
 
   const handleReport = () => {
-    blockUser(Number(notification?.sender && notification?.sender.id)).finally();
+    blockUser(Number(notification.receiver && notification.receiver.id)).finally();
   };
-
-  console.log(notification)
 
   return (
     <div className="w-full rounded-[5px] bg-white border border-gray-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
         <div className="">
-          {notification?.sender && notification.status !== "ACCEPTED" && notification.sender?.id !== session?.user?.id ?
-            <h3 className="font-medium text-sm sm:text-base">
-
-              {t(" You received a likw from")} {notification.sender.firstName}
-              {notification.sender.lastName}
-            </h3> : notification.receiver ? <h3 className="font-medium text-sm sm:text-base">
-              {t(" You sent a like to")}
-              {notification.sender.firstName}
-              {notification.sender.lastName}
-            </h3> : notification.sender && notification.status === "ACCEPTED" &&
-            <h3 className="font-medium text-sm sm:text-base">
-              {t(" You received a request fromYou accepted a like from")}
-              {notification.sender.firstName}
-              {notification.sender.lastName}
-            </h3>}
-
+          {notification.receiver ? (
+              notification.status !== "ACCEPTED" && notification.receiver.id !== session?.user?.id ? (
+                  <h3 className="font-medium text-sm sm:text-base">
+                    {t("You received a like from")} {notification.receiver.firstName}{" "}
+                    {notification.receiver.lastName}
+                  </h3>
+              ) : notification.status === "ACCEPTED" ? (
+                  <h3 className="font-medium text-sm sm:text-base">
+                    {t("You received a request from")}{" "}
+                    {notification.receiver.firstName} {notification.receiver.lastName}
+                  </h3>
+              ) : (
+                  <h3 className="font-medium text-sm sm:text-base">
+                    {t("You sent a like to")} {notification.receiver.firstName}{" "}
+                    {notification.receiver.lastName}
+                  </h3>
+              )
+          ) : null}
         </div>
 
         <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -76,16 +76,13 @@ export function NotificationCard({ notification }: NotificationCardProps) {
       <div className="space-y-4 px-4 py-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-shrink-0 self-center sm:self-start">
-            {notification.sender ? <ImageWrapper
-              src={notification.sender.image || "/placeholder.svg"}
-              alt={notification.sender.firstName}
-              className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
-            /> : notification.receiver && <ImageWrapper
-              src={notification.receiver?.image || "/placeholder.svg"}
-              alt={notification.receiver?.firstName}
-              className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
-            />}
-
+            {notification.receiver && (
+                <ImageWrapper
+                    src={notification.receiver.image || "/placeholder.svg"}
+                    alt={notification.receiver.firstName}
+                    className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
+                />
+            )}
           </div>
 
           <div className="flex-1 space-y-4">
@@ -93,20 +90,20 @@ export function NotificationCard({ notification }: NotificationCardProps) {
               <div className="space-y-2 sm:max-w-[70%]">
                 <div className="flex items-center gap-2">
                   <h4 className="text-lg sm:text-xl font-semibold">
-                    {notification.sender.firstName} {" "} {notification.sender.lastName}
+                    {notification.receiver.firstName} {" "} {notification.receiver.lastName}
                   </h4>
-                  {(notification.sender.isPremium || notification.receiver.isPremium) && (
+                  {(notification.receiver.isPremium || notification.receiver.isPremium) && (
                     <ShieldCheck className="w-4 h-4 text-app-blue" />
                   )}
                 </div>
-                <div className={`flex w-3 h-3 ${(notification.sender.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
+                <div className={`flex w-3 h-3 ${(notification.receiver.isOnline) ? "bg-app-green" : "bg-app-red"} rounded-[5px] border-2 border-white`} />
                 <p className="text-xs sm:text-sm text-gray-700 font-medium">
                   {[
-                    { label: "Age", value: `${notification.sender.age} Years` },
-                    { label: "DOB", value: notification.sender.dob.split("T")[0] },
-                    { label: "Religion", value: notification.sender.religion },
-                    { label: "Status", value: notification.sender.relationshipStatus },
-                    { label: "Gender", value: notification.sender.gender },
+                    { label: "Age", value: `${notification.receiver.age} Years` },
+                    { label: "DOB", value: notification.receiver.dob.split("T")[0] },
+                    { label: "Religion", value: notification.receiver.religion },
+                    { label: "Status", value: notification.receiver.relationshipStatus },
+                    { label: "Gender", value: notification.receiver.gender },
                   ].map((item, index, arr) => (
                     <span key={index}>
                       {item.label}: {item.value}
@@ -117,10 +114,10 @@ export function NotificationCard({ notification }: NotificationCardProps) {
 
                 <div className="flex items-start gap-2">
                   <Mail className="w-4 h-4 text-app-blue mt-0.5 flex-shrink-0" />
-                  <p className="text-sm leading-relaxed">{notification.sender.email}</p>
+                  <p className="text-sm leading-relaxed">{notification.receiver.email}</p>
                 </div>
 
-                <p className="text-sm leading-relaxed">{notification.sender.shortDescription}</p>
+                <p className="text-sm leading-relaxed">{notification.receiver.shortDescription}</p>
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
                   <Button
@@ -141,7 +138,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                   </Button>
                 </div>
               </div>
-              {notification.sender && notification.status === "PENDING" && notification.sender.id !== session?.user?.id ?
+              {notification.receiver && notification.status === "PENDING" && notification.receiver.id !== session?.user?.id ?
                 <div className="sm:text-right space-y-2">
                   <p className="text-xs">Someone invited you to Connect</p>
                   <div className="flex gap-2 flex-wrap">
@@ -162,7 +159,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                     </Button>
                   </div>
                 </div>
-                : notification.sender && notification.status === "DECLINED" &&
+                : notification.receiver && notification.status === "DECLINED" &&
                 <div className="sm:text-right space-y-2">
                   <p className="text-xs">She invited you to Connect</p>
                   <div className="flex gap-2 flex-wrap">

@@ -11,7 +11,7 @@ export async function getAllImageRequest(
     const query = new URLSearchParams();
 
     if (params.type) query.append("type", params.type);
-    // if (params.status) query.append("status", params.status);
+    if (params.status) query.append("status", params.status);
 
     const queryString = query.toString();
     if (queryString) url += `?${queryString}`;

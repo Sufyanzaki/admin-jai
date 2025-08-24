@@ -1,13 +1,18 @@
-import {useSWRFix} from "@/shared-lib";
-import {getAllPackages, GetPackageDto} from "../shared-api/packageApi";
+"use client";
+
+import { useSWRFix } from "@/shared-lib";
+import { getAllPackages, GetPackageDto } from "../shared-api/packageApi";
+import { useTranslation } from "react-i18next";
 
 export function usePackages() {
+  const { t } = useTranslation();
+
   const { data, loading, error, mutate } = useSWRFix<GetPackageDto>({
     key: "all-packages",
     fetcher: async () => {
       const response = await getAllPackages();
       if (!response) {
-        throw new Error("Failed to fetch packages");
+        throw new Error(t("Failed to fetch packages"));
       }
       return response;
     },

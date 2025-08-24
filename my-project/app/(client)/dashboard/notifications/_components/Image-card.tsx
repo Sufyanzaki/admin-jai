@@ -40,14 +40,12 @@ export function ImageCard({ notification }: NotificationCardProps) {
         blockUser(Number(notification?.sender && notification?.sender.id)).finally();
     };
 
-    console.log(notification)
-
     return (
         <div className="w-full rounded-[5px] bg-white border border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 px-4 py-3 gap-2">
                 <div className="">
                     <h3 className="font-medium text-sm sm:text-base">
-                        {t(" You received a request from")}
+                        {t(" You received a request from")} {" "}
                         {notification.sender.firstName}
                         {notification.sender.lastName}
                     </h3>
@@ -70,8 +68,8 @@ export function ImageCard({ notification }: NotificationCardProps) {
                             alt={notification.sender.firstName}
                             className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
                         /> : notification.receiver && <ImageWrapper
-                            src={notification.receiver?.image || "/placeholder.svg"}
-                            alt={notification.receiver?.firstName}
+                            src={notification.receiver.image || "/placeholder.svg"}
+                            alt={notification.receiver.firstName}
                             className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-[5px] object-cover"
                         />}
 

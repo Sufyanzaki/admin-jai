@@ -10,15 +10,15 @@ export enum ImageRequestStatus {
 }
 
 export enum ImageRequestType {
-  SENT = "sent",
-  ACCEPTED = "received",
+  ACCEPTED = "accepted",
+  RECEIVED = "received",
 }
 
 export const useAllImageRequests = (type?: ImageRequestType, status?: ImageRequestStatus) => {
   const { t } = useTranslation();
 
   const { data, loading, error, mutate } = useSWRFix<ApiResponseDto>({
-    key: "image-requests",
+    key: `image-requests-${type}-${status}`,
     fetcher: async () => {
       const response = await getAllImageRequest({
         ...(type && { type }),

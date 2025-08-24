@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { useLanguages } from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 export function SidebarList() {
   const { i18n } = useTranslation();
@@ -38,12 +39,12 @@ export function SidebarList() {
               ["Terms and Services", "/privacy-policy"],
             ].map(([label, link]) => (
               <li key={label}>
-                <a
+                <Link
                   href={link}
                   className="text-lg font-medium text-black hover:text-app-pink transition-colors"
                 >
                   {label}
-                </a>
+                </Link>
               </li>
             ))}
 
