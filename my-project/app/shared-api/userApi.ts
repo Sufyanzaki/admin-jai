@@ -15,6 +15,15 @@ export async function postUser(payload: UserPayload): Promise<MemberProfile> {
   return r.response;
 }
 
+export async function posClientUser(payload: UserPayload): Promise<MemberProfile> {
+  const r = await postRequest<UserPayload>({
+    url: "auth/register",
+    data: payload,
+    useAuth: true,
+  });
+  return r.response;
+}
+
 export async function patchUser(userId: string, payload: UserPayload): Promise<MemberProfile> {
   const r = await patchRequest<UserPayload>({
     url: `users/${userId}`,

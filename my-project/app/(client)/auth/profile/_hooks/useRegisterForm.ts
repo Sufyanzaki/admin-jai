@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { showError, showSuccess } from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
-import { postUser } from "@/app/shared-api/userApi";
+import {posClientUser, postUser} from "@/app/shared-api/userApi";
 import { postUserLocation } from "@/app/shared-api/livingApi";
 import { postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
 import { postLoginForm } from "@/app/shared-api/auth";
@@ -37,7 +37,7 @@ export default function useRegisterForm() {
             const { email, password, ageTo, ageFrom, lookingFor, ...location } = arg;
 
             setCurrentStep(t("Creating user"));
-            const user = await postUser({ email, password });
+            const user = await posClientUser({ email, password });
 
             setCurrentStep(t("Saving location & preferences"));
             await Promise.all([
