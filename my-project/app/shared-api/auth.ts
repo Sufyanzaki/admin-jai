@@ -40,7 +40,7 @@ export async function postForgetPassword(props: {email: string}): Promise<undefi
 
 export async function postResetPassword(props: ResetProps, token: string): Promise<undefined> {
     const r = await postRequest<ResetProps>({
-        url: `reset-password?token=${token}`,
+        url: `auth/reset-password?token=${token}`,
         data:props,
         useAuth: false
     });
