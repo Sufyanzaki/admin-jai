@@ -4,35 +4,47 @@ import { Button } from "@/components/client/ux/button";
 import { Label } from "@/components/client/ux/label";
 import { Switch } from "@/components/client/ux/switch";
 import { Grid3X3, List } from "lucide-react";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileCard from "../../_components/profile-card";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { paramsToSearchForm } from "../../_api/getSearch";
 import { useSearch } from "../../_hooks/useSearch";
 import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
 import { useTranslation } from "react-i18next";
+import Preloader from "@/components/shared/Preloader";
 
 export function SearchResults() {
   const { t } = useTranslation();
-  const [online, setOnline] = useState(true);
+  const [online, setOnline] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [pageLoading, setPageLoading] = useState(false);
+
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const formValues = paramsToSearchForm(searchParams);
 
-  const { data, error, isLoading, mutate } = useSearch(formValues)
+  const { data, error, isLoading, mutate } = useSearch(formValues);
 
   useEffect(() => {
-    if (formValues) mutate().finally();
-  }, [searchParams.toString(), mutate]);
+    setPageLoading(true);
+    mutate().finally(() => setPageLoading(false));
+  }, [searchParams.toString()]);
 
   if (isLoading) return <p>Loading...</p>;
-
   if (error) return <p>{t("Error Searching...")}</p>;
+  if (!data) return <p>{t("No data found")}</p>;
 
-  if (!data) return <p>{t("No data found")}</p>
+  const filteredResults = online
+    ? data.data.results.filter((profile) => profile?.isOnline)
+    : data.data.results;
 
-  const filteredResults = online ? data.data.results.filter(profile => profile?.isOnline) : data.data.results;
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -76,19 +88,30 @@ export function SearchResults() {
             </div>
           </div>
 
-          {viewMode === "grid" ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
-              {filteredResults.map((profile) => (
-                <ProfileCard key={profile.id} profile={profile} />
-              ))}
+          {pageLoading ? (
+            <div className="flex justify-center items-center py-4">
+              <Preloader size="sm" />
+              <span className="ml-2 text-sm text-muted-foreground">
+                {t("Loading page...")}
+              </span>
             </div>
-          ) : (
-            <div className="space-y-4 mb-8">
-              {filteredResults.map((profile) => (
-                <ListCard key={profile.id} profile={profile} />
-              ))}
-            </div>
-          )}
+          ) : <>
+            {viewMode === "grid" ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
+                  {filteredResults.map((profile) => (
+                      <ProfileCard key={profile.id} profile={profile} />
+                  ))}
+                </div>
+            ) : (
+                <div className="space-y-4 mb-8">
+                  {filteredResults.map((profile) => (
+                      <ListCard key={profile.id} profile={profile} />
+                  ))}
+                </div>
+            )}
+          </>}
+
+          {/* Activate Pagination */}
           <PaginationSection
             pagination={{
               page: data.data.page,
@@ -96,9 +119,7 @@ export function SearchResults() {
               total: data.data.total,
               totalPages: data.data.totalPages,
             }}
-            onPageChange={(newPage) => {
-              console.log("Go to page:", newPage);
-            }}
+            onPageChange={handlePageChange}
           />
         </main>
       </div>

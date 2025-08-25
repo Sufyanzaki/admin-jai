@@ -30,8 +30,14 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (chatId && allChats) {
-      const chat = allChats?.find((c) => String(c.id) === chatId);
-      if (chat) setSelectedChat(chat);
+      const chat = allChats.find((c) => String(c.id) === chatId);
+      if (chat) {
+        setSelectedChat(chat);
+
+        const params = new URLSearchParams(window.location.search);
+        params.delete("chatId");
+        router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+      }
     }
   }, [chatId, allChats]);
 
