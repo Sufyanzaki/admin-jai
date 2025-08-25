@@ -25,8 +25,8 @@ export const useClientExpectationsForm = () => {
             .min(18, t("Min age is 18"))
             .max(100, t("Max age is 100")),
         country: z.string().min(1, t("Country is required")),
-        city: z.string().optional(),
-        state: z.string().min(1, t("State is required")),
+        city: z.string().min(1, t("City is required")),
+        state: z.string().optional(),
         relationshipStatus: z.string().min(1, t("Relationship status is required")),
         education: z.string().min(1, t("Education is required")),
         religion: z.string().min(1, t("Religion is required")),

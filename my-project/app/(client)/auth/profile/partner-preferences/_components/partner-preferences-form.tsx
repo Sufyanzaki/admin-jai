@@ -19,8 +19,9 @@ export default function PartnerPreferencesForm() {
     const { t } = useTranslation();
     const { registrationSettings } = useRegistration();
 
-    const { control, handleSubmit, errors, isLoading, setValue, onSubmit, watch } =
-        usePartnerForm();
+    const { control, handleSubmit, errors, isLoading, setValue, onSubmit, watch } = usePartnerForm();
+
+    console.log(errors)
 
     const ageFrom = watch("ageFrom");
     const ageTo = watch("ageTo");
@@ -35,7 +36,7 @@ export default function PartnerPreferencesForm() {
     const currentLocation = city || state || country ? { city, state, country } : null;
 
     const handleLocationSelect = (location: Partial<MemberLocation>) => {
-        setValue("city", location.city);
+        location.city && setValue("city", location.city);
         location.state && setValue("state", location.state);
         location.country && setValue("country", location.country);
     };

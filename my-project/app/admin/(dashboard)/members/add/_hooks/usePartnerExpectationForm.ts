@@ -30,8 +30,8 @@ export default function usePartnerExpectationForm() {
     goingOut: z.string().min(1, t("Required")),
     ageFrom: z.coerce.number().min(0, t("From age is required")),
     ageTo: z.coerce.number().min(0, t("To age is required")),
-    city: z.string().optional(),
-    state: z.string().min(1, t("State is Required")),
+    city: z.string().min(1, t("City is required")),
+    state: z.string().optional(),
     country: z.string().min(1, t("Country is Required")),
   });
 

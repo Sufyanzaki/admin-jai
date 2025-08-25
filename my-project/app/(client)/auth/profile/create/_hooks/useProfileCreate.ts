@@ -55,8 +55,8 @@ export default function useProfileCreateForm() {
         origin: z.string().min(1, t("Country of origin is required")),
         lookingFor: z.string().min(1, t("Looking for field is required")),
         country: z.string().min(1, t("Country is required")),
-        state: z.string().min(1, t("State is required")),
-        city: z.string().optional(),
+        city: z.string().min(1, t("City is required")),
+        state: z.string().optional(),
     });
 
     const { trigger, isMutating } = useSWRMutation(

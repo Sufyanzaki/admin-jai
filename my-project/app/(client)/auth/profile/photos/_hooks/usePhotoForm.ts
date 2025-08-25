@@ -83,9 +83,6 @@ export default function usePhotoForm() {
             onError: (error: Error) => {
                 showError({ message: error.message || t("Failed to update photos") });
             },
-            onSuccess: () => {
-                showSuccess(t("Photos updated successfully!"));
-            },
             revalidate: false,
         }
     );

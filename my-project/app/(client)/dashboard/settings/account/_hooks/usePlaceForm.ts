@@ -19,8 +19,8 @@ export default function usePlaceForm() {
     const userId = session?.user?.id ? String(session.user.id) : undefined;
 
     const placeSchema = z.object({
-        city: z.string().optional(),
-        state: z.string().min(1, t("State is required")),
+        city: z.string().min(1, t("City is required")),
+        state: z.string().optional(),
         country: z.string().min(1, t("Country is required")),
     });
 

@@ -5,7 +5,6 @@ interface ProfilePageProps {
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-  const { id } = await params
-  console.log(id)
+  console.log(params)
   return <ProfileDetail />
 }

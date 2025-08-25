@@ -1,18 +1,19 @@
 "use client";
 
 import type React from "react";
-import { Button } from "@/components/client/ux/button";
-import { Input } from "@/components/client/ux/input";
-import { Label } from "@/components/client/ux/label";
-import { ArrowRight } from "lucide-react";
+import {useEffect} from "react";
+import {Button} from "@/components/client/ux/button";
+import {Input} from "@/components/client/ux/input";
+import {Label} from "@/components/client/ux/label";
+import {ArrowRight} from "lucide-react";
 import LocationSearchInput from "@/components/client/location-search";
 import useProfileCreateForm from "../_hooks/useProfileCreate";
-import { MemberLocation } from "@/app/shared-types/member";
-import { Controller } from "react-hook-form";
+import {MemberLocation} from "@/app/shared-types/member";
+import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
-import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
-import { useRegistration } from "@/app/shared-hooks/useRegistration";
-import { useTranslation } from "react-i18next";
+import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
+import {useRegistration} from "@/app/shared-hooks/useRegistration";
+import {useTranslation} from "react-i18next";
 
 export function ProfileCreationForm() {
   const { t } = useTranslation();
@@ -30,9 +31,13 @@ export function ProfileCreationForm() {
     isFetching,
   } = useProfileCreateForm();
 
+  console.log(errors)
+
   const city = watch("city");
   const state = watch("state");
   const country = watch("country");
+
+  const dob = watch("dob");
 
   const currentLocation =
       city || state || country ? { city, state, country } : null;
@@ -46,6 +51,21 @@ export function ProfileCreationForm() {
     setValue("state", state);
     setValue("country", country);
   };
+
+  useEffect(() => {
+    if (dob) {
+      const birthDate = new Date(dob);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      setValue("age", age);
+    } else {
+      setValue("age", 0);
+    }
+  }, [dob, setValue]);
 
   if (isFetching)
     return (

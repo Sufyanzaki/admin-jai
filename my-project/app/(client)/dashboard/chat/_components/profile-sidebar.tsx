@@ -30,7 +30,7 @@ export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
   return (
       <div className="w-screen md:w-80 bg-white border-l border-gray-200 flex flex-col">
         <div className="px-3 border-b border-gray-200 min-h-[65px] flex justify-between items-center gap-3">
-          <h2 className="text-base font-medium">{t("No data found")}</h2>
+          <h2 className="text-base font-medium">{t("User Details")}</h2>
           <Button
               variant="ghost"
               size="sm"
@@ -54,17 +54,16 @@ export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
             <h3 className="text-base font-semibold mb-1">
               {user.firstName} {user.lastName}
             </h3>
-            <p className="text-sm font-medium text-gray-500">{user.shortDescription}</p>
+            <p className="text-sm font-medium text-gray-500 line-clamp-2">{user.shortDescription}</p>
           </div>
 
           <div className="space-y-2 mb-6">
             {basicInfo.map((item, idx) => (
                 <div
                     key={idx}
-                    className="grid grid-cols-3 py-1 border-b border-gray-100"
+                    className="grid grid-cols-2 py-1 border-b border-gray-100"
                 >
-                  <span className="text-sm font-medium text-black">{t(item.label)}</span>
-                  <span className="text-sm font-medium text-black text-center">:</span>
+                  <span className="text-sm font-medium text-black">{t(item.label)} :</span>
                   <span className="text-sm break-words">{item.value ?? "N/A"}</span>
                 </div>
             ))}

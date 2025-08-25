@@ -15,9 +15,9 @@ import { useImageRequest } from "@/app/(client)/dashboard/_hooks/useImageRequest
 import { useTranslation } from "react-i18next";
 
 export default function ProfileCard({
-    profile,
-    blocked = false,
-}: {
+                                        profile,
+                                        blocked = false,
+                                    }: {
     profile: MemberProfile;
     blocked?: boolean;
 }) {
@@ -29,19 +29,28 @@ export default function ProfileCard({
     const { trigger } = useUnblockUser();
     const { requestTrigger } = useImageRequest();
 
-    const hasProfilePicture = !!response?.user.image;
-    const isFreeMember = !response?.user.isPremium;
+    const currentUser = response?.user;
+    const hasProfilePicture = !!currentUser?.image;
+    const isFreeMember = !currentUser?.isPremium;
 
-    const onlyMembersWithPhotoCanSee =
-        profile?.PhotoSetting && profile?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
-    const blurForFreeMembers =
-        profile?.PhotoSetting && profile?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
-    const onlyVipCanSee =
-        profile?.PhotoSetting && profile?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
-    const onRequestOnly = profile?.PhotoSetting && profile?.PhotoSetting[0]?.onRequestOnly;
+    const photoSetting = profile.PhotoSetting[0] || {
+        onlyMembersWithPhotoCanSee: false,
+        blurForFreeMembers: false,
+        onlyVipCanSee: false,
+        onRequestOnly: false,
+    };
 
-    const blur =
-        onlyVipCanSee || onRequestOnly || blurForFreeMembers || onlyMembersWithPhotoCanSee;
+    const onlyMembersWithPhotoCanSee = photoSetting.onlyMembersWithPhotoCanSee;
+    const blurForFreeMembers = photoSetting.blurForFreeMembers;
+    const onlyVipCanSee = photoSetting.onlyVipCanSee;
+    const onRequestOnly = photoSetting.onRequestOnly;
+
+    // Determine if we should blur based on current user's status and target's settings
+    const shouldBlur =
+        (onlyMembersWithPhotoCanSee && !hasProfilePicture) ||
+        (blurForFreeMembers && isFreeMember) ||
+        (onlyVipCanSee && isFreeMember) ||
+        onRequestOnly;
 
     const handleImageRequest = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -50,8 +59,10 @@ export default function ProfileCard({
     };
 
     const renderImageOverlay = () => {
+        if (!shouldBlur) return null;
+
         switch (true) {
-            case blurForFreeMembers:
+            case (blurForFreeMembers && isFreeMember):
                 return (
                     <div
                         className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-xs text-center font-semibold"
@@ -64,7 +75,7 @@ export default function ProfileCard({
                     </div>
                 );
 
-            case onlyMembersWithPhotoCanSee:
+            case (onlyMembersWithPhotoCanSee && !hasProfilePicture):
                 return (
                     <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
                         <Lock />
@@ -84,7 +95,7 @@ export default function ProfileCard({
                     </div>
                 );
 
-            case onlyVipCanSee:
+            case (onlyVipCanSee && isFreeMember):
                 return (
                     <div className="absolute inset-0 bg-black/40 flex flex-col text-center items-center justify-center text-white text-sm font-semibold">
                         <Lock />
@@ -110,7 +121,7 @@ export default function ProfileCard({
                         alt={profile.firstName}
                         className={cn(
                             "w-full h-full object-cover transition-opacity duration-500",
-                            blur && "blur-xs",
+                            shouldBlur && "blur-xs",
                             loaded ? "opacity-100 z-0" : "opacity-0 z-0"
                         )}
                         onLoad={() => setIsLoaded(true)}
@@ -120,7 +131,7 @@ export default function ProfileCard({
                         src="/dashboardLogo.png"
                         alt={t("Loading placeholder")}
                         className={`absolute inset-0 w-36 mx-auto py-18 object-contain transition-opacity duration-300 ${loaded ? "opacity-0 z-0" : "opacity-100 z-10"
-                            }`}
+                        }`}
                     />
 
                     {renderImageOverlay()}
@@ -136,7 +147,7 @@ export default function ProfileCard({
                 </div>
                 <div
                     className={`absolute top-2 right-2 w-3 h-3 ${profile.isOnline ? "bg-app-green" : "bg-app-red"
-                        } rounded-[5px] border-2 border-white`}
+                    } rounded-[5px] border-2 border-white`}
                 ></div>
             </Link>
 

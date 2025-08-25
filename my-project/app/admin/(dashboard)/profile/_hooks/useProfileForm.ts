@@ -28,8 +28,8 @@ export default function useProfileForm() {
         email: z.string()
             .min(1, t("Email is required"))
             .email(t("Please enter a valid email address")),
-        city: z.string().optional(),
-        state: z.string().min(1, t("State is Required")),
+        city: z.string().min(1, t("City is required")),
+        state: z.string().optional(),
         country: z.string().min(1, t("Country is Required")),
         image: z.any().optional(),
     });

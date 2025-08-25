@@ -40,8 +40,8 @@ export default function usePartnerForm() {
         searchWithIn: z.number().optional(),
         length: z.string().min(1, t("Height is required")),
         country: z.string().min(1, t("Country is required")),
-        city: z.string().optional(),
-        state: z.string().min(1, t("State is required")),
+        city: z.string().min(1, t("City is required")),
+        state: z.string().optional(),
     });
 
     type PartnerFormValues = z.infer<typeof partnerFormSchema>;
@@ -81,40 +81,22 @@ export default function usePartnerForm() {
     useEffect(() => {
         if (!expectations) return;
 
-        const {
-            lookingFor,
-            origin,
-            relationshipStatus,
-            religion,
-            ageTo,
-            ageFrom,
-            length,
-            weight,
-            education,
-            smoke,
-            drinking,
-            goingOut,
-            city,
-            state,
-            country,
-        } = expectations;
-
         reset({
-            origin,
-            lookingFor,
-            relationshipStatus,
-            religion,
-            ageFrom,
-            ageTo,
-            weight,
-            education,
-            smoke,
-            drinking,
-            goingOut,
-            length,
-            country,
-            city,
-            state,
+            origin: expectations.origin ?? "",
+            lookingFor: expectations.lookingFor ?? "",
+            relationshipStatus: expectations.relationshipStatus ?? "",
+            religion: expectations.religion ?? "",
+            ageFrom: expectations.ageFrom ?? 25,
+            ageTo: expectations.ageTo ?? 35,
+            weight: expectations.weight ?? "",
+            education: expectations.education ?? "",
+            smoke: expectations.smoke ?? "",
+            drinking: expectations.drinking ?? "",
+            goingOut: expectations.goingOut ?? "",
+            length: expectations.length ?? "",
+            country: expectations.country ?? "",
+            city: expectations.city ?? "",
+            state: expectations.state ?? "",
         });
     }, [expectations, reset]);
 

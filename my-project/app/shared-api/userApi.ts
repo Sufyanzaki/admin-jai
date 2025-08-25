@@ -55,3 +55,12 @@ export async function newUsers(): Promise<{ten: MemberProfile[]}> {
     useAuth: true,
   });
 }
+
+export async function visitProfile(targetId: string): Promise<undefined> {
+  const r = await postRequest({
+    url: `users/profile-visit`,
+    data: {targetId},
+    useAuth: true,
+  });
+  return r.response
+}

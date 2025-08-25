@@ -19,8 +19,8 @@ export default function useLivingLocationForm() {
 
   const livingLocationSchema = z.object({
     id: z.string().optional(),
-    city: z.string().optional(),
-    state: z.string().min(1, t("State is Required")),
+    city: z.string().min(1, t("City is required")),
+    state: z.string().optional(),
     country: z.string().min(1, t("Country is Required")),
   });
 

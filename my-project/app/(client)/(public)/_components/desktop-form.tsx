@@ -31,11 +31,11 @@ export default function DesktopForm() {
     const state = watch("state");
     const country = watch("country");
 
-    const currentLocation =
-        city || state || country ? { city, state, country } : null;
+    const currentLocation = city || state || country ? { city, state, country } : null;
 
     const handleLocationSelect = (location: Partial<MemberLocation>) => {
-        setValue("city", location.city);
+
+        location.city && setValue("city", location.city);
         location.state && setValue("state", location.state);
         location.country && setValue("country", location.country);
     };

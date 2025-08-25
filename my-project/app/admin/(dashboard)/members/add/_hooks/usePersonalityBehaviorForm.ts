@@ -152,7 +152,6 @@ export default function usePersonalityBehaviorForm() {
   const onSubmit = async (values: PersonalityBehaviorFormValues, callback?: () => void) => {
     const result = await trigger(values);
       if (result) {
-        showSuccess(t("Personality & Behavior updated successfully!"));
         callback?.();
         updateUserTrackingId({ personalityAndBehavior: true });
       }
