@@ -1,23 +1,26 @@
+"use client";
+
 import {Button} from "@/components/client/ux/button";
 import {Controller} from "react-hook-form";
 import useHobbiesForm from "@/app/(client)/dashboard/settings/account/_hooks/useHobbiesForm";
 import {AttributeMultiSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 export function HobbyInterest() {
+    const { t } = useTranslation();
     const {
         control,
         handleSubmit,
         onSubmit,
         isLoading,
         errors,
-        watch
     } = useHobbiesForm();
 
     return (
         <form onSubmit={handleSubmit((values) => onSubmit(values))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                Hobbies and Interests
+                {t("Hobbies and Interests")}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -26,11 +29,11 @@ export function HobbyInterest() {
                         control={control}
                         render={({ field }) => (
                             <AttributeMultiSelect
-                                label="Sports *"
+                                label={`${t("Sports")} *`}
                                 attributeKey="sports"
                                 value={field.value || []}
                                 onChange={field.onChange}
-                                placeholder="Select Sports"
+                                placeholder={t("Select Sports")}
                             />
                         )}
                     />
@@ -44,11 +47,11 @@ export function HobbyInterest() {
                         control={control}
                         render={({ field }) => (
                             <AttributeMultiSelect
-                                label="Music *"
+                                label={`${t("Music")} *`}
                                 attributeKey="music"
                                 value={field.value || []}
                                 onChange={field.onChange}
-                                placeholder="Select Music"
+                                placeholder={t("Select Music")}
                             />
                         )}
                     />
@@ -59,11 +62,11 @@ export function HobbyInterest() {
                         control={control}
                         render={({ field }) => (
                             <AttributeMultiSelect
-                                label="Cooking *"
+                                label={`${t("Cooking")} *`}
                                 attributeKey="kitchen"
                                 value={field.value || []}
                                 onChange={field.onChange}
-                                placeholder="Select Kitchen"
+                                placeholder={t("Select Kitchen")}
                             />
                         )}
                     />
@@ -77,11 +80,11 @@ export function HobbyInterest() {
                         control={control}
                         render={({ field }) => (
                             <AttributeMultiSelect
-                                label="Reading *"
+                                label={`${t("Reading")} *`}
                                 attributeKey="reading"
                                 value={field.value || []}
                                 onChange={field.onChange}
-                                placeholder="Select"
+                                placeholder={t("Select")}
                             />
                         )}
                     />
@@ -95,11 +98,11 @@ export function HobbyInterest() {
                         control={control}
                         render={({ field }) => (
                             <AttributeMultiSelect
-                                label="TV Shows *"
+                                label={`${t("TV Shows")} *`}
                                 attributeKey="tvShows"
                                 value={field.value || []}
                                 onChange={field.onChange}
-                                placeholder="Select"
+                                placeholder={t("Select")}
                             />
                         )}
                     />
@@ -110,7 +113,7 @@ export function HobbyInterest() {
             </div>
             <div className="flex justify-end mt-4">
                 <Button size="lg" variant="theme" type="submit" disabled={isLoading}>
-                    {isLoading ? "Updating..." : "Update"}
+                    {isLoading ? t("Updating...") : t("Update")}
                 </Button>
             </div>
         </form>

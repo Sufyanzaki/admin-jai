@@ -8,8 +8,10 @@ import useClientAccInfo from "@/app/(client)/dashboard/settings/account/_hooks/u
 import Preloader from "@/components/shared/Preloader";
 import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 export function BasicInfo() {
+    const { t } = useTranslation();
     const {
         onSubmit,
         isLoading,
@@ -24,7 +26,7 @@ export function BasicInfo() {
         return (
             <div className="flex items-center flex-col justify-center h-64 my-28">
                 <Preloader/>
-                <p className="text-sm">Loading</p>
+                <p className="text-sm">{t("Loading")}</p>
             </div>
         )
     }
@@ -32,12 +34,12 @@ export function BasicInfo() {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                Basic Information
+                {t("Basic Information")}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
 
                 <div>
-                    <Label>Origin *</Label>
+                    <Label>{t("Origin")} *</Label>
                     <Controller
                         name="origin"
                         control={control}
@@ -46,7 +48,7 @@ export function BasicInfo() {
                                 attributeKey="origin"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select Origin"
+                                placeholder={t("Select Origin")}
                             />
                         )}
                     />
@@ -56,7 +58,7 @@ export function BasicInfo() {
                 </div>
 
                 <div>
-                    <Label>Gender *</Label>
+                    <Label>{t("Gender")} *</Label>
                     <Controller
                         name="gender"
                         control={control}
@@ -65,7 +67,7 @@ export function BasicInfo() {
                                 attributeKey="iAmA"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select gender"
+                                placeholder={t("Select gender")}
                             />
                         )}
                     />
@@ -75,11 +77,11 @@ export function BasicInfo() {
                 </div>
 
                 <div>
-                    <Label>Date of Birth *</Label>
+                    <Label>{t("Date of Birth")} *</Label>
                     <Input
                         type="date"
                         {...register("dob")}
-                        placeholder="Select date"
+                        placeholder={t("Select date")}
                     />
                     {errors.dob && (
                         <p className="text-red-500 text-sm">{errors.dob.message}</p>
@@ -87,11 +89,11 @@ export function BasicInfo() {
                 </div>
 
                 <div>
-                    <Label>Age</Label>
+                    <Label>{t("Age")}</Label>
                     <Input
                         type="number"
                         {...register("age", { valueAsNumber: true })}
-                        placeholder="Enter age"
+                        placeholder={t("Enter age")}
                     />
                     {errors.age && (
                         <p className="text-red-500 text-sm">{errors.age.message}</p>
@@ -99,7 +101,7 @@ export function BasicInfo() {
                 </div>
 
                 <div>
-                    <Label>Relationship Status</Label>
+                    <Label>{t("Relationship Status")}</Label>
                     <Controller
                         name="relationshipStatus"
                         control={control}
@@ -108,7 +110,7 @@ export function BasicInfo() {
                                 attributeKey="relationStatus"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select relationship status"
+                                placeholder={t("Select relationship status")}
                             />
                         )}
                     />
@@ -118,7 +120,7 @@ export function BasicInfo() {
                 </div>
 
                 <div>
-                    <Label>Looking For *</Label>
+                    <Label>{t("Looking For")} *</Label>
                     <Controller
                         name="lookingFor"
                         control={control}
@@ -127,7 +129,7 @@ export function BasicInfo() {
                                 attributeKey="amLookingFor"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select Partner's Gender"
+                                placeholder={t("Select Partner's Gender")}
                             />
                         )}
                     />
@@ -137,7 +139,7 @@ export function BasicInfo() {
                 </div>
 
                 <div>
-                    <Label>Children *</Label>
+                    <Label>{t("Children")} *</Label>
                     <Controller
                         name="children"
                         control={control}
@@ -146,7 +148,7 @@ export function BasicInfo() {
                                 attributeKey="children"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Do you have children?"
+                                placeholder={t("Do you have children?")}
                             />
                         )}
                     />
@@ -159,7 +161,7 @@ export function BasicInfo() {
 
             <div className="flex justify-end mt-4">
                 <Button type="submit" size="lg" variant="theme" disabled={isLoading || isFetching}>
-                    {isLoading ? "Updating..." : "Update"}
+                    {isLoading ? t("Updating...") : t("Update")}
                 </Button>
             </div>
         </form>

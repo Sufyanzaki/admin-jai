@@ -8,8 +8,10 @@ import useAboutMe2Form from "@/app/(client)/dashboard/settings/account/_hooks/us
 import Preloader from "@/components/shared/Preloader";
 import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 export function AboutMe2() {
+    const { t } = useTranslation();
     const {
         control,
         handleSubmit,
@@ -23,7 +25,7 @@ export function AboutMe2() {
         return (
             <div className="flex items-center flex-col justify-center h-64 my-28">
                 <Preloader/>
-                <p className="text-sm">Loading</p>
+                <p className="text-sm">{t("Loading")}</p>
             </div>
         )
     }
@@ -31,12 +33,12 @@ export function AboutMe2() {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                About Me
+                {t("About Me")}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
 
                 <div className="relative">
-                    <Label>Height *</Label>
+                    <Label>{t("Height")} *</Label>
                     <Controller
                         name="height"
                         control={control}
@@ -56,7 +58,7 @@ export function AboutMe2() {
                 </div>
 
                 <div className="relative">
-                    <Label>Weight *</Label>
+                    <Label>{t("Weight")} *</Label>
                     <Controller
                         name="weight"
                         control={control}
@@ -76,7 +78,7 @@ export function AboutMe2() {
                 </div>
 
                 <div>
-                    <Label>Eye Color *</Label>
+                    <Label>{t("Eye Color")} *</Label>
                     <Controller
                         name="eyeColor"
                         control={control}
@@ -85,7 +87,7 @@ export function AboutMe2() {
                                 attributeKey="eyeColor"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. Chestnut Brown"
+                                placeholder={t("e.g. Chestnut Brown")}
                             />
                         )}
                     />
@@ -93,7 +95,7 @@ export function AboutMe2() {
                 </div>
 
                 <div>
-                    <Label>Hair Color *</Label>
+                    <Label>{t("Hair Color")} *</Label>
                     <Controller
                         name="hairColor"
                         control={control}
@@ -102,7 +104,7 @@ export function AboutMe2() {
                                 attributeKey="hairColor"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. Chestnut Brown"
+                                placeholder={t("e.g. Chestnut Brown")}
                             />
                         )}
                     />
@@ -110,7 +112,7 @@ export function AboutMe2() {
                 </div>
 
                 <div>
-                    <Label>Body Type *</Label>
+                    <Label>{t("Body Type")} *</Label>
                     <Controller
                         name="bodyType"
                         control={control}
@@ -119,7 +121,7 @@ export function AboutMe2() {
                                 attributeKey="bodyType"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. Chestnut Brown"
+                                placeholder={t("e.g. Chestnut Brown")}
                             />
                         )}
                     />
@@ -127,7 +129,7 @@ export function AboutMe2() {
                 </div>
 
                 <div>
-                    <Label>Appearance *</Label>
+                    <Label>{t("Appearance")} *</Label>
                     <Controller
                         name="appearance"
                         control={control}
@@ -136,7 +138,7 @@ export function AboutMe2() {
                                 attributeKey="appearance"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. Chestnut Brown"
+                                placeholder={t("e.g. Chestnut Brown")}
                             />
                         )}
                     />
@@ -144,7 +146,7 @@ export function AboutMe2() {
                 </div>
 
                 <div>
-                    <Label>Clothing Style(s) *</Label>
+                    <Label>{t("Clothing Style(s)")} *</Label>
                     <Controller
                         name="clothing"
                         control={control}
@@ -153,7 +155,7 @@ export function AboutMe2() {
                                 attributeKey="clothingStyles"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. Casual"
+                                placeholder={t("e.g. Casual")}
                             />
                         )}
                     />
@@ -161,7 +163,7 @@ export function AboutMe2() {
                 </div>
 
                 <div>
-                    <Label>Intelligence *</Label>
+                    <Label>{t("Intelligence")} *</Label>
                     <Controller
                         name="intelligence"
                         control={control}
@@ -170,7 +172,7 @@ export function AboutMe2() {
                                 attributeKey="intelligence"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. High"
+                                placeholder={t("e.g. High")}
                             />
                         )}
                     />
@@ -181,7 +183,7 @@ export function AboutMe2() {
 
             <div className="flex justify-end mt-4">
                 <Button size="lg" variant="theme" type="submit" disabled={isLoading}>
-                    {isLoading ? "Updating..." : "Update"}
+                    {isLoading ? t("Updating...") : t("Update")}
                 </Button>
             </div>
         </form>

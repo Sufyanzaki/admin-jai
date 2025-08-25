@@ -1,14 +1,14 @@
 'use client'
-import { Label } from "@/components/client/ux/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/client/ux/select";
+
+import {Label} from "@/components/client/ux/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
 import Image from "next/image";
-import { Button } from "@/components/client/ux/button";
-import { useTranslation } from "react-i18next";
-import { useLanguages } from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
+import {Button} from "@/components/client/ux/button";
+import {useTranslation} from "react-i18next";
+import {useLanguages} from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
 import useActiveLanguage from "../../_hooks/useActiveLanguage";
-import { Controller } from "react-hook-form";
+import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
-import i18n from "@/i18n";
 
 export default function LanguageSettingForm() {
     const { t } = useTranslation();
@@ -20,7 +20,6 @@ export default function LanguageSettingForm() {
         errors,
         isLoading,
         isFetching,
-        activeLanguage, // full object: { id, code, name }
     } = useActiveLanguage();
 
     if (languagesLoading || isFetching) {

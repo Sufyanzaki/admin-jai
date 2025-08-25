@@ -1,20 +1,15 @@
 "use client";
 
-import { Label } from "@/components/client/ux/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/client/ux/select";
-import { Button } from "@/components/client/ux/button";
-import { Controller } from "react-hook-form";
+import {Label} from "@/components/client/ux/label";
+import {Button} from "@/components/client/ux/button";
+import {Controller} from "react-hook-form";
 import useLifeStyleForm from "@/app/(client)/dashboard/settings/account/_hooks/useLifeStyleForm";
 import {AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import {useTranslation} from "react-i18next";
 
 export function LifeStyle() {
+    const { t } = useTranslation();
     const {
         control,
         handleSubmit,
@@ -27,11 +22,11 @@ export function LifeStyle() {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                Lifestyle
+                {t("Lifestyle")}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                    <Label>Smoke *</Label>
+                    <Label>{t("Smoke")} *</Label>
                     <Controller
                         name="smoke"
                         control={control}
@@ -40,7 +35,7 @@ export function LifeStyle() {
                                 attributeKey="smoke"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select smoking preference"
+                                placeholder={t("Select smoking preference")}
                             />
                         )}
                     />
@@ -50,7 +45,7 @@ export function LifeStyle() {
                 </div>
 
                 <div>
-                    <Label>Drink *</Label>
+                    <Label>{t("Drink")} *</Label>
                     <Controller
                         name="drinking"
                         control={control}
@@ -59,7 +54,7 @@ export function LifeStyle() {
                                 attributeKey="drinking"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select drinking preference"
+                                placeholder={t("Select drinking preference")}
                             />
                         )}
                     />
@@ -69,7 +64,7 @@ export function LifeStyle() {
                 </div>
 
                 <div>
-                    <Label>Go out *</Label>
+                    <Label>{t("Go out")} *</Label>
                     <Controller
                         name="goingOut"
                         control={control}
@@ -78,7 +73,7 @@ export function LifeStyle() {
                                 attributeKey="goingOut"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select goingOut preference"
+                                placeholder={t("Select goingOut preference")}
                             />
                         )}
                     />
@@ -94,7 +89,7 @@ export function LifeStyle() {
                     variant="theme"
                     disabled={isLoading || isFetching}
                 >
-                    {isLoading || isFetching ? "Updating..." : "Update"}
+                    {isLoading || isFetching ? t("Updating...") : t("Update")}
                 </Button>
             </div>
         </form>

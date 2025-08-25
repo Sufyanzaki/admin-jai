@@ -1,11 +1,15 @@
+"use client";
+
 import LocationSearchInput from "@/components/client/location-search";
-import {Button} from "@/components/client/ux/button";
+import { Button } from "@/components/client/ux/button";
 import usePlaceForm from "@/app/(client)/dashboard/settings/account/_hooks/usePlaceForm";
 import Preloader from "@/components/shared/Preloader";
-import {MemberLocation} from "@/app/shared-types/member";
+import { MemberLocation } from "@/app/shared-types/member";
+import { useTranslation } from "react-i18next";
 import type React from "react";
 
-export function Place(){
+export function Place() {
+    const { t } = useTranslation();
 
     const {
         errors,
@@ -30,35 +34,37 @@ export function Place(){
         location.country && setValue("country", location.country);
     };
 
-    if(isFetching){
+    if (isFetching) {
         return (
             <div className="flex items-center flex-col justify-center h-64 my-28">
-                <Preloader/>
-                <p className="text-sm">Loading</p>
+                <Preloader />
+                <p className="text-sm">{t("Loading")}</p>
             </div>
-        )
+        );
     }
 
     return (
-        <form onSubmit={handleSubmit(v=>onSubmit(v))}>
+        <form onSubmit={handleSubmit(v => onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                Place
+                {t("Place")}
             </h3>
             <div className="grid md:grid-cols-1 gap-4">
                 <div className="border border-app-border rounded-[5px]">
                     <LocationSearchInput
                         value={currentLocation}
                         onSelect={handleLocationSelect}
-                        placeholder="Search for your city, state, or country"
+                        placeholder={t("Search for your city, state, or country")}
                     />
-                    {(errors.state || errors.country) && <p className="text-sm text-red-500">Invalid Address</p>}
+                    {(errors.state || errors.country) && (
+                        <p className="text-sm text-red-500">{t("Invalid Address")}</p>
+                    )}
                 </div>
             </div>
             <div className="flex justify-end mt-4">
                 <Button size="lg" variant="theme" type="submit" disabled={isLoading}>
-                    {isLoading ? "Processing..." : "Update"}
+                    {isLoading ? t("Processing...") : t("Update")}
                 </Button>
             </div>
         </form>
-    )
+    );
 }

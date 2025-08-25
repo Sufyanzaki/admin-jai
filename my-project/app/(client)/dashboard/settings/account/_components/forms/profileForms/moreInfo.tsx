@@ -7,8 +7,10 @@ import {Controller} from "react-hook-form";
 import Preloader from "@/components/shared/Preloader";
 import {AttributeMultiSelect, AttributeSelect} from "@/app/(client)/dashboard/_components/attribute-select";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 export function MoreInfo() {
+    const { t } = useTranslation();
     const {
         handleSubmit,
         onSubmit,
@@ -22,7 +24,7 @@ export function MoreInfo() {
         return (
             <div className="flex items-center flex-col justify-center h-64 my-28">
                 <Preloader/>
-                <p className="text-sm">Loading</p>
+                <p className="text-sm">{t("Loading")}</p>
             </div>
         )
     }
@@ -30,11 +32,11 @@ export function MoreInfo() {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                More Information
+                {t("More Information")}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                    <Label>Education *</Label>
+                    <Label>{t("Education")} *</Label>
                     <Controller
                         name="education"
                         control={control}
@@ -43,7 +45,7 @@ export function MoreInfo() {
                                 attributeKey="education"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="e.g. University degree"
+                                placeholder={t("e.g. University degree")}
                             />
                         )}
                     />
@@ -52,7 +54,7 @@ export function MoreInfo() {
                     )}
                 </div>
                 <div>
-                    <Label>Department *</Label>
+                    <Label>{t("Department")} *</Label>
                     <Controller
                         name="department"
                         control={control}
@@ -61,7 +63,7 @@ export function MoreInfo() {
                                 attributeKey="department"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select Department"
+                                placeholder={t("Select Department")}
                             />
                         )}
                     />
@@ -70,7 +72,7 @@ export function MoreInfo() {
                     )}
                 </div>
                 <div>
-                    <Label>Primary Specialization *</Label>
+                    <Label>{t("Primary Specialization")} *</Label>
                     <Controller
                         name="primarySpecialization"
                         control={control}
@@ -79,7 +81,7 @@ export function MoreInfo() {
                                 attributeKey="primarySpecialization"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select Specialization"
+                                placeholder={t("Select Specialization")}
                             />
                         )}
                     />
@@ -88,7 +90,7 @@ export function MoreInfo() {
                     )}
                 </div>
                 <div>
-                    <Label>Mother Tongue *</Label>
+                    <Label>{t("Mother Tongue")} *</Label>
                     <Controller
                         name="motherTongue"
                         control={control}
@@ -97,7 +99,7 @@ export function MoreInfo() {
                                 attributeKey="motherTongue"
                                 value={field.value || undefined}
                                 onChange={field.onChange}
-                                placeholder="Select Language"
+                                placeholder={t("Select Language")}
                             />
                         )}
                     />
@@ -113,11 +115,11 @@ export function MoreInfo() {
                         control={control}
                         render={({ field }) => (
                             <AttributeMultiSelect
-                                label="Known Languages *"
+                                label={`${t("Known Languages")} *`}
                                 attributeKey="knownLanguages"
                                 value={field.value || []}
                                 onChange={field.onChange}
-                                placeholder="Select languages"
+                                placeholder={t("Select languages")}
                             />
                         )}
                     />
@@ -135,7 +137,7 @@ export function MoreInfo() {
                     variant="theme"
                     disabled={isLoading || isFetching}
                 >
-                    {(isLoading || isFetching) ? "Updating..." : "Update"}
+                    {(isLoading || isFetching) ? t("Updating...") : t("Update")}
                 </Button>
             </div>
         </form>

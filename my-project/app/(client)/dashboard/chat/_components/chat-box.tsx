@@ -16,6 +16,7 @@ import { MessageListener } from "@/client-utils/MessageListener";
 import { Chat } from "@/app/(client)/dashboard/chat/_types/allChats";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { useTranslation } from "react-i18next";
+import {ProfileSidebar} from "@/app/(client)/dashboard/chat/_components/profile-sidebar";
 
 type ChatBoxProps = {
     selectedChat: Chat;
@@ -29,6 +30,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
     const { sending, sendMessageAction } = useSendMessage({ chatID: selectedChat.id });
     const router = useRouter();
     const [uploading, setUploading] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
     const [messageInput, setMessageInput] = useState("");
     const [attachments, setAttachments] = useState<string[]>([]);
 
@@ -64,7 +66,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
     };
 
     return (
-        <div className="relative grow">
+        <div className="relative grow overflow-x-hidden">
             <MessageListener
                 onMessage={(message) => {
                     chatMutate(
@@ -115,7 +117,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                 {otherParticipant?.firstName || "Chat"}
                             </h2>
                         </div>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setShowProfile(true)}>
                             <MoreVertical className="w-4 h-4" />
                         </Button>
                     </div>
@@ -138,7 +140,7 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                                         }`}
                                     >
                                         {message.content && (
-                                            <p className="text-sm whitespace-pre-wrap">
+                                            <p className="text-sm whitespace-pre-wrap break-all">
                                                 {message.content}
                                             </p>
                                         )}
@@ -246,6 +248,17 @@ export default function ChatBox({ selectedChat, onProfileClick }: ChatBoxProps) 
                         >
                             <Send className="w-5 h-5" />
                         </Button>
+                    </div>
+                    <div
+                        className={`absolute top-0 right-0 h-full bg-white shadow-lg z-50 transition-transform duration-300 ease-in-out w-fit
+                            ${showProfile ? "translate-x-0" : "translate-x-full"}`}
+                    >
+                        {otherParticipant && (
+                            <ProfileSidebar
+                                user={otherParticipant}
+                                onClose={() => setShowProfile(false)}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

@@ -10,21 +10,34 @@ import React, { useState } from "react";
 import useClientAccount from "@/app/(client)/dashboard/settings/account/_hooks/useAccountForm";
 import { AttributeSelect } from "@/app/(client)/dashboard/_components/attribute-select";
 import Preloader from "@/components/shared/Preloader";
+import { useTranslation } from "react-i18next";
 
 export default function AccountSettingForm() {
+    const { t } = useTranslation();
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        control,
+        watch,
+        errors,
+        isFetching,
+        isLoading,
+        onSubmit,
+    } = useClientAccount();
 
     const [preview, setPreview] = useState<string>();
-
-    const { errors, onSubmit, handleSubmit, register, setValue, isLoading, control, watch, isFetching } = useClientAccount();
 
     if (isFetching) {
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader />
-                <p className="text-sm">Loading your profile information...</p>
+                <p className="text-sm">{t("Loading your profile information...")}</p>
             </div>
         );
     }
+
     const handleFileChange = (file: File) => {
         if (file && file.type.startsWith("image/")) {
             setValue("image", file, { shouldValidate: true });
@@ -39,11 +52,11 @@ export default function AccountSettingForm() {
             <div className="flex flex-col items-center">
                 <div className="w-56 h-56 rounded-[5px] overflow-hidden mb-4 border border-gray-200">
                     {preview ? (
-                        <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                        <img src={preview} alt={t("Preview")} className="w-full h-full object-cover" />
                     ) : (
                         <ImageWrapper
                             src={imageStr || "https://placehold.co/400"}
-                            alt="Profile"
+                            alt={t("Profile")}
                             className="w-full h-full object-cover"
                         />
                     )}
@@ -59,10 +72,10 @@ export default function AccountSettingForm() {
                 >
                     <div className="flex flex-col items-center space-y-4">
                         <CloudUpload strokeWidth={1.25} className="w-12 h-12 text-app-theme" />
-                        <p className="text-xs text-muted-foreground">Drag a photo here</p>
+                        <p className="text-xs text-muted-foreground">{t("Drag a photo here")}</p>
                         <div className="flex items-center space-x-2 w-full">
                             <div className="flex-1 border-t border-gray-200"></div>
-                            <span className="text-xs text-gray-300 px-2">OR</span>
+                            <span className="text-xs text-gray-300 px-2">{t("OR")}</span>
                             <div className="flex-1 border-t border-gray-200"></div>
                         </div>
                         <div className="w-full">
@@ -81,7 +94,7 @@ export default function AccountSettingForm() {
                                 <Button className="w-full" asChild size="sm" variant="theme">
                                     <span className="cursor-pointer">
                                         <Upload className="w-4 h-4 mr-2" />
-                                        Upload Photo
+                                        {t("Upload Photo")}
                                     </span>
                                 </Button>
                             </label>
@@ -95,33 +108,49 @@ export default function AccountSettingForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-6">
                         <div>
-                            <Label htmlFor="firstName">First name</Label>
-                            <Input disabled={isFetching} placeholder="Enter your first name" {...register("firstName")} />
+                            <Label htmlFor="firstName">{t("First name")}</Label>
+                            <Input
+                                disabled={isFetching}
+                                placeholder={t("Enter your first name")}
+                                {...register("firstName")}
+                            />
                             {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
                         </div>
 
                         <div>
-                            <Label htmlFor="username">User name</Label>
-                            <Input disabled={isFetching} placeholder="Enter your username" {...register("username")} />
+                            <Label htmlFor="username">{t("User name")}</Label>
+                            <Input
+                                disabled={isFetching}
+                                placeholder={t("Enter your username")}
+                                {...register("username")}
+                            />
                             {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
                         </div>
 
                         <div>
-                            <Label htmlFor="dob">Date of birth</Label>
-                            <Input disabled={isFetching} placeholder="YYYY-MM-DD" {...register("dob")} />
+                            <Label htmlFor="dob">{t("Date of birth")}</Label>
+                            <Input
+                                disabled={isFetching}
+                                placeholder="YYYY-MM-DD"
+                                {...register("dob")}
+                            />
                             {errors.dob && <p className="text-red-500 text-sm">{errors.dob.message}</p>}
                         </div>
                     </div>
 
                     <div className="space-y-6">
                         <div>
-                            <Label htmlFor="lastName">Last name</Label>
-                            <Input disabled={isFetching} placeholder="Enter your last name" {...register("lastName")} />
+                            <Label htmlFor="lastName">{t("Last name")}</Label>
+                            <Input
+                                disabled={isFetching}
+                                placeholder={t("Enter your last name")}
+                                {...register("lastName")}
+                            />
                             {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
                         </div>
 
                         <div>
-                            <Label htmlFor="gender">Gender</Label>
+                            <Label htmlFor="gender">{t("Gender")}</Label>
                             <Controller
                                 name="gender"
                                 control={control}
@@ -132,7 +161,7 @@ export default function AccountSettingForm() {
                                         size="sm"
                                         value={field.value || undefined}
                                         onChange={field.onChange}
-                                        placeholder="Select gender"
+                                        placeholder={t("Select gender")}
                                     />
                                 )}
                             />
@@ -140,8 +169,12 @@ export default function AccountSettingForm() {
                         </div>
 
                         <div>
-                            <Label htmlFor="email">Email</Label>
-                            <Input disabled={isFetching} placeholder="Enter your email" {...register("email")} />
+                            <Label htmlFor="email">{t("Email")}</Label>
+                            <Input
+                                disabled={isFetching}
+                                placeholder={t("Enter your email")}
+                                {...register("email")}
+                            />
                             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                         </div>
                     </div>
@@ -149,7 +182,7 @@ export default function AccountSettingForm() {
 
                 <div className="flex justify-end gap-3 mt-8">
                     <Button variant="theme" size="lg" type="submit" disabled={isLoading}>
-                        {isLoading ? "Saving..." : "Save"}
+                        {isLoading ? t("Saving...") : t("Save")}
                     </Button>
                 </div>
             </div>

@@ -12,6 +12,9 @@ interface ProfileSidebarProps {
 
 export function ProfileSidebar({ user, onClose }: ProfileSidebarProps) {
   const { t } = useTranslation();
+
+  console.log(user)
+
   const basicInfo = [
     { label: "Username", value: user.username },
     { label: "Email", value: user.email },

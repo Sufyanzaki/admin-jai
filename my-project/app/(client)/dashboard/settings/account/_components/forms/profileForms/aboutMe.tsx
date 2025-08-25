@@ -1,9 +1,13 @@
+"use client";
+
 import { Textarea } from "@/components/client/ux/textarea";
 import { Button } from "@/components/client/ux/button";
 import useAboutMeForm from "@/app/(client)/dashboard/settings/account/_hooks/useAboutMeForm";
 import Preloader from "@/components/shared/Preloader";
+import {useTranslation} from "react-i18next";
 
 export function AboutMe() {
+    const { t } = useTranslation();
     const {
         errors,
         handleSubmit,
@@ -17,7 +21,7 @@ export function AboutMe() {
         return (
             <div className="flex items-center flex-col justify-center h-64 my-28">
                 <Preloader/>
-                <p className="text-sm">Loading</p>
+                <p className="text-sm">{t("Loading")}</p>
             </div>
         )
     }
@@ -25,11 +29,11 @@ export function AboutMe() {
     return (
         <form onSubmit={handleSubmit(v=>onSubmit(v))}>
             <h3 className="text-lg font-semibold mb-4 border-b-2 border-b-black">
-                About me
+                {t("About me")}
             </h3>
 
             <Textarea
-                placeholder="Vertel iets over jezelf..."
+                placeholder={t("Vertel iets over jezelf...")}
                 className="min-h-[100px]"
                 {...register("shortDescription")}
             />
@@ -46,7 +50,7 @@ export function AboutMe() {
                     type="submit"
                     disabled={isLoading || isFetching}
                 >
-                    {isLoading || isFetching ? "Updating..." : "Update"}
+                    {isLoading || isFetching ? t("Updating...") : t("Update")}
                 </Button>
             </div>
         </form>

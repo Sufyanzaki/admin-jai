@@ -18,6 +18,7 @@ import { showConfirmation } from "@/shared-lib";
 import { useImageRequest } from "@/app/(client)/dashboard/_hooks/useImageRequest";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import {useProfile} from "@/app/shared-hooks/useProfile";
 
 export function ProfileDetail() {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ export function ProfileDetail() {
   const { data: session } = useSession();
   const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
   const { user, userLoading } = useBasicInfo(id);
+  const { response } = useProfile();
   const [openComplain, setOpenComplain] = useState(false);
   const { trigger: sendLike, loading } = useSendLike();
   const { sendMessageRefetch, messageLoading } = useCreateChat();
@@ -33,10 +35,10 @@ export function ProfileDetail() {
 
   const [loaded, setIsLoaded] = useState(false);
 
-  const hasProfilePicture = !!user?.image;
-  const isFreeMember = !user?.isPremium;
+  const hasProfilePicture = !!response?.user?.image;
+  const isFreeMember = !response?.user?.isPremium;
 
-  const onlyMembersWithPhotoCanSee = user?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee === hasProfilePicture;
+  const onlyMembersWithPhotoCanSee = user?.PhotoSetting[0]?.onlyMembersWithPhotoCanSee !== hasProfilePicture;
   const blurForFreeMembers = user?.PhotoSetting[0]?.blurForFreeMembers === isFreeMember;
   const onlyVipCanSee = user?.PhotoSetting[0]?.onlyVipCanSee === isFreeMember;
   const onRequestOnly = user?.PhotoSetting[0]?.onRequestOnly;
@@ -231,7 +233,15 @@ export function ProfileDetail() {
               </div>
               {String(session?.user?.id) !== String(id) && <div className="space-y-2">
                 <div>
-                  {user.isPremium ? <Button
+                  {isFreeMember ? <Link href="/membership">
+                    <Button
+                        variant="theme"
+                        size="lg"
+                        className="w-full"
+                    >
+                      {t("Subscribe")}
+                    </Button>
+                  </Link> : <Button
                     onClick={handleSendMessage}
                     variant="theme"
                     size="lg"
@@ -239,15 +249,7 @@ export function ProfileDetail() {
                     className="w-full"
                   >
                     {messageLoading ? "Processing" : "Send Message"}
-                  </Button> : <Link href="/membership">
-                    <Button
-                      variant="theme"
-                      size="lg"
-                      className="w-full"
-                    >
-                      {t("Subscribe")}
-                    </Button>
-                  </Link>}
+                  </Button>}
                 </div>
                 <Button
                   onClick={handleSendWink}

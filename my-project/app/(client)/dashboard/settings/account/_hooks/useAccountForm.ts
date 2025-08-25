@@ -12,8 +12,6 @@ import { showError, showSuccess } from "@/shared-lib";
 import { useBasicInfo } from "@/app/shared-hooks/useBasicInfo";
 import { useTranslation } from "react-i18next";
 
-
-
 export default function useClientAccount() {
     const { t } = useTranslation();
     const { data: session } = useSession();

@@ -1,11 +1,13 @@
 "use client";
 
-import {Label} from "@/components/client/ux/label";
-import {Input} from "@/components/client/ux/input";
-import {Button} from "@/components/client/ux/button";
+import { Label } from "@/components/client/ux/label";
+import { Input } from "@/components/client/ux/input";
+import { Button } from "@/components/client/ux/button";
 import usePasswordForm from "@/app/shared-hooks/usePasswordForm";
+import { useTranslation } from "react-i18next";
 
 export default function PasswordForm() {
+    const { t } = useTranslation();
 
     const {
         register,
@@ -17,12 +19,12 @@ export default function PasswordForm() {
 
     return (
         <form
-            onSubmit={handleSubmit(v=>onSubmit(v))}
+            onSubmit={handleSubmit(v => onSubmit(v))}
             className="flex flex-col gap-8 justify-center"
         >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <Label htmlFor="currentPassword">Current Password</Label>
+                    <Label htmlFor="currentPassword">{t("Current Password")}</Label>
                     <Input
                         id="currentPassword"
                         type="password"
@@ -38,7 +40,7 @@ export default function PasswordForm() {
                 </div>
 
                 <div>
-                    <Label htmlFor="newPassword">New Password</Label>
+                    <Label htmlFor="newPassword">{t("New Password")}</Label>
                     <Input
                         id="newPassword"
                         type="password"
@@ -54,7 +56,7 @@ export default function PasswordForm() {
                 </div>
 
                 <div>
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Label htmlFor="confirmPassword">{t("Confirm Password")}</Label>
                     <Input
                         id="confirmPassword"
                         type="password"
@@ -78,7 +80,7 @@ export default function PasswordForm() {
                     className="ml-auto"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Saving..." : "Save"}
+                    {isLoading ? t("Saving...") : t("Save")}
                 </Button>
             </div>
         </form>

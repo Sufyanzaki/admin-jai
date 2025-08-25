@@ -54,7 +54,7 @@ export default function useClientAccInfo() {
 
     useEffect(() => {
         if (!user) return;
-        const { origin, gender, dob, age, relationshipStatus, partnerExpectation } = user;
+        const { origin, gender, dob, age, relationshipStatus, partnerExpectation, children } = user;
         reset({
             origin,
             gender,
@@ -62,14 +62,14 @@ export default function useClientAccInfo() {
             age,
             relationshipStatus,
             lookingFor: partnerExpectation?.lookingFor,
-            children: ""
+            children: children
         });
     }, [user, reset]);
 
     const { trigger, isMutating } = useSWRMutation(
         "updateClientAccInfo",
         async (_, { arg }: { arg: ClientAccInfoForm }) => {
-            const { children, ...other } = arg;
+            const other = arg;
             if (!userId) throw new Error("User ID is undefined. Please log in again");
             return await patchUser(userId, other);
         },

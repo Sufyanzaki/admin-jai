@@ -1,16 +1,28 @@
-import {Button} from "@/components/client/ux/button";
-import {X} from "lucide-react";
-import {AboutMe2, AboutMe, MoreInfo, BasicInfo, Place, HobbyInterest, LifeStyle, Behavior} from "@/app/(client)/dashboard/settings/account/_components/forms/profileForms";
+"use client";
 
-export default function ProfileDetailsForm(){
+import { Button } from "@/components/client/ux/button";
+import { X } from "lucide-react";
+import {
+    AboutMe2,
+    AboutMe,
+    MoreInfo,
+    BasicInfo,
+    Place,
+    HobbyInterest,
+    LifeStyle,
+    Behavior,
+} from "@/app/(client)/dashboard/settings/account/_components/forms/profileForms";
+import { useTranslation } from "react-i18next";
+
+export default function ProfileDetailsForm() {
+    const { t } = useTranslation();
 
     return (
         <div className="space-y-6">
             <div className="bg-yellow-50 border border-yellow-300 rounded-[5px] p-4">
                 <div className="flex justify-between items-center">
                     <p className="text-sm text-yellow-800">
-                        ⚠️ Warning: Please ensure all information is accurate before
-                        saving.
+                        ⚠️ {t("Warning: Please ensure all information is accurate before saving.")}
                     </p>
                     <Button
                         variant="ghost"
@@ -24,7 +36,7 @@ export default function ProfileDetailsForm(){
 
             <div className="space-y-10">
                 <AboutMe />
-                <BasicInfo/>
+                <BasicInfo />
                 <AboutMe2 />
                 <HobbyInterest />
                 <Place />
@@ -33,5 +45,5 @@ export default function ProfileDetailsForm(){
                 <Behavior />
             </div>
         </div>
-    )
+    );
 }

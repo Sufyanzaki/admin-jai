@@ -130,7 +130,7 @@ export default function ChatBoxPage() {
                                             }`}
                                     >
                                         {message.content && (
-                                            <p className="text-sm whitespace-pre-wrap">
+                                            <p className="text-sm whitespace-pre-wrap break-all">
                                                 {message.content}
                                             </p>
                                         )}

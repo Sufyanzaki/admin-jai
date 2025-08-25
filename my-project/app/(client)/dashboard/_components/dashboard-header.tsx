@@ -31,7 +31,7 @@ export function DashboardHeader() {
   const { mutate } = useSWRConfig();
   const { response, userLoading } = useProfile();
 
-  if(userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
+  if (userLoading) return <div className="py-2 flex justify-end px-6"><Preloader size="sm" /></div>;
 
   const menuItems: MenuItem[] = [
     { label: t("Dashboard"), href: "/dashboard" },
@@ -39,7 +39,6 @@ export function DashboardHeader() {
     { label: t("My Visits"), href: "/dashboard/visits" },
     { label: t("Notification"), href: "/dashboard/notifications/received" },
     { label: t("Liked Profile"), href: "/dashboard/liked-profiles" },
-    { label: t("Messages"), href: "/dashboard/chat", badge: response?.user.messageCount, badgeColor: "bg-cyan-500" },
     { label: t("My Profile"), href: "/dashboard/settings/account" },
   ];
 
@@ -47,7 +46,23 @@ export function DashboardHeader() {
     { label: t("Complete Profile"), href: response?.user.route ?? "/auth/profile/create" },
   ];
 
-  const allowedItems: MenuItem[] = response?.user.route === "/auth/profile/partner-preferences" ? menuItems : lockedItems;
+  let finalMenuItems: MenuItem[] = [];
+  if (response?.user.isPremium) {
+    finalMenuItems = [...menuItems];
+    finalMenuItems.splice(finalMenuItems.length - 1, 0, {
+      label: t("Messages"),
+      href: "/dashboard/chat",
+      badge: response?.user.messageCount,
+      badgeColor: "bg-cyan-500",
+    });
+  } else {
+    finalMenuItems = menuItems;
+  }
+
+  const allowedItems: MenuItem[] = response?.user.route === "/auth/profile/partner-preferences"
+      ? finalMenuItems
+      : lockedItems;
+
 
   const handleNotification = () => {
     // @ts-expect-error SWRConfig is not typed
