@@ -1,24 +1,21 @@
 "use client"
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { showError } from "@/shared-lib";
-import { showSuccess } from "@/shared-lib";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {showError, showSuccess} from "@/shared-lib";
 import useSWRMutation from "swr/mutation";
-import { useSWRConfig } from "swr";
+import {useSWRConfig} from "swr";
 import {createBlogCategory} from "@/app/shared-api/blogCategoryApi";
 import {CategoryDto} from "@/app/shared-types/blog";
-import {FaqDto} from "@/app/shared-types/faq";
+import {useTranslation} from "react-i18next";
 
 const createCategorySchema = (t: any) => z.object({
     name: z.string().min(1, t("Category name is required"))
 });
 
-export type CreateCategoryFormValues = z.infer<ReturnType<typeof createCategorySchema>>;
-
 export default function useCreateBlogCategory() {
-    const { t } = require('react-i18next');
+    const {t} = useTranslation();
     const { mutate: globalMutate } = useSWRConfig();
     const { trigger, isMutating } = useSWRMutation(
         'createBlogCategory',
@@ -54,18 +51,24 @@ export default function useCreateBlogCategory() {
             globalMutate(
                 'blog-categories',
                 (current: CategoryDto[] = []) => {
-                return [
-                    ...current,
-                    {
-                        id: result.id ?? Date.now(),
-                        name: values.name,
-                        isActive: true,
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString(),
-                        blogs: []
-                    }
-                ];
-            }, false).finally();
+                    return [
+                        ...current,
+                        {
+                            id: result.id ?? Date.now(),
+                            name: values.name,
+                            blogs: [],
+                            pagination: {
+                                total: 0,
+                                page: 1,
+                                limit: 10,
+                                totalPages: 0,
+                            },
+                        },
+                    ];
+                },
+                false
+            ).finally();
+
             callback?.();
         }
     };

@@ -10,6 +10,7 @@ import useSWRMutation from "swr/mutation";
 import { useEffect } from "react";
 import { useBannerDetails } from "./useBannerDetails";
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
+import {useTranslation} from "react-i18next";
 
 
 type UpdateBannerProps = {
@@ -25,7 +26,7 @@ type UpdateBannerProps = {
 
 export default function useEditBannerForm(id: string) {
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const editBannerSchema = z.object({
         name: z.string()
             .min(1, t("Banner name is required"))

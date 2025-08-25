@@ -8,12 +8,11 @@ import { useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { showError, showSuccess } from "@/shared-lib";
 import { postBasicPage } from '@/app/shared-api/basicPageApi';
-
-
+import { useTranslation } from 'react-i18next';
 
 export default function useBasicForm() {
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const basicFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         Url: z.string().min(1, t('URL is required')),

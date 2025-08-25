@@ -10,11 +10,11 @@ import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { patchTermsConditionsSettings } from '@/app/shared-api/tosApi';
 import { useTOS } from '@/app/shared-hooks/useTOS';
+import { useTranslation } from 'react-i18next';
 
 export default function useTOSForm() {
 
-
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const tosFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         Url: z.string().min(1, t('URL is required')),

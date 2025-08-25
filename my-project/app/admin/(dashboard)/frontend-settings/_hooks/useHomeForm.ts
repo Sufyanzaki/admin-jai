@@ -10,12 +10,13 @@ import { useEffect } from 'react';
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import { useHome } from "@/app/shared-hooks/useHome";
 import { patchHomePageSettings } from "@/app/shared-api/homeApi";
+import {useTranslation} from "react-i18next";
 
 export default function useHomeForm() {
   const { homeSettings, homeLoading, mutate } = useHome();
 
 
-  const { t } = require('react-i18next');
+  const { t } = useTranslation();
   const homeFormSchema = z.object({
     Title: z.string().min(1, t("Title is required")),
     Url: z.string().min(1, t("URL is required")),

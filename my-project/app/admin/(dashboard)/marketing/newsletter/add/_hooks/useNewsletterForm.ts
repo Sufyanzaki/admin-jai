@@ -5,10 +5,11 @@ import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";
 import { postNewsletter } from "../_api/postNewsletter";
 import { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 export default function useNewsletterForm() {
 
-  const { t } = require('react-i18next');
+  const { t } = useTranslation();
   const newsletterSchema = z.object({
     title: z.string().min(1, t("Title is required")),
     content: z.string().min(1, t("Content is required")),

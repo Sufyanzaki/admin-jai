@@ -10,11 +10,11 @@ import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { useVee } from '@/app/shared-hooks/useVee';
 import { patchVeeSettings } from "@/app/shared-api/veeApi";
-
+import { useTranslation } from 'react-i18next';
 
 export default function useVeeForm() {
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const veeFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         PageContentitle: z.string().min(1, t('Page content title is required')),

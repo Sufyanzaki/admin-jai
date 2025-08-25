@@ -7,6 +7,7 @@ import { createBanner } from "@/app/admin/(dashboard)/marketing/banners/_api/ban
 import { imageUpload } from "@/admin-utils/utils/imageUpload";
 import useSWRMutation from "swr/mutation";
 import { useState, useCallback } from "react";
+import { useTranslation } from 'react-i18next';
 
 type CreateBannerProps = {
     name: string;
@@ -20,7 +21,7 @@ type CreateBannerProps = {
 }
 
 export default function useBannerForm() {
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const bannerSchema = z.object({
         name: z.string()
             .min(1, t("Banner name is required"))

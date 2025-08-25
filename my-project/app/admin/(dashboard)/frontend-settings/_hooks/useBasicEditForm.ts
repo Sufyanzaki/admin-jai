@@ -13,7 +13,7 @@ import { useEffect } from "react";
 
 export default function useBasicEditForm() {
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const basicFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         Url: z.string().url(t('Invalid URL format')).min(1, t('URL is required')),

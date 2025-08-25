@@ -10,12 +10,11 @@ import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { patchHowWorkSettings } from "@/app/shared-api/howWorkApi";
 import { useHowWork } from "@/app/shared-hooks/useHowWork";
-
-
+import {useTranslation} from "react-i18next";
 
 export default function useHowWorkForm() {
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const howItWorksFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         bannerImage: z.any().optional(),

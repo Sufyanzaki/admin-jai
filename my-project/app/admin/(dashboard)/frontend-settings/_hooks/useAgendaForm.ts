@@ -10,12 +10,13 @@ import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { useAgenda } from "@/app/shared-hooks/useAgenda";
 import { patchAgendaSettings } from "@/app/shared-api/agendaApi";
+import {useTranslation} from "react-i18next";
 
 
 export default function useAgendaForm() {
     const { agendaSettings, mutate } = useAgenda();
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const agendaFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         pageTitle: z.string().min(1, t('Page title is required')),

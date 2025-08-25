@@ -10,11 +10,11 @@ import { useEffect } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { patchRegistrationPageSettings } from "@/app/shared-api/registerationApi";
 import { useRegistration } from "@/app/shared-hooks/useRegistration";
-
+import {useTranslation} from "react-i18next";
 
 export default function useRegistrationForm() {
 
-    const { t } = require('react-i18next');
+    const { t } = useTranslation();
     const registrationFormSchema = z.object({
         Title: z.string().min(1, t('Title is required')),
         Url: z.string().min(1, t('URL is required')),

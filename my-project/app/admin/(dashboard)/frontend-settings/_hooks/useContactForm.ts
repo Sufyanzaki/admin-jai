@@ -10,12 +10,11 @@ import { useEffect, useState } from 'react';
 import { imageUpload } from '@/admin-utils/utils/imageUpload';
 import { useContact } from "@/app/shared-hooks/useContact";
 import { patchContactPageSettings } from '@/app/shared-api/contactApi';
-
-
+import {useTranslation} from "react-i18next";
 
 export default function useContactForm() {
 
-  const { t } = require('react-i18next');
+  const { t } = useTranslation();
   const contactFormSchema = z.object({
     contactName: z.string().min(1, t('Contact name is required')),
     contactBannerImage: z.any().optional(), // Accept File or string
