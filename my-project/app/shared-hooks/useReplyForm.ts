@@ -31,7 +31,7 @@ export default function useReplyForm(ticketId?: string) {
         {
             onError: (error: unknown) => {
                 // @ts-expect-error unknown type
-                showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
+                showError({ message: t(error.message) }); throw new Error(error.message);
             }
         }
     );
@@ -76,7 +76,7 @@ export default function useReplyForm(ticketId?: string) {
             reset();
         } catch (error: unknown) {
             // @ts-expect-error unknown type
-            showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
+            showError({ message: t(error.message) }); throw new Error(error.message);
         }
     };
 

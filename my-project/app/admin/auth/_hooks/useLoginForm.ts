@@ -34,7 +34,7 @@ export default function useLoginForm() {
         {
             onError: (error: unknown) => {
                 // @ts-expect-error unknown type
-                showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
+                showError({ message: t(error.message) }); throw new Error(error.message);
             }
         }
     );
@@ -62,7 +62,7 @@ export default function useLoginForm() {
             router.push('/admin/auth/otp');
         } catch (error: unknown) {
             // @ts-expect-error unknown type
-            showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
+            showError({ message: t(error.message) }); throw new Error(error.message);
         }
     };
 

@@ -16,10 +16,32 @@ export type OtpProps = {
     otp: string;
 };
 
+type ResetProps = {
+    password: string;
+}
+
 export async function postLoginForm(props: LoginProps): Promise<LoginResponse | undefined> {
     const r = await postRequest<LoginProps>({
         url: 'auth/login',
         data : props,
+        useAuth: false
+    });
+    return r.response
+}
+
+export async function postForgetPassword(props: {email: string}): Promise<undefined> {
+    const r = await postRequest<{email: string}>({
+        url: 'auth/forget-password',
+        data : props,
+        useAuth: false
+    });
+    return r.response
+}
+
+export async function postResetPassword(props: ResetProps, token: string): Promise<undefined> {
+    const r = await postRequest<ResetProps>({
+        url: `reset-password?token=${token}`,
+        data:props,
         useAuth: false
     });
     return r.response
