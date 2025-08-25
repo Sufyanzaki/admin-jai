@@ -68,7 +68,8 @@ export default function useSeoSettingsForm() {
         try {
           metaImageUrl = await imageUpload(arg.metaImage);
         } catch (error: unknown) {
-          if (error instanceof Error) showError({ message: error.message });
+          // @ts-expect-error unknown type
+          showError({ message: t(error.message) });
           throw error;
         }
       } else if (typeof arg.metaImage === "string") {

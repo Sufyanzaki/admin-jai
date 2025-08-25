@@ -56,7 +56,8 @@ export default function useEditFaqCategory(id: string | null, initialName: strin
         callback?.(false);
       }
     } catch (error: unknown) {
-      if (error instanceof Error) showError({ message: error.message || t("Failed to update category") });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 

@@ -33,11 +33,8 @@ export default function useLoginForm() {
         },
         {
             onError: (error: unknown) => {
-                if (error instanceof Error) {
-                    showError({ message: error.message });
-                } else {
-                    showError({ message: t('An unknown error occurred.') });
-                }
+                // @ts-expect-error unknown type
+                showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
             }
         }
     );
@@ -64,11 +61,8 @@ export default function useLoginForm() {
             setUserEmail(values.email);
             router.push('/admin/auth/otp');
         } catch (error: unknown) {
-            const message =
-                typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string'
-                    ? (error as { message: string }).message
-                    : t('An unexpected error occurred. Please try again.');
-            showError({ message });
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
         }
     };
 

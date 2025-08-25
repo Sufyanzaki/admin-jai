@@ -45,11 +45,8 @@ export default function useClientAccount() {
         },
         {
             onError: (error: unknown) => {
-                if (error instanceof Error) {
-                    showError({ message: error.message });
-                } else {
-                    showError({ message: t("An unknown error occurred.") });
-                }
+                // @ts-expect-error unknown type
+                showError({ message: t(error.message) });
             },
         }
     );
@@ -111,7 +108,8 @@ export default function useClientAccount() {
             router.push("/dashboard");
         } catch (error: unknown) {
             setIsUploading(false);
-            if (error instanceof Error) showError({ message: error.message });
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) });
         }
     };
 

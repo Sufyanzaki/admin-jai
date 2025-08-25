@@ -76,15 +76,14 @@ export function useDashboardFooterForm() {
         };
         return await patchUserDashboardFooterSettings(payload);
       } catch (error: unknown) {
-        const message = error instanceof Error ? t(error.message) : t("Something went wrong");
-        showError({ message });
+        // @ts-expect-error unknown type
+        showError({ message: t(error.message) });
       }
     },
     {
       onError: (error: unknown) => {
-        const message = error instanceof Error ? t(error.message) : t("Failed to update dashboard footer settings");
-        setError(message);
-        showError({ message });
+        // @ts-expect-error unknown type
+        showError({ message: t(error.message) }); setError(error.message);
       },
       revalidate: false,
       populateCache: false,
@@ -99,8 +98,8 @@ export function useDashboardFooterForm() {
       showSuccess(t("Dashboard footer settings updated successfully!"));
       callback?.();
     } catch (error: unknown) {
-      const message = error instanceof Error ? t(error.message) : t("Failed to update dashboard footer settings");
-      showError({ message });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) }); setError(error.message);
     }
   };
 

@@ -71,7 +71,8 @@ export default function useStripeForm() {
   showSuccess(t('Stripe settings updated successfully!'));
       }
     } catch (error: unknown) {
-  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update Stripe settings.') });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 

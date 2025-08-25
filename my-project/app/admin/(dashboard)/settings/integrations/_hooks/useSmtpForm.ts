@@ -83,7 +83,8 @@ export default function useSmtpForm() {
   showSuccess(t('SMTP settings updated successfully!'));
       }
     } catch (error: unknown) {
-  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update SMTP settings.') });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 

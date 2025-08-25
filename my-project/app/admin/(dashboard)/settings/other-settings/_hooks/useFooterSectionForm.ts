@@ -67,19 +67,15 @@ export function useFooterSectionForm() {
                 if (editId) return await updateFooterSection(editId, payload);
                 return await createFooterSection(payload)
             } catch (error: unknown) {
-                const message =
-                    error instanceof Error ? error.message : "Something went wrong";
-                showError({ message: t(message) });
+                // @ts-expect-error unknown type
+                showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
             }
         },
         {
             onError: (error: unknown) => {
-                const message =
-                    error instanceof Error
-                        ? error.message
-                        : "Failed to update footer section settings";
-                setError(t(message));
-                showError({ message: t(message) });
+                // @ts-expect-error unknown type
+                showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
+
             },
             onSuccess: () => {
                 showSuccess(t("Footer section updated successfully!"));
@@ -148,11 +144,8 @@ export function useFooterSectionForm() {
                 false
             ).finally();
         } catch (error: unknown) {
-            const message =
-                error instanceof Error
-                    ? error.message
-                    : "Failed to update footer section";
-            showError({ message: t(message) });
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
         }
     };
 

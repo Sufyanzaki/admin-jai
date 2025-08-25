@@ -36,9 +36,8 @@ export default function useActiveLanguage() {
         },
         {
             onError: (error: unknown) => {
-                showError({
-                    message: error instanceof Error ? error.message : t("An unknown error occurred."),
-                });
+                // @ts-expect-error unknown type
+                showError({ message: t(error.message) });
             },
         }
     );
@@ -72,7 +71,8 @@ export default function useActiveLanguage() {
             mutate();
             showSuccess(t("Preferred Language Updated"));
         } catch (error: unknown) {
-            if (error instanceof Error) showError({ message: error.message });
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) });
         }
     };
 

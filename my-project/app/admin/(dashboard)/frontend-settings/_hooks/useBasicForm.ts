@@ -83,10 +83,8 @@ export default function useBasicForm() {
                 showSuccess(t('Basic page added successfully!'));
             }
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                setIsUploading(false);
-                showError({ message: t(error.message) });
-            }
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) });
         }
     };
 

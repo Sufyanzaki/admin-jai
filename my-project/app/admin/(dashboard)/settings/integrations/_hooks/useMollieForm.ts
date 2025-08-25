@@ -68,7 +68,8 @@ export default function useMollieForm() {
   showSuccess(t('Mollie settings updated successfully!'));
       }
     } catch (error: unknown) {
-  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update Mollie settings.') });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 

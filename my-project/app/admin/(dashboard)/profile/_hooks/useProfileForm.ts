@@ -112,10 +112,8 @@ export default function useProfileForm() {
                 callback?.();
             }
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                showError({ message: error.message });
-                console.error('Profile update error:', error);
-            }
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) });
         }
     };
 

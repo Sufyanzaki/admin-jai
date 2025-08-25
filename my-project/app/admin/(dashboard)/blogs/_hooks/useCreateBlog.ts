@@ -115,9 +115,8 @@ export default function useCreateBlog() {
                 callback?.();
             }
         } catch (error: unknown) {
-            if(error instanceof Error){
-                showError({message: t(error.message)})
-            }
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) });
         }
     };
 

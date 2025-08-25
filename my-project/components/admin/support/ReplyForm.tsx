@@ -3,7 +3,7 @@ import {DialogFooter} from "@/components/admin/ui/dialog";
 import {Button} from "@/components/admin/ui/button";
 import {Check} from "lucide-react";
 import {AdminSupportTicketDto} from "@/app/(client)/dashboard/settings/support/_types/support";
-import useReplyForm from "@/app/admin/(dashboard)/support/_hooks/useReplyForm";
+import useReplyForm from "@/app/shared-hooks/useReplyForm";
 import {Dispatch, SetStateAction, useState} from "react";
 import {updateSupportTicket} from "@/app/shared-api/supportApi";
 import {showSuccess} from "@/shared-lib";

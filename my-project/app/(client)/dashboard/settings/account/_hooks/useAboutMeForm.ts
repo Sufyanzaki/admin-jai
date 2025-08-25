@@ -86,7 +86,8 @@ export default function useAboutMeForm() {
                 callback?.();
             }
         } catch (error: unknown) {
-            if (error instanceof Error) showError({ message: error.message });
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) });
         }
     };
 

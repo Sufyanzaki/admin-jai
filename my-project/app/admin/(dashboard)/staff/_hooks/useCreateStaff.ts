@@ -75,12 +75,8 @@ export function useCreateStaffForm() {
     },
     {
       onError: (error: unknown) => {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Failed to create staff member";
-        setError(message);
-  showError({ message: t(message) });
+        // @ts-expect-error unknown type
+        showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
       },
       revalidate: false,
       populateCache: false,
@@ -130,12 +126,8 @@ export function useCreateStaffForm() {
       callback?.();
       reset();
     } catch (error: unknown) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to create staff member";
-  setError(t(message));
-  showError({ message: t(message) });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
     }
   };
 

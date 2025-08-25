@@ -67,11 +67,8 @@ export function useFooterForm() {
       try {
         return await patchFooterSettings(arg);
       } catch (error: unknown) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Something went wrong";
-        throw new Error(message);
+        // @ts-expect-error unknown type
+        showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
       }
     },
     {
@@ -108,12 +105,8 @@ export function useFooterForm() {
       showSuccess(t("Footer settings updated successfully!"));
       callback?.();
     } catch (error: unknown) {
-      const message =
-        error instanceof Error
-          ? t(error.message)
-          : t("Something went wrong");
-      setError(message);
-      showError({ message });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
     }
   };
 

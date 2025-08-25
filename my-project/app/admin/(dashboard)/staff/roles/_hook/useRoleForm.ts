@@ -83,12 +83,8 @@ export default function useRoleForm() {
         reset();
       }
     } catch (error: unknown) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong";
-      showError({ message });
-      console.error("Role creation error:", error);
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
     }
   };
 

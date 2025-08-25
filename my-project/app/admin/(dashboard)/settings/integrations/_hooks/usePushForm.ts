@@ -88,7 +88,8 @@ export default function usePushForm() {
   showSuccess(t('Push notification settings updated successfully!'));
       }
     } catch (error: unknown) {
-  if (error instanceof Error) showError({ message: error.message ? t(error.message) : t('Failed to update push notification settings.') });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 

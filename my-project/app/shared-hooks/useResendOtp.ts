@@ -15,11 +15,8 @@ export default function useResendOtp() {
       },
       {
         onError: (error: unknown) => {
-          if (error instanceof Error) {
-            showError({ message: t(error.message) });
-          } else {
-            showError({ message: t("An unknown error occurred.") });
-          }
+          // @ts-expect-error unknown type
+          showError({ message: t(error.message) });
         },
       }
   );

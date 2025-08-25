@@ -77,10 +77,8 @@ export default function useUpdateMemberStatusForm() {
         showSuccess(t('Member status updated successfully!'));
       }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        showError({ message: error.message });
-        console.error('Member status update error:', error);
-      }
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 

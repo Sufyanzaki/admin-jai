@@ -43,7 +43,8 @@ export default function useNewsletterForm() {
         reset();
       }
     } catch (error: unknown) {
-  if (error instanceof Error) showError({ message: t(error.message || "Failed to create newsletter") });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     } finally {
       setIsLoading(false);
     }

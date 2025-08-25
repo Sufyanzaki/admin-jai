@@ -29,11 +29,8 @@ export default function useReplyForm(ticketId?: string) {
         },
         {
             onError: (error: unknown) => {
-                if (error instanceof Error) {
-                    showError({ message: error.message });
-                } else {
-                    showError({ message: t('An unknown error occurred.') });
-                }
+                // @ts-expect-error unknown type
+                showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
             }
         }
     );
@@ -81,11 +78,8 @@ export default function useReplyForm(ticketId?: string) {
 
             reset();
         } catch (error: unknown) {
-            const message =
-                typeof error === 'object' && error !== null && 'message' in error && typeof (error).message === 'string'
-                    ? (error as { message: string }).message
-                    : t('An unexpected error occurred. Please try again.');
-            showError({ message });
+            // @ts-expect-error unknown type
+            showError({ message: t(error.message) }); setError(error.message); throw new Error(error.message);
         }
     };
 

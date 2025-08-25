@@ -166,7 +166,8 @@ export default function useHomeForm() {
         showSuccess(t('Home settings updated successfully!'));
       }
     } catch (error: unknown) {
-  if (error instanceof Error) showError({ message: t(error.message) });
+      // @ts-expect-error unknown type
+      showError({ message: t(error.message) });
     }
   };
 
