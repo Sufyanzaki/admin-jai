@@ -192,3 +192,13 @@ export type MemberProfile = {
         permissions: string[];
     }
 }
+
+export type ClientResponseDto = {
+    status: string;
+    message: string;
+    data: {
+        user: {
+            id: string
+        }
+    };
+}

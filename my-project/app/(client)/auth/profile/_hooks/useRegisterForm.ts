@@ -41,8 +41,8 @@ export default function useRegisterForm() {
 
             setCurrentStep(t("Saving location & preferences"));
             await Promise.all([
-                postUserLocation(user.id, location),
-                postPartnerExpectation(user.id, {
+                postUserLocation(user.data.user.id, location),
+                postPartnerExpectation(user.data.user.id, {
                     lookingFor,
                     ageTo: parseInt(ageTo),
                     ageFrom: parseInt(ageFrom),
