@@ -65,13 +65,6 @@ export function SidebarList() {
                   ) : (
                     languages?.map((lang) => (
                       <SelectItem key={lang.code} value={lang.code}>
-                        <Image
-                          src={`https://flagcdn.com/${lang.code}.svg`}
-                          width="20"
-                          height="20"
-                          alt={lang.name}
-                          className="mr-2 inline-block"
-                        />
                         {lang.name}
                       </SelectItem>
                     ))

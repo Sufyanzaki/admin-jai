@@ -20,7 +20,7 @@ export function LanguageSelector() {
     errors,
     isLoading,
     isFetching,
-    activeLanguage, // { id, code, name }
+    activeLanguage,
   } = useActiveLanguage();
 
   if (languagesLoading || isFetching) {
@@ -46,16 +46,7 @@ export function LanguageSelector() {
                 disabled={isLoading}
               >
                 {activeLanguage ? (
-                  <>
-                    <Image
-                      src={`https://flagcdn.com/${activeLanguage.code}.svg`}
-                      width={20}
-                      height={20}
-                      alt={activeLanguage.name}
-                      className="rounded-sm"
-                    />
                     <span>{activeLanguage.name}</span>
-                  </>
                 ) : (
                   <span>{t("Select Language")}</span>
                 )}
@@ -72,13 +63,6 @@ export function LanguageSelector() {
 
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <Image
-                    src={`https://flagcdn.com/${lang.code}.svg`}
-                    width={20}
-                    height={20}
-                    alt={lang.name}
-                    className="rounded-sm"
-                  />
                   {lang.name}
                 </DropdownMenuItem>
               ))}

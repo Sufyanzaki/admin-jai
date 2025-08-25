@@ -2,7 +2,6 @@
 
 import {Label} from "@/components/client/ux/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/client/ux/select";
-import Image from "next/image";
 import {Button} from "@/components/client/ux/button";
 import {useTranslation} from "react-i18next";
 import {useLanguages} from "@/app/admin/(dashboard)/settings/_hooks/useLanguages";
@@ -56,12 +55,6 @@ console.log(languages)
                                 {languages?.map((lang) => (
                                     <SelectItem key={lang.id} value={String(lang.id)}>
                                         <div className="flex items-center gap-2">
-                                            <Image
-                                                src={`https://flagcdn.com/${lang.code}.svg`}
-                                                width="20"
-                                                height="20"
-                                                alt={lang.name}
-                                            />
                                             {lang.name}
                                         </div>
                                     </SelectItem>
