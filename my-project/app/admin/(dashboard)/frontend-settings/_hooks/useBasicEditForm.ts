@@ -10,6 +10,7 @@ import { patchBasicPage } from '@/app/shared-api/basicPageApi';
 import { useParams } from "next/navigation";
 import { useBasicPage } from "@/app/admin/(dashboard)/frontend-settings/_hooks/useBasicPage";
 import { useEffect } from "react";
+import {useTranslation} from "react-i18next";
 
 export default function useBasicEditForm() {
 
