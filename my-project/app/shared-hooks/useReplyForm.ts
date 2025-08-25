@@ -24,6 +24,7 @@ export default function useReplyForm(ticketId?: string) {
     const { trigger, isMutating } = useSWRMutation(
         `tickets-${ticketId}`,
         async (_: string, { arg }: { arg: ReplyFormValues }) => {
+            console.log('Sending reply', arg, ticketId);
             if (!ticketId) throw new Error(t('Ticket ID is required to send a reply.'))
             return await sendReply({ ticketId, ...arg });
         },
@@ -43,14 +44,14 @@ export default function useReplyForm(ticketId?: string) {
     } = useForm<ReplyFormValues>({
         resolver: zodResolver(replySchema),
         defaultValues: {
-            message: t('Thank you for your inquiry. We are looking into this issue and will get back to you shortly.'),
+            message: "",
         },
         mode: 'onBlur'
     });
 
     const onSubmit = async (values: ReplyFormValues, callback: () => void) => {
         try {
-            await trigger({ message: values.message });
+            const r = await trigger(values);
             showSuccess(t("Reply sent successfully!"));
             callback();
 
@@ -62,11 +63,7 @@ export default function useReplyForm(ticketId?: string) {
                             if (ticket.id === ticketId) {
                                 return {
                                     ...ticket,
-                                    lastReply: {
-                                        ...values,
-                                        createdAt: new Date().toISOString(),
-                                        updatedAt: new Date().toISOString(),
-                                    },
+                                    replies: [...ticket.replies, r]
                                 };
                             }
                             return ticket;
@@ -74,7 +71,7 @@ export default function useReplyForm(ticketId?: string) {
                         : [];
                 },
                 false
-            ).finally(() => { });
+            ).finally();
 
             reset();
         } catch (error: unknown) {

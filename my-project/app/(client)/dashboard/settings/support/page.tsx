@@ -10,7 +10,7 @@ import {X} from "lucide-react";
 import {Controller} from "react-hook-form";
 import useSupportTicket from "@/app/(client)/dashboard/settings/support/_hook/useSupportForm";
 import {useTranslation} from "react-i18next";
-import TicketTable from "@/app/(client)/dashboard/settings/support/_components/TicketTable";
+import TicketTable from "@/app/(client)/dashboard/settings/support/_components/ticket-table";
 
 export default function SupportTicketPage() {
     const { t } = useTranslation();

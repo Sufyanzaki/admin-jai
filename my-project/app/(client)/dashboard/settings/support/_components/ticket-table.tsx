@@ -1,30 +1,29 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/client/ux/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/client/ux/table";
 import {Button} from "@/components/client/ux/button";
-import {CheckCircle, Eye, MessageSquare} from "lucide-react";
+import {CheckCircle, Eye} from "lucide-react";
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/client/ux/dialog";
 import {Label} from "@/components/client/ux/label";
 import {Badge} from "@/components/client/ux/badge";
-import {Textarea} from "@/components/client/ux/textarea";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {AdminSupportTicketDto} from "@/app/(client)/dashboard/settings/support/_types/support";
 import {useSupportTickets} from "@/app/shared-hooks/useSupportTickets";
 import Preloader from "@/components/shared/Preloader";
+import ClientReplyForm from "./client-reply-form";
+import {useSession} from "next-auth/react";
 
 export default function TicketTable() {
     const { t } = useTranslation();
     const { supportTickets, ticketsLoading } = useSupportTickets();
 
+    console.log(supportTickets)
+
+    const { data:session } = useSession();
+    const currentUser = session?.user.id;
+
     const [selectedTicket, setSelectedTicket] = useState<AdminSupportTicketDto | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [replyMessage, setReplyMessage] = useState("");
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedTicket(null);
-        setReplyMessage("");
-    };
 
     const getStatusBadge = (status: string) => {
         const statusConfig = {
@@ -50,18 +49,6 @@ export default function TicketTable() {
     const openTicketModal = (ticket: AdminSupportTicketDto) => {
         setSelectedTicket(ticket);
         setIsModalOpen(true);
-        setReplyMessage("");
-    };
-
-    const handleReply = () => {
-        if (!replyMessage.trim()) return;
-        console.log("Reply:", replyMessage);
-        setReplyMessage("");
-    };
-
-    const handleCloseTicket = () => {
-        console.log("Close ticket:", selectedTicket?.id);
-        closeModal();
     };
 
     if (ticketsLoading) {
@@ -195,75 +182,47 @@ export default function TicketTable() {
                                         {t("Conversation History")}
                                     </Label>
                                     <div className="space-y-4">
-                                        {selectedTicket.replies.map((reply) => (
-                                            <div
-                                                key={reply.id}
-                                                className={`p-4 rounded-lg border border-gray-200/50 ${
-                                                    reply.user?.id === selectedTicket.userId
-                                                        ? "bg-white ml-6"
-                                                        : "bg-blue-50/30 mr-6"
-                                                }`}
-                                            >
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className={`h-2 w-2 rounded-full ${
-                                                            reply.user?.id === selectedTicket.userId
-                                                                ? "bg-gray-400"
-                                                                : "bg-blue-500"
-                                                        }`} />
-                                                        <span className="text-sm font-medium">
-                        {reply.user?.id === selectedTicket.userId
-                            ? t("You")
-                            : t("Support Team")}
-                      </span>
+                                        {selectedTicket.replies.map((reply) => {
+                                            const isUser = reply.senderId === currentUser;
+                                            return (
+                                                <div
+                                                    key={reply.id}
+                                                    className={`p-4 rounded-lg border ${
+                                                        isUser
+                                                            ? "bg-white border-gray-200 ml-6"
+                                                            : "bg-blue-50/30 border-blue-200 mr-6"
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between mb-3">
+                                                        <div className="flex items-center gap-2">
+                                                            <div
+                                                                className={`h-2 w-2 rounded-full ${
+                                                                    isUser ? "bg-gray-400" : "bg-blue-500"
+                                                                }`}
+                                                            />
+                                                            <span className="text-sm font-medium">
+                                                                {isUser ? t("You") : t("Support Team")}
+                                                            </span>
+                                                        </div>
+                                                        <span className="text-xs text-muted-foreground">
+                                                            {new Date(reply.createdAt).toLocaleDateString()} •{" "}
+                                                            {new Date(reply.createdAt).toLocaleTimeString([], {
+                                                                hour: "2-digit",
+                                                                minute: "2-digit",
+                                                            })}
+                                                        </span>
                                                     </div>
-                                                    <span className="text-xs text-muted-foreground">
-                      {new Date(reply.createdAt).toLocaleDateString()} •{' '}
-                                                        {new Date(reply.createdAt).toLocaleTimeString([], {
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        })}
-                    </span>
+                                                    <p className="text-sm text-foreground">{reply.message}</p>
                                                 </div>
-                                                <p className="text-sm text-foreground">{reply.message}</p>
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
+
                                     </div>
                                 </div>
                             )}
 
-                            {/* Reply Form */}
-                            {selectedTicket.status !== "closed" && (
-                                <div className="space-y-4 pt-4 border-t border-gray-200/50">
-                                    <Label className="text-base font-semibold">{t("Add Reply")}</Label>
-                                    <Textarea
-                                        placeholder={t("Type your reply here...")}
-                                        value={replyMessage}
-                                        onChange={(e) => setReplyMessage(e.target.value)}
-                                        className="min-h-[120px] resize-none border-gray-300/70 focus:border-gray-400/50"
-                                    />
-                                    <div className="flex justify-end gap-3">
-                                        <Button
-                                            variant="outline"
-                                            size="default"
-                                            onClick={handleCloseTicket}
-                                        >
-                                            <CheckCircle className="w-4 h-4" />
-                                            {t("Close Ticket")}
-                                        </Button>
-                                        <Button
-                                            size="default"
-                                            onClick={handleReply}
-                                            disabled={!replyMessage.trim()}
-                                        >
-                                            <MessageSquare className="w-4 h-4" />
-                                            {t("Send Reply")}
-                                        </Button>
-                                    </div>
-                                </div>
-                            )}
+                            <ClientReplyForm selectedTicket={selectedTicket} callback={()=>setIsModalOpen(false)}/>
 
-                            {/* Closed Ticket State */}
                             {selectedTicket.status === "closed" && (
                                 <div className="p-6 bg-gray-50/30 rounded-lg border border-gray-200/50 text-center">
                                     <CheckCircle className="w-12 h-12 mx-auto text-green-500 mb-3" />

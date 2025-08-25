@@ -1,5 +1,3 @@
-//admin support
-
 type User = {
     id: number;
     email: string;
@@ -10,11 +8,16 @@ type User = {
 
 export type ReplyDto = {
     id: number;
-    userId: number;
+    ticketId: number;
+    senderId: number;
     message: string;
     createdAt: string;
-    updatedAt: string;
-    user?: User;
+    sender: {
+        id: number;
+        role: string;
+        firstName: string;
+        lastName: string;
+    };
 };
 
 export type AdminSupportTicketDto = {
@@ -30,3 +33,4 @@ export type AdminSupportTicketDto = {
     user: User;
     replies: ReplyDto[];
 };
+
