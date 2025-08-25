@@ -16,7 +16,7 @@ export default function CustomPage() {
         return (
             <div className="flex items-center flex-col justify-center h-64">
                 <Preloader />
-                <p className="text-sm">Loading Attributes</p>
+                <p className="text-sm">Loading page</p>
             </div>
         )
     }

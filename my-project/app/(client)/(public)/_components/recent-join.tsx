@@ -6,16 +6,20 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { useNewMembers } from "@/app/(client)/(public)/_hooks/useNewMembers";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import {useSession} from "next-auth/react";
 
 export default function RecentJoin() {
     const [screenWidth, setScreenWidth] = useState(0);
     const [slidesPerView, setSlidesPerView] = useState(1);
+    const { data:session } = useSession();
     const [showSlider, setShowSlider] = useState(false);
 
     const { users, userLoading } = useNewMembers();
     const { t } = useTranslation();
 
     const members = users.map((u) => ({
+        id: u.id,
         name: `${u.firstName} ${u.lastName}`,
         location: u.location ? `${u.living?.city}, ${u.living?.city} | ${u.living?.city}` : null,
         image: u.image,
@@ -61,6 +65,8 @@ export default function RecentJoin() {
         );
     }
 
+    const filteredMember = members.filter((m) => m.id !== session?.user?.id);
+
     return (
         <section className="py-4">
             <div className="flex justify-between items-center mb-8">
@@ -82,12 +88,12 @@ export default function RecentJoin() {
                         !showSlider ? "grid grid-cols-2 md:grid-cols-4 gap-6" : ""
                     }`}
                 >
-                    {members.map((member, idx) => (
+                    {filteredMember.map((member, idx) => (
                         <div
                             key={idx}
                             className={`keen-slider__slide ${!showSlider ? "!min-w-0" : ""}`}
                         >
-                            <div className="relative rounded-lg overflow-hidden group">
+                            <Link href={`/dashboard/search/${member.id}`} className="relative cursor-pointer block rounded-lg overflow-hidden group">
                                 <figure className="w-[400px] h-[400px] object-cover relative">
                                     <div className="absolute inset-0 bg-black/20" />
                                     <img
@@ -115,7 +121,7 @@ export default function RecentJoin() {
                                         <p className="text-m">{member.location}</p>
                                     )}
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>
@@ -123,7 +129,7 @@ export default function RecentJoin() {
                 {showSlider && screenWidth < 1024 && (
                     <div className="flex justify-center mt-4 space-x-2">
                         {Array.from({
-                            length: Math.ceil(members.length / slidesPerView),
+                            length: Math.ceil(filteredMember.length / slidesPerView),
                         }).map((_, idx) => (
                             <button
                                 key={idx}
@@ -149,8 +155,8 @@ export default function RecentJoin() {
             </div>
 
             <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-6">
-                {members.map((member, idx) => (
-                    <div key={idx} className="relative rounded-lg overflow-hidden group">
+                {filteredMember.map((member, idx) => (
+                    <Link href={`/dashboard/search/${member.id}`} key={idx} className="relative rounded-lg block overflow-hidden group">
                         <figure className="w-[400px] h-[400px] object-cover relative">
                             <div className="absolute inset-0 bg-black/20" />
                             <img
@@ -175,7 +181,7 @@ export default function RecentJoin() {
                             <p className="font-semibold">{member.name}</p>
                             {member.location && <p className="text-xs">{member.location}</p>}
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </section>

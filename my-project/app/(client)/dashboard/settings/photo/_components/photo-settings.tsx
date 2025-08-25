@@ -70,9 +70,9 @@ export function PhotoSettings() {
 
   if (isFetching) {
     return (
-        <div className="flex items-center flex-col justify-center h-64">
+        <div className="flex items-center flex-col justify-center h-screen">
           <Preloader />
-          <p className="text-sm">{t("Loading Blogs...")}</p>
+          <p className="text-sm">{t("Loading Settings...")}</p>
         </div>
     );
   }

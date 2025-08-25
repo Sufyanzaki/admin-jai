@@ -231,7 +231,7 @@ export function ProfileDetail() {
           </div>
 
           <div className="px-5">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 pb-6">
               <div className="space-y-4">
                 <div className="relative aspect-square ">
                   <ImageWrapper

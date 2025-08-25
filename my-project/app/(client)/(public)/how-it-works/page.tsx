@@ -17,7 +17,7 @@ export default function HowItWorksPage() {
 
   if (isLoading || howWorkLoading)
     return (
-        <div className="flex items-center flex-col justify-center h-64 my-28">
+        <div className="flex items-center flex-col justify-center h-screen my-28">
           <Preloader />
           <p className="text-sm">{t("Loading...")}</p>
         </div>

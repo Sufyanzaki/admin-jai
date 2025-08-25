@@ -1,11 +1,12 @@
 import {useSWRFix} from "@/shared-lib";
 import {useTranslation} from "react-i18next";
-import {getVisits, VisitResponse} from "@/app/(client)/dashboard/visits/_api/visitsApi";
+import {getVisits} from "@/app/(client)/dashboard/visits/_api/visitsApi";
+import {VisitResponseDto} from "@/app/(client)/dashboard/visits/_type/visit";
 
 export const useVisits = () => {
     const { t } = useTranslation();
 
-    const { data, loading, error, mutate } = useSWRFix<VisitResponse>({
+    const { data, loading, error, mutate } = useSWRFix<VisitResponseDto>({
         key: 'my-visits',
         fetcher: async () => {
             const response = await getVisits();

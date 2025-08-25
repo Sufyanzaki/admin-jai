@@ -15,14 +15,18 @@ import Preloader from "@/components/shared/Preloader";
 import type React from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import {useSession} from "next-auth/react";
 
 export default function Dashboard() {
     const router = useRouter();
     const { t } = useTranslation();
+    const { data:session } = useSession();
     const { response, userLoading, error } = useProfile();
     const cardData = getCardData(response?.user);
     const { matches, matchesLoading } = useTodayMatches();
     const { mayLike, mayLikeLoading, error: mayLikeError } = useMayLike();
+
+    console.log(mayLike)
 
     if (userLoading) {
         return (
@@ -46,6 +50,9 @@ export default function Dashboard() {
             </div>
         );
     }
+
+    const filteredRecords = (mayLike ?? []).filter(user=> user.id !== session?.user?.id);
+    const filteredMatches = (matches ?? []).filter(user=> user.id !== session?.user?.id);
 
     return (
         <>
@@ -137,8 +144,8 @@ export default function Dashboard() {
                                                 className="h-[210px] w-full rounded-lg bg-app-gray/10"
                                             />
                                         ))
-                                    ) : Array.isArray(matches) ? (
-                                        matches.slice(0, 6).map((match: MemberProfile) => (
+                                    ) : Array.isArray(filteredMatches) ? (
+                                        filteredMatches.slice(0, 6).map((match: MemberProfile) => (
                                             <ProfileCard key={match.id} profile={match} />
                                         ))
                                     ) : null}
@@ -178,8 +185,8 @@ export default function Dashboard() {
                                             className="h-[210px] w-full rounded-lg bg-app-gray/10"
                                         />
                                     ))
-                                ) : Array.isArray(mayLike) ? (
-                                    mayLike.slice(0, 6).map((match) => (
+                                ) : Array.isArray(filteredRecords) ? (
+                                    filteredRecords.slice(0, 6).map((match) => (
                                         <ProfileCard key={match.id} profile={match} />
                                     ))
                                 ) : null}

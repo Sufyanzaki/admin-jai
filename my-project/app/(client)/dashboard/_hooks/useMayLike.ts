@@ -1,11 +1,11 @@
 import { useSWRFix } from "@/shared-lib";
-import { getMembersYouMayLike, mayLikeResponse } from "../_api/getMembersYouMayLike";
+import {getMembersYouMayLike, MayLikeResponse} from "../_api/getMembersYouMayLike";
 import { useTranslation } from "react-i18next";
 
 export const useMayLike = () => {
     const { t } = useTranslation();
 
-    const { data, loading, error, mutate } = useSWRFix<mayLikeResponse>({
+    const { data, loading, error, mutate } = useSWRFix<MayLikeResponse>({
         key: ' may-like',
         fetcher: async () => {
             const response = await getMembersYouMayLike();

@@ -1,35 +1,44 @@
 "use client";
-import { Button } from "@/components/client/ux/button";
-import { Label } from "@/components/client/ux/label";
-import { Switch } from "@/components/client/ux/switch";
-import { Grid3X3, List } from "lucide-react";
-import { useState } from "react";
+import {Button} from "@/components/client/ux/button";
+import {Label} from "@/components/client/ux/label";
+import {Switch} from "@/components/client/ux/switch";
+import {Grid3X3, List} from "lucide-react";
+import {useState} from "react";
 import ListCard from "@/app/(client)/dashboard/_components/list-card";
 import ProfileCard from "@/app/(client)/dashboard/_components/profile-card";
-import { LikeStatus, useLikesReceived } from "../notifications/_hooks/useLikesReceived";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import PaginationSection from "@/app/(client)/dashboard/_components/pagination";
 import Preloader from "@/components/shared/Preloader";
+import {useVisits} from "@/app/(client)/dashboard/visits/_hooks/useVisits";
+import {VisitorBlockDto} from "@/app/(client)/dashboard/visits/_type/visit";
+import {useSession} from "next-auth/react";
 
 export default function MatchesPage() {
     const { t } = useTranslation();
+    const { data:session } = useSession();
     const [online, setOnline] = useState(false);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-    const { likesReceived, likesReceivedLoading } = useLikesReceived(
-        LikeStatus.PENDING
-    );
+    const { visits, visitLoading } = useVisits();
 
-    if (likesReceivedLoading) {
-        return(
+    if (visitLoading) {
+        return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <Preloader />
             </div>
-        )
+        );
     }
 
+    const transformedVisits: VisitorBlockDto[] | undefined = visits?.map((visit) => ({
+        ...visit,
+        visitor: {
+            ...visit.visitor,
+            isOnline: visit.visitor.isOnline,
+        },
+    })).filter((visit) => visit.visitor.id !== session?.user?.id);
+
     const filteredResults = online
-        ? likesReceived?.filter(profile => profile.sender?.isOnline)
-        : likesReceived;
+        ? transformedVisits?.filter((v) => v.visitor.isOnline)
+        : transformedVisits;
 
     return (
         <div className="flex min-h-screen">
@@ -77,13 +86,13 @@ export default function MatchesPage() {
                         viewMode === "grid" ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 mb-8">
                                 {filteredResults.map((profile) => (
-                                    <ProfileCard key={profile.id} profile={profile?.sender} />
+                                    <ProfileCard key={profile.id} profile={profile.visitor} />
                                 ))}
                             </div>
                         ) : (
                             <div className="space-y-4 mb-8">
                                 {filteredResults.map((profile) => (
-                                    <ListCard key={profile.id} profile={profile?.sender} />
+                                    <ListCard key={profile.id} profile={profile.visitor} />
                                 ))}
                             </div>
                         )
@@ -95,27 +104,30 @@ export default function MatchesPage() {
                                 </h3>
                                 <p className="text-gray-400">
                                     {online
-                                        ? t("There are no online matches at the moment. Try turning off the online filter.")
+                                        ? t(
+                                            "There are no online matches at the moment. Try turning off the online filter."
+                                        )
                                         : t("Check back later for new matches.")}
                                 </p>
                             </div>
                         </div>
                     )}
 
-                    {filteredResults && filteredResults.length > 0 && <div className="flex justify-center items-center gap-2">
-                        <PaginationSection
-                            pagination={{
-                                page: 1,
-                                limit: 30,
-                                total: 30,
-                                totalPages: 1,
-                            }}
-                            onPageChange={(newPage) => {
-                                console.log("Go to page:", newPage);
-                            }}
-                        />
-                    </div>}
-
+                    {filteredResults && filteredResults.length > 0 && (
+                        <div className="flex justify-center items-center gap-2">
+                            <PaginationSection
+                                pagination={{
+                                    page: 1,
+                                    limit: 30,
+                                    total: 30,
+                                    totalPages: 1,
+                                }}
+                                onPageChange={(newPage) => {
+                                    console.log("Go to page:", newPage);
+                                }}
+                            />
+                        </div>
+                    )}
                 </main>
             </div>
         </div>

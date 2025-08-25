@@ -3,7 +3,8 @@ import {
   dashboardLocationIcon,
   dashboardUserIcon,
 } from "@/lib/icons";
-export function getCardData(user: any) {
+import {MemberProfile} from "@/app/shared-types/member";
+export function getCardData(user: MemberProfile | undefined) {
   const location = `${user?.living?.city &&  user?.living?.city}, ${user?.living?.state && user?.living?.state}, ${user?.living?.country && user?.living?.country}`
 
   return [

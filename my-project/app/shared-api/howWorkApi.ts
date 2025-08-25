@@ -1,5 +1,5 @@
 import { getRequest, patchRequest } from "@/shared-lib";
-import { HowItWorksSettingsDto } from "../_types/howWorks";
+import {HowItWorksSettingsDto} from "@/app/shared-types/howWorks";
 
 type Payload = Partial<HowItWorksSettingsDto>;
 

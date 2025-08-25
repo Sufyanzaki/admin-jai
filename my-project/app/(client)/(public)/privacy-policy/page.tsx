@@ -14,7 +14,7 @@ export default function TermsPage() {
 
   if (tosLoading)
     return (
-      <div className="flex items-center flex-col justify-center h-64">
+      <div className="flex items-center flex-col justify-center h-screen">
         <Preloader />
         <p className="text-sm">{t("Loading...")}</p>
       </div>
@@ -23,13 +23,10 @@ export default function TermsPage() {
   if (!tosSettings) {
     return (
       <div className="flex items-center flex-col justify-center h-64">
-        <p className="text-sm">            {t("No data found")}
-        </p>
+        <p className="text-sm"> {t("No data found")} </p>
       </div>
     );
   }
-
-  console.log(tosSettings.content)
 
   return (
     <div className="bg-white min-h-screen">
