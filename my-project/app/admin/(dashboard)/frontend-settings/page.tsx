@@ -88,7 +88,7 @@ export default function SettingPage() {
                             {corePages.map((page, index) => (
                                 <TableRow key={index}>
                                     <TableCell className="font-medium align-top">{t(page.Title)}</TableCell>
-                                    <TableCell className="align-top">{t(page.Url)}</TableCell>
+                                    <TableCell className="align-top">{page.Url}</TableCell>
                                     <TableCell className="align-top capitalize">{t(page.pageType?.toLowerCase())}</TableCell>
                                     <TableCell className="text-right align-top">
                                         <div className="flex justify-end gap-2">
@@ -138,9 +138,9 @@ export default function SettingPage() {
                             <TableBody>
                                 {customPages.map((page) => (
                                     <TableRow key={page.id}>
-                                        <TableCell className="font-medium align-top">{t(page.Title)}</TableCell>
-                                        <TableCell className="align-top">{t(page.Url)}</TableCell>
-                                        <TableCell className="align-top capitalize">{t(page.pageType?.toLowerCase())}</TableCell>
+                                        <TableCell className="font-medium align-top">{page.Title}</TableCell>
+                                        <TableCell className="align-top">{page.Url}</TableCell>
+                                        <TableCell className="align-top capitalize">{page.pageType?.toLowerCase()}</TableCell>
                                         <TableCell className="text-right align-top">
                                             <div className="flex justify-end gap-2">
                                                 <Button
