@@ -9,10 +9,13 @@ import {useDashboard} from "@/app/admin/(dashboard)/_hooks/useDashboard";
 import {NewMembers} from "@/components/admin/members/new-members";
 import { BestSelling } from "@/components/admin/members/best-selling"
 import MemberStats from "@/components/admin/members/member-stats"
+import {useTranslation} from "react-i18next";
+
 
 const DashboardPage = () => {
   const { stats, statsLoading, error } = useDashboard();
-  const { t } = require('react-i18next');
+
+  const {t} = useTranslation();
 
   const cardData = [
     {
