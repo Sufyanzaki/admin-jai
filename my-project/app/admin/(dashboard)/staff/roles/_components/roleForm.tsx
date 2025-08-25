@@ -1,3 +1,5 @@
+"use client"
+
 import { Input } from "@/components/admin/ui/input";
 import { Label } from "@/components/admin/ui/label";
 import { Separator } from "@/components/admin/ui/separator";

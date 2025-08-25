@@ -1,16 +1,16 @@
-import { useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { showError, showSuccess } from '@/shared-lib';
+import {useCallback, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
+import {showError, showSuccess} from '@/shared-lib';
 import useSWRMutation from 'swr/mutation';
-import {posClientUser, postUser} from "@/app/shared-api/userApi";
-import { postUserLocation } from "@/app/shared-api/livingApi";
-import { postPartnerExpectation } from "@/app/shared-api/partnerExpectationApi";
-import { postLoginForm } from "@/app/shared-api/auth";
-import { setUserEmail } from "@/lib/access-token";
-import { useRouter } from "next/navigation";
-import { useTranslation } from "react-i18next";
+import {posClientUser} from "@/app/shared-api/userApi";
+import {postUserLocation} from "@/app/shared-api/livingApi";
+import {postPartnerExpectation} from "@/app/shared-api/partnerExpectationApi";
+import {postLoginForm} from "@/app/shared-api/auth";
+import {setUserEmail} from "@/lib/access-token";
+import {useRouter} from "next/navigation";
+import {useTranslation} from "react-i18next";
 
 export default function useRegisterForm() {
     const { t } = useTranslation();

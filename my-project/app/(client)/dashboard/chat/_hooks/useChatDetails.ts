@@ -1,3 +1,5 @@
+"use client"
+
 import { useSWRFix } from "@/shared-lib";
 import { getChatDetails } from "@/app/(client)/dashboard/chat/_api/conversation";
 import { useParams } from "next/navigation";

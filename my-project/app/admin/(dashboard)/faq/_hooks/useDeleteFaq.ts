@@ -1,3 +1,5 @@
+"use client"
+
 import { useSWRConfig } from "swr";
 import { deleteFaq } from "@/app/shared-api/faqApi";
 import { showError } from "@/shared-lib";

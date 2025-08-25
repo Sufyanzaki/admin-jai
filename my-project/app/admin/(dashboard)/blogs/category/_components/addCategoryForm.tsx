@@ -1,3 +1,5 @@
+"use client"
+
 import useCreateBlogCategory from "../_hooks/useCreateBlogCategory";
 import { Button } from "@/components/admin/ui/button";
 import { Input } from "@/components/admin/ui/input";

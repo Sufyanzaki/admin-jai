@@ -1,3 +1,5 @@
+"use client"
+
 import { sendMessage } from "@/app/(client)/dashboard/chat/_api/conversation";
 import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";

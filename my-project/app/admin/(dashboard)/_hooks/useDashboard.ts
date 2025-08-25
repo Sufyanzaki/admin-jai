@@ -1,3 +1,5 @@
+"use client"
+
 import { useSWRFix } from "@/shared-lib";
 import { getDashboardStats } from "@/app/admin/(dashboard)/_api/getDashbaord";
 import { DashboardStats } from "@/app/admin/(dashboard)/_types/dashboard";

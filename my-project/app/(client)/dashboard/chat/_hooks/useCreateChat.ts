@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import { showError } from "@/shared-lib";
 import { createChat } from "@/app/(client)/dashboard/chat/_api/conversation";

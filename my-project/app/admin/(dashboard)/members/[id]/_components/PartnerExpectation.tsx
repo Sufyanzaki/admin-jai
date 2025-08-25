@@ -1,9 +1,8 @@
 "use client";
 
-import { CardContent } from "@/components/admin/ui/card";
-import { useTranslation } from "react-i18next";
-import { Separator } from "@/components/admin/ui/separator";
-import { useBasicInfo } from "../../../../../shared-hooks/useBasicInfo";
+import {CardContent} from "@/components/admin/ui/card";
+import {useTranslation} from "react-i18next";
+import {Separator} from "@/components/admin/ui/separator";
 import {usePartnerExpectations} from "@/app/admin/(dashboard)/members/_hooks/usepartnerExpectations";
 
 interface PartnerExpectationProps {

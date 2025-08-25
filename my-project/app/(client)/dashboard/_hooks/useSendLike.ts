@@ -1,3 +1,5 @@
+"use client"
+
 import {showSuccess} from '@/shared-lib';
 import {useState} from "react";
 import {postLike} from '../notifications/_api/likes';

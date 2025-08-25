@@ -1,3 +1,5 @@
+"use client"
+
 import useSWRMutation from "swr/mutation";
 import { showError } from "@/shared-lib";
 import { showSuccess } from "@/shared-lib";

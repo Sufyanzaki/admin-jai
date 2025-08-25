@@ -1,3 +1,5 @@
+"use client"
+
 import { useSWRConfig } from "swr";
 import { useTranslation } from "react-i18next";
 import { showError } from "@/shared-lib";

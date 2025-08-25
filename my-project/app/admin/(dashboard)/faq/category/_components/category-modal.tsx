@@ -1,3 +1,5 @@
+"use client"
+
 import useFaqCategoryForm from "../_hooks/useFaqCategoryForm";
 import useEditFaqCategory from "../_hooks/useEditFaqCategory";
 import useFaqCategories from "../_hooks/useFaqCategories";

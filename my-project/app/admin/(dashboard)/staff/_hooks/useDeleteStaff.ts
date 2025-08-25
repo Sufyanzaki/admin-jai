@@ -1,3 +1,5 @@
+"use client"
+
 import {useSWRConfig} from "swr";
 import useSWRMutation from "swr/mutation";
 import {deleteStaff} from "@/app/admin/(dashboard)/staff/_api/staffApi";

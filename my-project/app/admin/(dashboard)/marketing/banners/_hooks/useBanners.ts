@@ -1,3 +1,5 @@
+"use client"
+
 import { useSWRFix } from "@/shared-lib";
 import { getAllBanners } from "@/app/admin/(dashboard)/marketing/banners/_api/bannerApi";
 import { useSession } from "next-auth/react";
