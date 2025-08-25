@@ -23,16 +23,12 @@ export function SearchResults() {
   const { data, error, isLoading, mutate } = useSearch(formValues)
 
   useEffect(() => {
-    if (formValues) {
-      mutate().finally();
-    }
+    if (formValues) mutate().finally();
   }, [searchParams.toString(), mutate]);
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return (
-    <p>{t("Error Searching...")}</p>
-  );
+  if (error) return <p>{t("Error Searching...")}</p>;
 
   if (!data) return <p>{t("No data found")}</p>
 
