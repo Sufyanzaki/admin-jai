@@ -1,6 +1,10 @@
+"use client";
+
 import { useEffect } from "react";
 import Pusher from "pusher-js";
 import { useSession } from "next-auth/react";
+import {usePathname} from "next/navigation";
+import {postPageView} from "@/app/(client)/dashboard/_api/pageView";
 
 interface OnlineStatusListenerProps {
     onStatusChange?: (status: { userId: string; online: boolean }) => void;
@@ -9,6 +13,12 @@ interface OnlineStatusListenerProps {
 export default function OnlineStatusListener({ onStatusChange }: OnlineStatusListenerProps) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
+
+    const pathname = usePathname();
+
+    useEffect(() => {
+        postPageView({pageLink: pathname}).finally()
+    }, [pathname]);
 
     useEffect(() => {
         if (!userId) return;

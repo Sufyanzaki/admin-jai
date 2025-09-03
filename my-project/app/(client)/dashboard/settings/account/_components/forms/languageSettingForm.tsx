@@ -29,7 +29,6 @@ export default function LanguageSettingForm() {
             </div>
         );
     }
-console.log(languages)
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
